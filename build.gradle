@@ -23,29 +23,29 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 
     // JavaFX for all (targeted) platforms
-    //implementation "org.openjfx:javafx-base:11:win"
-    //implementation "org.openjfx:javafx-graphics:11:win"
-    //implementation "org.openjfx:javafx-controls:11:win"
-    //implementation "org.openjfx:javafx-fxml:11:win"
-    //implementation "org.openjfx:javafx-web:11:win"
-    //implementation "org.openjfx:javafx-swing:11:win"
-    //implementation "org.openjfx:javafx-media:11:win"
+    //api "org.openjfx:javafx-base:11:win"
+    //api "org.openjfx:javafx-graphics:11:win"
+    //api "org.openjfx:javafx-controls:11:win"
+    //api "org.openjfx:javafx-fxml:11:win"
+    //api "org.openjfx:javafx-web:11:win"
+    //api "org.openjfx:javafx-swing:11:win"
+    //api "org.openjfx:javafx-media:11:win"
 
-    //implementation "org.openjfx:javafx-base:11:linux"
-    //implementation "org.openjfx:javafx-graphics:11:linux"
-    //implementation "org.openjfx:javafx-controls:11:linux"
-    //implementation "org.openjfx:javafx-fxml:11:linux"
-    //implementation "org.openjfx:javafx-web:11:linux"
-    //implementation "org.openjfx:javafx-swing:11:linux"
-    //implementation "org.openjfx:javafx-media:11:linux"
+    //api "org.openjfx:javafx-base:11:linux"
+    //api "org.openjfx:javafx-graphics:11:linux"
+    //api "org.openjfx:javafx-controls:11:linux"
+    //api "org.openjfx:javafx-fxml:11:linux"
+    //api "org.openjfx:javafx-web:11:linux"
+    //api "org.openjfx:javafx-swing:11:linux"
+    //api "org.openjfx:javafx-media:11:linux"
 
-    //implementation "org.openjfx:javafx-base:11:mac"
-    //implementation "org.openjfx:javafx-graphics:11:mac"
-    //implementation "org.openjfx:javafx-controls:11:mac"
-    //implementation "org.openjfx:javafx-fxml:11:mac"
-    //implementation "org.openjfx:javafx-web:11:mac"
-    //implementation "org.openjfx:javafx-swing:11:mac"
-    //implementation "org.openjfx:javafx-media:11:mac"
+    //api "org.openjfx:javafx-base:11:mac"
+    //api "org.openjfx:javafx-graphics:11:mac"
+    //api "org.openjfx:javafx-controls:11:mac"
+    //api "org.openjfx:javafx-fxml:11:mac"
+    //api "org.openjfx:javafx-web:11:mac"
+    //api "org.openjfx:javafx-swing:11:mac"
+    //api "org.openjfx:javafx-media:11:mac"
 }
 
 
@@ -89,6 +89,10 @@ task testJavadoc(type: Javadoc) {
 
 tasks.withType(JavaExec) {
         jvmArgs '-Xdebug', '-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005'
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
 }
 
 //assemble.dependsOn shadowJar
