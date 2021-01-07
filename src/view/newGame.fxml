@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Text layoutX="417.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Game">
+         <font>
+            <Font size="60.0" />
+         </font>
+      </Text>
+      <VBox alignment="TOP_CENTER" layoutX="320.0" layoutY="210.0" spacing="20.0">
+         <children>
+            <Label fx:id="startingPlayerLabel" text="starting player">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="ironmanModeLabel" text="ironman mode">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="gametypeLabel" text="gametype">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="AIDifficultyLabel" text="AI-difficulty">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="AI2DifficultyLabel" text="AI2-difficulty">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="simulationSpeedLabel" text="simulation speed">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <VBox layoutX="489.0" layoutY="210.0" prefHeight="285.0" prefWidth="275.0" spacing="20.0">
+         <children>
+            <Spinner fx:id="startPlayerSpinner" prefHeight="25.0" prefWidth="250.0" />
+            <Spinner fx:id="ironmanModeSpinner" prefHeight="25.0" prefWidth="250.0" />
+            <Spinner fx:id="gametypeSpinner" prefHeight="25.0" prefWidth="250.0" />
+            <Spinner fx:id="AIDifficultySpinner" prefWidth="250.0" />
+            <Spinner fx:id="AI2DifficultySpinner" prefWidth="250.0" />
+            <Spinner fx:id="simulationSpeedSpinner" prefHeight="25.0" prefWidth="250.0" />
+         </children>
+      </VBox>
+      <Button fx:id="startGameButton" layoutX="514.0" layoutY="495.0" mnemonicParsing="false" onAction="#onStartGameButtonAction" text="start game">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="backButton" layoutX="684.0" layoutY="495.0" mnemonicParsing="false" onAction="#onBackButtonAction" text="back">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="loadCSVFileButton" layoutX="324.0" layoutY="495.0" mnemonicParsing="false" onAction="#onLoadCSVFileButtonAction" text="load CSV file">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+   </children>
+</Pane>
