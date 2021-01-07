@@ -1,29 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
-
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox alignment="CENTER" layoutY="700.0" prefHeight="100.0" prefWidth="1200.0" spacing="80.0">
          <children>
-            <Button fx:id="highscoreButton" mnemonicParsing="false" onAction="#onHighscoreAction" prefHeight="40.0" prefWidth="250.0" text="Highscoreliste" />
-            <Button fx:id="exportButton" mnemonicParsing="false" onAction="#onExportAction" prefHeight="40.0" prefWidth="250.0" text="Spielzusammenfassung exportieren" />
-            <Button fx:id="startMenuButton" mnemonicParsing="false" onAction="#onStartMenuAction" prefHeight="40.0" prefWidth="250.0" text="Zurück zum Startbildschirm" />
+            <Button fx:id="highscoreButton" mnemonicParsing="false" onAction="#onHighscoreAction" prefHeight="40.0" prefWidth="250.0" text="Highscores" />
+            <Button fx:id="exportButton" mnemonicParsing="false" onAction="#onExportAction" prefHeight="40.0" prefWidth="250.0" text="Export Results" />
+            <Button fx:id="startMenuButton" mnemonicParsing="false" onAction="#onStartMenuAction" prefHeight="40.0" prefWidth="250.0" text="Back to Main Menu" />
          </children>
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="1200.0">
          <children>
-            <Label text="Spielzusammenfassung">
+            <Label text="Results">
                <font>
                   <Font size="33.0" />
                </font>
@@ -43,7 +35,7 @@
          <children>
             <VBox alignment="CENTER">
                <children>
-                  <Label text="Gewinner">
+                  <Label text="Winner">
                      <font>
                         <Font size="26.0" />
                      </font>
@@ -52,7 +44,7 @@
             </VBox>
             <VBox alignment="CENTER" GridPane.columnIndex="1">
                <children>
-                  <Label text="Verlierer">
+                  <Label text="Loser">
                      <font>
                         <Font size="26.0" />
                      </font>
@@ -79,47 +71,47 @@
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="155.0" prefWidth="220.0" GridPane.rowIndex="1">
                      <children>
-                        <Label text="Punktestand:" />
+                        <Label text="Score:" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="168.0" prefWidth="220.0" GridPane.rowIndex="2">
                      <children>
-                        <Label text="Highscore-Platzierung: " />
+                        <Label text="Highscore Rank;" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="155.0" prefWidth="220.0" GridPane.rowIndex="3">
                      <children>
-                        <Label text="Anzahl abgelegter Patches:" />
+                        <Label text="Number of Patches:" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="155.0" prefWidth="220.0" GridPane.rowIndex="4">
                      <children>
-                        <Label text="Geld:" />
+                        <Label text="Money:" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                      <children>
-                        <Text fx:id="winnerName" strokeType="OUTSIDE" strokeWidth="0.0" text="*Spielername / AI-Name*" />
+                        <Text fx:id="winnerName" strokeType="OUTSIDE" strokeWidth="0.0" text="*Player / AI name*" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
-                        <Text fx:id="winnerScore" strokeType="OUTSIDE" strokeWidth="0.0" text="*Punktestand*" />
+                        <Text fx:id="winnerScore" strokeType="OUTSIDE" strokeWidth="0.0" text="*Score*" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <children>
-                        <Text fx:id="winnerRank" strokeType="OUTSIDE" strokeWidth="0.0" text="*Platzierung, falls gültig*" />
+                        <Text fx:id="winnerRank" strokeType="OUTSIDE" strokeWidth="0.0" text="*Rank if eligible*" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <children>
-                        <Text fx:id="winnerPatches" strokeType="OUTSIDE" strokeWidth="0.0" text="*Anzahl*" />
+                        <Text fx:id="winnerPatches" strokeType="OUTSIDE" strokeWidth="0.0" text="*Count*" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                      <children>
-                        <Text fx:id="winnerMoney" strokeType="OUTSIDE" strokeWidth="0.0" text="*Geld*" />
+                        <Text fx:id="winnerMoney" strokeType="OUTSIDE" strokeWidth="0.0" text="*Money*" />
                      </children>
                   </VBox>
                </children>
@@ -172,47 +164,47 @@
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="155.0" prefWidth="220.0" GridPane.rowIndex="1">
                      <children>
-                        <Label text="Punktestand:" />
+                        <Label text="Score:" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="168.0" prefWidth="220.0" GridPane.rowIndex="2">
                      <children>
-                        <Label text="Highscore-Platzierung: " />
+                        <Label text="Highscore Rank:" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="155.0" prefWidth="220.0" GridPane.rowIndex="3">
                      <children>
-                        <Label text="Anzahl abgelegter Patches:" />
+                        <Label text="Number of Patches:" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="155.0" prefWidth="220.0" GridPane.rowIndex="4">
                      <children>
-                        <Label text="Geld:" />
+                        <Label text="Money:" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                      <children>
-                        <Text fx:id="loserName" strokeType="OUTSIDE" strokeWidth="0.0" text="*Spielername / AI-Name*" />
+                        <Text fx:id="loserName" strokeType="OUTSIDE" strokeWidth="0.0" text="*Player / AI name*" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
-                        <Text fx:id="loserScore" strokeType="OUTSIDE" strokeWidth="0.0" text="*Punktestand*" />
+                        <Text fx:id="loserScore" strokeType="OUTSIDE" strokeWidth="0.0" text="*Score*" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <children>
-                        <Text fx:id="loserRank" strokeType="OUTSIDE" strokeWidth="0.0" text="*Platzierung, falls gültig*" />
+                        <Text fx:id="loserRank" strokeType="OUTSIDE" strokeWidth="0.0" text="*Rank if eligible*" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <children>
-                        <Text fx:id="loserCountPatches" strokeType="OUTSIDE" strokeWidth="0.0" text="*Anzahl*" />
+                        <Text fx:id="loserCountPatches" strokeType="OUTSIDE" strokeWidth="0.0" text="*Count*" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                      <children>
-                        <Text fx:id="loserMoney" strokeType="OUTSIDE" strokeWidth="0.0" text="*Geld*" />
+                        <Text fx:id="loserMoney" strokeType="OUTSIDE" strokeWidth="0.0" text="*Money" />
                      </children>
                   </VBox>
                </children>
