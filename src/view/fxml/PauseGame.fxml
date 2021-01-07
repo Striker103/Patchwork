@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+
+<BorderPane prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.SampleViewController">
+   <top>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Game Paused" BorderPane.alignment="CENTER" />
+   </top>
+   <center>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="Continue" mnemonicParsing="false" text="Continue" />
+            <Button fx:id="Help" mnemonicParsing="false" text="Help" />
+            <Button fx:id="Save" mnemonicParsing="false" text="Save" />
+            <Button fx:id="Highscores" mnemonicParsing="false" text="Highscores" />
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
