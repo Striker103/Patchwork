@@ -37,21 +37,23 @@ public class Score implements Comparable<Score>{
 	/**
 	 * Initializes a new Score-Object
 	 * @param value Number of points
-	 * @param date Date the score was achieved at
 	 * @param isIronman Game mode
 	 * @param opponentType Type of Opponent
 	 * @param playerName Name of the player
 	 * @throws IllegalArgumentException If invalid parameters are provided
 	 */
-	public Score(int value, LocalDateTime date, boolean isIronman, PlayerType opponentType, String playerName) {
+	public Score(int value, boolean isIronman, PlayerType opponentType, String playerName) {
 
-		CheckUtil.assertNonNull(date, opponentType, playerName);
+		CheckUtil.assertNonNull(opponentType, playerName);
 
 		if(playerName.isBlank())
-			throw new IllegalArgumentException("Player name is empty");
+			throw new IllegalArgumentException("Player name is empty.");
+
+		if(value < 0)
+			throw new IllegalArgumentException("Score cannot be less than 0.");
 
 		this.value = value;
-		this.date = date;
+		this.date = LocalDateTime.now();
 		this.isIronman = isIronman;
 		this.opponentType = opponentType;
 		this.playerName = playerName;
@@ -62,8 +64,8 @@ public class Score implements Comparable<Score>{
 	 */
 	@Override
 	public Score clone() {
-		//LocalDateTime and String are immutable
-		return new Score(value, date, isIronman, opponentType, playerName);
+		//String is immutable
+		return new Score(value, isIronman, opponentType, playerName);
 	}
 
 	/** Returns the actual score

@@ -18,23 +18,7 @@ public class ScoreTest {
      */
     @Test
     public void testConstructor() {
-        Score testScore = new Score(1, LocalDateTime.now(),false,PlayerType.AI_MEDIUM,"Peter");
-    }
-
-    /**
-     * Test constructor with no date
-     */
-    @Test (expected=IllegalArgumentException.class)
-    public void testNoDateTime() {
-        Score testScore = new Score(1, null,false,PlayerType.AI_MEDIUM,"Peter");
-    }
-
-    /**
-     * Test constructor with no wrong date (future)
-     */
-    @Test (expected=IllegalArgumentException.class)
-    public void testFutureDate() {
-        Score testScore = new Score(1, LocalDateTime.now().plusMonths(2),false,PlayerType.AI_MEDIUM,"Peter");
+        Score testScore = new Score(1,false,PlayerType.AI_MEDIUM,"Peter");
     }
 
     /**
@@ -42,7 +26,7 @@ public class ScoreTest {
      */
     @Test (expected=IllegalArgumentException.class)
     public void testNoPlayerType() {
-        Score testScore = new Score(1, LocalDateTime.now(),false,null,"Peter");
+        Score testScore = new Score(1,false,null,"Peter");
     }
 
     /**
@@ -50,7 +34,7 @@ public class ScoreTest {
      */
     @Test (expected=IllegalArgumentException.class)
     public void testNoPlayerName() {
-        Score testScore = new Score(1, LocalDateTime.now(),false,PlayerType.AI_MEDIUM,"");
+        Score testScore = new Score(1,false,PlayerType.AI_MEDIUM,"");
     }
 
     /**
@@ -58,7 +42,7 @@ public class ScoreTest {
      */
     @Test (expected=IllegalArgumentException.class)
     public void testNullPlayerName() {
-        Score testScore = new Score(1, LocalDateTime.now(),false,PlayerType.AI_MEDIUM,null);
+        Score testScore = new Score(1,false,PlayerType.AI_MEDIUM,null);
     }
 
     /**
@@ -66,7 +50,7 @@ public class ScoreTest {
      */
     @Test (expected=IllegalArgumentException.class)
     public void testNegativeScore() {
-        Score testScore = new Score(Integer.MIN_VALUE, LocalDateTime.now(),false,PlayerType.AI_MEDIUM,"Peter");
+        Score testScore = new Score(Integer.MIN_VALUE,false,PlayerType.AI_MEDIUM,"Peter");
     }
 
     /**
@@ -75,27 +59,27 @@ public class ScoreTest {
     @Test
     public void testGetScore() {
         int score = 1;
-        Score testScore = new Score(score, LocalDateTime.now(),false,PlayerType.AI_MEDIUM,"Peter");
+        Score testScore = new Score(score,false,PlayerType.AI_MEDIUM,"Peter");
         assertEquals(testScore.getValue(),score);
     }
 
-    /**
-     * Test that getDate returns the correct value
-     */
-    @Test
-    public void testGetDate() {
-        LocalDateTime date = LocalDateTime.now();
-        Score testScore = new Score(1, date,false,PlayerType.AI_MEDIUM,"Peter");
-        assertEquals(testScore.getDate(),date);
-    }
+//    /**
+//     * Test that getDate returns the correct value
+//     */
+//    @Test
+//    public void testGetDate() {
+//        LocalDateTime date = LocalDateTime.now();
+//        Score testScore = new Score(1, date,false,PlayerType.AI_MEDIUM,"Peter");
+//        assertEquals(testScore.getDate(),date);
+//    }
 
     /**
      * Test that isIronman returns the correct value
      */
     @Test
     public void testIsIronman() {
-        boolean ozzy = true;
-        Score testScore = new Score(1, LocalDateTime.now(),ozzy,PlayerType.AI_MEDIUM,"Peter");
+        boolean ozzy = true; //SHARON, where's the bloody remote!?
+        Score testScore = new Score(1,ozzy,PlayerType.AI_MEDIUM,"Peter");
         assertEquals(testScore.isIronman(),ozzy);
     }
 
@@ -105,7 +89,7 @@ public class ScoreTest {
     @Test
     public void testGetOpponentType() {
         PlayerType playerType = PlayerType.AI_MEDIUM;
-        Score testScore = new Score(1, LocalDateTime.now(),false,playerType,"Peter");
+        Score testScore = new Score(1,false,playerType,"Peter");
         assertEquals(testScore.getOpponentType(),playerType);
     }
 
@@ -114,7 +98,7 @@ public class ScoreTest {
      */
     @Test
     public void testGetPlayerName() {
-        Score testScore = new Score(1, LocalDateTime.now(),false,PlayerType.AI_MEDIUM,"Peter");
+        Score testScore = new Score(1,false,PlayerType.AI_MEDIUM,"Peter");
         assertEquals(testScore.getPlayerName(),"Peter");
     }
 
@@ -123,7 +107,7 @@ public class ScoreTest {
      */
     @Test
     public void testClone(){
-        Score testScore = new Score(1, LocalDateTime.now(),false,PlayerType.AI_MEDIUM,"Peter");
+        Score testScore = new Score(1,false,PlayerType.AI_MEDIUM,"Peter");
         assertEquals(testScore,testScore.clone());
         assertEquals(testScore.hashCode(),testScore.clone().hashCode());
         assertNotEquals(System.identityHashCode(testScore),System.identityHashCode(testScore.clone()));
@@ -134,9 +118,9 @@ public class ScoreTest {
      */
     @Test
     public void testCompareTo(){
-        Score testScoreSmall = new Score(1, LocalDateTime.now(),false,PlayerType.AI_MEDIUM,"Peter");
-        Score testScoreLarge = new Score(2, LocalDateTime.now(),false,PlayerType.AI_MEDIUM,"Peter");
-        Score testScoreLarge2= new Score(2, LocalDateTime.now(),false,PlayerType.AI_MEDIUM,"Peter");
+        Score testScoreSmall = new Score(1,false,PlayerType.AI_MEDIUM,"Peter");
+        Score testScoreLarge = new Score(2,false,PlayerType.AI_MEDIUM,"Peter");
+        Score testScoreLarge2= new Score(2,false,PlayerType.AI_MEDIUM,"Peter");
 
         assertTrue(testScoreSmall.compareTo(testScoreLarge) < 0);
         assertTrue(testScoreLarge.compareTo(testScoreSmall) > 0);
@@ -150,8 +134,8 @@ public class ScoreTest {
      */
     @Test
     public void testNotEquals(){
-        Score testScoreSmall = new Score(1, LocalDateTime.now(),false,PlayerType.AI_MEDIUM,"Peter");
-        Score testScoreLarge = new Score(2, LocalDateTime.now(),false,PlayerType.AI_MEDIUM,"Peter");
+        Score testScoreSmall = new Score(1,false,PlayerType.AI_MEDIUM,"Peter");
+        Score testScoreLarge = new Score(2,false,PlayerType.AI_MEDIUM,"Peter");
         assertNotEquals(testScoreLarge,testScoreSmall);
     }
 
