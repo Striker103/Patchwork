@@ -1,22 +1,132 @@
 package model;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
-public class Score {
+/**
+ * @author Alexandra Latys
+ * Score is an immutable object that represents a score one player achieved during one game
+ */
+public class Score implements Comparable<Score>{
 
-	private int value;
+	/**
+	 * Calculated Score
+	 */
+	private final int value;
 
-	private LocalDateTime date;
+	/**
+	 * Date the score was achieved at
+	 */
+	private final LocalDateTime date;
 
-	private boolean isIronman;
+	/**
+	 * Game mode
+	 */
+	private final boolean isIronman;
 
-	private PlayerType opponentType;
+	/**
+	 * Type of opponent
+	 */
+	private final PlayerType opponentType;
 
-	private String playerName;
+	/**
+	 * Name of the player
+	 */
+	private final String playerName;
 
-	@Override
-	public Score clone() {
-		return null;
+	/**
+	 * Initializes a new Score-Object
+	 * @param value Number of points
+	 * @param date Date the score was achieved at
+	 * @param isIronman Game mode
+	 * @param opponentType Type of Opponent
+	 * @param playerName Name of the player
+	 * @throws IllegalArgumentException If invalid parameters are provided
+	 */
+	public Score(int value, LocalDateTime date, boolean isIronman, PlayerType opponentType, String playerName) {
+
+		CheckUtil.assertNonNull(date, opponentType, playerName);
+
+		if(playerName.isBlank())
+			throw new IllegalArgumentException("Player name is empty");
+
+		this.value = value;
+		this.date = date;
+		this.isIronman = isIronman;
+		this.opponentType = opponentType;
+		this.playerName = playerName;
 	}
 
+	/** Clones the object
+	 * @return Copy of the object
+	 */
+	@Override
+	public Score clone() {
+		//LocalDateTime and String are immutable
+		return new Score(value, date, isIronman, opponentType, playerName);
+	}
+
+	/** Returns the actual score
+	 * @return number of points
+	 */
+	public int getValue() {
+		return value;
+	}
+
+	/** Returns date
+	 * @return date
+	 */
+	public LocalDateTime getDate() {
+		return date;
+	}
+
+	/** Returns the game mode
+	 * @return isIronman
+	 */
+	public boolean isIronman() {
+		return isIronman;
+	}
+
+	/** Returns type of the opponent
+	 * @return type of opponent
+	 */
+	public PlayerType getOpponentType() {
+		return opponentType;
+	}
+
+	/** Returns the player name
+	 * @return player name
+	 */
+	public String getPlayerName() {
+		return playerName;
+	}
+
+	/** Checks for equality
+	 * @param obj to compare to
+	 * @return true if the objects are equal, false otherwise
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null || getClass() != obj.getClass()) return false;
+		Score score = (Score) obj;
+		return value == score.value;
+	}
+
+	/** Generates HashCode
+	 * @return HashCode
+	 */
+	@Override
+	public int hashCode() {
+		return Objects.hash(value);
+	}
+
+	/** Compares this score to another score
+	 * @param other other score
+	 * @return {@link Comparable#compareTo(Object)}
+	 */
+	@Override
+	public int compareTo(Score other) {
+		return value - other.value;
+	}
 }
