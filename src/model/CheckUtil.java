@@ -14,7 +14,7 @@ public class CheckUtil {
         for (Object object :
                 objects) {
             if(object == null)
-                throw new IllegalStateException("No null references allowed!");
+                throw new IllegalArgumentException("No null references allowed!");
         }
     }
     public static void assertNonNegative(int... ints){
