@@ -1,6 +1,5 @@
 package model;
 
-import junit.framework.TestCase;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -166,6 +165,6 @@ public class PatchTest{
      */
     @Test
     public void testGetId() {
-        assertEquals(PATCH.getId(), ID);
+        assertEquals(PATCH.getPatchID(), ID);
     }
 }
