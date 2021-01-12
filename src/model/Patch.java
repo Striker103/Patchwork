@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Arrays;
+
 /**
  * Represents a patch that is going to be placed on players quiltboard
  * @author Yannick
@@ -18,7 +20,7 @@ public class Patch {
 	private final int buttonsCost;
 
 	/**
-	 * a matrix where true represents that the tile is present on thath block
+	 * a matrix where true represents that the tile is present on that block
 	 */
 	private final boolean[][] shape;
 
@@ -45,7 +47,8 @@ public class Patch {
 	 */
 	public Patch(int id,int buttonIncome, int buttonsCost, boolean[][] shape, int time) {
 		CheckUtil.assertNonNull(id,buttonIncome,buttonsCost,shape,time);
-		CheckUtil.assertNonNegative(id,buttonIncome,buttonsCost,time);
+		CheckUtil.assertNonNegative(buttonIncome);
+		CheckUtil.assertPositive(id,time,buttonsCost);
 
 		if(shape.length != 4)
 			throw new IllegalArgumentException("Shape has to be a 4x4 array");
@@ -55,15 +58,22 @@ public class Patch {
 				throw new IllegalArgumentException("Shape has to be a 4x4 array");
 		}
 
+
+		if(!checkShape(shape)){
+			throw new IllegalArgumentException("No shape of the patch defined");
+		}
+
 		this.id = id;
 		this.buttonIncome = buttonIncome;
 		this.buttonsCost = buttonsCost;
 		this.shape = shape;
 		this.time = time;
 	}
+
+
 	@Override
 	public Patch clone() {
-		return (this.clone());
+		return new Patch(this.id,this.buttonIncome,this.buttonsCost,this.shape.clone(),this.time);
 	}
 
 	/**
@@ -109,6 +119,30 @@ public class Patch {
 	 */
 	public int getId() {
 		return id;
+	}
+
+	/** Checks if two patches have the same id
+	 *
+	 * @param obj The potentially equal patch
+	 * @return equality of two patches
+	 */
+	@Override
+	public boolean equals(Object obj){
+		if (this == obj) return true;
+		if (obj == null || getClass() != obj.getClass()) return false;
+		Patch patch = (Patch) obj;
+		return this.id == patch.id;
+	}
+
+
+	private boolean checkShape(boolean[][] shape) {
+		boolean anyTrue = false;
+		for(boolean[] boolArr : shape){
+			for(boolean value : boolArr){
+				anyTrue = anyTrue ||value;
+			}
+		}
+		return anyTrue;
 	}
 
 }

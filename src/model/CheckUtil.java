@@ -24,4 +24,12 @@ public class CheckUtil {
             }
         }
     }
+
+    public static void assertPositive(int... ints){
+        for(int i : ints){
+            if(i<1){
+                throw new IllegalArgumentException("Only positive Integers allowed!");
+            }
+        }
+    }
 }
