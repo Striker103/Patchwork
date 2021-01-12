@@ -6,6 +6,9 @@ public class TimeBoardComponent {
 
 	private boolean hasPatch;
 
+	public TimeBoardComponent(int positionOnBoard) {
+	}
+
 	public TimeBoardComponent clone() {
 		return null;
 	}

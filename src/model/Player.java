@@ -12,9 +12,16 @@ public class Player {
 
 	private PlayerType playerType;
 
+
+	public Player(Integer boardPosition, Integer money, String name) {
+	}
+
 	@Override
 	public Player clone() {
 		return null;
 	}
 
+	public int getBoardPosition() {
+		return boardPosition;
+	}
 }
