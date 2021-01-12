@@ -24,4 +24,8 @@ public class Player {
 	public int getBoardPosition() {
 		return boardPosition;
 	}
+
+	public PlayerType getPlayerType() {
+		return playerType;
+	}
 }

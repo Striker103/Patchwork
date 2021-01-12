@@ -1,5 +1,7 @@
 package model;
 
+import java.util.List;
+
 public class Game {
 
 	private int currentGameState;
@@ -10,7 +12,7 @@ public class Game {
 
 	private int simulationSpeed;
 
-	private GameState[] gameState;
+	private List<GameState> gameState;
 
 	public Game(boolean ironman) {
 		this.ironman = ironman;
@@ -25,4 +27,11 @@ public class Game {
 		return null;
 	}
 
+	public int getCurrentGameState() {
+		return currentGameState;
+	}
+
+	public List<GameState> getGameStates() {
+		return gameState;
+	}
 }

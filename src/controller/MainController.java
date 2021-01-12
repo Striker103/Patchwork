@@ -25,4 +25,12 @@ public class MainController {
 
 	}
 
+	public boolean hasGame(){
+		return game != null;
+	}
+
+	public Game getGame(){
+		return game;
+	}
+
 }
