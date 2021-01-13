@@ -48,7 +48,7 @@ public class ScoreTest {
     /**
      * Test constructor with negative score
      */
-    @Test (expected=IllegalArgumentException.class)
+    @Test
     public void testNegativeScore() {
         Score testScore = new Score(Integer.MIN_VALUE,false,PlayerType.AI_MEDIUM,"Peter");
     }
@@ -63,15 +63,16 @@ public class ScoreTest {
         assertEquals(testScore.getValue(),score);
     }
 
-//    /**
-//     * Test that getDate returns the correct value
-//     */
-//    @Test
-//    public void testGetDate() {
-//        LocalDateTime date = LocalDateTime.now();
-//        Score testScore = new Score(1, date,false,PlayerType.AI_MEDIUM,"Peter");
-//        assertEquals(testScore.getDate(),date);
-//    }
+    /**
+     * Test setDate equals getDate
+     */
+    @Test
+    public void testGetSetDate() {
+        LocalDateTime date = LocalDateTime.now();
+        Score testScore = new Score(1,false,PlayerType.AI_MEDIUM,"Peter");
+        testScore.setDate(date);
+        assertEquals(testScore.getDate(),date);
+    }
 
     /**
      * Test that isIronman returns the correct value
@@ -113,21 +114,6 @@ public class ScoreTest {
         assertNotEquals(System.identityHashCode(testScore),System.identityHashCode(testScore.clone()));
     }
 
-//    /**
-//     * Test compareTo
-//     */
-//    @Test
-//    public void testCompareTo(){
-//        Score testScoreSmall = new Score(1,false,PlayerType.AI_MEDIUM,"Peter");
-//        Score testScoreLarge = new Score(2,false,PlayerType.AI_MEDIUM,"Peter");
-//        Score testScoreLarge2= new Score(2,false,PlayerType.AI_MEDIUM,"Peter");
-//
-//        assertTrue(testScoreSmall.compareTo(testScoreLarge) < 0);
-//        assertTrue(testScoreLarge.compareTo(testScoreSmall) > 0);
-//        assertTrue(testScoreLarge.compareTo(testScoreLarge2) == 0);
-//
-//
-//    }
 
     /**
      * Test NotEquals
@@ -135,7 +121,7 @@ public class ScoreTest {
     @Test
     public void testNotEquals(){
         Score testScoreSmall = new Score(1,false,PlayerType.AI_MEDIUM,"Peter");
-        Score testScoreLarge = new Score(2,false,PlayerType.AI_MEDIUM,"Peter");
+        Score testScoreLarge = new Score(2,false,PlayerType.AI_HARD,"Time");
         assertNotEquals(testScoreLarge,testScoreSmall);
     }
 
