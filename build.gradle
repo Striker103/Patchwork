@@ -110,7 +110,6 @@ checkstyleMain {
     source = sourceSets.main.allJava
     exclude 'application/**'
     exclude 'view/**'
-    exclude 'ai/**'
 }
 checkstyleTest {
     source = sourceSets.test.allJava
