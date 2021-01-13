@@ -40,7 +40,7 @@ public class PatchTest{
     /**
      * Tests Constructor with Income Zero
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testConstructorIncomeZero(){
         new Patch(ID, 0, BUTTONCOST, SHAPE, TIME);
     }
