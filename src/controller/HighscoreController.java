@@ -41,17 +41,17 @@ public class HighscoreController {
 
 	public void saveScores() {
 
-		if(!mainController.hasGame())
-			errorAUI.showError("No game existing.");
-
-		Player player1 = mainController.getGame().getGameStates().get(mainController.getGame().getCurrentGameState()).getPlayer1();
-		Player player2 = mainController.getGame().getGameStates().get(mainController.getGame().getCurrentGameState()).getPlayer2();
-
-		if (player1.getPlayerType() == PlayerType.HUMAN)
-			savePlayer(player1);
-
-		if (player2.getPlayerType() == PlayerType.HUMAN)
-			savePlayer(player2);
+//		if(!mainController.hasGame())
+//			errorAUI.showError("No game existing.");
+//
+//		Player player1 = mainController.getGame().getGameStates().get(mainController.getGame().getCurrentGameState()).getPlayer1();
+//		Player player2 = mainController.getGame().getGameStates().get(mainController.getGame().getCurrentGameState()).getPlayer2();
+//
+//		if (player1.getPlayerType() == PlayerType.HUMAN)
+//			savePlayer(player1);
+//
+//		if (player2.getPlayerType() == PlayerType.HUMAN)
+//			savePlayer(player2);
 
 	}
 
