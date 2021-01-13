@@ -40,7 +40,11 @@ public class Game {
 	 */
 	public Game(boolean pIronman, int pSimulationSpeed){
 		this( pIronman );
-		simulationSpeed = pSimulationSpeed;
+		if (pSimulationSpeed > 0) {
+			simulationSpeed = pSimulationSpeed;
+		} else {
+			throw new IllegalArgumentException("The simulationSpeed must to be positive value");
+		}
 	}
 
 	/**
@@ -106,6 +110,7 @@ public class Game {
 	 * @return Copy of the object
 	 */
 	@Override
-	public Game clone() { return null; }
+	public Game clone() {
+		return new Game(ironman); }
 
 }
