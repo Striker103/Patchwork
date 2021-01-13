@@ -76,7 +76,7 @@ public class HighscoreController {
 		LinkedList<Score> scores = readHighscores();
 		scores.add(score);
 
-		Collections.sort(scores);
+//		Collections.sort(scores); //TODO comparator
 
 		clearHighscores();
 		writeHighscores(scores);

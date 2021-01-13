@@ -5,19 +5,19 @@ import java.util.Objects;
 
 /**
  * @author Alexandra Latys
- * Score is an immutable object that represents a score one player achieved during one game
+ * Score is an object that represents a score one player achieved during one game
  */
-public class Score implements Comparable<Score>{
+public class Score{
 
 	/**
 	 * Calculated Score
 	 */
-	private final int value;
+	private int value;
 
 	/**
 	 * Date the score was achieved at
 	 */
-	private final LocalDateTime date;
+	private LocalDateTime date;
 
 	/**
 	 * Game mode
@@ -49,8 +49,6 @@ public class Score implements Comparable<Score>{
 		if(playerName.isBlank())
 			throw new IllegalArgumentException("Player name is empty.");
 
-		if(value < 0)
-			throw new IllegalArgumentException("Score cannot be less than 0.");
 
 		this.value = value;
 		this.date = LocalDateTime.now();
@@ -59,7 +57,8 @@ public class Score implements Comparable<Score>{
 		this.playerName = playerName;
 	}
 
-	/** Clones the object
+	/**
+	 * Clones the object
 	 * @return Copy of the object
 	 */
 	@Override
@@ -68,42 +67,64 @@ public class Score implements Comparable<Score>{
 		return new Score(value, isIronman, opponentType, playerName);
 	}
 
-	/** Returns the actual score
+	/**
+	 * Returns the actual score
 	 * @return number of points
 	 */
 	public int getValue() {
 		return value;
 	}
 
-	/** Returns date
+	/**
+	 * Returns date
 	 * @return date
 	 */
 	public LocalDateTime getDate() {
 		return date;
 	}
 
-	/** Returns the game mode
+	/**
+	 * Returns the game mode
 	 * @return isIronman
 	 */
 	public boolean isIronman() {
 		return isIronman;
 	}
 
-	/** Returns type of the opponent
+	/**
+	 * Returns type of the opponent
 	 * @return type of opponent
 	 */
 	public PlayerType getOpponentType() {
 		return opponentType;
 	}
 
-	/** Returns the player name
+	/**
+	 * Returns the player name
 	 * @return player name
 	 */
 	public String getPlayerName() {
 		return playerName;
 	}
 
-	/** Checks for equality
+	/**
+	 * Set score value
+	 * @param value value
+	 */
+	public void setValue(int value) {
+		this.value = value;
+	}
+
+	/**
+	 * Set score date
+	 * @param date date
+	 */
+	public void setDate(LocalDateTime date) {
+		this.date = date;
+	}
+
+	/**
+	 * Checks for equality
 	 * @param obj to compare to
 	 * @return true if the objects are equal, false otherwise
 	 */
@@ -112,23 +133,21 @@ public class Score implements Comparable<Score>{
 		if (this == obj) return true;
 		if (obj == null || getClass() != obj.getClass()) return false;
 		Score score = (Score) obj;
-		return value == score.value;
+		return value == score.value &&
+				isIronman == score.isIronman &&
+				Objects.equals(date, score.date) &&
+				opponentType == score.opponentType &&
+				playerName.equals(score.playerName);
 	}
 
-	/** Generates HashCode
+
+	/**
+	 * Generates HashCode
 	 * @return HashCode
 	 */
 	@Override
 	public int hashCode() {
-		return Objects.hash(value);
+		return Objects.hash(value, date, isIronman, opponentType, playerName);
 	}
 
-	/** Compares this score to another score
-	 * @param other other score
-	 * @return {@link Comparable#compareTo(Object)}
-	 */
-	@Override
-	public int compareTo(Score other) {
-		return value - other.value;
-	}
 }

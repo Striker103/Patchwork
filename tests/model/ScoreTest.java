@@ -113,21 +113,21 @@ public class ScoreTest {
         assertNotEquals(System.identityHashCode(testScore),System.identityHashCode(testScore.clone()));
     }
 
-    /**
-     * Test compareTo
-     */
-    @Test
-    public void testCompareTo(){
-        Score testScoreSmall = new Score(1,false,PlayerType.AI_MEDIUM,"Peter");
-        Score testScoreLarge = new Score(2,false,PlayerType.AI_MEDIUM,"Peter");
-        Score testScoreLarge2= new Score(2,false,PlayerType.AI_MEDIUM,"Peter");
-
-        assertTrue(testScoreSmall.compareTo(testScoreLarge) < 0);
-        assertTrue(testScoreLarge.compareTo(testScoreSmall) > 0);
-        assertTrue(testScoreLarge.compareTo(testScoreLarge2) == 0);
-
-
-    }
+//    /**
+//     * Test compareTo
+//     */
+//    @Test
+//    public void testCompareTo(){
+//        Score testScoreSmall = new Score(1,false,PlayerType.AI_MEDIUM,"Peter");
+//        Score testScoreLarge = new Score(2,false,PlayerType.AI_MEDIUM,"Peter");
+//        Score testScoreLarge2= new Score(2,false,PlayerType.AI_MEDIUM,"Peter");
+//
+//        assertTrue(testScoreSmall.compareTo(testScoreLarge) < 0);
+//        assertTrue(testScoreLarge.compareTo(testScoreSmall) > 0);
+//        assertTrue(testScoreLarge.compareTo(testScoreLarge2) == 0);
+//
+//
+//    }
 
     /**
      * Test NotEquals
