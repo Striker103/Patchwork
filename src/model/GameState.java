@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,7 +21,7 @@ public class GameState{
 	/**
 	 * The whole List represents the timeBoard. Each TimeBoardComponent holds the information if the field has a button or a 1x1patch on it
 	 */
-	private List<TimeBoardComponent> timeBoard;
+	private final TimeBoardComponent[] timeBoard;
 
 	/**
 	 * The List with all patches which are not taken by players yet
@@ -51,6 +52,9 @@ public class GameState{
 	public GameState(Tuple<Integer, Integer> boardPositions, Tuple<Integer, Integer> playerMoney, Tuple<String, String> playerNames, List<Patch> patches, boolean specialTileAvailable)
 	{
 		CheckUtil.assertNonNull(playerNames, boardPositions, playerMoney, patches, specialTileAvailable);
+		CheckUtil.assertNonNull(playerNames.getFirst(), playerNames.getSecond());
+		CheckUtil.assertNonNull(boardPositions.getFirst(), boardPositions.getSecond());
+		CheckUtil.assertNonNull(playerMoney.getFirst(), playerMoney.getSecond());
 
 		if(playerNames.getFirst().isBlank() || playerNames.getSecond().isBlank())
 			throw new IllegalArgumentException("At least one player name is missing");
@@ -60,10 +64,10 @@ public class GameState{
 		player1 = new Player(boardPositions.getFirst(), playerMoney.getFirst(), playerNames.getFirst());
 		player2 = new Player(boardPositions.getSecond(), playerMoney.getSecond(), playerNames.getSecond());
 
+		timeBoard = new TimeBoardComponent[53];
 		for(int i = 0; i < 53; i++)
 		{
-			TimeBoardComponent timeBoardComponent = new TimeBoardComponent(i);
-			timeBoard.add(timeBoardComponent);
+			timeBoard[i] = new TimeBoardComponent(i);
 		}
 		this.patches = patches;
 	}
@@ -71,18 +75,23 @@ public class GameState{
 	/**
 	 * Constructor for clones
 	 *
-	 * @param player1 				first player
-	 * @param player2				second player
-	 * @param patches				list of patches
-	 * @param specialTileAvailable	true if the bonus tile is still available
-	 * @param timeBoard 			list of TimeBoardComponents
+	 * @param gameState		The GameState to copy
 	 */
-	public GameState(Player player1, Player player2, List<Patch> patches, boolean specialTileAvailable, List<TimeBoardComponent> timeBoard) {
-		this.player1 = player1;
-		this.player2 = player2;
-		this.patches = patches;
-		this.specialTileAvailable = specialTileAvailable;
-		this.timeBoard = timeBoard;
+	public GameState(GameState gameState) {
+		player1 = new Player(gameState.player1);
+		player2 = new Player(gameState.player2);
+
+		patches = new ArrayList<>(gameState.patches);
+
+		specialTileAvailable = gameState.specialTileAvailable;
+
+		timeBoard = new TimeBoardComponent[53];
+		for(int i = 0; i < gameState.timeBoard.length ; i++)
+		{
+			timeBoard[i] = gameState.timeBoard[i];
+		}
+
+		logEntry = gameState.getLogEntry();
 	}
 
 	/**
@@ -90,7 +99,10 @@ public class GameState{
 	 * @return A copy of the GameState object
 	 */
 	@Override
-	public GameState clone() { return new GameState(player1, player2, patches, specialTileAvailable, timeBoard); }
+	public GameState clone() {
+		//TODO
+		return null;
+	}
 
 	/**
 	 * Returns the next player
@@ -149,7 +161,7 @@ public class GameState{
 	 * Returns the list which represents the TimeBoard
 	 * @return the Time Board
 	 */
-	public List<TimeBoardComponent> getTimeBoard() { return timeBoard; }
+	public TimeBoardComponent[] getTimeBoard() { return timeBoard; }
 
 	/**
 	 * Returns all Patches which are still available
