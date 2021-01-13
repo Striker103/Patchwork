@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Dennis Querndt
@@ -69,29 +70,32 @@ public class GameState{
 		{
 			timeBoard[i] = new TimeBoardComponent(i);
 		}
+		patches = new ArrayList<>();
 		this.patches = patches;
 	}
 
 	/**
 	 * Constructor for clones
 	 *
-	 * @param gameState		The GameState to copy
+	 * @param specialTileAvailable	true if the bonus tile is still available
+	 * @param logEntry				change at move
+	 * @param timeBoard				timeBoard Array
+	 * @param patches				list of patches
+	 * @param player1				first player
+	 * @param player2				second player
 	 */
-	public GameState(GameState gameState) {
-		player1 = new Player(gameState.player1);
-		player2 = new Player(gameState.player2);
-
-		patches = new ArrayList<>(gameState.patches);
-
-		specialTileAvailable = gameState.specialTileAvailable;
-
-		timeBoard = new TimeBoardComponent[53];
-		for(int i = 0; i < gameState.timeBoard.length ; i++)
-		{
-			timeBoard[i] = gameState.timeBoard[i];
+	private GameState(boolean specialTileAvailable, String logEntry, TimeBoardComponent[] timeBoard, List<Patch> patches, Player player1, Player player2) {
+		this.specialTileAvailable = specialTileAvailable;
+		this.logEntry = logEntry;
+		TimeBoardComponent[] arr = new TimeBoardComponent[timeBoard.length];
+		for (int i = 0; i < timeBoard.length; i++) {
+			arr[i] = timeBoard[i].clone();
 		}
+		this.timeBoard = arr;
 
-		logEntry = gameState.getLogEntry();
+		this.patches = patches.stream().map(Patch::clone).collect(Collectors.toList());
+		this.player1 = player1.clone();
+		this.player2 = player2.clone();
 	}
 
 	/**
@@ -100,31 +104,7 @@ public class GameState{
 	 */
 	@Override
 	public GameState clone() {
-		//TODO
-		return null;
-	}
-
-	/**
-	 * Returns the next player
-	 * @return next player
-	 */
-	public Player getCurrentPlayer()
-	{
-		int positionOfFirstPlayer = player1.getBoardPosition();
-		int positionOfSecondPlayer = player2.getBoardPosition();
-
-		if(positionOfFirstPlayer < positionOfSecondPlayer || positionOfFirstPlayer == 0)
-		{
-			return player1;
-		}
-		else if(positionOfFirstPlayer > positionOfSecondPlayer)
-		{
-			return player2;
-		}
-		else
-		{
-			return null;//TODO If both time tokens are on the same space, the player whose token is on top goes first
-		}
+		return new GameState(specialTileAvailable, logEntry, timeBoard, patches, player1, player2);
 	}
 
 	/**

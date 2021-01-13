@@ -18,8 +18,6 @@ public class Player {
 	public Player(Integer boardPosition, Integer money, String name) {
 	}
 
-	public Player(Player player) {
-	}
 
 	@Override
 	public Player clone() {
