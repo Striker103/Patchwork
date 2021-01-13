@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Abdullah Ourfali
  * Represents the Game
@@ -28,14 +31,28 @@ public class Game {
 	/**
 	 * All states of the game
 	 */
-	private GameState[] gameState;
+	private List<GameState> gameStates;
 
 	/**
-	 *Initializes a new Game
-	 * @param ironman the mode of the new game
+	 * Constructor for a new Game Object with given speed of simulation
+	 * @param pIronman the Game mode
+	 * @param pSimulationSpeed the speed of the simulation
 	 */
-	public Game(boolean ironman) {
-		this.ironman = ironman;
+	public Game(boolean pIronman, int pSimulationSpeed){
+		this( pIronman );
+		simulationSpeed = pSimulationSpeed;
+	}
+
+	/**
+	 * Constructor for a new Game Object
+	 * @param pIronman the Game mode
+	 */
+	public Game(boolean pIronman) {
+		this.currentGameState = 0;
+		this.highscoreReachable = false;
+		this.simulationSpeed = 0;
+		this.gameStates = new ArrayList<GameState>();
+		ironman = pIronman;
 	}
 
 	/**
@@ -74,15 +91,14 @@ public class Game {
 	 * Gets all states of the game
 	 * @return all game states
 	 */
-	public GameState[] getGameState(){ return gameState; }
+	public List<GameState> getGameStates(){ return gameStates; }
 
 	/**
 	 * Adds the state in parameter at last index
 	 * @param gameState the new state
 	 */
 	public void addGameState(GameState gameState) {
-		int i = this.gameState.length + 1;
-		this.gameState[i] = gameState;
+		gameStates.add(gameState);
 	}
 
 	/**
@@ -90,13 +106,6 @@ public class Game {
 	 * @return Copy of the object
 	 */
 	@Override
-	public Game clone() {
-		Game game;
-		try { return game = (Game)super.clone(); }
-		catch (CloneNotSupportedException e) {
-			System.out.println (" Cloning not allowed. " );
-			return null;
-		}
-	}
+	public Game clone() { return null; }
 
 }
