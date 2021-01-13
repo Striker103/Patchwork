@@ -38,6 +38,11 @@ public class HighscoreController {
 	}
 
 
+	public void updateScore(Player player){
+
+	}
+
+
 
 	public void saveScores() {
 
