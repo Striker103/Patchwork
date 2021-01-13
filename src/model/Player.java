@@ -12,6 +12,8 @@ public class Player {
 
 	private PlayerType playerType;
 
+	private Score score;
+
 
 	public Player(Integer boardPosition, Integer money, String name) {
 	}
