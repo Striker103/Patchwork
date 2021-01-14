@@ -1,15 +1,15 @@
 package model;
 
-import junit.framework.TestCase;
+
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import static org.junit.Assert.*;
 /**
  * @author Maya Samha
  */
-public class QuiltBoardTest extends TestCase {
+public class QuiltBoardTest{
 
     QuiltBoard quiltBoard;
 
@@ -26,7 +26,6 @@ public class QuiltBoardTest extends TestCase {
     private final Patch PATCH = new Patch(ID, INCOME, BUTTONCOST, SHAPE, TIME);
 
     public void setUp() throws Exception {
-        super.setUp();
         quiltBoard = new QuiltBoard();
 
     }
