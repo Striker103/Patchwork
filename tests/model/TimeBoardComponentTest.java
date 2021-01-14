@@ -70,7 +70,7 @@ public class TimeBoardComponentTest extends TestCase {
         component.setHasButton(true);
         assertTrue(component.hasButton());
         component.setHasButton(false);
-        assertTrue(component.hasButton());
+        assertFalse(component.hasButton());
     }
 
     /**
