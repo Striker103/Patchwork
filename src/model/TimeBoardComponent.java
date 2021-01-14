@@ -1,5 +1,9 @@
 package model;
 
+
+/**
+ * @author Maya Samha
+ */
 public class TimeBoardComponent {
 
 	/**
@@ -79,13 +83,17 @@ public class TimeBoardComponent {
 		hasPatch = patchAvailable;
 	}
 
-	/*
-	 * Checks if 2 time board components are the same
-	 * @param timeBoardComponent the second time board component
-	 * @return true if the 2 components are the same
-
-	public boolean equals(TimeBoardComponent timeBoardComponent){
-		return this.POSITION == timeBoardComponent.POSITION;
+	/**
+	 * Checks the equality of 2 TimeBoardComponent objects
+	 *
+	 * @param obj the other object
+	 * @return true if the 2 components have the same position
+	 */
+	@Override
+	public boolean equals(Object obj){
+		if(this == obj) return true;
+		if(obj == null || getClass() != obj.getClass()) return false;
+		TimeBoardComponent tbc = (TimeBoardComponent) obj;
+		return this.POSITION == tbc.POSITION;
 	}
-	*/
 }
