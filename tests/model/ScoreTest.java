@@ -9,6 +9,7 @@ import static org.junit.Assert.*;
 
 /**
  * Tests Score
+ * @author Yannick
  */
 public class ScoreTest {
 
