@@ -43,9 +43,9 @@ public class Player {
 		if(name.isBlank()){
 			throw new IllegalArgumentException("Player name is empty.");
 		}
-		boardPosition.this=boardPosition;
-		money.this=money;
-		name.this=name;
+		this.boardPosition=boardPosition;
+		this.money=money;
+		this.name=name;
 
 	}
 
