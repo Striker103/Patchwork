@@ -49,7 +49,10 @@ public class Player {
 
 	}
 
-
+	/**
+	 * Clones the object
+	 * @return Copy of the object
+	 */
 	@Override
 	public Player clone() {
 		return new Player(boardPosition, money, name);
@@ -57,7 +60,7 @@ public class Player {
 
 	/**
 	 * Returns the BoardPosition
-	 * @return
+	 * @return boardPosition
 	 */
 	public int getBoardPosition() {
 		return boardPosition;
@@ -65,7 +68,7 @@ public class Player {
 
 	/**
 	 * Returns the PlayerType
-	 * @return
+	 * @return PlayerType
 	 */
 	public PlayerType getPlayerType() {
 		return playerType;
