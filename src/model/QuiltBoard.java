@@ -1,7 +1,9 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class QuiltBoard {
 
@@ -24,18 +26,17 @@ public class QuiltBoard {
 		patches = new ArrayList<Patch>();
 	}
 
-
 	/**
 	 * Clones the quilt board
 	 * @return A copy of the quilt board
 	 */
 	@Override
 	public QuiltBoard clone() {
-		QuiltBoard clonedBoard = new QuiltBoard();
-		clonedBoard.setPatches(this.patches);
-		return clonedBoard;
+		QuiltBoard cloneBoard = new QuiltBoard();
+		cloneBoard.setPatches(this.patches);
+		cloneBoard.patchBoard = this.patchBoard;
+		return cloneBoard;
 	}
-
 
 	/**
 	 * Adds a new patch onto the quilt board
@@ -60,4 +61,27 @@ public class QuiltBoard {
 	public void setPatches(List<Patch> patchList){
 		this.patches = patchList;
 	}
+
+	/**
+	 * Getter for the player's patch board
+	 * @return the patch board
+	 */
+	public int[][] getPatchBoard(){
+		return this.patchBoard;
+	}
+
+	/**
+	 * Compares 2 QuiltBoard objects and returns if they are equal
+	 * @param obj the other object
+	 * @return true if the 2 objects are equal
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null || getClass() != obj.getClass()) return false;
+		QuiltBoard that = (QuiltBoard) obj;
+		return Arrays.equals(patchBoard, that.patchBoard) &&
+				Objects.equals(patches, that.patches);
+	}
+
 }
