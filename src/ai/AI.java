@@ -5,6 +5,6 @@ import model.GameState;
 
 public abstract class AI {
 
-	public abstract GameState calculateTurn();
+	public abstract GameState calculateTurn(GameState actualState);
 
 }
