@@ -9,7 +9,7 @@ public class Patch {
 	/**
 	 * X*X Patches
 	 */
-	private static final int MAXSIZEFORDIMENSION = 4;
+	private static final int MAXSIZEFORDIMENSION = 5;
 	/**
 	 * represents the income the player gets when moving over a button
 	 */
@@ -41,7 +41,7 @@ public class Patch {
 	 * @param patchID           number to identify the patch
 	 * @param buttonIncome the income provided
 	 * @param buttonsCost  the price to pay for the tile
-	 * @param shape        the shape of the tile as a 4x4 array
+	 * @param shape        the shape of the tile as a 5x5 array
 	 * @param time         steps on the timeboard
 	 *
 	 * @throws IllegalArgumentException when there are null references or non natural numbers
@@ -52,12 +52,12 @@ public class Patch {
 		CheckUtil.assertPositive(patchID,time);
 
 		if(shape.length != MAXSIZEFORDIMENSION) {
-			throw new IllegalArgumentException("Shape has to be a 4x4 array");
+			throw new IllegalArgumentException("Shape has to be a 5x5 array");
 		}
 
 		for(boolean[] arr : shape){
 			if(arr.length != MAXSIZEFORDIMENSION)
-				throw new IllegalArgumentException("Shape has to be a 4x4 array");
+				throw new IllegalArgumentException("Shape has to be a 5x5 array");
 		}
 
 
