@@ -57,7 +57,7 @@ public class GameStateTest {
     @Test
     public void testChangePatchAfterwards(){
         boolean[][] shape = {{true, true, true, true},{true, true, true, true},{true, true, true, true},{true, true, true, true}};
-        patches.add(new Patch(12, 1, 1, shape, 0));
+        patches.add(new Patch(12, 1, 1, shape, 1));
         assertNotEquals(gameState.getPatches(), patches);
     }
 
