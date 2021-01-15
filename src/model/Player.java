@@ -73,4 +73,20 @@ public class Player {
 	public PlayerType getPlayerType() {
 		return playerType;
 	}
+
+	public int getMoney(){
+		return money;
+	}
+
+	public String getName(){
+		return name;
+	}
+
+	public QuiltBoard getQuiltBoard(){
+		return quiltBoard;
+	}
+
+	public Score getScore(){
+		return score;
+	}
 }

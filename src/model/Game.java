@@ -71,7 +71,7 @@ public class Game {
 	 * Gets the reachabled highscore
 	 * @return the reachabled highscore
 	 */
-	public boolean getHighscoreReachable(){
+	public boolean IsHighscoreReachable(){
 		return highscoreReachable;
 	}
 
@@ -79,7 +79,7 @@ public class Game {
 	 * Gets the game mode
 	 * @return the ironman mode
 	 */
-	public boolean getIronman(){
+	public boolean IsIronman(){
 		return ironman;
 	}
 
