@@ -12,10 +12,11 @@ public class PatchTest{
     private final int ID = 1;
     private final int INCOME = 2;
     private final int BUTTONCOST = 5;
-    private final boolean[][] SHAPE = new boolean[][]{  {true, true, false, false},
-                                                        {true, true, false, false},
-                                                        {false, false, false, false},
-                                                        {false, false, false, false}};
+    private final boolean[][] SHAPE = new boolean[][]{  {true, true, false, false, false},
+                                                        {true, true, false, false, false},
+                                                        {false, false, false, false, false},
+                                                        {false, false, false, false, false},
+                                                        {false, false, false, false, false}};
     private final int TIME = 5;
 
     private final Patch PATCH = new Patch(ID, INCOME, BUTTONCOST, SHAPE, TIME);
@@ -93,10 +94,11 @@ public class PatchTest{
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorShapeInvalid(){
 
-        boolean[][] invalidShape = new boolean[][]{  {false, false, false, false},
-                {false, false, false, false},
-                {false, false, false, false},
-                {false, false, false, false}};
+        boolean[][] invalidShape = new boolean[][]{  {false, false, false, false, false},
+                {false, false, false, false, false},
+                {false, false, false, false, false},
+                {false, false, false, false, false},
+                {false, false, false, false, false}};
         new Patch(ID, INCOME, BUTTONCOST, invalidShape, TIME);
     }
 
