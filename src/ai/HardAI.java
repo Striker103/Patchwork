@@ -23,19 +23,61 @@ public class HardAI extends AI {
     }
 
     /**
-     * Calculates the best fitting place on the QuiltBoard and the patch
+     * Calculates the best fitting place on the QuiltBoard and the given patch
      *
      * @param actualBoard the Board on which the patch should be applied
      * @param patch the patch which should be placed
-     * @return a Tuple of the new QuiltBoard and a Happiness-value ranging from 0 to 1 (inclusive) higher = better
+     * @return a Tuple of the new QuiltBoard and a Happiness-value ranging from 0 to 1 (inclusive) higher = better or null, if there is no placement
      */
-    private Tuple<QuiltBoard, Double> placePatch(QuiltBoard actualBoard, Patch patch){
-        return new Tuple<>(actualBoard, 0.0);
+    private static Tuple<QuiltBoard, Double> placePatch(QuiltBoard actualBoard, Patch patch){
+        int filledSpots = AIUtil.filledPlaces(actualBoard.getPatchBoard()) + AIUtil.filledPlaces(patch.getShape());
+        Tuple<QuiltBoard, Double> result = generateAllPossiblePatches(patch).parallelStream() //Generate Patches and parallelize
+                .filter(patchPosition -> AIUtil.isPossible(actualBoard, patchPosition)) //Filter all places which are not valid
+                .map(place -> {QuiltBoard copy = actualBoard.clone();
+                    copy.addPatch(patch);
+                    return new Tuple<QuiltBoard, Double>(copy, evaluateBoard(copy, filledSpots));}) //map the valid places onto the quiltboard and evaluate the happiness
+                .filter(tuple -> tuple.getSecond()>0.0) //Filter for really bad Placements
+                .max(Comparator.comparingDouble(Tuple::getSecond)) //Search maximum of happiness eg. best placement
+                .orElse(null); //If there is no placement, return null
+        return result;
     }
 
-    private static Collection<boolean[][]> generateAllPossiblePatches(Patch patch){
+    /**
+     * Evaluates a QuiltBoard and gives it a value, the higher, the better
+     * @param board Quiltboard which should be evaluated
+     * @param filledSpots an Integer on how many places on the board are already filled
+     * @return a double value stating the value of this board
+     */
+    private static Double evaluateBoard(QuiltBoard board, int filledSpots) {
+        if(filledSpots>=81) return Double.MAX_VALUE;
+        int[][] places = board.getPatchBoard();
+        double circumferenceOuter=18; //Value for empty board
+        for (int col = 0; col < places[0].length; col++) { //Subtract one for each side which is covered with an patch
+            circumferenceOuter-= (places[0][col]!=0) ? 1 : 0;
+            circumferenceOuter-= (places[col][0]!=0) ? 1 : 0;
+            circumferenceOuter-= (places[8][col]!=0) ? 1 : 0;
+            circumferenceOuter-= (places[col][8]!=0) ? 1 : 0; // Yes, the edges more than one time, because they also have more than one side
+        }
+        double circumferenceInner =0;
+        for (int row = 0; row < places.length; row++) {
+            for (int col = 0; col < places[row].length ; col++) {
+                circumferenceInner+= (places[row][col]!=0 ^ (row+1>=9||(places[row+1][col]!=0))) ?1:0;
+                circumferenceInner+= (places[row][col]!=0 ^ (col+1>=9||(places[row][col+1]!=0))) ?1:0;
+            }
+        }
+        double intermediate = 4/(circumferenceInner+circumferenceOuter);
+        double result = 1-(circumferenceInner/filledSpots);
+        return result;
+    }
+
+    /**
+     * Generates all possible locations on which a patch could be laid, including mirroring and rotating
+     * @param patch patch for which all locations are searched
+     * @return a LinkedHashSet containing all possible positions
+     */
+    private static LinkedHashSet<boolean[][]> generateAllPossiblePatches(Patch patch){
         boolean[][] shape = patch.getShape();
-        Set<boolean[][]> result = new HashSet<>();
+        LinkedHashSet<boolean[][]> result = new LinkedHashSet<>();
         for(int side =0; side<2; side++){
             for (int degree = 0; degree < 4; degree++) {
                 boolean[][] trimmed = trimShape(shape);
@@ -45,7 +87,6 @@ public class HardAI extends AI {
                         AIUtil.insert(possiblePlace, trimmed, rows, cols);
                         result.add(possiblePlace);
                     }
-
                 }
                 AIUtil.rotate(shape);
             }
@@ -54,6 +95,11 @@ public class HardAI extends AI {
         return result;
     }
 
+    /**
+     * Trims falsevalued columns and falsevalued rows from an connected component matrix
+     * @param shape the matrix to be trimmed. This matrix wont be altered
+     * @return a new trimmed matrix.
+     */
     private static boolean[][] trimShape(boolean[][] shape){
         Boolean[] emptyRows = new Boolean[shape.length];
         Boolean[] emptyColumns = new Boolean[shape[0].length];
