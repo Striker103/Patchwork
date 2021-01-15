@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
+import static model.PlayerType.HUMAN;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
@@ -13,7 +14,7 @@ import static org.junit.Assert.assertNotEquals;
  */
 public class GameStateTest {
 
-    Tuple<String, String> playerNames;
+    Tuple<Tuple<String, PlayerType>, Tuple<String, PlayerType>> playerNames;
     Tuple<Integer, Integer> validPositions, invalidPositions;
     Tuple<Integer, Integer> validMoney, invalidMoney;
     ArrayList<Patch> patches;
@@ -25,16 +26,19 @@ public class GameStateTest {
      */
     @Before
     public void initialize(){
-        playerNames = new Tuple<>("Alice", "Bob");
+        Tuple<String, PlayerType> playerOne = new Tuple<>("Alice", HUMAN);
+        Tuple<String, PlayerType> playerTwo = new Tuple<>("Bob", HUMAN);
+        playerNames = new Tuple<>(playerOne, playerTwo);
         validPositions = new Tuple<>(1,2);
         invalidPositions = new Tuple<>(-1,9999);
         validMoney = new Tuple<>(12,1000000002);
         invalidMoney = new Tuple<>(-12, -0);
         patches = new ArrayList<>();
-        boolean[][] shape = new boolean[][]{  {true, true, false, false},
-                {true, true, false, false},
-                {false, false, false, false},
-                {false, false, false, false}};
+        boolean[][] shape = new boolean[][]{  {true, true, false, false, false},
+                {true, true, false, false, false},
+                {false, false, false, false, false},
+                {false, false, false, false, false},
+                {false, false, false, false, false}};
 
         Patch patch = new Patch(1, 2, 5, shape, 2);
         patches.add(patch);
@@ -56,7 +60,7 @@ public class GameStateTest {
      */
     @Test
     public void testChangePatchAfterwards(){
-        boolean[][] shape = {{true, true, true, true},{true, true, true, true},{true, true, true, true},{true, true, true, true}};
+        boolean[][] shape = {{true, true, true, true, true},{true, true, true, true, true},{true, true, true, true, true},{true, true, true, true, true},{true, true, true, true, true}};
         patches.add(new Patch(12, 1, 1, shape, 1));
         assertNotEquals(gameState.getPatches(), patches);
     }
@@ -96,7 +100,10 @@ public class GameStateTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testNameBlank(){
-        new GameState(validPositions, validMoney, new Tuple<>("", ""), patches, false);
+        Tuple<String, PlayerType> playerOne = new Tuple<>("", HUMAN);
+        Tuple<String, PlayerType> playerTwo = new Tuple<>("", HUMAN);
+        playerNames = new Tuple<>(playerOne, playerTwo);
+        new GameState(validPositions, validMoney, playerNames, patches, false);
     }
 
     /**
