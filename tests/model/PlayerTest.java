@@ -13,10 +13,9 @@ public class PlayerTest {
     {
         SCORE = new Score(5, true, PlayerType.HUMAN, "Ad");
     }
-    private final Player PLAYER;
-    {
-        PLAYER = new Player(BOARDPOSIZION, MONEY, NAME, PlayerType.HUMAN);
-    }
+    private final Player PLAYER = new Player(BOARDPOSIZION, MONEY, NAME, PlayerType.AI_MEDIUM);
+
+
 
 
     @Test
@@ -29,22 +28,26 @@ public class PlayerTest {
     }
 
     @Test
-    public void getPlayerType() {
+    public void testGetPlayerType() {
+        assertEquals(PLAYER.getPlayerType() ,PlayerType.HUMAN);
     }
 
     @Test
-    public void getMoney() {
+    public void testGetMoney() {
+        assertEquals(PLAYER.getMoney(), MONEY);
     }
 
     @Test
-    public void getName() {
+    public void testGetName() {
+        assertEquals(PLAYER.getName(),NAME);
     }
 
     @Test
-    public void getQuiltBoard() {
+    public void testGetQuiltBoard() {
     }
 
     @Test
-    public void getScore() {
+    public void testGetScore() {
+        assertEquals(Pla);
     }
 }
