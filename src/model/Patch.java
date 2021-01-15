@@ -48,8 +48,8 @@ public class Patch {
 	 */
 	public Patch(int patchID, int buttonIncome, int buttonsCost, boolean[][] shape, int time) {
 		CheckUtil.assertNonNull(patchID,buttonIncome,buttonsCost,shape,time);
-		CheckUtil.assertNonNegative(buttonIncome);
-		CheckUtil.assertPositive(patchID,time,buttonsCost);
+		CheckUtil.assertNonNegative(buttonIncome,buttonsCost);
+		CheckUtil.assertPositive(patchID,time);
 
 		if(shape.length != MAXSIZEFORDIMENSION) {
 			throw new IllegalArgumentException("Shape has to be a 4x4 array");
