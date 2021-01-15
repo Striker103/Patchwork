@@ -50,20 +50,24 @@ public class GameState{
 	 *
 	 * @throws IllegalArgumentException when player name is empty
 	 */
-	public GameState(Tuple<Integer, Integer> boardPositions, Tuple<Integer, Integer> playerMoney, Tuple<String, String> playerNames, List<Patch> patches, boolean specialTileAvailable)
+	public GameState(Tuple<Integer, Integer> boardPositions, Tuple<Integer, Integer> playerMoney, Tuple<Tuple<String, PlayerType>, Tuple<String, PlayerType>> playerNames, List<Patch> patches, boolean specialTileAvailable)
 	{
 		CheckUtil.assertNonNull(playerNames, boardPositions, playerMoney, patches, specialTileAvailable);
 		CheckUtil.assertNonNull(playerNames.getFirst(), playerNames.getSecond());
 		CheckUtil.assertNonNull(boardPositions.getFirst(), boardPositions.getSecond());
 		CheckUtil.assertNonNull(playerMoney.getFirst(), playerMoney.getSecond());
 
-		if(playerNames.getFirst().isBlank() || playerNames.getSecond().isBlank())
+		Tuple<String, PlayerType> firstPlayerNameAndType = playerNames.getFirst();
+		Tuple<String, PlayerType> secondPlayerNameAndType = playerNames.getSecond();
+
+		if(firstPlayerNameAndType.getFirst().isBlank() || secondPlayerNameAndType.getFirst().isBlank())
 			throw new IllegalArgumentException("At least one player name is missing");
 
 		this.specialTileAvailable = specialTileAvailable;
 
-		player1 = new Player(boardPositions.getFirst(), playerMoney.getFirst(), playerNames.getFirst());
-		player2 = new Player(boardPositions.getSecond(), playerMoney.getSecond(), playerNames.getSecond());
+
+		player1 = new Player(boardPositions.getFirst(), playerMoney.getFirst(), firstPlayerNameAndType.getFirst(), firstPlayerNameAndType.getSecond());
+		player2 = new Player(boardPositions.getSecond(), playerMoney.getSecond(), secondPlayerNameAndType.getFirst(), secondPlayerNameAndType.getSecond());
 
 		timeBoard = new TimeBoardComponent[53];
 		for(int i = 0; i < 53; i++)
