@@ -7,14 +7,16 @@ import static org.junit.Assert.*;
 public class PlayerTest {
     private final int BOARDPOSIZION = 1;
     private final int MONEY = 1;
-    private final String NAME = "tPlayer";
+    private final String NAME = "Ad";
     private final QuiltBoard QUILTBOARD = new QuiltBoard();
     private final Score SCORE;
     {
         SCORE = new Score(5, true, PlayerType.HUMAN, "Ad");
     }
-    //private final Player PLAYER = new Player()
-
+    private final Player PLAYER;
+    {
+        PLAYER = new Player(BOARDPOSIZION, MONEY, NAME, PlayerType.HUMAN);
+    }
 
 
     @Test
@@ -22,8 +24,8 @@ public class PlayerTest {
     }
 
     @Test
-    public void getBoardPosition() {
-
+    public void testGetBoardPosition() {
+        assertEquals(PLAYER.getBoardPosition(),BOARDPOSIZION);
     }
 
     @Test

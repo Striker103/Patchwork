@@ -35,15 +35,10 @@ public class Player {
 	 * @param boardPosition position on the TimeBoard
 	 * @param money number of buttons
 	 * @param name name of the player
-	 */
-	/**
-	 *
-	 * @param boardPosition
-	 * @param money
-	 * @param name
 	 * @param playerType
 	 */
-	public Player(int boardPosition, int money, String name, PlayerType playerType ) {
+
+	public Player( int boardPosition, int money, String name, PlayerType playerType ) {
 		CheckUtil.assertNonNull(name);
 		CheckUtil.assertNonNegative(money, boardPosition);
 
