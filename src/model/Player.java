@@ -36,7 +36,14 @@ public class Player {
 	 * @param money number of buttons
 	 * @param name name of the player
 	 */
-	public Player(Integer boardPosition, Integer money, String name) {
+	/**
+	 *
+	 * @param boardPosition
+	 * @param money
+	 * @param name
+	 * @param playerType
+	 */
+	public Player(int boardPosition, int money, String name, PlayerType playerType ) {
 		CheckUtil.assertNonNull(name);
 		CheckUtil.assertNonNegative(money, boardPosition);
 
@@ -46,6 +53,7 @@ public class Player {
 		this.boardPosition=boardPosition;
 		this.money=money;
 		this.name=name;
+		this.playerType = playerType;
 
 	}
 
@@ -55,7 +63,7 @@ public class Player {
 	 */
 	@Override
 	public Player clone() {
-		return new Player(boardPosition, money, name);
+		return new Player(boardPosition, money, name, playerType);
 	}
 
 	/**
