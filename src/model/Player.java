@@ -35,7 +35,7 @@ public class Player {
 	 * @param boardPosition position on the TimeBoard
 	 * @param money number of buttons
 	 * @param name name of the player
-	 * @param playerType
+	 * @param playerType the Type of Player
 	 */
 
 	public Player( int boardPosition, int money, String name, PlayerType playerType ) {
