@@ -20,6 +20,9 @@ public class GameStateTest {
     Player player1, player2;
     GameState gameState;
 
+    /**
+     * Initializes fields for testing
+     */
     @Before
     public void initialize(){
         playerNames = new Tuple<>("Alice", "Bob");
@@ -40,11 +43,17 @@ public class GameStateTest {
         player2 = gameState.getPlayer2();
     }
 
+    /**
+     * Tests whether null-constructor is rejected
+     */
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorNull(){
         new GameState(null, null, null, null, false);
     }
 
+    /**
+     * Tests whether changes in patches is not reflected in Gamestates
+     */
     @Test
     public void testChangePatchAfterwards(){
         boolean[][] shape = {{true, true, true, true},{true, true, true, true},{true, true, true, true},{true, true, true, true}};
@@ -52,6 +61,9 @@ public class GameStateTest {
         assertNotEquals(gameState.getPatches(), patches);
     }
 
+    /**
+     * Tests clone-Method for equality and for changes not being reflected afterwards
+     */
     @Test
     @SuppressWarnings({"deprecation"})
     public void testClone(){
@@ -68,25 +80,36 @@ public class GameStateTest {
         assertNotEquals(clone.getSpecialTileAvailable(), gameState.getSpecialTileAvailable());
         clone.setPatches(null);
         assertNotEquals(clone.getPatches(), gameState.getPatches());
-
     }
 
+    /**
+     * Tests equality (obv only correct if clone works properly)
+     */
     @Test
     public void testEquals(){
         GameState clone = gameState.clone();
         assertEquals(clone, gameState);
     }
 
+    /**
+     * Tests whether a blank name is rejected
+     */
     @Test(expected = IllegalArgumentException.class)
     public void testNameBlank(){
         new GameState(validPositions, validMoney, new Tuple<>("", ""), patches, false);
     }
 
+    /**
+     * Tests whether illegal Positions are rejected
+     */
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidPositions(){
         new GameState(invalidPositions, validMoney, playerNames, patches, false);
     }
 
+    /**
+     * Tests whether illegal Money is rejected
+     */
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidMoney(){
         new GameState(validPositions, invalidMoney, playerNames, patches, false);
