@@ -18,6 +18,7 @@ public class PlayerTest {
 
 
 
+
     @Test
     public void testClone() {
     }
@@ -29,7 +30,7 @@ public class PlayerTest {
 
     @Test
     public void testGetPlayerType() {
-        assertEquals(PLAYER.getPlayerType() ,PlayerType.HUMAN);
+        assertEquals(PLAYER.getPlayerType() ,PlayerType.AI_MEDIUM);
     }
 
     @Test
@@ -43,10 +44,11 @@ public class PlayerTest {
     }
 
     @Test
-    public void testGetQuiltBoard() { }
-
-    @Test
     public void testGetScore() {
+        PLAYER.setScore(SCORE);
         assertEquals(PLAYER.getScore(), SCORE);
     }
+
+    @Test
+    public void testSetScore(){ }
 }

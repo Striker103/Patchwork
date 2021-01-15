@@ -85,11 +85,9 @@ public class Player {
 		return name;
 	}
 
-	public QuiltBoard getQuiltBoard(){
-		return quiltBoard;
-	}
-
 	public Score getScore(){
 		return score;
 	}
+
+	public void setScore( Score sScore){ score = sScore;}
 }
