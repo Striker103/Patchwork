@@ -100,13 +100,13 @@ public class PatchTest{
         new Patch(ID, INCOME, BUTTONCOST, invalidShape, TIME);
     }
 
-//    /**
-//     * Tests Constructor with time zero
-//     */
-//    @Test(expected = IllegalArgumentException.class)
-//    public void testConstructorTimeZero(){
-//        new Patch(ID, INCOME, BUTTONCOST, SHAPE, 0);
-//    }
+    /**
+     * Tests Constructor with time zero
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructorTimeZero(){
+        new Patch(ID, INCOME, BUTTONCOST, SHAPE, 0);
+    }
 
     /**
      * Tests Constructor with time negative
