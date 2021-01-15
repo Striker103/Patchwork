@@ -17,8 +17,7 @@ public class TimeBoardComponentTest extends TestCase {
     public void setUp() throws Exception {
         super.setUp();
         timeBoardComponent = new TimeBoardComponent(POSITION);
-        timeBoardComponent.setHasPatch(true);
-        timeBoardComponent.setHasButton(false);
+
     }
 
     /**
@@ -61,17 +60,6 @@ public class TimeBoardComponentTest extends TestCase {
         assertFalse(timeBoardComponent.hasButton());
     }
 
-    /**
-     * Tests setHasButton
-     */
-    @Test
-    public void testSetHasButton() {
-        TimeBoardComponent component = new TimeBoardComponent(2);
-        component.setHasButton(true);
-        assertTrue(component.hasButton());
-        component.setHasButton(false);
-        assertFalse(component.hasButton());
-    }
 
     /**
      * Tests hasPatch
@@ -81,16 +69,6 @@ public class TimeBoardComponentTest extends TestCase {
         assertTrue(timeBoardComponent.hasPatch());
     }
 
-    /**
-     * Tests SetHasPatch
-     */
-    @Test
-    public void testSetHasPatch() {
-        TimeBoardComponent component = new TimeBoardComponent(1);
-        component.setHasPatch(true);
-        assertTrue(component.hasPatch());
-        component.setHasPatch(false);
-        assertFalse(component.hasPatch());
-    }
+
 
 }

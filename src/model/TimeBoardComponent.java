@@ -21,15 +21,19 @@ public class TimeBoardComponent {
 	/**
 	 *  Saves the position of the time component
 	 */
-	private final int POSITION;
+	private final int position;
 
 
 	/**
 	 * Constructor for a new time board component
 	 * @param positionOnBoard the position of the time board component
 	 */
-	public TimeBoardComponent(int positionOnBoard) {
-		POSITION = positionOnBoard;
+	public TimeBoardComponent(int positionOnBoard)  {
+		if (positionOnBoard<0){
+			throw new IllegalArgumentException("the position can't be negative");
+		}
+		position = positionOnBoard;
+
 	}
 
 	/**
@@ -37,7 +41,7 @@ public class TimeBoardComponent {
 	 * @return a copy of the time board component
 	 */
 	public TimeBoardComponent clone() {
-		TimeBoardComponent timeBoardComponent = new TimeBoardComponent(POSITION);
+		TimeBoardComponent timeBoardComponent = new TimeBoardComponent(position);
 		timeBoardComponent.setHasButton(hasButton);
 		timeBoardComponent.setHasPatch(hasPatch);
 		return timeBoardComponent;
@@ -48,7 +52,7 @@ public class TimeBoardComponent {
 	 * @return the current position
 	 */
 	public int getPosition(){
-		return POSITION;
+		return position;
 	}
 
 	/**
@@ -59,13 +63,7 @@ public class TimeBoardComponent {
 		return hasButton;
 	}
 
-	/**
-	 * Changes the value of hasButton
-	 * @param buttonAvailable the new boolean value
-	 */
-	public void setHasButton(boolean buttonAvailable){
-		hasButton = buttonAvailable;
-	}
+
 
 	/**
 	 * Checks the current component has a patch
@@ -77,10 +75,9 @@ public class TimeBoardComponent {
 
 	/**
 	 * Changes the value of hasPatch
-	 * @param patchAvailable the new boolean value
 	 */
-	public void setHasPatch(boolean patchAvailable){
-		hasPatch = patchAvailable;
+	public void removePatch(){
+		hasPatch = false;
 	}
 
 	/**
@@ -94,6 +91,14 @@ public class TimeBoardComponent {
 		if(this == obj) return true;
 		if(obj == null || getClass() != obj.getClass()) return false;
 		TimeBoardComponent tbc = (TimeBoardComponent) obj;
-		return this.POSITION == tbc.POSITION;
+		return this.position == tbc.position;
+	}
+
+	private void setHasPatch(boolean patchAvailable ){
+		hasPatch = patchAvailable;
+	}
+
+	private void setHasButton(boolean buttonAvailable ){
+		hasButton = buttonAvailable;
 	}
 }
