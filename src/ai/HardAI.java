@@ -7,8 +7,16 @@ import model.Tuple;
 
 import java.util.*;
 
+/**
+ * The hard AI. Hopefully the best.
+ * @author Lukas Kidin
+ */
 public class HardAI extends AI {
-
+    /**
+     * Calculates the next turn based on the given turn
+     * @param actualState the actual state of the game
+     * @return the best possible state for the ai to move
+     */
     @Override
     public GameState calculateTurn(GameState actualState) {
         return null;
@@ -25,18 +33,28 @@ public class HardAI extends AI {
         return new Tuple<>(actualBoard, 0.0);
     }
 
-    private Collection<boolean[][]> generateAllPossiblePatches(Patch patch){
+    private static Collection<boolean[][]> generateAllPossiblePatches(Patch patch){
+        boolean[][] shape = patch.getShape();
         Set<boolean[][]> result = new HashSet<>();
         for(int side =0; side<2; side++){
             for (int degree = 0; degree < 4; degree++) {
+                boolean[][] trimmed = trimShape(shape);
+                for (int rows = 0; rows < 9- trimmed.length; rows++) {
+                    for (int cols = 0; cols < 9-trimmed[0].length; cols++) {
+                        boolean[][] possiblePlace = new boolean[9][9];
+                        AIUtil.insert(possiblePlace, trimmed, rows, cols);
+                        result.add(possiblePlace);
+                    }
 
+                }
+                AIUtil.rotate(shape);
             }
+            AIUtil.flip(shape);
         }
         return result;
     }
 
-    private boolean[][] trimShape(Patch patch){
-        boolean[][] shape = patch.getShape();
+    private static boolean[][] trimShape(boolean[][] shape){
         Boolean[] emptyRows = new Boolean[shape.length];
         Boolean[] emptyColumns = new Boolean[shape[0].length];
 
