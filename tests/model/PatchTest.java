@@ -53,13 +53,13 @@ public class PatchTest{
         new Patch(ID, -1, BUTTONCOST, SHAPE, TIME);
     }
 
-    /**
-     * Tests Constructor with Button Cost Zero
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void testConstructorButtonCostZero(){
-        new Patch(ID, INCOME, 0, SHAPE, TIME);
-    }
+//    /**
+//     * Tests Constructor with Button Cost Zero
+//     */
+//    @Test(expected = IllegalArgumentException.class)
+//    public void testConstructorButtonCostZero(){
+//        new Patch(ID, INCOME, 0, SHAPE, TIME);
+//    }
 
     /**
      * Tests Constructor with Button Cost Negative
@@ -98,13 +98,13 @@ public class PatchTest{
         new Patch(ID, INCOME, BUTTONCOST, invalidShape, TIME);
     }
 
-    /**
-     * Tests Constructor with time zero
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void testConstructorTimeZero(){
-        new Patch(ID, INCOME, BUTTONCOST, SHAPE, 0);
-    }
+//    /**
+//     * Tests Constructor with time zero
+//     */
+//    @Test(expected = IllegalArgumentException.class)
+//    public void testConstructorTimeZero(){
+//        new Patch(ID, INCOME, BUTTONCOST, SHAPE, 0);
+//    }
 
     /**
      * Tests Constructor with time negative
