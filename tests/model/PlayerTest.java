@@ -43,11 +43,10 @@ public class PlayerTest {
     }
 
     @Test
-    public void testGetQuiltBoard() {
-    }
+    public void testGetQuiltBoard() { }
 
     @Test
     public void testGetScore() {
-        assertEquals(Pla);
+        assertEquals(PLAYER.getScore(), SCORE);
     }
 }
