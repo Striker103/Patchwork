@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static model.PlayerType.HUMAN;
+import static model.PlayerType.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
@@ -73,11 +73,12 @@ public class GameStateTest {
     public void testClone(){
         gameState.setLogEntry("test");
         GameState clone = gameState.clone();
-        assertEquals( clone.getPlayer1(),(player1));
+        assertEquals(clone.getPlayer1(),(player1));
         assertEquals(clone.getPlayer2(), player2);
         assertEquals(clone.getPatches(), patches);
         assertEquals(clone.getLogEntry(), "test");
         assertEquals(clone.getTimeBoard(), gameState.getTimeBoard());
+        assertNotEquals(clone.hashCode(), gameState.hashCode());
 
 
         clone.setSpecialTileAvailable(false);
@@ -100,8 +101,8 @@ public class GameStateTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testNameBlank(){
-        Tuple<String, PlayerType> playerOne = new Tuple<>("", HUMAN);
-        Tuple<String, PlayerType> playerTwo = new Tuple<>("", HUMAN);
+        Tuple<String, PlayerType> playerOne = new Tuple<>("", AI_EASY);
+        Tuple<String, PlayerType> playerTwo = new Tuple<>("", AI_HARD);
         playerNames = new Tuple<>(playerOne, playerTwo);
         new GameState(validPositions, validMoney, playerNames, patches, false);
     }
