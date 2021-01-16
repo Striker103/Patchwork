@@ -34,7 +34,7 @@ public class HardAI extends AI {
         return generateAllPossiblePatches(patch).parallelStream() //Generate Patches and parallelize
                 .filter(patchPosition -> AIUtil.isPossible(actualBoard, patchPosition)) //Filter all places which are not valid
                 .map(place -> {QuiltBoard copy = actualBoard.clone();
-                    copy.addPatch(patch);
+                    //copy.addPatch(patch);
                     return new Tuple<>(copy, evaluateBoard(copy, filledSpots));}) //map the valid places onto the quiltboard and evaluate the happiness
                 .max(Comparator.comparingDouble(Tuple::getSecond)) //Search maximum of happiness eg. best placement
                 .orElse(null);
@@ -65,6 +65,7 @@ public class HardAI extends AI {
         }
         double intermediate = 4/(circumferenceInner+circumferenceOuter);
         double result = 1-(circumferenceInner/filledSpots);
+        result += intermediate;
         return result;
     }
 
