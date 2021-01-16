@@ -1,7 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,7 +12,7 @@ public class QuiltBoard {
 	/**
 	 * A 2D Array for the player's quilt board
 	 */
-	private int[][] patchBoard;
+	private Matrix patchBoard;
 
 	/**
 	 * A list of the patches on the quilt board
@@ -25,21 +24,20 @@ public class QuiltBoard {
 	 * Sets the size of the board to 9x9
 	 */
 	public QuiltBoard(){
-		patchBoard = new int[9][9];
-		patches = new ArrayList<Patch>();
+		patchBoard = new Matrix(9,9);
+		patches = new ArrayList<>();
 	}
 
 	/**
 	 * Clones the quilt board
 	 * @return A copy of the quilt board
 	 */
-	@Override
-	public QuiltBoard clone() {
+	public QuiltBoard copy() {
 		QuiltBoard cloneBoard = new QuiltBoard();
 		for(Patch patch : this.patches){
-			cloneBoard.getPatches().add(patch.clone());
+			cloneBoard.getPatches().add(patch.copy());
 		}
-		cloneBoard.patchBoard = this.patchBoard.clone();
+		cloneBoard.patchBoard = this.patchBoard.copy();
 		return cloneBoard;
 	}
 
@@ -51,18 +49,7 @@ public class QuiltBoard {
 	 * @param posY the y-coordinate of the placement position
 	 */
 	public void addPatch(Patch patch, int posX, int posY){
-		int i = posX;
-		int j;
-		while(i < posX + 5 && i < patchBoard.length){
-			j = posY;
-			while(j < posY + 5 && j < patchBoard.length){
-				if(patch.getShape()[i - posX][j - posY]){
-					patchBoard[i][j] = patch.getPatchID();
-				}
-				j++;
-			}
-			i++;
-		}
+		patchBoard.insert(patch.getShape().multiply(patch.getPatchID()), posX, posY);
 		patches.add(patch);
 	}
 
@@ -78,21 +65,21 @@ public class QuiltBoard {
 	 * Getter for the player's patch board
 	 * @return the patch board
 	 */
-	public int[][] getPatchBoard(){
+	public Matrix getPatchBoard(){
 		return this.patchBoard;
 	}
 
 	/**
 	 * Compares 2 QuiltBoard objects and returns if they are equal
 	 * @param obj the other object
-	 * @return true if the 2 objects are equal
+	 * @return true iff the 2 objects are equal
 	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) return true;
 		if (obj == null || getClass() != obj.getClass()) return false;
 		QuiltBoard that = (QuiltBoard) obj;
-		return Arrays.equals(patchBoard, that.patchBoard) &&
+		return this.patchBoard.equals(that.patchBoard) &&
 				Objects.equals(patches, that.patches);
 	}
 }

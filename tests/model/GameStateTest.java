@@ -40,7 +40,7 @@ public class GameStateTest {
                 {false, false, false, false, false},
                 {false, false, false, false, false}};
 
-        Patch patch = new Patch(1, 2, 5, shape, 2);
+        Patch patch = new Patch(1, 2, 5, new Matrix(shape), 2);
         patches.add(patch);
         gameState = new GameState(validPositions, validMoney, playerNames, patches, true);
         player1 = gameState.getPlayer1();
@@ -61,7 +61,7 @@ public class GameStateTest {
     @Test
     public void testChangePatchAfterwards(){
         boolean[][] shape = {{true, true, true, true, true},{true, true, true, true, true},{true, true, true, true, true},{true, true, true, true, true},{true, true, true, true, true}};
-        patches.add(new Patch(12, 1, 1, shape, 1));
+        patches.add(new Patch(12, 1, 1, new Matrix(shape), 1));
         assertNotEquals(gameState.getPatches(), patches);
     }
 
@@ -72,7 +72,7 @@ public class GameStateTest {
     @SuppressWarnings({"deprecation"})
     public void testClone(){
         gameState.setLogEntry("test");
-        GameState clone = gameState.clone();
+        GameState clone = gameState.copy();
         assertEquals(clone.getPlayer1(),(player1));
         assertEquals(clone.getPlayer2(), player2);
         assertEquals(clone.getPatches(), patches);
@@ -92,7 +92,7 @@ public class GameStateTest {
      */
     @Test
     public void testEquals(){
-        GameState clone = gameState.clone();
+        GameState clone = gameState.copy();
         assertEquals(clone, gameState);
     }
 

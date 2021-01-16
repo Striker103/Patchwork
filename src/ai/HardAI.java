@@ -27,13 +27,13 @@ public class HardAI extends AI {
      * @return a Tuple of the new QuiltBoard and a Happiness-value ranging from 0 to 1 (inclusive) higher = better or null, if there is no placement
      */
     public Tuple<QuiltBoard, Double> placePatch(QuiltBoard actualBoard, Patch patch){
-        Matrix boardMatrix = new Matrix(actualBoard.getPatchBoard());
-        Matrix patchMatrix = new Matrix(patch.getShape());
+        Matrix boardMatrix = actualBoard.getPatchBoard();
+        Matrix patchMatrix = patch.getShape();
         int filledSpots = boardMatrix.amountCells()-boardMatrix.count(0) + patchMatrix.amountCells()-patchMatrix.count(0);
         return generateAllPossiblePatches(patch)
                 .parallelStream()                                                                                   //Generate Patches and parallelize
                 .filter(patchPosition -> patchPosition.disjunctive(boardMatrix))                                    //Filter all places which are not valid
-                .map(place -> { QuiltBoard copy = actualBoard.clone();
+                .map(place -> { QuiltBoard copy = actualBoard.copy();
                                 //copy.addPatch(patch);
                                 return new Tuple<>(copy, evaluateBoard(copy, filledSpots));})                       //map the valid places onto the quiltboard and evaluate the happiness
                 .max(Comparator.comparingDouble(Tuple::getSecond))                                                  //Search maximum of happiness eg. best placement
@@ -48,23 +48,24 @@ public class HardAI extends AI {
      */
     private Double evaluateBoard(QuiltBoard board, int filledSpots) {
         if(filledSpots>=81) return Double.MAX_VALUE;
-        int[][] places = board.getPatchBoard();
+        Matrix places = board.getPatchBoard();
         double circumferenceOuter=18; //Value for empty board
-        for (int col = 0; col < places[0].length; col++) {    //Subtract one for each side which is covered with an patch
-            circumferenceOuter-= (places[0][col]!=0) ? 1 : 0;
-            circumferenceOuter-= (places[col][0]!=0) ? 1 : 0;
-            circumferenceOuter-= (places[8][col]!=0) ? 1 : 0;
-            circumferenceOuter-= (places[col][8]!=0) ? 1 : 0; // Yes, the edges more than one time, because they also have more than one side
+        for (int col = 0; col < places.getColumns(); col++) {    //Subtract one for each side which is covered with an patch
+            circumferenceOuter-= (places.get(0,col)!=0) ? 1 : 0;
+            circumferenceOuter-= (places.get(col,0)!=0) ? 1 : 0;
+            circumferenceOuter-= (places.get(8,col)!=0) ? 1 : 0;
+            circumferenceOuter-= (places.get(col,8)!=0) ? 1 : 0; // Yes, the edges more than one time, because they also have more than one side
         }
         double circumferenceInner =0;
-        for (int row = 0; row < places.length; row++) {
-            for (int col = 0; col < places[row].length ; col++) {
-                circumferenceInner+= (places[row][col]!=0 ^ (row+1>=9||(places[row+1][col]!=0))) ?1:0;
-                circumferenceInner+= (places[row][col]!=0 ^ (col+1>=9||(places[row][col+1]!=0))) ?1:0;
+        for (int row = 0; row < places.getRows(); row++) {
+            for (int col = 0; col < places.getColumns() ; col++) {
+                circumferenceInner+= (places.get(row,col)!=0 ^ (row+1>=9||(places.get(row+1,col)!=0))) ?1:0;
+                circumferenceInner+= (places.get(row,col)!=0 ^ (col+1>=9||(places.get(row,col+1)!=0))) ?1:0;
             }
         }
         double intermediate = 4/(circumferenceInner+circumferenceOuter);
         double result = 1-(circumferenceInner/filledSpots);
+        result += intermediate;
         return result;
     }
 
@@ -74,7 +75,7 @@ public class HardAI extends AI {
      * @return a LinkedHashSet containing all possible positions
      */
     private LinkedHashSet<Matrix> generateAllPossiblePatches(Patch patch){
-        Matrix shape = new Matrix(patch.getShape());
+        Matrix shape = patch.getShape();
         LinkedHashSet<Matrix> result = new LinkedHashSet<>();
         for(int side =0; side<2; side++){
             for (int degree = 0; degree < 4; degree++) {

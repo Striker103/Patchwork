@@ -59,7 +59,7 @@ public class GameTest {
                 {false, false, false, false, false},
                 {false, false, false, false, false}};
 
-        Patch patch = new Patch(1, 2, 5, shape, 2);
+        Patch patch = new Patch(1, 2, 5, new Matrix(shape), 2);
         patches.add(patch);
         gameState = new GameState(validPositions, validMoney, playerNames, patches, true);
         player1 = gameState.getPlayer1();

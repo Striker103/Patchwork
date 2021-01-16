@@ -17,9 +17,12 @@ public class PatchTest{
                                                         {false, false, false, false, false},
                                                         {false, false, false, false, false},
                                                         {false, false, false, false, false}};
+
+    private final Matrix MATRIX = new Matrix(SHAPE);
+
     private final int TIME = 5;
 
-    private final Patch PATCH = new Patch(ID, INCOME, BUTTONCOST, SHAPE, TIME);
+    private final Patch PATCH = new Patch(ID, INCOME, BUTTONCOST, MATRIX, TIME);
 
 
     /**
@@ -27,7 +30,7 @@ public class PatchTest{
      */
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorIDZero(){
-        new Patch(0, INCOME, BUTTONCOST, SHAPE, TIME);
+        new Patch(0, INCOME, BUTTONCOST, MATRIX, TIME);
     }
 
     /**
@@ -35,7 +38,7 @@ public class PatchTest{
      */
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorIDNegative(){
-        new Patch(-1, INCOME, BUTTONCOST, SHAPE, TIME);
+        new Patch(-1, INCOME, BUTTONCOST, MATRIX, TIME);
     }
 
     /**
@@ -43,7 +46,7 @@ public class PatchTest{
      */
     @Test
     public void testConstructorIncomeZero(){
-        new Patch(ID, 0, BUTTONCOST, SHAPE, TIME);
+        new Patch(ID, 0, BUTTONCOST, MATRIX, TIME);
     }
 
     /**
@@ -51,7 +54,7 @@ public class PatchTest{
      */
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorIncomeNegative(){
-        new Patch(ID, -1, BUTTONCOST, SHAPE, TIME);
+        new Patch(ID, -1, BUTTONCOST, MATRIX, TIME);
     }
 
 
@@ -69,7 +72,7 @@ public class PatchTest{
      */
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorButtonCostNegative(){
-        new Patch(ID, INCOME, -1, SHAPE, TIME);
+        new Patch(ID, INCOME, -1, MATRIX, TIME);
     }
 
     /**
@@ -85,7 +88,7 @@ public class PatchTest{
      */
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorShapeWrongSize(){
-        new Patch(ID, INCOME, BUTTONCOST, new boolean[][]{}, TIME);
+        new Patch(ID, INCOME, BUTTONCOST, new Matrix(1,1), TIME);
     }
 
     /**
@@ -99,7 +102,7 @@ public class PatchTest{
                 {false, false, false, false, false},
                 {false, false, false, false, false},
                 {false, false, false, false, false}};
-        new Patch(ID, INCOME, BUTTONCOST, invalidShape, TIME);
+        new Patch(ID, INCOME, BUTTONCOST, new Matrix(invalidShape), TIME);
     }
 
     /**
@@ -107,7 +110,7 @@ public class PatchTest{
      */
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorTimeZero(){
-        new Patch(ID, INCOME, BUTTONCOST, SHAPE, 0);
+        new Patch(ID, INCOME, BUTTONCOST, MATRIX, 0);
     }
 
     /**
@@ -115,7 +118,7 @@ public class PatchTest{
      */
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorTimeNegative(){
-        new Patch(ID, INCOME, BUTTONCOST, SHAPE, -1);
+        new Patch(ID, INCOME, BUTTONCOST, MATRIX, -1);
     }
 
     /**
@@ -123,7 +126,7 @@ public class PatchTest{
      */
     @Test
     public void testTestClone() {
-        assertEquals(PATCH, PATCH.clone());
+        assertEquals(PATCH, PATCH.copy());
     }
 
     /**
@@ -147,13 +150,9 @@ public class PatchTest{
      */
     @Test
     public void testGetShape() {
-        boolean[][] testShape = PATCH.getShape();
+        Matrix testShape = PATCH.getShape();
 
-        for (int i = 0; i < testShape.length; i++) {
-            for (int j = 0; j < testShape[i].length; j++) {
-                assertEquals(testShape[i][j], SHAPE[i][j]);
-            }
-        }
+        assertEquals(MATRIX, testShape);
     }
 
     /**

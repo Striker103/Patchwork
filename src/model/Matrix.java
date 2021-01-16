@@ -103,27 +103,31 @@ public class Matrix implements Iterable<Integer>{
     /**
      * Multiplies all values in this matrix by given value
      * @param value value to multiply to the matrix
+     * @return this matrix after completed multiplication
      */
-    public void multiply(int value){
+    public Matrix multiply(int value){
         for (int row = 0; row < getRows(); row++) {
             for (int col = 0; col < getColumns(); col++) {
                 matrix[row][col] *= value;
             }
 
         }
+        return this;
     }
 
     /**
      * Adds the given matrix elementwise to this matrix
      * @param toAdd matrix which elements should be added
+     * @return the Matrix after completed Addition
      */
-    public void add(Matrix toAdd){
+    public Matrix add(Matrix toAdd){
         if(getRows()!=toAdd.getRows() || getColumns()!=toAdd.getColumns()) throw new IllegalArgumentException("Matrices must have the same size");
         for (int row = 0; row < getRows(); row++) {
             for (int col = 0; col < getColumns(); col++) {
                 matrix[row][col] += toAdd.matrix[row][col];
             }
         }
+        return this;
     }
 
     /**
@@ -321,5 +325,20 @@ public class Matrix implements Iterable<Integer>{
                 return matrix[actRow][actColumn];
             }
         };
+    }
+
+    /**
+     * Creates a copy of this Matrix which references are different
+     * @return a copied Matrix
+     */
+    public Matrix copy(){
+        Matrix result = new Matrix(getRows(), getColumns());
+
+        for (int row = 0; row < getRows(); row++) {
+            for (int col = 0; col < getColumns(); col++) {
+                result.set(row, col, matrix[row][col]);
+            }
+        }
+        return result;
     }
 }
