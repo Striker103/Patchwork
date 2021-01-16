@@ -36,12 +36,14 @@ public class QuiltBoard {
 	@Override
 	public QuiltBoard clone() {
 		QuiltBoard cloneBoard = new QuiltBoard();
-		cloneBoard.setPatches(this.patches);
-		cloneBoard.patchBoard = this.patchBoard;
+		for(Patch patch : this.patches){
+			cloneBoard.getPatches().add(patch.clone());
+		}
+		cloneBoard.patchBoard = this.patchBoard.clone();
 		return cloneBoard;
 	}
 
-	/**
+	/** 
 	 * Adds a new patch onto the quilt board
 	 * @param patch The patch that will be added
 	 */
@@ -55,14 +57,6 @@ public class QuiltBoard {
 	 */
 	public List<Patch> getPatches(){
 		return patches;
-	}
-
-	/**
-	 * Setter for the list of patches on the quilt board
-	 * @param patchList
-	 */
-	public void setPatches(List<Patch> patchList){
-		this.patches = patchList;
 	}
 
 	/**
@@ -86,5 +80,4 @@ public class QuiltBoard {
 		return Arrays.equals(patchBoard, that.patchBoard) &&
 				Objects.equals(patches, that.patches);
 	}
-
 }

@@ -58,14 +58,4 @@ public class QuiltBoardTest{
         assertEquals(quiltBoard.getPatches(), patches);
     }
 
-    /**
-     * Tests setPatches
-     */
-    @Test
-    public void testSetPatches(){
-        List<Patch> patches = new ArrayList<>();
-        patches.add(PATCH);
-        quiltBoard.setPatches(patches);
-        assertEquals(quiltBoard.getPatches(), patches);
-    }
 }
