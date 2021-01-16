@@ -44,16 +44,19 @@ public class QuiltBoard {
 	}
 
 	/**
-	 * Adds a new patch onto the quilt board
-	 * @param patch The patch that will be added
+	 * Adds a patch onto the patch board, whereas (posX,posY) represents the top left
+	 * field of the placement position on the patch board.
+	 * @param patch the patch that should be added
+	 * @param posX the x-coordinate of the placement position
+	 * @param posY the y-coordinate of the placement position
 	 */
-	public void addPatch(Patch patch, int x, int y){
-		int i = x;
+	public void addPatch(Patch patch, int posX, int posY){
+		int i = posX;
 		int j;
-		while(i < x + 5 && i < patchBoard.length){
-			j = y;
-			while(j < y + 5 && j < patchBoard.length){
-				if(patch.getShape()[i-x][j-y]){
+		while(i < posX + 5 && i < patchBoard.length){
+			j = posY;
+			while(j < posY + 5 && j < patchBoard.length){
+				if(patch.getShape()[i - posX][j - posY]){
 					patchBoard[i][j] = patch.getPatchID();
 				}
 				j++;
