@@ -43,11 +43,23 @@ public class QuiltBoard {
 		return cloneBoard;
 	}
 
-	/** 
+	/**
 	 * Adds a new patch onto the quilt board
 	 * @param patch The patch that will be added
 	 */
-	public void addPatch(Patch patch){
+	public void addPatch(Patch patch, int x, int y){
+		int i = x;
+		int j;
+		while(i < x + 5 && i < patchBoard.length){
+			j = y;
+			while(j < y + 5 && j < patchBoard.length){
+				if(patch.getShape()[i-x][j-y]){
+					patchBoard[i][j] = patch.getPatchID();
+				}
+				j++;
+			}
+			i++;
+		}
 		patches.add(patch);
 	}
 
