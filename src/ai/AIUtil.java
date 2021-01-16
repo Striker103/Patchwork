@@ -49,7 +49,7 @@ public final class AIUtil {
      */
     public static void insert(boolean[][] largerMatrix, boolean[][] smallerMatrix, int rows, int cols) {
         for(int i = rows; i<rows+smallerMatrix.length; i++){
-            System.arraycopy(smallerMatrix[i - rows], 0, largerMatrix[i], cols, smallerMatrix[i].length);
+            System.arraycopy(smallerMatrix[i - rows], 0, largerMatrix[i], cols, smallerMatrix[i-rows].length);
         }
     }
 

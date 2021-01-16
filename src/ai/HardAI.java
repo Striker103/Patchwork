@@ -29,17 +29,15 @@ public class HardAI extends AI {
      * @param patch the patch which should be placed
      * @return a Tuple of the new QuiltBoard and a Happiness-value ranging from 0 to 1 (inclusive) higher = better or null, if there is no placement
      */
-    private static Tuple<QuiltBoard, Double> placePatch(QuiltBoard actualBoard, Patch patch){
+    public static Tuple<QuiltBoard, Double> placePatch(QuiltBoard actualBoard, Patch patch){
         int filledSpots = AIUtil.filledPlaces(actualBoard.getPatchBoard()) + AIUtil.filledPlaces(patch.getShape());
-        Tuple<QuiltBoard, Double> result = generateAllPossiblePatches(patch).parallelStream() //Generate Patches and parallelize
+        return generateAllPossiblePatches(patch).parallelStream() //Generate Patches and parallelize
                 .filter(patchPosition -> AIUtil.isPossible(actualBoard, patchPosition)) //Filter all places which are not valid
                 .map(place -> {QuiltBoard copy = actualBoard.clone();
                     copy.addPatch(patch);
-                    return new Tuple<QuiltBoard, Double>(copy, evaluateBoard(copy, filledSpots));}) //map the valid places onto the quiltboard and evaluate the happiness
-                .filter(tuple -> tuple.getSecond()>0.0) //Filter for really bad Placements
+                    return new Tuple<>(copy, evaluateBoard(copy, filledSpots));}) //map the valid places onto the quiltboard and evaluate the happiness
                 .max(Comparator.comparingDouble(Tuple::getSecond)) //Search maximum of happiness eg. best placement
-                .orElse(null); //If there is no placement, return null
-        return result;
+                .orElse(null);
     }
 
     /**
@@ -81,8 +79,8 @@ public class HardAI extends AI {
         for(int side =0; side<2; side++){
             for (int degree = 0; degree < 4; degree++) {
                 boolean[][] trimmed = trimShape(shape);
-                for (int rows = 0; rows < 9- trimmed.length; rows++) {
-                    for (int cols = 0; cols < 9-trimmed[0].length; cols++) {
+                for (int rows = 0; rows <= 9- trimmed.length; rows++) {
+                    for (int cols = 0; cols <= 9-trimmed[0].length; cols++) {
                         boolean[][] possiblePlace = new boolean[9][9];
                         AIUtil.insert(possiblePlace, trimmed, rows, cols);
                         result.add(possiblePlace);
@@ -101,27 +99,30 @@ public class HardAI extends AI {
      * @return a new trimmed matrix.
      */
     private static boolean[][] trimShape(boolean[][] shape){
-        Boolean[] emptyRows = new Boolean[shape.length];
-        Boolean[] emptyColumns = new Boolean[shape[0].length];
+        boolean[] emptyRows = new boolean[shape.length];
+        boolean[] emptyColumns = new boolean[shape[0].length];
 
         //Check for empty rows and columns
-        for(int i=0; i<shape.length; i++){
-            for(int j=0; j<shape[i].length; j++){
-                if(shape[i][j]) break;
-                emptyRows[i] = true;
+        for(int rows=0; rows<shape.length; rows++){
+            for(int cols=0; cols<shape[rows].length; cols++){
+                if(shape[rows][cols]){emptyRows[rows]=false; break;}
+                emptyRows[rows] = true;
             }
         }
 
-        for(int j=0; j<shape[0].length; j++){
-            for(int i=0; i<shape.length; i++){
-                if(shape[j][i]) break;
-                emptyColumns[j] = true;
+        for(int cols=0; cols<shape[0].length; cols++){
+            for (boolean[] booleans : shape) {
+                if (booleans[cols]) {
+                    emptyColumns[cols] = false;
+                    break;
+                }
+                emptyColumns[cols] = true;
             }
         }
 
         //Because patches are a connected component we can count the false in rows and columns
-        int rows = (int) Arrays.stream(emptyRows).filter(bool -> !bool).count();
-        int cols = (int) Arrays.stream(emptyColumns).filter(bool -> !bool).count();
+        int rows = 5-AIUtil.filledPlaces(new boolean[][]{emptyRows});
+        int cols = 5-AIUtil.filledPlaces(new boolean[][]{emptyColumns});
 
         boolean[][] result = new boolean[rows][cols];
 
