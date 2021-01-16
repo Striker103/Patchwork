@@ -1,5 +1,7 @@
 package model;
 
+import ai.AIUtil;
+
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -136,6 +138,71 @@ public class Matrix implements Iterable<Integer>{
             if (cols + matrix.getRows() - cols >= 0)
                 System.arraycopy(matrix.matrix[row - rows], 0, this.matrix[row], cols, matrix.getRows());
         }
+    }
+
+    /**
+     * Trims this matrix so 0value-rows and columns will no longer exists (does not alter this matrix)
+     * @return a trimmed matrix
+     */
+    public Matrix trim(){
+        boolean[] emptyRows = new boolean[getRows()];
+        boolean[] emptyColumns = new boolean[getColumns()];
+
+        //Check for empty rows and columns
+        for(int rows=0; rows<getRows(); rows++){
+            for(int cols=0; cols<getColumns(); cols++){
+                if(matrix[rows][cols]!=0){emptyRows[rows]=false; break;}
+                emptyRows[rows] = true;
+            }
+        }
+
+        for(int cols=0; cols<getColumns(); cols++){
+            for (int[] ints : matrix) {
+                if (ints[cols]!=0) {
+                    emptyColumns[cols] = false;
+                    break;
+                }
+                emptyColumns[cols] = true;
+            }
+        }
+
+        int rows = emptyRows.length- AIUtil.filledPlaces(new boolean[][]{emptyRows});
+        int cols = emptyColumns.length-AIUtil.filledPlaces(new boolean[][]{emptyColumns});
+        Matrix result = new Matrix(rows,cols);
+
+        rows=0;
+        for(int row=0; row<getRows(); row++){
+            if(emptyRows[row]) continue;
+            cols=0;
+            for(int col=0; col<getColumns(); col++){
+                if(emptyColumns[col]) continue;
+                result.set(row, col, matrix[row][col]);
+                cols++;
+            }
+            rows++;
+        }
+        return result;
+    }
+
+    /**
+     * Counts the occurrence of value in the matrix
+     * @param value the value to be counted
+     * @return the occurrences of this value
+     */
+    public int count(int value){
+        int result=0;
+        for (int elem:this) {
+            result+=elem==value?1:0;
+        }
+        return result;
+    }
+
+    /**
+     * Gets the amount of cells in this matrix
+     * @return amount cells
+     */
+    public int amountCells(){
+        return getRows()*getColumns();
     }
 
     /**
