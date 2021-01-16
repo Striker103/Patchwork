@@ -29,7 +29,7 @@ public class HardAI extends AI {
      * @param patch the patch which should be placed
      * @return a Tuple of the new QuiltBoard and a Happiness-value ranging from 0 to 1 (inclusive) higher = better or null, if there is no placement
      */
-    public static Tuple<QuiltBoard, Double> placePatch(QuiltBoard actualBoard, Patch patch){
+    public Tuple<QuiltBoard, Double> placePatch(QuiltBoard actualBoard, Patch patch){
         int filledSpots = AIUtil.filledPlaces(actualBoard.getPatchBoard()) + AIUtil.filledPlaces(patch.getShape());
         return generateAllPossiblePatches(patch).parallelStream() //Generate Patches and parallelize
                 .filter(patchPosition -> AIUtil.isPossible(actualBoard, patchPosition)) //Filter all places which are not valid
@@ -46,7 +46,7 @@ public class HardAI extends AI {
      * @param filledSpots an Integer on how many places on the board are already filled
      * @return a double value stating the value of this board
      */
-    private static Double evaluateBoard(QuiltBoard board, int filledSpots) {
+    private Double evaluateBoard(QuiltBoard board, int filledSpots) {
         if(filledSpots>=81) return Double.MAX_VALUE;
         int[][] places = board.getPatchBoard();
         double circumferenceOuter=18; //Value for empty board
@@ -73,7 +73,7 @@ public class HardAI extends AI {
      * @param patch patch for which all locations are searched
      * @return a LinkedHashSet containing all possible positions
      */
-    private static LinkedHashSet<boolean[][]> generateAllPossiblePatches(Patch patch){
+    private LinkedHashSet<boolean[][]> generateAllPossiblePatches(Patch patch){
         boolean[][] shape = patch.getShape();
         LinkedHashSet<boolean[][]> result = new LinkedHashSet<>();
         for(int side =0; side<2; side++){
@@ -98,7 +98,7 @@ public class HardAI extends AI {
      * @param shape the matrix to be trimmed. This matrix wont be altered
      * @return a new trimmed matrix.
      */
-    private static boolean[][] trimShape(boolean[][] shape){
+    private boolean[][] trimShape(boolean[][] shape){
         boolean[] emptyRows = new boolean[shape.length];
         boolean[] emptyColumns = new boolean[shape[0].length];
 
