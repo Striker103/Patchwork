@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -100,6 +101,33 @@ public class GameState{
 		this.patches = patches.stream().map(Patch::clone).collect(Collectors.toList());
 		this.player1 = player1.clone();
 		this.player2 = player2.clone();
+	}
+
+	/**
+	 * Checks if two gameStates are equal
+	 * @param obj the Object to compare to
+	 * @return true if objects are equal
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+
+		if (obj.getClass() == this.getClass())
+		{
+			GameState gameState = (GameState) obj;
+			return 	specialTileAvailable == gameState.specialTileAvailable &&
+					logEntry.equals(gameState.logEntry) &&
+					Arrays.equals(timeBoard, gameState.timeBoard) &&
+					patches.equals(gameState.patches) &&
+					player1.equals(gameState.player1) &&
+					player2.equals(gameState.player2);
+		}
+		return false;
 	}
 
 	/**
