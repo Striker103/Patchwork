@@ -44,24 +44,31 @@ public class QuiltBoard {
 	}
 
 	/**
-	 * Adds a patch onto the patch board, whereas (posX,posY) represents the top left
-	 * field of the placement position on the patch board.
-	 * @param patch the patch that should be added
-	 * @param posX the x-coordinate of the placement position
-	 * @param posY the y-coordinate of the placement position
+	 * Places a patch onto the patch board
+	 * @param patch the patch that should be placed
+	 * @param placement the placement of the patch
+	 * @param rotation the rotation angle of the patch
+	 * @param flipped whether or not the patch is flipped
 	 */
-	public void addPatch(Patch patch, int posX, int posY){
-		int i = posX;
-		int j;
-		while(i < posX + 5 && i < patchBoard.length){
-			j = posY;
-			while(j < posY + 5 && j < patchBoard.length){
-				if(patch.getShape()[i - posX][j - posY]){
-					patchBoard[i][j] = patch.getPatchID();
-				}
-				j++;
+	public void addPatch(Patch patch, boolean[][] placement, int rotation, boolean flipped){
+		CheckUtil.arraySameSize(placement, patchBoard);
+		int calculatedId = patch.getPatchID() ;
+		if(rotation == 0 || rotation == 90 || rotation == 180 || rotation == 270){
+			calculatedId += rotation;
+		}
+		else
+			throw new IllegalArgumentException("Rotation angle not valid!");
+
+		if(flipped)
+			calculatedId *= -1;
+
+		for(int i = 0; i < placement.length; i++){
+			for(int j = 0; j < placement[i].length; j++){
+				if(placement[i][j] && patchBoard[i][j] != 0)
+					throw new IllegalArgumentException("The patch does not fit in this position!");
+				else
+					patchBoard[i][j] = calculatedId;
 			}
-			i++;
 		}
 		patches.add(patch);
 	}
