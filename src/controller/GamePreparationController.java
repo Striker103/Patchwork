@@ -11,9 +11,19 @@ import java.util.List;
 
 public class GamePreparationController {
 
-	private MainController mainController;
+	private final MainController mainController;
 
-	private ErrorAUI errorAUI;
+	private final ErrorAUI errorAUI;
+
+	/**
+	 * Constructor that sets the mainController and all AUIs
+	 * @param mainController The controller that knows all other controllers
+	 * @param errorAUI the errorAUI
+	 */
+	public GamePreparationController(MainController mainController, ErrorAUI errorAUI) {
+		this.mainController = mainController;
+		this.errorAUI = errorAUI;
+	}
 
 	private List<Patch> sortPatches(List<Patch> patches) {
 		return null;

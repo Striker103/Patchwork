@@ -9,13 +9,27 @@ import view.aui.TurnAUI;
 
 public class GameController {
 
-	private MainController mainController;
+	private final MainController mainController;
 
-	private ErrorAUI errorAUI;
+	private final ErrorAUI errorAUI;
 
-	private LogAUI logAUI;
+	private final LogAUI logAUI;
 
-	private TurnAUI turnAUI;
+	private final TurnAUI turnAUI;
+
+	/**
+	 * Constructor that sets the mainController and all AUIs
+	 * @param mainController The controller that knows all other controllers
+	 * @param errorAUI the errorAUI
+	 * @param logAUI the logAUI
+	 * @param turnAUI the turnAUI
+	 */
+	public GameController(MainController mainController, ErrorAUI errorAUI, LogAUI logAUI, TurnAUI turnAUI){
+		this.mainController = mainController;
+		this.errorAUI = errorAUI;
+		this.logAUI = logAUI;
+		this.turnAUI = turnAUI;
+	}
 
 	public void advance() {
 
