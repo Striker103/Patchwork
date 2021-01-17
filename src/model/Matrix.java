@@ -19,6 +19,7 @@ public class Matrix implements Iterable<Integer>{
      * @param cols Amount of columns the matrix will have
      */
     public Matrix(int rows, int cols){
+        if(rows<=0||cols<=0) throw new IllegalArgumentException("No empty matrices");
         this.matrix = new int[rows][cols];
     }
 
@@ -135,13 +136,15 @@ public class Matrix implements Iterable<Integer>{
      * @param matrix the Matrix which should be inserted
      * @param rows the topmost row of this matrix in which should be inserted
      * @param cols the leftmost column in which should be inserted
+     * @return this Matrix
      */
-    public void insert(Matrix matrix, int rows, int cols) {
+    public Matrix insert(Matrix matrix, int rows, int cols) {
         if(matrix.getRows()+rows>this.getRows() || matrix.getColumns()+cols>this.getColumns()) throw new IndexOutOfBoundsException();
         for(int row = rows; row<rows+matrix.getRows(); row++){
             if (cols + matrix.getRows() - cols >= 0)
                 System.arraycopy(matrix.matrix[row - rows], 0, this.matrix[row], cols, matrix.getRows());
         }
+        return this;
     }
 
     /**
@@ -211,8 +214,9 @@ public class Matrix implements Iterable<Integer>{
 
     /**
      * Flips the given matrix by the row-axis
+     * @return this Matrix
      */
-    public void flip(){
+    public Matrix flip(){
         for(int rows=0; rows<matrix.length; rows++){
             for (int cols = 0; cols < matrix[rows].length/2; cols++) {
                 int temp = matrix[rows][cols];
@@ -220,12 +224,14 @@ public class Matrix implements Iterable<Integer>{
                 matrix[rows][matrix.length-cols-1] = temp;
             }
         }
+        return this;
     }
 
     /**
      * Rotates this matrix by 90 degree in clockwise direction
+     * @return this Matrix
      */
-    public void rotate(){
+    public Matrix rotate(){
         if(!isSquare()) throw new IllegalStateException("Only square matrices can be rotated");
         for (int rows = 0; rows < getRows()/2; rows++) {
             for (int cols = 0; cols < getRows()-1-rows; cols++) {
@@ -236,6 +242,7 @@ public class Matrix implements Iterable<Integer>{
                 matrix[cols][getRows()-1-rows] = temp;
             }
         }
+        return this;
     }
 
     /**
