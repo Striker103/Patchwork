@@ -45,7 +45,7 @@ public class MainController {
 	/**
 	 * highScoreController
 	 */
-	private final HighScoreController HighScoreController;
+	private final HighScoreController highScoreController;
 
 	/**
 	 * Game
@@ -63,7 +63,7 @@ public class MainController {
 		playerController = new PlayerController(this, errorAUI);
 		undoRedoController = new UndoRedoController(this);
 		iOController = new IOController(this, errorAUI);
-		HighScoreController = new HighScoreController(this, errorAUI, highscoreAUI);
+		highScoreController = new HighScoreController(this, errorAUI, highscoreAUI);
 	}
 
 	/**
@@ -143,6 +143,6 @@ public class MainController {
 	 * @return highScoreController
 	 */
 	public HighScoreController getHighScoreController() {
-		return HighScoreController;
+		return highScoreController;
 	}
 }
