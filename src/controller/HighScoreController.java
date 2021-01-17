@@ -15,18 +15,18 @@ import java.nio.file.Files;
 import java.util.Collections;
 import java.util.LinkedList;
 
-public class HighscoreController {
+public class HighScoreController {
 
 	private HighscoreAUI highscoreAUI;
 
-	private final MainController mainController;
+	private MainController mainController;
 
 	private ErrorAUI errorAUI;
 
-	private final File HIGHSCOREFILE;
+	private File HIGHSCOREFILE;
 
-	public HighscoreController(MainController mainController, File highscoreFile) {
-		this.mainController = mainController;
+	public HighScoreController(File highscoreFile) {
+
 
 		CheckUtil.assertNonNull(highscoreFile);
 
@@ -35,6 +35,18 @@ public class HighscoreController {
 		}
 
 		HIGHSCOREFILE = highscoreFile;
+	}
+
+	/**
+	 * Constructor that sets the mainController and all AUIs
+	 * @param mainController The controller that knows all other controllers
+	 * @param errorAUI the errorAUI
+	 * @param highscoreAUI the highScoreAUI
+	 */
+	public HighScoreController(MainController mainController, ErrorAUI errorAUI, HighscoreAUI highscoreAUI){
+		this.mainController = mainController;
+		this.errorAUI = errorAUI;
+		this.highscoreAUI = highscoreAUI;
 	}
 
 
