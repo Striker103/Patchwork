@@ -2,35 +2,147 @@ package controller;
 
 
 import model.Game;
+import view.aui.*;
+
+/**
+ * The Controller which creates and holds all other controllers
+ *
+ * @author Dennis
+ */
 
 public class MainController {
 
-	private GamePreparationController gamePreparationController;
+	/**
+	 * GamePreparationController
+	 */
+	private final GamePreparationController gamePreparationController;
 
-	private GameController gameController;
+	/**
+	 * GameController
+	 */
+	private final GameController gameController;
 
-	private AIController aIController;
+	/**
+	 * AIController
+	 */
+	private final AIController aIController;
 
-	private PlayerController playerController;
+	/**
+	 * PlayerController
+	 */
+	private final PlayerController playerController;
 
-	private UndoRedoController undoRedoController;
+	/**
+	 * UndoRedoController
+	 */
+	private final UndoRedoController undoRedoController;
 
+	/**
+	 * iOController
+	 */
+	private final IOController iOController;
+
+	/**
+	 * highScoreController
+	 */
+	private final HighScoreController highScoreController;
+
+	/**
+	 * Game
+	 */
 	private Game game;
 
-	private IOController iOController;
-
-	private HighscoreController highscoreController;
-
-	void setGame(int simulationSpeed, boolean ironman) {
-
+	/**
+	 * generates all controllers and their AUIs
+	 */
+	public MainController(HighscoreAUI highscoreAUI, ErrorAUI errorAUI, HintAUI hintAUI, LogAUI logAUI, TurnAUI turnAUI)
+	{
+		gamePreparationController = new GamePreparationController(this, errorAUI);
+		gameController = new GameController(this, errorAUI, logAUI, turnAUI);
+		aIController = new AIController(this, hintAUI);
+		playerController = new PlayerController(this, errorAUI);
+		undoRedoController = new UndoRedoController(this);
+		iOController = new IOController(this, errorAUI);
+		highScoreController = new HighScoreController(this, errorAUI, highscoreAUI);
 	}
 
+	/**
+	 * checks if the attribute game is set
+	 * @return true if a game is set
+	 */
 	public boolean hasGame(){
 		return game != null;
 	}
 
+	/**
+	 * sets the game
+	 * @param game the new game
+	 */
+	void setGame(Game game) {
+		this.game = game;
+	}
+
+	/**
+	 * returns the current game
+	 * @return the game
+	 */
 	public Game getGame(){
 		return game;
 	}
 
+	/**
+	 * returns a GamePreparationController
+	 * @return GamePreparationController
+	 */
+	public GamePreparationController getGamePreparationController() {
+		return gamePreparationController;
+	}
+
+	/**
+	 * returns a GameController
+	 * @return GameController
+	 */
+	public GameController getGameController() {
+		return gameController;
+	}
+
+	/**
+	 * returns an getAIController
+	 * @return aIController
+	 */
+	public AIController getAIController() {
+		return aIController;
+	}
+
+	/**
+	 * returns a PlayerController
+	 * @return playerController
+	 */
+	public PlayerController getPlayerController() {
+		return playerController;
+	}
+
+	/**
+	 * returns a UndoRedoController
+	 * @return undoRedoController
+	 */
+	public UndoRedoController getUndoRedoController() {
+		return undoRedoController;
+	}
+
+	/**
+	 * returns an IOController
+	 * @return iOController
+	 */
+	public IOController getIOController() {
+		return iOController;
+	}
+
+	/**
+	 * returns an HighScoreController
+	 * @return highScoreController
+	 */
+	public HighScoreController getHighScoreController() {
+		return highScoreController;
+	}
 }

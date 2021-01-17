@@ -42,14 +42,24 @@ public class QuiltBoard {
 	}
 
 	/**
-	 * Adds a patch onto the patch board, whereas (posX,posY) represents the top left
-	 * field of the placement position on the patch board.
-	 * @param patch the patch that should be added
-	 * @param posX the x-coordinate of the placement position
-	 * @param posY the y-coordinate of the placement position
+	 * Places a patch onto the patch board
+	 * @param patch the patch that should be placed
+	 * @param placement the placement of the patch
+	 * @param rotation the rotation angle of the patch
+	 * @param flipped whether or not the patch is flipped
 	 */
-	public void addPatch(Patch patch, int posX, int posY){
-		patchBoard.insert(patch.getShape().multiply(patch.getPatchID()), posX, posY);
+	public void addPatch(Patch patch, Matrix placement, int rotation, boolean flipped){
+		int calculatedId = patch.getPatchID() ;
+		if(rotation == 0 || rotation == 90 || rotation == 180 || rotation == 270){
+			calculatedId += rotation;
+		}
+		else
+			throw new IllegalArgumentException("Rotation angle not valid!");
+
+		if(flipped)
+			calculatedId *= -1;
+		if(!patchBoard.disjunctive(placement)) throw new IllegalArgumentException("The patch does not fit in this position!");
+		patchBoard.add(placement.multiply(calculatedId));
 		patches.add(patch);
 	}
 

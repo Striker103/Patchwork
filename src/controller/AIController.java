@@ -27,4 +27,14 @@ public class AIController {
 		return null;
 	}
 
+	/**
+	 * Constructor that sets the mainController and all AUIs
+	 * @param mainController The controller that knows all other controllers
+	 * @param hintAUI the hintAUI
+	 */
+	public AIController(MainController mainController, HintAUI hintAUI){
+		this.mainController = mainController;
+		this.hintAUI = hintAUI;
+	}
+
 }

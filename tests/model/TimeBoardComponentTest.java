@@ -1,29 +1,29 @@
 package model;
 
 import junit.framework.TestCase;
+import org.junit.Before;
 import org.junit.Test;
 
-import java.sql.Time;
+import static org.junit.Assert.*;
+
 
 /**
  * @author Mohammed
  */
-public class TimeBoardComponentTest extends TestCase {
+public class TimeBoardComponentTest {
 
     private TimeBoardComponent timeBoardComponent;
 
     private final int POSITION = 3;
 
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
         timeBoardComponent = new TimeBoardComponent(POSITION);
-
     }
 
     /**
      * Tests the Constructor with a valid position
      */
-    @Test(expected = IllegalArgumentException.class)
     public void testTimeBoardComponent(){
         TimeBoardComponent component = new TimeBoardComponent(5);
     }
@@ -33,7 +33,7 @@ public class TimeBoardComponentTest extends TestCase {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testTimeBoardComponentNegativePosition(){
-        TimeBoardComponent component = new TimeBoardComponent(-1);
+        new TimeBoardComponent(-1);
     }
 
     /**
@@ -66,7 +66,7 @@ public class TimeBoardComponentTest extends TestCase {
      */
     @Test
     public void testHasPatch() {
-        assertTrue(timeBoardComponent.hasPatch());
+        assertFalse(timeBoardComponent.hasPatch());
     }
 
 
