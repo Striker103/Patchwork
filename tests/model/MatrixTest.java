@@ -15,10 +15,6 @@ public class MatrixTest {
                             MATRIX8 = new Matrix(new int[][]{{0,0,0,1,0},{0,0,0,0,0},{0,1,0,0,0}}),
                             MATRIX9 = new Matrix(new int[][]{{0,1},{1,0}});
 
-    @Before
-    public void init(){
-    }
-
     /**
      * There is no Matrix with no entries
      */
@@ -96,7 +92,7 @@ public class MatrixTest {
      */
     @Test
     public void testFlip() {
-        assertEquals(new Matrix(new int[][]{{1,0,0},{0,0,1}}).flip(),MATRIX6);
+        assertEquals(new Matrix(new int[][]{{1,0,0},{0,0,1}}).flip(),MATRIX7);
         assertNotEquals(MATRIX4.copy().flip(), MATRIX4);
         assertEquals(MATRIX4.copy().flip().flip(), MATRIX4);
     }
@@ -196,10 +192,23 @@ public class MatrixTest {
         assertEquals(MATRIX6.count(3),0);
     }
 
+    /**
+     * tests trim method
+     */
     @Test
     public void testTrim(){
         assertEquals(MATRIX8.copy().trim(), MATRIX9);
         assertEquals(MATRIX7.copy().trim(), MATRIX9);
         assertNotEquals(MATRIX8.copy().trim(), MATRIX7);
+    }
+
+    /**
+     * tests whether java is capable of multiplying two integers
+     */
+    @Test
+    public void testCellAmount(){
+        assertEquals(MATRIX1.amountCells(), 9);
+        assertEquals(MATRIX9.amountCells(), 4);
+        assertEquals(MATRIX7.amountCells(), 6);
     }
 }
