@@ -145,4 +145,6 @@ public class Game {
 	public boolean currentGameStateLast(){
 		return currentGameState == gameStates.size()-1;
 	}
+
+
 }

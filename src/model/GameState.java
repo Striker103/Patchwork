@@ -168,4 +168,18 @@ public class GameState{
 	 * @return second player object
 	 */
 	public Player getPlayer2() { return player2; }
+
+	/**
+	 * Returns the Player with Last Position on the TimeBoard
+	 * @return the Last Player
+	 */
+	//TODO Player on Top
+	public Player nextPlayer(){
+		if(player1.getBoardPosition()<=player2.getBoardPosition()){
+			return player1;
+		}
+		else{
+			return player2;
+		}
+	}
 }
