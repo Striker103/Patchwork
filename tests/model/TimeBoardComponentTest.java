@@ -45,14 +45,6 @@ public class TimeBoardComponentTest {
     }
 
     /**
-     * Tests getPosition
-     */
-    @Test
-    public void testGetPosition() {
-        assertEquals(POSITION, timeBoardComponent.getPosition());
-    }
-
-    /**
      * Tests hasButton
      */
     @Test
