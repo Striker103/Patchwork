@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class Game {
 	/**
-	 * The actual state of the game
+	 * Currently state of the game
 	 */
 	private int currentGameState;
 
@@ -60,7 +60,7 @@ public class Game {
 	}
 
 	/**
-	 * Gets the actual state of the game
+	 * Gets the currently state of the game
 	 * @return the currently state
 	 */
 	public int getCurrentGameState(){
@@ -68,8 +68,8 @@ public class Game {
 	}
 
 	/**
-	 * Gets the reachable higher Score
-	 * @return the reachable higher Score
+	 * Gets the reachabled highscore
+	 * @return the reachabled highscore
 	 */
 	public boolean isHighscoreReachable(){
 		return highscoreReachable;

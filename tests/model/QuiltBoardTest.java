@@ -23,9 +23,9 @@ public class QuiltBoardTest{
             {false, false, false, false}};
     private final int TIME = 3;
 
-    private final Patch PATCH = new Patch(ID, INCOME, BUTTONCOST, SHAPE, TIME);
+    private final Patch PATCH = new Patch(ID, INCOME, BUTTONCOST, new Matrix(SHAPE), TIME);
 
-    public void setUp() throws Exception {
+    public void setUp() {
         quiltBoard = new QuiltBoard();
 
     }

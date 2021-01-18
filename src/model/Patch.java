@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Arrays;
+
 /**
  * Represents a patch that is going to be placed on players quiltboard
  * @author Yannick
@@ -9,7 +11,8 @@ public class Patch {
 	/**
 	 * X*X Patches
 	 */
-	private static final int MAXSIZEFORDIMENSION = 5;
+	private static final int MAXSIZEX = 3;
+	private static final int MAXSIZEY = 5;
 	/**
 	 * represents the income the player gets when moving over a button
 	 */
@@ -23,7 +26,7 @@ public class Patch {
 	/**
 	 * a matrix where true represents that the tile is present on that block
 	 */
-	private final boolean[][] shape;
+	private final Matrix shape;
 
 	/**
 	 * the number of steps the player takes after buying the tile
@@ -41,28 +44,18 @@ public class Patch {
 	 * @param patchID           number to identify the patch
 	 * @param buttonIncome the income provided
 	 * @param buttonsCost  the price to pay for the tile
-	 * @param shape        the shape of the tile as a 5x5 array
+	 * @param shape        the shape of the tile as a 5x3 array
 	 * @param time         steps on the timeboard
 	 *
 	 * @throws IllegalArgumentException when there are null references or non natural numbers
 	 */
-	public Patch(int patchID, int buttonIncome, int buttonsCost, boolean[][] shape, int time) {
+	public Patch(int patchID, int buttonIncome, int buttonsCost, Matrix shape, int time) {
 		CheckUtil.assertNonNull(patchID,buttonIncome,buttonsCost,shape,time);
 		CheckUtil.assertNonNegative(buttonIncome,buttonsCost);
 		CheckUtil.assertPositive(patchID,time);
 
-		if(shape.length != MAXSIZEFORDIMENSION) {
-			throw new IllegalArgumentException("Shape has to be a 5x5 array");
-		}
-
-		for(boolean[] arr : shape){
-			if(arr.length != MAXSIZEFORDIMENSION)
-				throw new IllegalArgumentException("Shape has to be a 5x5 array");
-		}
-
-
-		if(!checkShape(shape)){
-			throw new IllegalArgumentException("No shape of the patch defined");
+		if(shape.getRows() != MAXSIZEY|| shape.getColumns() != MAXSIZEX) {
+			throw new IllegalArgumentException("Shape has to be a 5x3 array");
 		}
 
 		this.patchID = patchID;
@@ -70,11 +63,13 @@ public class Patch {
 		this.buttonsCost = buttonsCost;
 		this.shape = shape;
 		this.time = time;
+
+		if(this.shape.count(1)==0) throw new IllegalArgumentException("Patch has no shape defined");
 	}
 
 
 	public Patch copy() {
-		return new Patch(this.patchID,this.buttonIncome,this.buttonsCost,this.shape.clone(),this.time);
+		return new Patch(this.patchID,this.buttonIncome,this.buttonsCost,this.shape.copy(),this.time);
 	}
 
 	/**
@@ -100,7 +95,7 @@ public class Patch {
 	 *
 	 * @return the shape
 	 */
-	public boolean[][] getShape() {
+	public Matrix getShape() {
 		return shape;
 	}
 
@@ -133,17 +128,6 @@ public class Patch {
 		if (obj == null || getClass() != obj.getClass()) return false;
 		Patch patch = (Patch) obj;
 		return this.patchID == patch.patchID;
-	}
-
-
-	private boolean checkShape(boolean[][] shape) {
-		boolean anyTrue = false;
-		for(boolean[] boolArr : shape){
-			for(boolean value : boolArr){
-				anyTrue = anyTrue ||value;
-			}
-		}
-		return anyTrue;
 	}
 
 }

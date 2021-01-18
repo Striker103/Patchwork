@@ -17,14 +17,14 @@ public class PlayerTest {
     {
         SCORE = new Score(5, true, PlayerType.HUMAN, "Ad");
     }
-    private final Player PLAYER = new Player(BOARDPOSIZION, MONEY, NAME, PlayerType.AI_MEDIUM);
+    private final Player PLAYER = new Player(BOARDPOSIZION, MONEY, NAME, PlayerType.AI_MEDIUM, false);
 
     /**
      * Tests the Constructor
      */
     @Test
     public void testConstructor(){
-        new Player(BOARDPOSIZION, MONEY, NAME, PlayerType.AI_MEDIUM);
+        new Player(BOARDPOSIZION, MONEY, NAME, PlayerType.AI_MEDIUM, false);
     }
 
     /**
@@ -32,7 +32,7 @@ public class PlayerTest {
      */
     @Test (expected=IllegalArgumentException.class)
     public void testConstructorName(){
-        new Player (BOARDPOSIZION, MONEY, "", PlayerType.AI_MEDIUM);
+        new Player (BOARDPOSIZION, MONEY, "", PlayerType.AI_MEDIUM, false);
     }
 
     /**

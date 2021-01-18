@@ -32,15 +32,4 @@ public class CheckUtil {
             }
         }
     }
-
-    public static void arraySameSize(boolean[][] placement, int[][] patchBoard){
-        if(placement.length != patchBoard.length){
-            throw new IllegalArgumentException("Arrays do not have the same size!");
-        }
-        for(int i = 0; i < placement.length; i++){
-            if(placement[i].length  != patchBoard[i].length){
-                throw new IllegalArgumentException("The arrays do not have the same size!");
-            }
-        }
-    }
 }

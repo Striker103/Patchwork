@@ -1,5 +1,6 @@
 package ai;
 
+import model.Matrix;
 import model.QuiltBoard;
 
 import java.util.Arrays;
@@ -51,22 +52,6 @@ public final class AIUtil {
         for(int i = rows; i<rows+smallerMatrix.length; i++){
             System.arraycopy(smallerMatrix[i - rows], 0, largerMatrix[i], cols, smallerMatrix[i-rows].length);
         }
-    }
-
-    /**
-     * Checks whether a patchPosition can be applied on a quiltBoard
-     * @param actualBoard the quiltBoard on which the patch should be applied
-     * @param patchPosition the 9x9 matrix indicating the planned position of the patch
-     * @return true iff the patch can be placed on the quiltboard at this location
-     */
-    public static boolean isPossible(QuiltBoard actualBoard, boolean[][] patchPosition) {
-        int[][] patchBoard = actualBoard.getPatchBoard();
-        for (int rows = 0; rows < patchBoard.length; rows++) {
-            for (int cols = 0; cols < patchBoard[rows].length; cols++) {
-                if(patchPosition[rows][cols] && patchBoard[rows][cols]!=0) return false;
-            }
-        }
-        return true;
     }
 
     /**

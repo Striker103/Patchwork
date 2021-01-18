@@ -34,6 +34,11 @@ public class Player {
 	private Score score;
 
 	/**
+	 * Indicates whether the player receives 7 bonus points
+	 */
+	private boolean hasSpecialTile = false;
+
+	/**
 	 * Initializes a new Player-Object
 	 * @param boardPosition position on the TimeBoard
 	 * @param money number of buttons
@@ -41,7 +46,7 @@ public class Player {
 	 * @param playerType the Type of Player
 	 */
 
-	public Player( int boardPosition, int money, String name, PlayerType playerType ) {
+	public Player( int boardPosition, int money, String name, PlayerType playerType, boolean hasSpecialTile) {
 		CheckUtil.assertNonNull(name);
 		CheckUtil.assertNonNegative(money, boardPosition);
 
@@ -52,6 +57,7 @@ public class Player {
 		this.money=money;
 		this.name=name;
 		this.playerType = playerType;
+		this.hasSpecialTile = hasSpecialTile;
 
 	}
 
@@ -61,7 +67,7 @@ public class Player {
 	 */
 
 	public Player copy() {
-		return new Player(boardPosition, money, name, playerType);
+		return new Player(boardPosition, money, name, playerType, hasSpecialTile);
 	}
 
 	/**
@@ -103,6 +109,15 @@ public class Player {
 	public Score getScore(){
 		return score;
 	}
+
+	/**
+	 * Returns the whether the player has the special tile
+	 * @return has special tile
+	 */
+	public boolean getHasSpecialTile() {
+		return hasSpecialTile;
+	}
+
 	/**
 	 * Set score
 	 * @param pScore
@@ -128,6 +143,15 @@ public class Player {
 	 * @param pQuiltBoard
 	 */
 	public void setQuiltBoard( QuiltBoard pQuiltBoard){ quiltBoard = pQuiltBoard;}
+
+	/**
+	 * Set hasSpecialTile
+	 * @param hasSpecialTile
+	 */
+	public void setHasSpecialTile(boolean hasSpecialTile) {
+		this.hasSpecialTile = hasSpecialTile;
+	}
+
 	/**
 	 * Checks for equality
 	 * @param obj to compare to
@@ -140,6 +164,7 @@ public class Player {
 		Player that = (Player) obj;
 		return boardPosition == that.boardPosition &&
 				money == that.money &&
+				hasSpecialTile == that.hasSpecialTile &&
 				Objects.equals(name, that.name) &&
 				Objects.equals(quiltBoard, that.quiltBoard) &&
 				Objects.equals(playerType, that.playerType) &&
@@ -151,6 +176,6 @@ public class Player {
 	 */
 	@Override
 	public int hashCode() {
-		return Objects.hash(boardPosition, money, name, playerType);
+		return Objects.hash(boardPosition, money, name, playerType, hasSpecialTile);
 	}
 }

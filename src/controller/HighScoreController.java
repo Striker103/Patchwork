@@ -3,16 +3,12 @@ package controller;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import model.CheckUtil;
-import model.Player;
-import model.PlayerType;
-import model.Score;
+import model.*;
 import view.aui.ErrorAUI;
 import view.aui.HighscoreAUI;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 
@@ -23,10 +19,6 @@ public class HighScoreController {
 	private MainController mainController;
 
 	private ErrorAUI errorAUI;
-
-
-
-
 
 	/**
 	 * Constructor that sets the mainController and all AUIs
@@ -51,8 +43,8 @@ public class HighScoreController {
 			return;
 		}
 
-		Player player1 = mainController.getGame().getGameStates().get(mainController.getGame().getCurrentGameState()).getPlayer1();
-		Player player2 = mainController.getGame().getGameStates().get(mainController.getGame().getCurrentGameState()).getPlayer2();
+		Player player1 = mainController.getGame().getGameStates().get(mainController.getGame().getCurrentGameStateIndex()).getPlayer1();
+		Player player2 = mainController.getGame().getGameStates().get(mainController.getGame().getCurrentGameStateIndex()).getPlayer2();
 
 		try {
 			CheckUtil.assertNonNull(player1, player2);
@@ -73,7 +65,7 @@ public class HighScoreController {
 	 * Clears highscore file
 	 * @param file file
 	 */
-	public void clearHighscores(File file) {
+	public void clearHighScores(File file) {
 		try {
 			new PrintWriter(file).close();
 		} catch (FileNotFoundException e) {
@@ -86,7 +78,7 @@ public class HighScoreController {
 	 * @param file file
 	 */
 	public void showHighScores(File file){
-		highscoreAUI.showHighscores(readHighscores(file));
+		highscoreAUI.showHighscores(readHighScores(file));
 	}
 
 
@@ -99,19 +91,14 @@ public class HighScoreController {
 		//Calculate money
 		int scoreValue = player.getMoney();
 
-		int[][] board = player.getQuiltBoard().getPatchBoard();
+		Matrix board = player.getQuiltBoard().getPatchBoard();
 
 		//Calculate empty spaces
-		for (int i = 0; i < board.length; i++) {
-			for (int j = 0; j < board[i].length; j++) {
-				if(board[i][j] == 0)
-					scoreValue -= 2;
-			}
-
-		}
+		scoreValue -= 2 * board.count(0);
 
 		//Calculate special tile
-		//TODO
+		if (player.getHasSpecialTile())
+			scoreValue += 7;
 
 		player.getScore().setValue(scoreValue);
 
@@ -121,16 +108,18 @@ public class HighScoreController {
 
 		Score score = player.getScore();
 
-		LinkedList<Score> scores = readHighscores(file);
-		scores.add(score);
+		LinkedList<Score> scores = readHighScores(file);
+		if (scores != null) {
+			scores.add(score);
 
-		scores.sort(Comparator.comparingInt(Score::getValue));
+			scores.sort(Comparator.comparingInt(Score::getValue));
 
-		clearHighscores(file);
-		writeHighscores(scores, file);
+			clearHighScores(file);
+			writeHighScores(scores, file);
+		}
 	}
 
-	private void writeHighscores(LinkedList<Score> scores, File file){
+	private void writeHighScores(LinkedList<Score> scores, File file){
 
 		CheckUtil.assertNonNull(scores);
 
@@ -147,7 +136,7 @@ public class HighScoreController {
 		}
 	}
 
-	private LinkedList<Score> readHighscores(File file) {
+	private LinkedList<Score> readHighScores(File file) {
 
 		try {
 			String json = Files.readString(file.toPath());

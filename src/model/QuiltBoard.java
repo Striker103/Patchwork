@@ -1,7 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,7 +12,7 @@ public class QuiltBoard {
 	/**
 	 * A 2D Array for the player's quilt board
 	 */
-	private int[][] patchBoard;
+	private Matrix patchBoard;
 
 	/**
 	 * A list of the patches on the quilt board
@@ -25,8 +24,8 @@ public class QuiltBoard {
 	 * Sets the size of the board to 9x9
 	 */
 	public QuiltBoard(){
-		patchBoard = new int[9][9];
-		patches = new ArrayList<Patch>();
+		patchBoard = new Matrix(9,9);
+		patches = new ArrayList<>();
 	}
 
 	/**
@@ -38,7 +37,7 @@ public class QuiltBoard {
 		for(Patch patch : this.patches){
 			cloneBoard.getPatches().add(patch.copy());
 		}
-		cloneBoard.patchBoard = this.patchBoard.clone();
+		cloneBoard.patchBoard = this.patchBoard.copy();
 		return cloneBoard;
 	}
 
@@ -49,8 +48,7 @@ public class QuiltBoard {
 	 * @param rotation the rotation angle of the patch
 	 * @param flipped whether or not the patch is flipped
 	 */
-	public void addPatch(Patch patch, boolean[][] placement, int rotation, boolean flipped){
-		CheckUtil.arraySameSize(placement, patchBoard);
+	public void addPatch(Patch patch, Matrix placement, int rotation, boolean flipped){
 		int calculatedId = patch.getPatchID() ;
 		if(rotation == 0 || rotation == 90 || rotation == 180 || rotation == 270){
 			calculatedId += rotation;
@@ -60,15 +58,8 @@ public class QuiltBoard {
 
 		if(flipped)
 			calculatedId *= -1;
-
-		for(int i = 0; i < placement.length; i++){
-			for(int j = 0; j < placement[i].length; j++){
-				if(placement[i][j] && patchBoard[i][j] != 0)
-					throw new IllegalArgumentException("The patch does not fit in this position!");
-				else
-					patchBoard[i][j] = calculatedId;
-			}
-		}
+		if(!patchBoard.disjunctive(placement)) throw new IllegalArgumentException("The patch does not fit in this position!");
+		patchBoard.add(placement.multiply(calculatedId));
 		patches.add(patch);
 	}
 
@@ -84,21 +75,28 @@ public class QuiltBoard {
 	 * Getter for the player's patch board
 	 * @return the patch board
 	 */
-	public int[][] getPatchBoard(){
+	public Matrix getPatchBoard(){
 		return this.patchBoard;
 	}
 
 	/**
 	 * Compares 2 QuiltBoard objects and returns if they are equal
 	 * @param obj the other object
-	 * @return true if the 2 objects are equal
+	 * @return true iff the 2 objects are equal
 	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) return true;
 		if (obj == null || getClass() != obj.getClass()) return false;
 		QuiltBoard that = (QuiltBoard) obj;
-		return Arrays.equals(patchBoard, that.patchBoard) &&
+		return this.patchBoard.equals(that.patchBoard) &&
 				Objects.equals(patches, that.patches);
+	}
+
+	/**
+	 * Prints the PatchBoard
+	 */
+	public void print(){
+		this.patchBoard.print();
 	}
 }
