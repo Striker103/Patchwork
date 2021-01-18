@@ -61,7 +61,7 @@ public class GameState{
 		player2 = new Player(0, 5, secondPlayerNameAndType.getFirst(), secondPlayerNameAndType.getSecond(), false);
 
 		timeBoard = new TimeBoardComponent[53];
-		for(int i = 0; i < 53; i++)
+		for(int i = 0; i < timeBoard.length; i++)
 		{
 			timeBoard[i] = new TimeBoardComponent(i);
 		}
