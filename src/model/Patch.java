@@ -11,8 +11,8 @@ public class Patch {
 	/**
 	 * X*X Patches
 	 */
-	private static final int MAXSIZEX = 3;
-	private static final int MAXSIZEY = 5;
+	private static final int MAXSIZEX = 5;
+	private static final int MAXSIZEY = 3;
 	/**
 	 * represents the income the player gets when moving over a button
 	 */
