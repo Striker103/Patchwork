@@ -95,8 +95,8 @@ public class Matrix implements Iterable<Integer>{
         if(this.getRows()!=other.getRows() || this.getColumns()!= other.getColumns()) return false;
         var ownIterator = this.iterator();
         var otherIterator = other.iterator();
-        while(ownIterator.hasNext()){
-            if(!(ownIterator.next()!=0 && otherIterator.next() == 0)) return false;
+        while(ownIterator.hasNext() && otherIterator.hasNext()){
+            if((ownIterator.next()!=0 & otherIterator.next() != 0)) return false;
         }
         return true;
     }
@@ -327,14 +327,15 @@ public class Matrix implements Iterable<Integer>{
             int actRow=0, actColumn=0;
             @Override
             public boolean hasNext() {
-                return (actRow==getRows()-1 && actColumn==getColumns()-1);
+                return !(actRow==getRows()-1 && actColumn==getColumns()-1);
             }
 
             @Override
             public Integer next() {
+                int temp = matrix[actRow][actColumn];
                 if(actColumn==getColumns()-1) actRow++;
-                actColumn = ++actColumn % getRows();
-                return matrix[actRow][actColumn];
+                actColumn = ++actColumn % getColumns();
+                return temp;
             }
         };
     }
