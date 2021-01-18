@@ -359,11 +359,45 @@ public class Matrix implements Iterable<Integer>{
      * Prints the matrix to the console
      */
     public void print(){
-        for (int[] column : matrix) {
-            for (int position : column) {
+        for (int[] row : matrix) {
+            for (int position : row) {
                 System.out.printf("%3d", position);
             }
             System.out.println();
         }
+    }
+
+    /**
+     * Transforms a Matrix to a boolean Array where true symbolizes any patch
+     * @return the converted matrix
+     */
+    public boolean[][] toBooleanArray(){
+        boolean[][] boolArray = new boolean[this.getRows()][this.getColumns()];
+        for(int i = 0;i<this.getRows();i++){
+            for(int j = 0;j<this.getColumns();j++){
+                boolArray[i][j] = (this.get(i,j)>0);
+            }
+        }
+        return boolArray;
+    }
+
+    /**
+     * This without Positions of the other Matix
+     * @param other The other Matrix
+     * @return The setMinus of those Matices
+     */
+    public Matrix without(Matrix other){
+        if(this.getColumns()!=other.getColumns()||this.getRows()!=other.getRows()){
+            throw new IllegalArgumentException("The two matrices aren't compatible!");
+        }
+        Matrix newMatrix = new Matrix(this.getRows(),this.getColumns());
+        for(int i = 0;i<this.getRows();i++) {
+            for (int j = 0; j < this.getColumns(); j++) {
+                if(this.get(i,j)>0&&other.get(i,j)<=0){
+                    newMatrix.set(i,j,this.get(i,j));
+                }
+            }
+        }
+        return newMatrix;
     }
 }
