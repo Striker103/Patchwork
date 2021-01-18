@@ -15,8 +15,8 @@ import static org.junit.Assert.assertNotEquals;
 public class GameStateTest {
 
     Tuple<Tuple<String, PlayerType>, Tuple<String, PlayerType>> playerNames;
-    Tuple<Integer, Integer> validPositions, invalidPositions;
-    Tuple<Integer, Integer> validMoney, invalidMoney;
+    Tuple<Integer, Integer> validPositions;
+    Tuple<Integer, Integer> validMoney;
     ArrayList<Patch> patches;
     Player player1, player2;
     GameState gameState;
@@ -30,9 +30,7 @@ public class GameStateTest {
         Tuple<String, PlayerType> playerTwo = new Tuple<>("Bob", HUMAN);
         playerNames = new Tuple<>(playerOne, playerTwo);
         validPositions = new Tuple<>(1,2);
-        invalidPositions = new Tuple<>(-1,9999);
         validMoney = new Tuple<>(12,1000000002);
-        invalidMoney = new Tuple<>(-12, -0);
         patches = new ArrayList<>();
         boolean[][] shape = new boolean[][]{  {true, true, false, false, false},
                 {true, true, false, false, false},
@@ -42,7 +40,7 @@ public class GameStateTest {
 
         Patch patch = new Patch(1, 2, 5, shape, 2);
         patches.add(patch);
-        gameState = new GameState(validPositions, validMoney, playerNames, patches, true);
+        gameState = new GameState(playerNames, patches, true);
         player1 = gameState.getPlayer1();
         player2 = gameState.getPlayer2();
     }
@@ -52,7 +50,7 @@ public class GameStateTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorNull(){
-        new GameState(null, null, null, null, false);
+        new GameState(null, null, false);
     }
 
     /**
@@ -104,22 +102,7 @@ public class GameStateTest {
         Tuple<String, PlayerType> playerOne = new Tuple<>("", AI_EASY);
         Tuple<String, PlayerType> playerTwo = new Tuple<>("", AI_HARD);
         playerNames = new Tuple<>(playerOne, playerTwo);
-        new GameState(validPositions, validMoney, playerNames, patches, false);
+        new GameState(playerNames, patches, false);
     }
 
-    /**
-     * Tests whether illegal Positions are rejected
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void testInvalidPositions(){
-        new GameState(invalidPositions, validMoney, playerNames, patches, false);
-    }
-
-    /**
-     * Tests whether illegal Money is rejected
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void testInvalidMoney(){
-        new GameState(validPositions, invalidMoney, playerNames, patches, false);
-    }
 }

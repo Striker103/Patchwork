@@ -43,20 +43,16 @@ public class GameState{
 	/**
 	 * Constructor for a new GameState Object
 	 *
-	 * @param boardPositions		board position of players
-	 * @param playerMoney			money of players
-	 * @param playerNames 			names of players
+	 * @param playerNames 			names and types of players
 	 * @param patches 				list of patches
 	 * @param specialTileAvailable	true if the bonus tile is still available
 	 *
 	 * @throws IllegalArgumentException when player name is empty
 	 */
-	public GameState(Tuple<Integer, Integer> boardPositions, Tuple<Integer, Integer> playerMoney, Tuple<Tuple<String, PlayerType>, Tuple<String, PlayerType>> playerNames, List<Patch> patches, boolean specialTileAvailable)
+	public GameState(Tuple<Tuple<String, PlayerType>, Tuple<String, PlayerType>> playerNames, List<Patch> patches, boolean specialTileAvailable)
 	{
-		CheckUtil.assertNonNull(playerNames, boardPositions, playerMoney, patches, specialTileAvailable);
+		CheckUtil.assertNonNull(playerNames, patches, specialTileAvailable);
 		CheckUtil.assertNonNull(playerNames.getFirst(), playerNames.getSecond());
-		CheckUtil.assertNonNull(boardPositions.getFirst(), boardPositions.getSecond());
-		CheckUtil.assertNonNull(playerMoney.getFirst(), playerMoney.getSecond());
 
 		Tuple<String, PlayerType> firstPlayerNameAndType = playerNames.getFirst();
 		Tuple<String, PlayerType> secondPlayerNameAndType = playerNames.getSecond();
@@ -67,8 +63,8 @@ public class GameState{
 		this.specialTileAvailable = specialTileAvailable;
 
 
-		player1 = new Player(boardPositions.getFirst(), playerMoney.getFirst(), firstPlayerNameAndType.getFirst(), firstPlayerNameAndType.getSecond());
-		player2 = new Player(boardPositions.getSecond(), playerMoney.getSecond(), secondPlayerNameAndType.getFirst(), secondPlayerNameAndType.getSecond());
+		player1 = new Player(0, 5, firstPlayerNameAndType.getFirst(), firstPlayerNameAndType.getSecond());
+		player2 = new Player(0, 5, secondPlayerNameAndType.getFirst(), secondPlayerNameAndType.getSecond());
 
 		timeBoard = new TimeBoardComponent[53];
 		for(int i = 0; i < 53; i++)
