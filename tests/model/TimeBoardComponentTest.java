@@ -37,11 +37,11 @@ public class TimeBoardComponentTest {
     }
 
     /**
-     * Tests the clone method
+     * Tests the copy method
      */
     @Test
-    public void testTestClone() {
-        assertEquals(timeBoardComponent, timeBoardComponent.clone());
+    public void testTestCopy() {
+        assertEquals(timeBoardComponent, timeBoardComponent.copy());
     }
 
     /**

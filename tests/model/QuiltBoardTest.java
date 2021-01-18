@@ -31,11 +31,11 @@ public class QuiltBoardTest{
     }
 
     /**
-     * Tests clone()
+     * Tests copy
      */
     @Test
-    public void testTestClone() {
-        assertEquals(quiltBoard, quiltBoard.clone());
+    public void testTestCopy() {
+        assertEquals(quiltBoard, quiltBoard.copy());
     }
 
     /**

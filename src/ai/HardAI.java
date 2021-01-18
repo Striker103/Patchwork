@@ -33,7 +33,7 @@ public class HardAI extends AI {
         int filledSpots = AIUtil.filledPlaces(actualBoard.getPatchBoard()) + AIUtil.filledPlaces(patch.getShape());
         return generateAllPossiblePatches(patch).parallelStream() //Generate Patches and parallelize
                 .filter(patchPosition -> AIUtil.isPossible(actualBoard, patchPosition)) //Filter all places which are not valid
-                .map(place -> {QuiltBoard copy = actualBoard.clone();
+                .map(place -> {QuiltBoard copy = actualBoard.copy();
                     //copy.addPatch(patch);
                     return new Tuple<>(copy, evaluateBoard(copy, filledSpots));}) //map the valid places onto the quiltboard and evaluate the happiness
                 .max(Comparator.comparingDouble(Tuple::getSecond)) //Search maximum of happiness eg. best placement

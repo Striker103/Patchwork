@@ -61,8 +61,7 @@ public class Score{
 	 * Clones the object
 	 * @return Copy of the object
 	 */
-	@Override
-	public Score clone() {
+	public Score copy() {
 		//String is immutable
 		return new Score(value, isIronman, opponentType, playerName);
 	}

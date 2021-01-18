@@ -73,8 +73,7 @@ public class Patch {
 	}
 
 
-	@Override
-	public Patch clone() {
+	public Patch copy() {
 		return new Patch(this.patchID,this.buttonIncome,this.buttonsCost,this.shape.clone(),this.time);
 	}
 

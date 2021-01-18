@@ -33,11 +33,10 @@ public class QuiltBoard {
 	 * Clones the quilt board
 	 * @return A copy of the quilt board
 	 */
-	@Override
-	public QuiltBoard clone() {
+	public QuiltBoard copy() {
 		QuiltBoard cloneBoard = new QuiltBoard();
 		for(Patch patch : this.patches){
-			cloneBoard.getPatches().add(patch.clone());
+			cloneBoard.getPatches().add(patch.copy());
 		}
 		cloneBoard.patchBoard = this.patchBoard.clone();
 		return cloneBoard;

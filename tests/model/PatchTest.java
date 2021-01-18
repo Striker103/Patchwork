@@ -119,11 +119,11 @@ public class PatchTest{
     }
 
     /**
-     * Tests clone
+     * Tests copy
      */
     @Test
-    public void testTestClone() {
-        assertEquals(PATCH, PATCH.clone());
+    public void testTestCopy() {
+        assertEquals(PATCH, PATCH.copy());
     }
 
     /**

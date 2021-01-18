@@ -40,7 +40,7 @@ public class TimeBoardComponent {
 	 * A method that clones the current time board component
 	 * @return a copy of the time board component
 	 */
-	public TimeBoardComponent clone() {
+	public TimeBoardComponent copy() {
 		TimeBoardComponent timeBoardComponent = new TimeBoardComponent(position);
 		timeBoardComponent.setHasButton(hasButton);
 		timeBoardComponent.setHasPatch(hasPatch);

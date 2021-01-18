@@ -94,13 +94,13 @@ public class GameState{
 		this.logEntry = logEntry;
 		TimeBoardComponent[] arr = new TimeBoardComponent[timeBoard.length];
 		for (int i = 0; i < timeBoard.length; i++) {
-			arr[i] = timeBoard[i].clone();
+			arr[i] = timeBoard[i].copy();
 		}
 		this.timeBoard = arr;
 
-		this.patches = patches.stream().map(Patch::clone).collect(Collectors.toList());
-		this.player1 = player1.clone();
-		this.player2 = player2.clone();
+		this.patches = patches.stream().map(Patch::copy).collect(Collectors.toList());
+		this.player1 = player1.copy();
+		this.player2 = player2.copy();
 	}
 
 	/**
@@ -134,8 +134,7 @@ public class GameState{
 	 * Copies the GameState
 	 * @return A copy of the GameState object
 	 */
-	@Override
-	public GameState clone() {
+	public GameState copy() {
 		return new GameState(specialTileAvailable, logEntry, timeBoard, patches, player1, player2);
 	}
 

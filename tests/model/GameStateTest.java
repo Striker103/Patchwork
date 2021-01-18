@@ -66,34 +66,34 @@ public class GameStateTest {
     }
 
     /**
-     * Tests clone-Method for equality and for changes not being reflected afterwards
+     * Tests copy-Method for equality and for changes not being reflected afterwards
      */
     @Test
     @SuppressWarnings({"deprecation"})
-    public void testClone(){
+    public void testCopy(){
         gameState.setLogEntry("test");
-        GameState clone = gameState.clone();
-        assertEquals(clone.getPlayer1(),(player1));
-        assertEquals(clone.getPlayer2(), player2);
-        assertEquals(clone.getPatches(), patches);
-        assertEquals(clone.getLogEntry(), "test");
-        assertEquals(clone.getTimeBoard(), gameState.getTimeBoard());
-        assertNotEquals(clone.hashCode(), gameState.hashCode());
+        GameState copy = gameState.copy();
+        assertEquals(copy.getPlayer1(),(player1));
+        assertEquals(copy.getPlayer2(), player2);
+        assertEquals(copy.getPatches(), patches);
+        assertEquals(copy.getLogEntry(), "test");
+        assertEquals(copy.getTimeBoard(), gameState.getTimeBoard());
+        assertNotEquals(copy.hashCode(), gameState.hashCode());
 
 
-        clone.setSpecialTileAvailable(false);
-        assertNotEquals(clone.getSpecialTileAvailable(), gameState.getSpecialTileAvailable());
-        clone.setPatches(null);
-        assertNotEquals(clone.getPatches(), gameState.getPatches());
+        copy.setSpecialTileAvailable(false);
+        assertNotEquals(copy.getSpecialTileAvailable(), gameState.getSpecialTileAvailable());
+        copy.setPatches(null);
+        assertNotEquals(copy.getPatches(), gameState.getPatches());
     }
 
     /**
-     * Tests equality (obv only correct if clone works properly)
+     * Tests equality (obv only correct if copy works properly)
      */
     @Test
     public void testEquals(){
-        GameState clone = gameState.clone();
-        assertEquals(clone, gameState);
+        GameState copy = gameState.copy();
+        assertEquals(copy, gameState);
     }
 
     /**

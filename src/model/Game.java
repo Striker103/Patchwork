@@ -109,8 +109,7 @@ public class Game {
 	 * Clones the object
 	 * @return Copy of the object
 	 */
-	@Override
-	public Game clone() {
+	public Game copy() {
 		return new Game(ironman); }
 
 }

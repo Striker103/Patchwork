@@ -56,8 +56,7 @@ public class Player {
 	 * Clones the object
 	 * @return Copy of the object
 	 */
-	@Override
-	public Player clone() {
+	public Player copy() {
 		return new Player(boardPosition, money, name, playerType);
 	}
 

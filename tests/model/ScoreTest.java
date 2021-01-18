@@ -1,6 +1,5 @@
 package model;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
@@ -105,14 +104,14 @@ public class ScoreTest {
     }
 
     /**
-     * Test that clone instantiates a new, independent object that is still equal and has the same hash
+     * Test that copy instantiates a new, independent object that is still equal and has the same hash
      */
     @Test
-    public void testClone(){
+    public void testCopy(){
         Score testScore = new Score(1,false,PlayerType.AI_MEDIUM,"Peter");
-        assertEquals(testScore,testScore.clone());
-        assertEquals(testScore.hashCode(),testScore.clone().hashCode());
-        assertNotEquals(System.identityHashCode(testScore),System.identityHashCode(testScore.clone()));
+        assertEquals(testScore,testScore.copy());
+        assertEquals(testScore.hashCode(),testScore.copy().hashCode());
+        assertNotEquals(System.identityHashCode(testScore),System.identityHashCode(testScore.copy()));
     }
 
 
