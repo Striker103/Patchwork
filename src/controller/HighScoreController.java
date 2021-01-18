@@ -3,10 +3,7 @@ package controller;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import model.CheckUtil;
-import model.Player;
-import model.PlayerType;
-import model.Score;
+import model.*;
 import view.aui.ErrorAUI;
 import view.aui.HighscoreAUI;
 
@@ -99,16 +96,10 @@ public class HighScoreController {
 		//Calculate money
 		int scoreValue = player.getMoney();
 
-		int[][] board = player.getQuiltBoard().getPatchBoard();
+		Matrix board = player.getQuiltBoard().getPatchBoard();
 
 		//Calculate empty spaces
-		for (int i = 0; i < board.length; i++) {
-			for (int j = 0; j < board[i].length; j++) {
-				if(board[i][j] == 0)
-					scoreValue -= 2;
-			}
-
-		}
+		scoreValue -= board.count(0);
 
 		//Calculate special tile
 		//TODO
