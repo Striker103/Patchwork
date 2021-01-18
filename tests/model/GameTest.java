@@ -61,7 +61,7 @@ public class GameTest {
 
         Patch patch = new Patch(1, 2, 5, shape, 2);
         patches.add(patch);
-        gameState = new GameState(validPositions, validMoney, playerNames, patches, true);
+        gameState = new GameState(playerNames, patches, true);
         player1 = gameState.getPlayer1();
         player2 = gameState.getPlayer2();
         GAME.addGameState(gameState);
