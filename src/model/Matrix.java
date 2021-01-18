@@ -313,7 +313,7 @@ public class Matrix implements Iterable<Integer>{
      */
     @Override
     public int hashCode() {
-        return Arrays.hashCode(matrix);
+        return Arrays.deepHashCode(matrix);
     }
 
     /**
