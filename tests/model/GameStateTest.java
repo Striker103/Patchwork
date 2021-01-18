@@ -38,7 +38,7 @@ public class GameStateTest {
                 {false, false, false, false, false},
                 {false, false, false, false, false}};
 
-        Patch patch = new Patch(1, 2, 5, shape, 2);
+        Patch patch = new Patch(1, 2, 5, new Matrix(shape), 2);
         patches.add(patch);
         gameState = new GameState(playerNames, patches, true);
         player1 = gameState.getPlayer1();
@@ -59,7 +59,7 @@ public class GameStateTest {
     @Test
     public void testChangePatchAfterwards(){
         boolean[][] shape = {{true, true, true, true, true},{true, true, true, true, true},{true, true, true, true, true},{true, true, true, true, true},{true, true, true, true, true}};
-        patches.add(new Patch(12, 1, 1, shape, 1));
+        patches.add(new Patch(12, 1, 1, new Matrix(shape), 1));
         assertNotEquals(gameState.getPatches(), patches);
     }
 

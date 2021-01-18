@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Arrays;
+
 /**
  * Represents a patch that is going to be placed on players quiltboard
  * @author Yannick
@@ -23,7 +25,7 @@ public class Patch {
 	/**
 	 * a matrix where true represents that the tile is present on that block
 	 */
-	private final boolean[][] shape;
+	private final Matrix shape;
 
 	/**
 	 * the number of steps the player takes after buying the tile
@@ -46,23 +48,13 @@ public class Patch {
 	 *
 	 * @throws IllegalArgumentException when there are null references or non natural numbers
 	 */
-	public Patch(int patchID, int buttonIncome, int buttonsCost, boolean[][] shape, int time) {
+	public Patch(int patchID, int buttonIncome, int buttonsCost, Matrix shape, int time) {
 		CheckUtil.assertNonNull(patchID,buttonIncome,buttonsCost,shape,time);
 		CheckUtil.assertNonNegative(buttonIncome,buttonsCost);
 		CheckUtil.assertPositive(patchID,time);
 
-		if(shape.length != MAXSIZEFORDIMENSION) {
+		if(shape.getRows() != MAXSIZEFORDIMENSION|| shape.getColumns() != MAXSIZEFORDIMENSION) {
 			throw new IllegalArgumentException("Shape has to be a 5x5 array");
-		}
-
-		for(boolean[] arr : shape){
-			if(arr.length != MAXSIZEFORDIMENSION)
-				throw new IllegalArgumentException("Shape has to be a 5x5 array");
-		}
-
-
-		if(!checkShape(shape)){
-			throw new IllegalArgumentException("No shape of the patch defined");
 		}
 
 		this.patchID = patchID;
@@ -70,11 +62,13 @@ public class Patch {
 		this.buttonsCost = buttonsCost;
 		this.shape = shape;
 		this.time = time;
+
+		if(this.shape.count(1)==0) throw new IllegalArgumentException("Patch has no shape defined");
 	}
 
 
 	public Patch copy() {
-		return new Patch(this.patchID,this.buttonIncome,this.buttonsCost,this.shape.clone(),this.time);
+		return new Patch(this.patchID,this.buttonIncome,this.buttonsCost,this.shape.copy(),this.time);
 	}
 
 	/**
@@ -100,7 +94,7 @@ public class Patch {
 	 *
 	 * @return the shape
 	 */
-	public boolean[][] getShape() {
+	public Matrix getShape() {
 		return shape;
 	}
 
@@ -133,17 +127,6 @@ public class Patch {
 		if (obj == null || getClass() != obj.getClass()) return false;
 		Patch patch = (Patch) obj;
 		return this.patchID == patch.patchID;
-	}
-
-
-	private boolean checkShape(boolean[][] shape) {
-		boolean anyTrue = false;
-		for(boolean[] boolArr : shape){
-			for(boolean value : boolArr){
-				anyTrue = anyTrue ||value;
-			}
-		}
-		return anyTrue;
 	}
 
 }
