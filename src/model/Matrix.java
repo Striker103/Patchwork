@@ -132,17 +132,17 @@ public class Matrix implements Iterable<Integer>{
     }
 
     /**
-     * Inserts a smaller matrix into a larger one. Attention: This overwrites a part of this Matrix.
-     * @param matrix the Matrix which should be inserted
-     * @param rows the topmost row of this matrix in which should be inserted
+     * Inserts a smaller Matrix into a larger one. Attention: This overwrites a part of this Matrix.
+     * @param toInsert the Matrix which should be inserted
+     * @param rows the topmost row of this toInsert in which should be inserted
      * @param cols the leftmost column in which should be inserted
      * @return this Matrix
      */
-    public Matrix insert(Matrix matrix, int rows, int cols) {
-        if(matrix.getRows()+rows>this.getRows() || matrix.getColumns()+cols>this.getColumns()) throw new IndexOutOfBoundsException();
-        for(int row = rows; row<rows+matrix.getRows(); row++){
-            if (cols + matrix.getRows() - cols >= 0)
-                System.arraycopy(matrix.matrix[row - rows], 0, this.matrix[row], cols, matrix.getRows());
+    public Matrix insert(Matrix toInsert, int rows, int cols) {
+        if(toInsert.getRows()+rows>this.getRows() || toInsert.getColumns()+cols>this.getColumns()) throw new IndexOutOfBoundsException();
+        for(int row = rows; row<rows+toInsert.getRows(); row++){
+            if (cols + toInsert.getRows() - cols >= 0)
+                System.arraycopy(toInsert.matrix[row-rows], 0, this.matrix[row], cols, toInsert.getColumns());
         }
         return this;
     }
@@ -183,7 +183,7 @@ public class Matrix implements Iterable<Integer>{
             cols=0;
             for(int col=0; col<getColumns(); col++){
                 if(emptyColumns[col]) continue;
-                result.set(row, col, matrix[row][col]);
+                result.set(rows, cols, matrix[row][col]);
                 cols++;
             }
             rows++;
