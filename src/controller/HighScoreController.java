@@ -21,10 +21,6 @@ public class HighScoreController {
 
 	private ErrorAUI errorAUI;
 
-
-
-
-
 	/**
 	 * Constructor that sets the mainController and all AUIs
 	 * @param mainController The controller that knows all other controllers
@@ -99,10 +95,11 @@ public class HighScoreController {
 		Matrix board = player.getQuiltBoard().getPatchBoard();
 
 		//Calculate empty spaces
-		scoreValue -= board.count(0);
+		scoreValue -= 2 * board.count(0);
 
 		//Calculate special tile
-		//TODO
+		if (player.getHasSpecialTile())
+			scoreValue += 7;
 
 		player.getScore().setValue(scoreValue);
 
@@ -113,12 +110,14 @@ public class HighScoreController {
 		Score score = player.getScore();
 
 		LinkedList<Score> scores = readHighscores(file);
-		scores.add(score);
+		if (scores != null) {
+			scores.add(score);
 
-		scores.sort(Comparator.comparingInt(Score::getValue));
+			scores.sort(Comparator.comparingInt(Score::getValue));
 
-		clearHighscores(file);
-		writeHighscores(scores, file);
+			clearHighscores(file);
+			writeHighscores(scores, file);
+		}
 	}
 
 	private void writeHighscores(LinkedList<Score> scores, File file){
