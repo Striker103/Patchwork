@@ -232,14 +232,20 @@ public class Matrix implements Iterable<Integer>{
      * @return this Matrix
      */
     public Matrix rotate(){
+        return this.transpose().flip();
+    }
+
+    /**
+     * transposes this matrix. this alters this matrix! only possible if a square matrix
+     * @return this matrix
+     */
+    public Matrix transpose(){
         if(!isSquare()) throw new IllegalStateException("Only square matrices can be rotated");
-        for (int rows = 0; rows < getRows()/2; rows++) {
-            for (int cols = 0; cols < getRows()-1-rows; cols++) {
-                int temp = matrix[rows][cols];
-                matrix[rows][cols] = matrix[getRows()-1-rows][cols];
-                matrix[getRows()-1-rows][cols] = matrix[getRows()-1-rows][getRows()-1-cols];
-                matrix[getRows()-1-rows][getRows()-1-cols] = matrix[cols][getRows()-1-rows];
-                matrix[cols][getRows()-1-rows] = temp;
+        for (int row = 1; row < getRows(); row++) {
+            for (int col = 0; col < row; col++) {
+                int temp = matrix[row][col];
+                matrix[row][col] = matrix[col][row];
+                matrix[col][row] =temp;
             }
         }
         return this;
@@ -252,9 +258,9 @@ public class Matrix implements Iterable<Integer>{
      */
     private boolean isMatrix(int[][] testMatrix){
         if(testMatrix.length ==0) return false;
-        int rows = testMatrix.length;
+        int col = testMatrix[0].length;
         for (int[] arr : testMatrix){
-            if(arr.length != rows) return false;
+            if(arr.length != col) return false;
         }
         return true;
     }
@@ -266,7 +272,6 @@ public class Matrix implements Iterable<Integer>{
      */
     private boolean isMatrix(boolean[][] testMatrix){
         if(testMatrix.length ==0) return false;
-        int rows = testMatrix.length;
         int cols = testMatrix[0].length;
         for (boolean[] arr : testMatrix){
             if(arr.length != cols) return false;
@@ -308,7 +313,7 @@ public class Matrix implements Iterable<Integer>{
      */
     @Override
     public int hashCode() {
-        return Arrays.deepHashCode(matrix);
+        return Arrays.hashCode(matrix);
     }
 
     /**
