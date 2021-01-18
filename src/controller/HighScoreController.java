@@ -9,7 +9,6 @@ import view.aui.HighscoreAUI;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 
@@ -44,8 +43,8 @@ public class HighScoreController {
 			return;
 		}
 
-		Player player1 = mainController.getGame().getGameStates().get(mainController.getGame().getCurrentGameState()).getPlayer1();
-		Player player2 = mainController.getGame().getGameStates().get(mainController.getGame().getCurrentGameState()).getPlayer2();
+		Player player1 = mainController.getGame().getGameStates().get(mainController.getGame().getCurrentGameStateIndex()).getPlayer1();
+		Player player2 = mainController.getGame().getGameStates().get(mainController.getGame().getCurrentGameStateIndex()).getPlayer2();
 
 		try {
 			CheckUtil.assertNonNull(player1, player2);

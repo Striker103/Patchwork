@@ -26,8 +26,8 @@ public class UndoRedoController {
 	public void undo() {
 		Game game = mainController.getGame();
 		List<GameState> gameStates = game.getGameStates();
-		if(game.getCurrentGameState()>0){
-			game.setCurrentGameState(game.getCurrentGameState()-1);
+		if(game.getCurrentGameStateIndex()>0){
+			game.setCurrentGameState(game.getCurrentGameStateIndex()-1);
 		}
 	}
 
@@ -38,7 +38,7 @@ public class UndoRedoController {
 		Game game = mainController.getGame();
 		List<GameState> gameStates = game.getGameStates();
 		if(!game.currentGameStateLast()){
-			game.setCurrentGameState(game.getCurrentGameState()+1);
+			game.setCurrentGameState(game.getCurrentGameStateIndex()+1);
 		}
 	}
 
@@ -49,7 +49,7 @@ public class UndoRedoController {
 		Game game = mainController.getGame();
 		List<GameState> gameStates = game.getGameStates();
 		if(!game.currentGameStateLast()){
-			gameStates.subList(game.getCurrentGameState()+ 1, gameStates.size()).clear();
+			gameStates.subList(game.getCurrentGameStateIndex()+ 1, gameStates.size()).clear();
 		}
 	}
 

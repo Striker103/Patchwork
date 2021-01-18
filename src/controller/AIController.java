@@ -9,32 +9,47 @@ import view.aui.HintAUI;
 
 public class AIController {
 
-	private EasyAI[] easyAI;
+	/**
+	 * An AI with difficulty Easy
+	 */
+	private EasyAI easyAI;
 
-	private NormalAI[] normalAI;
+	/**
+	 * An AI with difficulty Normal
+	 */
+	private NormalAI normalAI;
 
-	private HardAI[] hardAI;
+	/**
+	 * An AI with difficulty Hard
+	 */
+	private HardAI hardAI;
 
+	/**
+	 * The Main Controller of the Control layer
+	 */
 	private MainController mainController;
 
+	/**
+	 * The AUI that triggers showing of a hint
+	 */
 	private HintAUI hintAUI;
-
-	public GameState doTurn() {
-		return null;
-	}
-
-	public GameState calculateHint() {
-		return null;
-	}
 
 	/**
 	 * Constructor that sets the mainController and all AUIs
 	 * @param mainController The controller that knows all other controllers
-	 * @param hintAUI the hintAUI
+	 * @param hintAUI The AUI that Triggers the Hint in the GUI
 	 */
 	public AIController(MainController mainController, HintAUI hintAUI){
 		this.mainController = mainController;
 		this.hintAUI = hintAUI;
 	}
 
+	public GameState doTurn() {
+		return null;
+	}
+
+	public GameState calculateHint() {
+		mainController.getGame();
+		return normalAI.calculateTurn(null);
+	}
 }

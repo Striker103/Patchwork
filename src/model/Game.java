@@ -62,11 +62,19 @@ public class Game {
 	}
 
 	/**
+	 * Gets the index of the currently state
+	 * @return the index of the currently state
+	 */
+	public int getCurrentGameStateIndex(){
+		return currentGameState;
+	}
+
+	/**
 	 * Gets the currently state of the game
 	 * @return the currently state
 	 */
-	public int getCurrentGameState(){
-		return currentGameState;
+	public GameState getCurrentGameState(){
+		return gameStates.get(currentGameState);
 	}
 
 	/**

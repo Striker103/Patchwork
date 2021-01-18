@@ -1,6 +1,5 @@
 package model;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -41,7 +40,7 @@ public class GameTest {
     @Test
     public void testGetCurrentGameState() {
 
-        assertEquals(GAME.getCurrentGameState(), 0);
+        assertEquals(GAME.getCurrentGameStateIndex(), 0);
 
     }
 
