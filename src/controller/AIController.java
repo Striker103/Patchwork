@@ -5,6 +5,7 @@ import ai.EasyAI;
 import ai.HardAI;
 import ai.NormalAI;
 import model.*;
+import view.aui.ErrorAUI;
 import view.aui.HintAUI;
 
 public class AIController {
@@ -33,19 +34,48 @@ public class AIController {
 	 * The AUI that triggers showing of a hint
 	 */
 	private final HintAUI hintAUI;
+	/**
+	 * The Error AUI
+	 */
+	private final ErrorAUI errorAUI;
 
 	/**
 	 * Constructor that sets the mainController and all AUIs
 	 * @param mainController The controller that knows all other controllers
 	 * @param hintAUI The AUI that Triggers the Hint in the GUI
 	 */
-	public AIController(MainController mainController, HintAUI hintAUI){
+	public AIController(MainController mainController, HintAUI hintAUI,ErrorAUI errorAUI){
 		this.mainController = mainController;
 		this.hintAUI = hintAUI;
+		this.errorAUI = errorAUI;
 	}
 
-	public GameState doTurn() {
-		return null;
+	public void doTurn() {
+		Game game = mainController.getGame();
+		GameState currentGameState = game.getCurrentGameState();
+		Player playerWithTurn = currentGameState.nextPlayer();
+		GameState calculatedTurn = null;
+		switch (playerWithTurn.getPlayerType()){
+			case AI_EASY:
+				calculatedTurn = easyAI.calculateTurn(currentGameState);
+				break;
+			case AI_MEDIUM:
+				calculatedTurn = normalAI.calculateTurn(currentGameState);
+				break;
+			case AI_HARD:
+				calculatedTurn = hardAI.calculateTurn(currentGameState);
+				break;
+			case HUMAN:
+				break;
+
+		}
+		if(calculatedTurn == null){
+			errorAUI.showError("No AI Turn Possible!");
+			return;
+		}
+		mainController.getUndoRedoController().clearRedoList();
+		game.addGameState(calculatedTurn);
+		game.setCurrentGameState(game.getCurrentGameStateIndex()+1);
 	}
 
 	/**
@@ -96,7 +126,8 @@ public class AIController {
 
 			//Occurs if no patch was placed
 			if(patchTaken == null){
-				throw new IllegalStateException("No Action done of AI!");
+				errorAUI.showError("No Action done of AI!");
+				return;
 			}
 			//The newly placed positions on the board
 			Matrix placement = afterTurn.getQuiltBoard().getPatchBoard().without(beforeTurn.getQuiltBoard().getPatchBoard());

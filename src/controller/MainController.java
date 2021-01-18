@@ -59,7 +59,7 @@ public class MainController {
 	{
 		gamePreparationController = new GamePreparationController(this, errorAUI);
 		gameController = new GameController(this, errorAUI, logAUI, turnAUI);
-		aIController = new AIController(this, hintAUI);
+		aIController = new AIController(this, hintAUI,errorAUI);
 		playerController = new PlayerController(this, errorAUI);
 		undoRedoController = new UndoRedoController(this);
 		iOController = new IOController(this, errorAUI, loadGameAUI);
