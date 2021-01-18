@@ -6,6 +6,7 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import model.CheckUtil;
 import model.Game;
+import model.Matrix;
 import model.Patch;
 import view.aui.ErrorAUI;
 import view.aui.LoadGameAUI;
@@ -181,7 +182,7 @@ public class IOController {
 		int time = Integer.parseInt(line.get(2));
 		int buttonIncome = Integer.parseInt(line.get(3));
 
-		return new Patch(patchID, buttonIncome, buttonCost, shape, time);
+		return new Patch(patchID, buttonIncome, buttonCost, new Matrix(shape), time);
 
 	}
 
