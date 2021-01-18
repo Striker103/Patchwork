@@ -109,6 +109,7 @@ public class ScoreTest {
     @Test
     public void testCopy(){
         Score testScore = new Score(1,false,PlayerType.AI_MEDIUM,"Peter");
+        //testScore.setDate(LocalDateTime.now());
         assertEquals(testScore,testScore.copy());
         assertEquals(testScore.hashCode(),testScore.copy().hashCode());
         assertNotEquals(System.identityHashCode(testScore),System.identityHashCode(testScore.copy()));

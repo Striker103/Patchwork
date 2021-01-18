@@ -62,8 +62,10 @@ public class Score{
 	 * @return Copy of the object
 	 */
 	public Score copy() {
-		//String is immutable
-		return new Score(value, isIronman, opponentType, playerName);
+		//LocalDateTime, String is immutable
+		Score score = new Score(value, isIronman, opponentType, playerName);
+		score.setDate(date);
+		return score;
 	}
 
 	/**
@@ -124,6 +126,7 @@ public class Score{
 
 	/**
 	 * Checks for equality
+	 *
 	 * @param obj to compare to
 	 * @return true if the objects are equal, false otherwise
 	 */
@@ -132,11 +135,10 @@ public class Score{
 		if (this == obj) return true;
 		if (obj == null || getClass() != obj.getClass()) return false;
 		Score score = (Score) obj;
-		return value == score.value &&
-				isIronman == score.isIronman &&
-				Objects.equals(date, score.date) &&
-				opponentType == score.opponentType &&
-				playerName.equals(score.playerName);
+		if ((date == null && score.date != null) || (date != null && score.date == null)) return false;
+		boolean dateEquals = true;
+		if (date != null) dateEquals = date.isEqual(score.date);
+		return value == score.value && isIronman == score.isIronman && dateEquals && opponentType == score.opponentType && playerName.equals(score.playerName);
 	}
 
 
