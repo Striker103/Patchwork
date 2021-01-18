@@ -217,11 +217,11 @@ public class Matrix implements Iterable<Integer>{
      * @return this Matrix
      */
     public Matrix flip(){
-        for(int rows=0; rows<matrix.length; rows++){
-            for (int cols = 0; cols < matrix[rows].length/2; cols++) {
+        for(int rows=0; rows<getRows(); rows++){
+            for (int cols = 0; cols < getColumns()/2; cols++) {
                 int temp = matrix[rows][cols];
-                matrix[rows][cols] = matrix[rows][matrix.length-cols-1];
-                matrix[rows][matrix.length-cols-1] = temp;
+                matrix[rows][cols] = matrix[rows][getColumns()-cols-1];
+                matrix[rows][getColumns()-cols-1] = temp;
             }
         }
         return this;
