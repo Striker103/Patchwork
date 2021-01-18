@@ -66,7 +66,7 @@ public class HighScoreController {
 	 * Clears highscore file
 	 * @param file file
 	 */
-	public void clearHighscores(File file) {
+	public void clearHighScores(File file) {
 		try {
 			new PrintWriter(file).close();
 		} catch (FileNotFoundException e) {
@@ -79,7 +79,7 @@ public class HighScoreController {
 	 * @param file file
 	 */
 	public void showHighScores(File file){
-		highscoreAUI.showHighscores(readHighscores(file));
+		highscoreAUI.showHighscores(readHighScores(file));
 	}
 
 
@@ -109,18 +109,18 @@ public class HighScoreController {
 
 		Score score = player.getScore();
 
-		LinkedList<Score> scores = readHighscores(file);
+		LinkedList<Score> scores = readHighScores(file);
 		if (scores != null) {
 			scores.add(score);
 
 			scores.sort(Comparator.comparingInt(Score::getValue));
 
-			clearHighscores(file);
-			writeHighscores(scores, file);
+			clearHighScores(file);
+			writeHighScores(scores, file);
 		}
 	}
 
-	private void writeHighscores(LinkedList<Score> scores, File file){
+	private void writeHighScores(LinkedList<Score> scores, File file){
 
 		CheckUtil.assertNonNull(scores);
 
@@ -137,7 +137,7 @@ public class HighScoreController {
 		}
 	}
 
-	private LinkedList<Score> readHighscores(File file) {
+	private LinkedList<Score> readHighScores(File file) {
 
 		try {
 			String json = Files.readString(file.toPath());
