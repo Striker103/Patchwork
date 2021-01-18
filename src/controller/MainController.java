@@ -55,14 +55,14 @@ public class MainController {
 	/**
 	 * generates all controllers and their AUIs
 	 */
-	public MainController(HighscoreAUI highscoreAUI, ErrorAUI errorAUI, HintAUI hintAUI, LogAUI logAUI, TurnAUI turnAUI)
+	public MainController(HighscoreAUI highscoreAUI, ErrorAUI errorAUI, HintAUI hintAUI, LogAUI logAUI, TurnAUI turnAUI, LoadGameAUI loadGameAUI)
 	{
 		gamePreparationController = new GamePreparationController(this, errorAUI);
 		gameController = new GameController(this, errorAUI, logAUI, turnAUI);
 		aIController = new AIController(this, hintAUI);
 		playerController = new PlayerController(this, errorAUI);
 		undoRedoController = new UndoRedoController(this);
-		iOController = new IOController(this, errorAUI);
+		iOController = new IOController(this, errorAUI, loadGameAUI);
 		highScoreController = new HighScoreController(this, errorAUI, highscoreAUI);
 	}
 
