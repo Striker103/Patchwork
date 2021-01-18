@@ -82,7 +82,7 @@ public class GameTest {
 
         Patch patch = new Patch(1, 2, 5, new Matrix(shape), 2);
         patches.add(patch);
-        gameState = new GameState(playerNames, patches, true);
+        gameState = new GameState(playerNames, patches);
         player1 = gameState.getPlayer1();
         player2 = gameState.getPlayer2();
         GAME.addGameState(gameState);
