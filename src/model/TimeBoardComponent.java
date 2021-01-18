@@ -109,4 +109,12 @@ public class TimeBoardComponent {
 		}
 		return false;
 	}
+
+	private void setHasPatch(boolean patchAvailable ){
+		hasPatch = patchAvailable;
+	}
+
+	private void setHasButton(boolean buttonAvailable ){
+		hasButton = buttonAvailable;
+	}
 }
