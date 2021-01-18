@@ -66,7 +66,14 @@ public class PlayerTest {
     public void testGetName() {
         assertEquals(PLAYER.getName(),NAME);
     }
-
+    /**
+     * Tests getQuillBoard()
+     */
+    @Test
+    public void testGetQuillBoard(){
+        PLAYER.setQuiltBoard(QUILTBOARD);
+        assertEquals(PLAYER.getQuiltBoard(), QUILTBOARD);
+    }
     /**
      * Tests getScore()
      */

@@ -8,8 +8,6 @@ import java.util.List;
  * Represents the Game
  */
 public class Game {
-
-
 	/**
 	 * Currently state of the game
 	 */
@@ -62,33 +60,11 @@ public class Game {
 	}
 
 	/**
-	 * Gets the index of the currently state
-	 * @return the index of the currently state
-	 */
-	public int getCurrentGameStateIndex(){
-		return currentGameState;
-	}
-
-	/**
 	 * Gets the currently state of the game
 	 * @return the currently state
 	 */
-	public GameState getCurrentGameState(){
-		return gameStates.get(currentGameState);
-	}
-
-	/**
-	 * Sets the current state of the game
-	 * @param newCurrentGameState the new current state
-	 */
-	@SuppressWarnings("ResultOfMethodCallIgnored")
-	public void setCurrentGameState(int newCurrentGameState) {
-		try{
-			gameStates.get(newCurrentGameState);
-		}catch (Exception e){
-			throw new IllegalArgumentException("This GameState does not exist!");
-		}
-		this.currentGameState = newCurrentGameState;
+	public int getCurrentGameState(){
+		return currentGameState;
 	}
 
 	/**
@@ -134,17 +110,6 @@ public class Game {
 	 * @return Copy of the object
 	 */
 	public Game copy() {
-		return new Game(ironman);
-	}
-
-
-	/**
-	 * Checks if the current GameState has a Successor
-	 * @return Weather or not the current GameState is the last
-	 */
-	public boolean currentGameStateLast(){
-		return currentGameState == gameStates.size()-1;
-	}
-
+		return new Game(ironman); }
 
 }
