@@ -211,4 +211,12 @@ public class MatrixTest {
         assertEquals(MATRIX9.amountCells(), 4);
         assertEquals(MATRIX7.amountCells(), 6);
     }
+
+    /**
+     * Calls the print methode
+     */
+    @Test
+    public void testPrint(){
+        MATRIX1.print();
+    }
 }

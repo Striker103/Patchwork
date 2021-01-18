@@ -92,4 +92,11 @@ public class QuiltBoard {
 		return this.patchBoard.equals(that.patchBoard) &&
 				Objects.equals(patches, that.patches);
 	}
+
+	/**
+	 * Prints the PatchBoard
+	 */
+	public void print(){
+		this.patchBoard.print();
+	}
 }

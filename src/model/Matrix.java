@@ -354,4 +354,16 @@ public class Matrix implements Iterable<Integer>{
         }
         return result;
     }
+
+    /**
+     * Prints the matrix to the console
+     */
+    public void print(){
+        for (int[] column : matrix) {
+            for (int position : column) {
+                System.out.printf("%3d", position);
+            }
+            System.out.println();
+        }
+    }
 }
