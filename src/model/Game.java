@@ -8,6 +8,8 @@ import java.util.List;
  * Represents the Game
  */
 public class Game {
+
+
 	/**
 	 * Currently state of the game
 	 */
@@ -68,6 +70,20 @@ public class Game {
 	}
 
 	/**
+	 * Sets the current state of the game
+	 * @param newCurrentGameState the new current state
+	 */
+	@SuppressWarnings("ResultOfMethodCallIgnored")
+	public void setCurrentGameState(int newCurrentGameState) {
+		try{
+			gameStates.get(newCurrentGameState);
+		}catch (Exception e){
+			throw new IllegalArgumentException("This GameState does not exist!");
+		}
+		this.currentGameState = newCurrentGameState;
+	}
+
+	/**
 	 * Gets the reachabled highscore
 	 * @return the reachabled highscore
 	 */
@@ -110,6 +126,15 @@ public class Game {
 	 * @return Copy of the object
 	 */
 	public Game copy() {
-		return new Game(ironman); }
+		return new Game(ironman);
+	}
 
+
+	/**
+	 * Checks if the current GameState has a Successor
+	 * @return Weather or not the current GameState is the last
+	 */
+	public boolean currentGameStateLast(){
+		return currentGameState == gameStates.size()-1;
+	}
 }
