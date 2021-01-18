@@ -3,10 +3,8 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.fxml.StartGame">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.control.StartGameViewController">
    <children>
       <BorderPane prefHeight="401.0" prefWidth="602.0">
          <center>
@@ -36,13 +34,7 @@
                </children>
             </VBox>
          </center>
-         <top>
-            <TextField alignment="CENTER" text="Patchwork" BorderPane.alignment="CENTER">
-               <font>
-                  <Font size="39.0" />
-               </font>
-            </TextField>
-         </top>
       </BorderPane>
+      <TextArea prefHeight="200.0" prefWidth="200.0" />
    </children>
 </AnchorPane>

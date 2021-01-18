@@ -6,6 +6,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 import static model.PlayerType.HUMAN;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 
 public class GameTest {
@@ -18,8 +20,27 @@ public class GameTest {
     Player player1, player2;
     GameState gameState;
 
+    /**
+     * Tests the constructor
+     */
+    @Test
+    public void testConstructor(){
+        new Game(true, 5);
+    }
+    /**
+     * Test constructor with negative simulationSpeed
+     */
+    @Test (expected=IllegalArgumentException.class)
+    public void testConstructorSimulationSpeed(){
+        new Game (true, Integer.MIN_VALUE);
+    }
+
+    /**
+     *
+     */
     @Test
     public void testGetCurrentGameState() {
+
         assertEquals(GAME.getCurrentGameState(), 0);
 
     }
@@ -66,5 +87,24 @@ public class GameTest {
         player2 = gameState.getPlayer2();
         GAME.addGameState(gameState);
         assertEquals(GAME.getGameStates(),gameState);
+    }
+    /**
+     * Test that clone instantiates a new, independent object that is still equal and has the same hash
+     */
+    @Test
+    public void testClone(){
+        Game testGame = new Game(true, 5);
+        assertEquals(testGame,testGame.copy());
+        assertEquals(testGame.hashCode(),testGame.copy().hashCode());
+        assertNotEquals(System.identityHashCode(testGame),System.identityHashCode(testGame.copy()));
+    }
+    /**
+     * Test NotEquals
+     */
+    @Test
+    public void testNotEquals(){
+        Game testGameSmall = new Game(false, 1);
+        Game testGameLarge = new Game(true, 5);
+        assertNotEquals(testGameLarge,testGameSmall);
     }
 }
