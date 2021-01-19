@@ -52,14 +52,23 @@ public class GamePreparationController {
 		}
 		List<Patch> patches;
 		patches = getPatches(file);
-
-		Game game = new Game(ironman, speed);
+		Game game;
+		if(speed == 0)
+		{
+			game = new Game(ironman);
+		}else{
+			game = new Game(ironman, speed);
+		}
 
 		GameState gameState = new GameState(players, patches);
 		game.addGameState(gameState);
 		mainController.setGame(game);
 		GameController gameController = mainController.getGameController();
 		gameController.endTurn();
+	}
+
+	public void startGame(Tuple<Tuple<String,PlayerType>, Tuple<String,PlayerType>> players, File file, boolean ironman) {
+		startGame(players, file, 0, ironman);
 	}
 
 	private List<Patch> getPatches(File file)
