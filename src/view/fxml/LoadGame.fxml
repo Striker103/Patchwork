@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.control.LoadGameViewController">
     <children>
         <Text layoutX="450.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Load Game">
             <font>
@@ -17,10 +17,8 @@
                 <TableColumn prefWidth="210.0" text="Saving Time" />
             </columns>
         </TableView>
-        <Button cancelButton="true" layoutX="846.0" layoutY="695.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="70.0" text="Cancle" />
-        <Button defaultButton="true" layoutX="959.0" layoutY="695.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="70.0" text="Play" />
+        <Button fx:id="cancelButton" cancelButton="true" layoutX="846.0" layoutY="695.0" mnemonicParsing="false" onAction="#onCancelAction" prefHeight="47.0" prefWidth="70.0" text="Cancel" />
+        <Button fx:id="playButton" defaultButton="true" layoutX="959.0" layoutY="695.0" mnemonicParsing="false" onAction="#onPlayAction" prefHeight="47.0" prefWidth="70.0" text="Play" />
         <TextField layoutX="312.0" layoutY="589.0" prefHeight="47.0" prefWidth="577.0" text="Search" />
     </children>
 </Pane>
-
-

@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.control.NewGameViewController">
    <children>
       <Text layoutX="417.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Game">
          <font>
@@ -59,17 +59,17 @@
             <Spinner fx:id="simulationSpeedSpinner" prefHeight="25.0" prefWidth="250.0" />
          </children>
       </VBox>
-      <Button fx:id="startGameButton" layoutX="514.0" layoutY="495.0" mnemonicParsing="false" onAction="#onStartGameButtonAction" text="start game">
+      <Button fx:id="startGameButton" layoutX="514.0" layoutY="495.0" mnemonicParsing="false" onAction="#onStartGameAction" text="start game">
          <font>
             <Font size="16.0" />
          </font>
       </Button>
-      <Button fx:id="backButton" layoutX="684.0" layoutY="495.0" mnemonicParsing="false" onAction="#onBackButtonAction" text="back">
+      <Button fx:id="backButton" layoutX="684.0" layoutY="495.0" mnemonicParsing="false" onAction="#onBackAction" text="back">
          <font>
             <Font size="16.0" />
          </font>
       </Button>
-      <Button fx:id="loadCSVFileButton" layoutX="324.0" layoutY="495.0" mnemonicParsing="false" onAction="#onLoadCSVFileButtonAction" text="load CSV file">
+      <Button fx:id="loadCSVFileButton" layoutX="324.0" layoutY="495.0" mnemonicParsing="false" onAction="#onLoadCSVFileAction" text="load CSV file">
          <font>
             <Font size="16.0" />
          </font>

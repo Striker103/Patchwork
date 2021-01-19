@@ -7,21 +7,21 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.control.gameScreenViewController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.control.GameScreenViewController">
    <top>
       <HBox alignment="CENTER_LEFT" prefHeight="16.0" prefWidth="600.0" spacing="70.0" BorderPane.alignment="CENTER">
          <children>
             <HBox prefHeight="25.0" prefWidth="209.0" spacing="8.0">
                <children>
-                  <Button fx:id="pauseButton" mnemonicParsing="false" onAction="#onPauseButtonAction" text="I I" />
-                  <Button fx:id="hintButton" mnemonicParsing="false" onAction="#onHintButtonAction" text="Hint" />
-                  <Button fx:id="undoButton" mnemonicParsing="false" onAction="#onUndoButtonAction" text="Undo" />
-                  <Button fx:id="redoButton" mnemonicParsing="false" onAction="#onRedoButtonAction" text="Redo" />
+                  <Button fx:id="pauseButton" mnemonicParsing="false" onAction="#onPauseAction" text="I I" />
+                  <Button fx:id="hintButton" mnemonicParsing="false" onAction="#onHintAction" text="Hint" />
+                  <Button fx:id="undoButton" mnemonicParsing="false" onAction="#onUndoAction" text="Undo" />
+                  <Button fx:id="redoButton" mnemonicParsing="false" onAction="#onRedoAction" text="Redo" />
                </children>
             </HBox>
             <HBox>
                <children>
-                  <Button fx:id="passButton" mnemonicParsing="false" onAction="#onPassButtonAction" text="Pass" />
+                  <Button fx:id="passButton" mnemonicParsing="false" onAction="#onPassAction" text="Pass" />
                </children>
             </HBox>
          </children>
