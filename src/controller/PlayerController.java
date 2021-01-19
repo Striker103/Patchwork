@@ -56,7 +56,7 @@ public class PlayerController {
 			if(i <= 52){
 				currentPlayer.setBoardPosition(i);
 				if(timeBoard[i].hasPatch()){
-					timeBoard[i].setHasPatch(false);
+					timeBoard[i].removePatch();
 					logAUI.updateLog(currentPlayer.getName() + " stepped over a 1x1 Patch and has to place it now");
 					get1x1Patch();
 				}
@@ -90,9 +90,8 @@ public class PlayerController {
 	 *
 	 * @param steps number of steps the player makes
 	 */
-	void moveTimeToken(int steps) {
+	void moveTimeToken(Player currentPlayer, int steps) {
 		Game game = mainController.getGame();
-		Player currentPlayer = gameController.getCurrentPlayer();
 		int playerPos = currentPlayer.getBoardPosition();
 		GameState currentGameState = game.getCurrentGameState();
 
@@ -106,8 +105,7 @@ public class PlayerController {
 	 *
 	 * @param patch the patch the player wants to buy
 	 */
-	void payPatch(Patch patch) {
-		Player currentPlayer = gameController.getCurrentPlayer();
+	void payPatch(Player currentPlayer, Patch patch) {
 		if (currentPlayer.getMoney() < patch.getButtonsCost()) {
 			errorAUI.showError("when you are to broke to buy a Patch <sad pikachu face>");
 			return;
