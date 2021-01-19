@@ -1,8 +1,7 @@
 package controller;
 
 
-import model.Patch;
-import model.Player;
+import model.*;
 import view.aui.ErrorAUI;
 import view.aui.LogAUI;
 import view.aui.TurnAUI;
@@ -32,24 +31,65 @@ public class GameController {
 	}
 
 	public void advance() {
+		//TODO
 
+		cloneGameState();
+		endTurn();
 	}
 
 	public void takePatch(Patch patch, boolean[][] placing) {
 
-	}
-
-	void endTurn() {
-
+		//TODO
+		cloneGameState();
+		endTurn();
 	}
 
 	/**
-	 * Returns the next player
-	 * @return next player
+	 * Triggers the next Human or AI turn
 	 */
-	public Player getCurrentPlayer()
-	{
-		return null;
+	void endTurn() {
+		Player nextMovingPlayer = getNextPlayer();
+		AIController aiController = mainController.getAIController();
+		if(nextMovingPlayer.getPlayerType()== PlayerType.HUMAN){
+			turnAUI.triggerPlayerTurn();
+		}else {
+			aiController.doTurn();
+		}
+	}
+
+	/**
+	 * Makes a copy of the current GameState and appends it
+	 */
+	void cloneGameState(){
+		mainController.getGame().addGameState(mainController.getGame().getCurrentGameState().copy());
+	}
+
+	/**
+	 * Returns the next moving player
+	 * @return the player furthest behind on the board
+	 */
+	public Player getNextPlayer(){
+		return getNextPlayer(mainController.getGame().getCurrentGameStateIndex());
+	}
+
+	/**
+	 * Looks which player is behind. If both have an equal Position, look who came last to that field
+	 * @param gameStateIndex The Gamestate to calculate Player position
+	 * @return next moving Player
+	 */
+	private Player getNextPlayer(int gameStateIndex) {
+		GameState gameState = mainController.getGame().getGameStates().get(gameStateIndex);
+		Player player1 = gameState.getPlayer1();
+		Player player2 = gameState.getPlayer2();
+
+
+		if(player1.getBoardPosition()<player2.getBoardPosition()||player1.getBoardPosition()==0){
+			return player1;
+		}else if(player1.getBoardPosition()>player2.getBoardPosition() ){
+			return player2;
+		}else{
+			return getNextPlayer(gameStateIndex-1);
+		}
 	}
 
 }

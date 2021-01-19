@@ -53,7 +53,7 @@ public class AIController {
 	public void doTurn() {
 		Game game = mainController.getGame();
 		GameState currentGameState = game.getCurrentGameState();
-		Player playerWithTurn = currentGameState.nextPlayer();
+		Player playerWithTurn = mainController.getGameController().getNextPlayer();
 		GameState calculatedTurn = null;
 		switch (playerWithTurn.getPlayerType()){
 			case AI_EASY:
@@ -75,7 +75,7 @@ public class AIController {
 		}
 		mainController.getUndoRedoController().clearRedoList();
 		game.addGameState(calculatedTurn);
-		game.setCurrentGameState(game.getCurrentGameStateIndex()+1);
+		mainController.getGameController().endTurn();
 	}
 
 	/**
