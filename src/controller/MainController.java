@@ -60,7 +60,7 @@ public class MainController {
 		gamePreparationController = new GamePreparationController(this, errorAUI);
 		gameController = new GameController(this, errorAUI, logAUI, turnAUI);
 		aIController = new AIController(this, hintAUI,errorAUI);
-		playerController = new PlayerController(this, errorAUI);
+		playerController = new PlayerController(this, errorAUI, turnAUI, logAUI);
 		undoRedoController = new UndoRedoController(this);
 		iOController = new IOController(this, errorAUI, loadGameAUI);
 		highScoreController = new HighScoreController(this, errorAUI, highscoreAUI);

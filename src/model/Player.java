@@ -119,6 +119,18 @@ public class Player {
 	}
 
 	/**
+	 * adds money player money
+	 * @param money the money the player got
+	 */
+	public void setMoney(int money){this.money = this.money + money;}
+
+	/**
+	 * removes money player money
+	 * @param money the money the player lost
+	 */
+	public void setMinusMoney(int money){this.money = this.money - money;}
+
+	/**
 	 * Set score
 	 * @param pScore
 	 */
