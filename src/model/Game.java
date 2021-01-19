@@ -54,7 +54,7 @@ public class Game {
 	 * @param pIronman the Game mode
 	 */
 	public Game(boolean pIronman) {
-		this.currentGameState = 0;
+		this.currentGameState = -1;
 		this.highscoreReachable = false;
 		this.simulationSpeed = 0;
 		this.gameStates = new ArrayList<GameState>();
@@ -74,7 +74,11 @@ public class Game {
 	 * @return the currently state
 	 */
 	public GameState getCurrentGameState(){
-		return gameStates.get(currentGameState);
+		try{
+			return gameStates.get(currentGameState);
+		}catch(Exception e){
+			throw new IllegalStateException("no game state");
+		}
 	}
 
 	/**
@@ -126,7 +130,11 @@ public class Game {
 	 * @param gameState the new state
 	 */
 	public void addGameState(GameState gameState) {
+		if(!currentGameStateLast()){
+			throw new IllegalStateException("the game state is not the last element");
+		}
 		gameStates.add(gameState);
+		currentGameState++;
 	}
 
 	/**
