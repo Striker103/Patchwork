@@ -110,8 +110,4 @@ public class TimeBoardComponent {
 		return false;
 	}
 
-	public void setHasPatch(boolean patchAvailable ){
-		hasPatch = patchAvailable;
-	}
-
 }
