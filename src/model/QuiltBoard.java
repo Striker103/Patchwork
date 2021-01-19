@@ -47,6 +47,7 @@ public class QuiltBoard {
 	 * @param placement the placement of the patch
 	 * @param rotation the rotation angle of the patch
 	 * @param flipped whether or not the patch is flipped
+	 * @throws IllegalArgumentException if given an invalid rotation angle or if the patch overlaps with another patch
 	 */
 	public void addPatch(Patch patch, Matrix placement, int rotation, boolean flipped){
 		int calculatedId = patch.getPatchID() ;
