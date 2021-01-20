@@ -24,7 +24,7 @@ public class IOController {
 	private final LoadGameAUI loadGameAUI;
 
 	//TODO
-	private final String pathToCSV = "";
+	private final String pathToCSV = "CSV/patchwork-pieces.csv";
 
 	/**
 	 * Constructor that sets the mainController and all AUIs
@@ -81,8 +81,6 @@ public class IOController {
 		if (files != null) {
 			List<Game> games = new LinkedList<>();
 
-			Gson gson = new Gson();
-
 			for (File possibleGame : files) {
 
 				if (possibleGame.canWrite() && possibleGame.isFile()){
@@ -105,10 +103,15 @@ public class IOController {
 	 */
 	public List<Patch> importCSV(File file) {
 
+		if (file.isDirectory() || !file.canWrite()){
+			errorAUI.showError("Invalid file.");
+			return null;
+		}
+
 		List<List<String>> records = new ArrayList<>();
-		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
 			String line;
-			while ((line = br.readLine()) != null) {
+			while ((line = bufferedReader.readLine()) != null) {
 				String[] values = line.split(";");
 				records.add(Arrays.asList(values));
 			}
@@ -131,7 +134,15 @@ public class IOController {
 	 * @return shuffled default patches
 	 */
 	public List<Patch> importCSV() {
-		List<Patch> patchList = importCSV(new File(pathToCSV));
+
+		File file = new File(pathToCSV);
+
+		if (file.isDirectory() || !file.canWrite()){
+			errorAUI.showError("Invalid file.");
+			return null;
+		}
+
+		List<Patch> patchList = importCSV(file);
 
 		Collections.shuffle(patchList);
 
@@ -165,7 +176,10 @@ public class IOController {
 
 	private Patch generatePatch(List<String> line, int patchID){
 
-		if (line.get(0).length() != 15){
+
+		final int matrixLength = 15;
+
+		if (line.get(0).length() != matrixLength){
 			throw  new IllegalArgumentException("Invalid csv.");
 		}
 
@@ -188,21 +202,25 @@ public class IOController {
 
 	private boolean[][] buildShape(String csv){
 
-		boolean[][] shape = new boolean[5][5];
+		final char fill = 'X';
+		final char empty = '-';
+
+
+		boolean[][] shape = new boolean[3][5];
 
 		for (int i = 0; i < csv.length(); i++) {
 
 			boolean square;
 
-			if (csv.charAt(i) == 'X'){
+			if (csv.charAt(i) == fill){
 				square = true;
-			} else if (csv.charAt(i) == '-'){
+			} else if (csv.charAt(i) == empty){
 				square = false;
 			} else {
 				throw new IllegalArgumentException("Invalid csv.");
 			}
 
-			shape[i / 5][ i % 5] = square;
+			shape[i / 5][i % 5] = square;
 
 		}
 
