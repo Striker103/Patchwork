@@ -37,7 +37,7 @@ public class GameState{
 	private final Player player2;
 
 	/**
-	 * Constructor for a new GameState Object
+	 * Constructor for a new GameState Object. Starting position for the players is boardPosition 0
 	 *
 	 * @param playerNames 			names and types of players
 	 * @param patches 				list of patches
@@ -60,7 +60,7 @@ public class GameState{
 		player1 = new Player(0, 5, firstPlayerNameAndType.getFirst(), firstPlayerNameAndType.getSecond(), false);
 		player2 = new Player(0, 5, secondPlayerNameAndType.getFirst(), secondPlayerNameAndType.getSecond(), false);
 
-		timeBoard = new TimeBoardComponent[53];
+		timeBoard = new TimeBoardComponent[54];
 		for(int i = 0; i < timeBoard.length; i++)
 		{
 			timeBoard[i] = new TimeBoardComponent(i);
@@ -168,6 +168,20 @@ public class GameState{
 	 * @return second player object
 	 */
 	public Player getPlayer2() { return player2; }
+
+	/**
+	 * Returns the Player with Last Position on the TimeBoard
+	 * @return the Last Player
+	 */
+	//TODO Player on Top
+	public Player nextPlayer(){
+		if(player1.getBoardPosition()<=player2.getBoardPosition()|| player1.getBoardPosition() == 0){
+			return player1;
+		}
+		else{
+			return player2;
+		}
+	}
 
 
 }
