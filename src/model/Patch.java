@@ -130,4 +130,13 @@ public class Patch {
 		return this.patchID == patch.patchID;
 	}
 
+
+	@Override
+	public String toString(){
+		return  "\n" + Arrays.toString(shape.matrix[0]) +
+				"\n" + Arrays.toString(shape.matrix[1]) +
+				"\n" + Arrays.toString(shape.matrix[2]) + "\n";
+
+	}
+
 }
