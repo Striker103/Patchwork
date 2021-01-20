@@ -1,9 +1,12 @@
 package ai;
 
 import model.Matrix;
+import model.Patch;
 import model.QuiltBoard;
+import model.Tuple;
 
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 
 /**
  * Class for Utilities addressing the AI
@@ -74,6 +77,31 @@ public final class AIUtil {
             for (boolean elem: arr) {
                 result += elem?1:0; //Add one iff true
             }
+        }
+        return result;
+    }
+
+    /**
+     * Generates all possible locations on which a patch could be laid, including mirroring and rotating
+     * @param patch patch for which all locations are searched
+     * @return a LinkedHashSet containing all possible positions
+     */
+    protected static LinkedHashSet<Tuple<Matrix, Tuple<Integer, Boolean>>> generateAllPossiblePatches(Patch patch){
+        Matrix shape = patch.getShape();
+        LinkedHashSet<Tuple<Matrix, Tuple<Integer, Boolean>>> result = new LinkedHashSet<>();
+        for(int side =0; side<2; side++){
+            for (int degree = 0; degree < 4; degree++) {
+                Matrix trimmed = shape.trim();
+                for (int rows = 0; rows <= 9- trimmed.getRows(); rows++) {
+                    for (int cols = 0; cols <= 9-trimmed.getColumns(); cols++) {
+                        Matrix possiblePlace = new Matrix(9,9);
+                        possiblePlace.insert( trimmed, rows, cols);
+                        result.add(new Tuple<>(possiblePlace, new Tuple<>(side, degree == 0)));
+                    }
+                }
+                shape.rotate();
+            }
+            shape.flip();
         }
         return result;
     }

@@ -30,9 +30,9 @@ public class HardAI extends AI {
         Matrix boardMatrix = actualBoard.getPatchBoard();
         Matrix patchMatrix = patch.getShape();
         int filledSpots = boardMatrix.amountCells()-boardMatrix.count(0) + patchMatrix.amountCells()-patchMatrix.count(0);
-        return generateAllPossiblePatches(patch)
+        return AIUtil.generateAllPossiblePatches(patch)
                 .parallelStream()                                                                                   //Generate Patches and parallelize
-                .filter(patchPosition -> patchPosition.disjunctive(boardMatrix))                                    //Filter all places which are not valid
+                .filter(patchPosition -> patchPosition.getFirst().disjunctive(boardMatrix))                                    //Filter all places which are not valid
                 .map(place -> { QuiltBoard copy = actualBoard.copy();
                                 //copy.addPatch(patch);
                                 return new Tuple<>(copy, evaluateBoard(copy, filledSpots));})                       //map the valid places onto the quiltboard and evaluate the happiness
@@ -69,28 +69,5 @@ public class HardAI extends AI {
         return result;
     }
 
-    /**
-     * Generates all possible locations on which a patch could be laid, including mirroring and rotating
-     * @param patch patch for which all locations are searched
-     * @return a LinkedHashSet containing all possible positions
-     */
-    private LinkedHashSet<Matrix> generateAllPossiblePatches(Patch patch){
-        Matrix shape = patch.getShape();
-        LinkedHashSet<Matrix> result = new LinkedHashSet<>();
-        for(int side =0; side<2; side++){
-            for (int degree = 0; degree < 4; degree++) {
-                Matrix trimmed = shape.trim();
-                for (int rows = 0; rows <= 9- trimmed.getRows(); rows++) {
-                    for (int cols = 0; cols <= 9-trimmed.getColumns(); cols++) {
-                        Matrix possiblePlace = new Matrix(9,9);
-                        possiblePlace.insert( trimmed, rows, cols);
-                        result.add(possiblePlace);
-                    }
-                }
-                shape.rotate();
-            }
-            shape.flip();
-        }
-        return result;
-    }
+
 }
