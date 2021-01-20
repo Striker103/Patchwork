@@ -38,10 +38,19 @@ public class TimeBoardComponent {
 			throw new IllegalArgumentException("the position can't be negative");
 		}
 
-		if(Arrays.asList(buttonPositions).contains(positionOnBoard))
-			hasButton = true;
-		if(Arrays.asList(patchPositions).contains(positionOnBoard))
-			hasPatch = true;
+		for(int buttonPos : buttonPositions){
+			if(buttonPos == positionOnBoard) {
+				hasButton = true;
+				break;
+			}
+		}
+
+		for(int patchPos : patchPositions){
+			if(patchPos == positionOnBoard) {
+				hasPatch = true;
+				break;
+			}
+		}
 
 	}
 
@@ -110,4 +119,11 @@ public class TimeBoardComponent {
 		return false;
 	}
 
+	private void setHasPatch(boolean patchAvailable ){
+		hasPatch = patchAvailable;
+	}
+
+	private void setHasButton(boolean buttonAvailable ){
+		hasButton = buttonAvailable;
+	}
 }
