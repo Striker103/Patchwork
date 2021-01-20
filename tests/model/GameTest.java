@@ -75,9 +75,8 @@ public class GameTest {
         patches = new ArrayList<>();
         boolean[][] shape = new boolean[][]{  {true, true, false, false, false},
                 {true, true, false, false, false},
-                {false, false, false, false, false},
-                {false, false, false, false, false},
-                {false, false, false, false, false}};
+                {false, false, false, false, false}
+                };
 
         Patch patch = new Patch(1, 2, 5, new Matrix(shape), 2);
         patches.add(patch);
