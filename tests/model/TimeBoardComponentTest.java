@@ -1,6 +1,5 @@
 package model;
 
-import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,18 +13,17 @@ public class TimeBoardComponentTest {
 
     private TimeBoardComponent timeBoardComponent;
 
-    private final int POSITION = 3;
-
     @Before
-    public void setUp() throws Exception {
-        timeBoardComponent = new TimeBoardComponent(POSITION);
+    public void setUp() {
+        timeBoardComponent = new TimeBoardComponent(3);
     }
 
     /**
      * Tests the Constructor with a valid position
      */
+    @Test
     public void testTimeBoardComponent(){
-        TimeBoardComponent component = new TimeBoardComponent(5);
+        new TimeBoardComponent(5);
     }
 
     /**
@@ -50,6 +48,8 @@ public class TimeBoardComponentTest {
     @Test
     public void testHasButton() {
         assertFalse(timeBoardComponent.hasButton());
+        TimeBoardComponent component = new TimeBoardComponent(5);
+        assertTrue(component.hasButton());
     }
 
 
@@ -59,8 +59,18 @@ public class TimeBoardComponentTest {
     @Test
     public void testHasPatch() {
         assertFalse(timeBoardComponent.hasPatch());
+        TimeBoardComponent component = new TimeBoardComponent(20);
+        assertTrue(component.hasPatch());
     }
 
-
+    /**
+     * Test notEquals
+     */
+    @Test
+    public void testNotEquals(){
+        TimeBoardComponent component1 = new TimeBoardComponent(1);
+        TimeBoardComponent component2 = new TimeBoardComponent(5);
+        assertNotEquals(component1, component2);
+    }
 
 }
