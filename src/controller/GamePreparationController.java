@@ -39,17 +39,9 @@ public class GamePreparationController {
 	 * @param ironman if true undo, redo and tips are not possible
 	 */
 	public void startGame(Tuple<Tuple<String,PlayerType>, Tuple<String,PlayerType>> players, File file, int speed, boolean ironman) {
-		CheckUtil.assertNonNull(players.getFirst().getSecond(), players.getSecond().getSecond(), ironman, speed);
-		CheckUtil.assertNonNull(players.getFirst().getFirst(),players.getSecond().getFirst());
-		CheckUtil.assertNonNegative(speed);
-		if(players.getFirst().getFirst().isBlank() || players.getSecond().getFirst().isBlank()) {
-			errorAUI.showError("at least one player name is missing");
+		boolean parametersOk = parametersAreOk(players, speed);
+		if(!parametersOk)
 			return;
-		}
-		if(players.getFirst().getFirst().equals(players.getSecond().getFirst())) {
-			errorAUI.showError("player names should not be equal");
-			return;
-		}
 		List<Patch> patches;
 		patches = getPatches(file);
 		Game game;
@@ -65,6 +57,31 @@ public class GamePreparationController {
 		mainController.setGame(game);
 		GameController gameController = mainController.getGameController();
 		gameController.endTurn();
+	}
+
+	private boolean parametersAreOk(Tuple<Tuple<String,PlayerType>, Tuple<String,PlayerType>> players,int speed)
+	{
+		if(players.getFirst().getSecond() == null || players.getSecond().getSecond() == null){
+			errorAUI.showError("player types cant be null");
+			return false;
+		}
+		if(players.getFirst().getFirst() == null || players.getSecond().getFirst() == null){
+			errorAUI.showError("player names cant be null");
+			return false;
+		}
+		if(speed < 0){
+			errorAUI.showError("speed must be positive or 0");
+			return false;
+		}
+		if(players.getFirst().getFirst().isBlank() || players.getSecond().getFirst().isBlank()) {
+			errorAUI.showError("at least one player name is missing");
+			return false;
+		}
+		if(players.getFirst().getFirst().equals(players.getSecond().getFirst())) {
+			errorAUI.showError("player names should not be equal");
+			return false;
+		}
+		return true;
 	}
 
 	public void startGame(Tuple<Tuple<String,PlayerType>, Tuple<String,PlayerType>> players, File file, boolean ironman) {
