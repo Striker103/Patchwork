@@ -170,17 +170,11 @@ public class GameState{
 	public Player getPlayer2() { return player2; }
 
 	/**
-	 * Returns the Player with Last Position on the TimeBoard
-	 * @return the Last Player
+	 * Deprecated. Please use getNextPlayer in GameController. If questions arise, contact me (Yannick)
 	 */
-	//TODO Player on Top
+	@Deprecated
 	public Player nextPlayer(){
-		if(player1.getBoardPosition()<=player2.getBoardPosition()|| player1.getBoardPosition() == 0){
-			return player1;
-		}
-		else{
-			return player2;
-		}
+		throw new IllegalStateException("Methode deprecated. Please use getNextPlayer from GameController");
 	}
 
 
