@@ -15,13 +15,13 @@ public class PlayerController {
 
 	private final MainController mainController;
 
-	private final GameController gameController;
-
 	private final ErrorAUI errorAUI;
 
 	private final TurnAUI turnAUI;
 
 	private final LogAUI logAUI;
+
+	private final int boardPos = 53;
 
 	/**
 	 * Constructor that sets the mainController and all AUIs
@@ -36,13 +36,12 @@ public class PlayerController {
 		this.errorAUI = errorAUI;
 		this.turnAUI = turnAUI;
 		this.logAUI = logAUI;
-		gameController = mainController.getGameController();
 	}
 
 	private void getIncomeMovement(int playerPos, int steps, Player currentPlayer) {
 		int income;
-		if(playerPos + steps >= 52){
-			income = 52 - playerPos;
+		if(playerPos + steps >= boardPos){
+			income = boardPos - playerPos;
 		}else{
 			income = steps;
 		}
@@ -53,7 +52,7 @@ public class PlayerController {
 	private void moveAndCheckPosition(int playerPos, int steps, Player currentPlayer, GameState currentGameState){
 		TimeBoardComponent[] timeBoard = currentGameState.getTimeBoard();
 		for(int i = playerPos+1; i <= playerPos + steps; i++){
-			if(i <= 52){
+			if(i <= boardPos){
 				currentPlayer.setBoardPosition(i);
 				if(timeBoard[i].hasPatch()){
 					timeBoard[i].removePatch();
@@ -67,6 +66,7 @@ public class PlayerController {
 				}
 			}else{
 				logAUI.updateLog(currentPlayer.getName() + " reached the end position ");
+				break;
 			}
 		}
 	}
