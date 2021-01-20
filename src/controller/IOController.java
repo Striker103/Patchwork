@@ -1,13 +1,13 @@
 package controller;
 
-
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
-import model.CheckUtil;
-import model.Game;
-import model.Matrix;
-import model.Patch;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import model.*;
 import view.aui.ErrorAUI;
 import view.aui.LoadGameAUI;
 
@@ -23,7 +23,6 @@ public class IOController {
 
 	private final LoadGameAUI loadGameAUI;
 
-	//TODO
 	private final String pathToCSV = "CSV/patchwork-pieces.csv";
 
 	/**
@@ -149,8 +148,110 @@ public class IOController {
 		return patchList;
 	}
 
-	public void exportGameResult() {
-		//TODO
+	/**
+	 * Exports game results to specified path
+	 * @param file path
+	 */
+	public void exportGameResult(File file) {
+
+		try {
+			CheckUtil.assertNonNull(file);
+		} catch (IllegalArgumentException e) {
+			errorAUI.showError("File is null.");
+			return;
+		}
+
+		if (file.isDirectory() || !file.canWrite()){
+			errorAUI.showError("File is invalid.");
+			return;
+		}
+
+		Player player1 = mainController.getGame().getCurrentGameState().getPlayer1();
+		Player player2 = mainController.getGame().getCurrentGameState().getPlayer2();
+
+
+		try {
+			CheckUtil.assertNonNull(player1, player2);
+		} catch (IllegalArgumentException e) {
+			errorAUI.showError("Game is broken.");
+			return;
+		}
+
+		//Check if game is finished
+		final int lastTimeBoardIndex = 53;
+		if (player1.getBoardPosition() != lastTimeBoardIndex || player2.getBoardPosition() != lastTimeBoardIndex){
+			errorAUI.showError("Game is not finished.");
+			return;
+		}
+
+		try {
+			Document document = new Document();
+
+			FileOutputStream fileOutputStream = new FileOutputStream(file);
+
+			PdfWriter.getInstance(document, fileOutputStream);
+
+			document.open();
+
+			Paragraph paragraph = new Paragraph();
+			paragraph.add("Results");
+
+			document.add(paragraph);
+			document.add(getWinner(player1,player2));
+			document.add(getPlayerInformation(player1));
+			document.add(getGrid(player1));
+			document.add(getPlayerInformation(player2));
+			document.add(getGrid(player2));
+
+			document.close();
+			fileOutputStream.close();
+		} catch (DocumentException | IOException  e) {
+			errorAUI.showError("IOException occurred.");
+		}
+
+	}
+
+	private Paragraph getWinner(Player player1, Player player2){
+		Paragraph paragraph = new Paragraph();
+
+		String winnerName;
+
+		if (player1.getScore().getValue() == player2.getScore().getValue())
+			winnerName = "Tie";
+		else if (player1.getScore().getValue() > player2.getScore().getValue())
+			winnerName = player1.getName();
+		else
+			winnerName = player2.getName();
+
+		paragraph.add("Winner: " + winnerName);
+
+		return paragraph;
+	}
+
+	private Paragraph getPlayerInformation(Player player){
+		Paragraph paragraph = new Paragraph();
+
+		String text = "Name: " + player.getName() +
+				"\nPlayer Type: " + player.getPlayerType().toString() +
+				"\nScore: " + player.getScore().getValue() +
+				"\nNumber of Patches: " + player.getQuiltBoard().getPatches().size() +
+				"\nMoney: " + player.getMoney();
+
+		paragraph.add(text);
+
+		return paragraph;
+	}
+
+	private PdfPTable getGrid(Player player){
+
+		PdfPTable pdfPTable = new PdfPTable(9);
+
+		for (int i = 0 ; i < 81; i++){
+			pdfPTable.addCell(String.valueOf(player.getQuiltBoard().getPatchBoard().get(i % 9, i / 9)));
+		}
+
+		return pdfPTable;
+
 	}
 
 	private Game readGame(File file){
@@ -169,13 +270,7 @@ public class IOController {
 		}
 	}
 
-
-
-
-
-
 	private Patch generatePatch(List<String> line, int patchID){
-
 
 		final int matrixLength = 15;
 
@@ -204,7 +299,6 @@ public class IOController {
 
 		final char fill = 'X';
 		final char empty = '-';
-
 
 		boolean[][] shape = new boolean[3][5];
 
