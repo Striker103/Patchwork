@@ -27,7 +27,7 @@ public class EasyAI extends AI {
         if(posOther != 54) offset = 1;
         behind.setBoardPosition(posOther+offset);
         behind.setMoney(behind.getMoney()+(posOther-posBehind)+offset);
-
+        edited.setLogEntry("Passed and got coins");
         result.add(edited);
 
         List<Patch> patches = getNextPatches(actual);
@@ -42,6 +42,7 @@ public class EasyAI extends AI {
                     temp.nextPlayer().setQuiltBoard(tuple.getSecond());
                     temp.nextPlayer().setMoney(temp.nextPlayer().getMoney()-tuple.getFirst().getButtonsCost());
                     temp.nextPlayer().setBoardPosition(temp.nextPlayer().getBoardPosition()+tuple.getFirst().getTime());
+                    temp.setLogEntry("Bought patch "+tuple.getFirst().getPatchID()+" and laid it onto the board");
                     return temp;
                 })
                 .forEach(result::add);
