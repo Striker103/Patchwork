@@ -14,8 +14,6 @@ public class PatchTest{
     private final int BUTTONCOST = 5;
     private final boolean[][] SHAPE = new boolean[][]{  {true, true, false, false, false},
                                                         {true, true, false, false, false},
-                                                        {false, false, false, false, false},
-                                                        {false, false, false, false, false},
                                                         {false, false, false, false, false}};
 
     private final Matrix MATRIX = new Matrix(SHAPE);
@@ -98,8 +96,6 @@ public class PatchTest{
     public void testConstructorShapeInvalid(){
 
         boolean[][] invalidShape = new boolean[][]{  {false, false, false, false, false},
-                {false, false, false, false, false},
-                {false, false, false, false, false},
                 {false, false, false, false, false},
                 {false, false, false, false, false}};
         new Patch(ID, INCOME, BUTTONCOST, new Matrix(invalidShape), TIME);
