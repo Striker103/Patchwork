@@ -1,6 +1,5 @@
 package controller;
 
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import model.*;
@@ -62,7 +61,7 @@ public class HighScoreController {
 	}
 
 	/**
-	 * Clears highscore file
+	 * Clears high score file
 	 * @param file file
 	 */
 	public void clearHighScores(File file) {
@@ -74,7 +73,7 @@ public class HighScoreController {
 	}
 
 	/**
-	 * Shows the highscores specified in the file
+	 * Shows the high scores specified in the file
 	 * @param file file
 	 */
 	public void showHighScores(File file){
