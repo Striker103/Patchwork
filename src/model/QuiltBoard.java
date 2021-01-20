@@ -94,6 +94,13 @@ public class QuiltBoard {
 				Objects.equals(patches, that.patches);
 	}
 
+	public void add1x1Patch(int posX,int posY){
+		if(patchBoard.get(posY,posX)!=0){
+			throw new IllegalArgumentException("Position nicht frei!");
+		}
+		patchBoard.set(posY,posX,Integer.MAX_VALUE);
+	}
+
 	/**
 	 * Prints the PatchBoard
 	 */

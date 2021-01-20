@@ -45,6 +45,28 @@ public class GameController {
 	}
 
 	/**
+	 * Places a 1x1 Patch at specified position
+	 * @param xPosition The column of the position
+	 * @param yPosition The row of the position
+	 * @param player The Player who placed the patch
+	 */
+	public void place1x1Patch(int xPosition, int yPosition, Player player){
+		try{
+			player.getQuiltBoard().add1x1Patch(xPosition,yPosition);
+		}catch (IllegalArgumentException e){
+			errorAUI.showError(e.getMessage());
+		}
+	}
+
+	/**
+	 * Returns the next moving player
+	 * @return the player furthest behind on the board
+	 */
+	public Player getNextPlayer(){
+		return getNextPlayer(mainController.getGame().getCurrentGameStateIndex());
+	}
+
+	/**
 	 * Triggers the next Human or AI turn
 	 */
 	void endTurn() {
@@ -62,14 +84,6 @@ public class GameController {
 	 */
 	void cloneGameState(){
 		mainController.getGame().addGameState(mainController.getGame().getCurrentGameState().copy());
-	}
-
-	/**
-	 * Returns the next moving player
-	 * @return the player furthest behind on the board
-	 */
-	public Player getNextPlayer(){
-		return getNextPlayer(mainController.getGame().getCurrentGameStateIndex());
 	}
 
 	/**
