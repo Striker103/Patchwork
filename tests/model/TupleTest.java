@@ -2,6 +2,8 @@ package model;
 
 import org.junit.Test;
 
+import java.util.Objects;
+
 import static org.junit.Assert.*;
 
 /**
@@ -16,7 +18,7 @@ public class TupleTest {
      */
     @Test
     public void getFirst() {
-        assertEquals((Integer) 1, TUPLE.getFirst());
+        assertEquals(1,TUPLE.getFirst().longValue());
     }
 
     /**
@@ -26,7 +28,7 @@ public class TupleTest {
     public void setFirst() {
         Tuple<Integer, Integer> tup = new Tuple<>(1, 2);
         tup.setFirst(3);
-        assertEquals((Integer) 3, tup.getFirst());
+        assertEquals( 3, tup.getFirst().longValue());
 
     }
 
@@ -35,7 +37,7 @@ public class TupleTest {
      */
     @Test
     public void getSecond() {
-        assertEquals((Integer) 2, TUPLE.getSecond());
+        assertEquals( 2, TUPLE.getSecond().longValue());
     }
 
     /**
@@ -45,7 +47,7 @@ public class TupleTest {
     public void setSecond() {
         Tuple<Integer, Integer> tup = new Tuple<>(1, 2);
         tup.setSecond(3);
-        assertEquals((Integer) 3, tup.getSecond());
+        assertEquals(3, tup.getSecond().longValue());
     }
 
     /**
@@ -58,4 +60,24 @@ public class TupleTest {
 
         assertEquals(tuple1, tuple2);
     }
+
+    /**
+     * Test for equals()
+     */
+    @Test
+    public void testEqualsTure() {
+        Tuple<Integer, Integer> tuple1 = new Tuple<>(1, 2);
+        Tuple<Integer, Integer> tuple2 = new Tuple<>(1, 2);
+        assertTrue(tuple1.equals(tuple2));
+    }
+
+    /**
+     * Tests hashCode()
+     */
+    @Test
+    public void testHashCode() {
+        assertEquals(TUPLE.hashCode(), Objects.hash(TUPLE.getFirst(),TUPLE.getSecond()));
+    }
+
+
 }
