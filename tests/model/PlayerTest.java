@@ -152,13 +152,8 @@ public class PlayerTest {
     }
 
     /**
-     * Test that Copy() instantiates a new, independent object that is still equal
+     * Tests equals()
      */
-    @Test
-    public void testNotEquals(){
-        assertNotEquals(PLAYER,PLAYER2);
-    }
-
     @Test
     public void testEquals()
     {

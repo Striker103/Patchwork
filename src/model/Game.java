@@ -129,6 +129,7 @@ public class Game {
 	 * Adds the state in parameter at last index
 	 * @param gameState the new state
 	 */
+
 	public void addGameState(GameState gameState) {
 		if(!currentGameStateLast()){
 			throw new IllegalStateException("the game state is not the last element");
@@ -144,6 +145,7 @@ public class Game {
 	public Game copy() {
 		return new Game(ironman);
 	}
+
 	/**
 	 * Checks if the current GameState has a Successor
 	 * @return Weather or not the current GameState is the last
