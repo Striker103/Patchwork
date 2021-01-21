@@ -1,6 +1,5 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -65,8 +64,7 @@ public class GameState{
 		{
 			timeBoard[i] = new TimeBoardComponent(i);
 		}
-		patches = new ArrayList<>();
-		this.patches = patches;
+		this.patches = patches.stream().map(Patch::copy).collect(Collectors.toList());
 	}
 
 	/**
