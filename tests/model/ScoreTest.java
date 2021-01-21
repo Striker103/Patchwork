@@ -123,6 +123,7 @@ public class ScoreTest {
     public void testNotEquals(){
         Score testScoreSmall = new Score(1,false,PlayerType.AI_MEDIUM,"Peter");
         Score testScoreLarge = new Score(2,false,PlayerType.AI_HARD,"Time");
+        testScoreLarge.setDate(testScoreSmall.getDate());
         assertNotEquals(testScoreLarge,testScoreSmall);
 
         Score testScoreSmallOtherDate = testScoreSmall.copy();
@@ -136,7 +137,12 @@ public class ScoreTest {
         assertNotEquals(testScoreSmall,new Matrix(1,2));
         assertNotEquals(testScoreSmall,testScoreSmallOtherDate);
 
-
+        Score testScoreSmallIM = new Score(1,true,PlayerType.AI_MEDIUM,"Peter");
+        testScoreSmallIM.setDate(testScoreSmall.getDate());
+        assertNotEquals(testScoreSmall,testScoreSmallIM);
+        Score testSmallCopy = testScoreSmall.copy();
+        testSmallCopy.setValue(2);
+        assertNotEquals(testScoreSmall,testSmallCopy);
 
     }
 
