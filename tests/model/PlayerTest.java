@@ -14,13 +14,13 @@ public class PlayerTest {
     private final String NAME = "Ad";
     private final QuiltBoard QUILTBOARD = new QuiltBoard();
     private final Score SCORE;
-    //private final int MONEY2 = 2;
-    //private final String NAME2 = "Ab";
+    private final int MONEY2 = 2;
+    private final String NAME2 = "Ab";
     {
         SCORE = new Score(5, true, PlayerType.HUMAN, "Ad");
     }
     private final Player PLAYER = new Player(BOARDPOSIZION, MONEY, NAME, PlayerType.AI_MEDIUM, false);
-    //private final Player PLAYER2 = new Player(BOARDPOSIZION, MONEY2, NAME2, PlayerType.AI_MEDIUM, false);
+    private final Player PLAYER2 = new Player(BOARDPOSIZION, MONEY2, NAME2, PlayerType.AI_MEDIUM, false);
 
     /**
      * Tests the Constructor
@@ -69,6 +69,7 @@ public class PlayerTest {
     public void testGetName() {
         assertEquals(PLAYER.getName(),NAME);
     }
+
     /**
      * Tests getQuillBoard()
      */
@@ -138,6 +139,32 @@ public class PlayerTest {
     public void testgetHasSpecialTile(){
         PLAYER.setHasSpecialTile(true);
         assertEquals(PLAYER.getHasSpecialTile(), true);
+    }
+
+    /**
+     * Test that Copy() instantiates a new, independent object that is still equal and has the same hash
+     */
+    @Test
+    public void testCopy(){
+        assertEquals(PLAYER,PLAYER.copy());
+        assertEquals(PLAYER.hashCode(),PLAYER.copy().hashCode());
+        assertNotEquals(System.identityHashCode(PLAYER),System.identityHashCode(PLAYER.copy()));
+    }
+
+    /**
+     * Test that Copy() instantiates a new, independent object that is still equal
+     */
+    @Test
+    public void testNotEquals(){
+        assertNotEquals(PLAYER,PLAYER2);
+    }
+
+    /**
+     * Test that Copy() instantiates a new, independent object that has the same hash
+     */
+    @Test
+    public void testHashCode(){
+        assertNotEquals(System.identityHashCode(PLAYER),System.identityHashCode(PLAYER.copy()));
     }
 
 }
