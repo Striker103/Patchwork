@@ -15,6 +15,9 @@ import java.io.*;
 import java.nio.file.Files;
 import java.util.*;
 
+/**
+ * @author Alexandra Latys
+ */
 public class IOController {
 
 	private final MainController mainController;
