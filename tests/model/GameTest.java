@@ -118,7 +118,7 @@ public class GameTest {
         player1 = gameState.getPlayer1();
         player2 = gameState.getPlayer2();
         GAME.addGameState(gameState);
-        gameStateList = new List<GameState>(gameState);
+        //gameStateList = new List<GameState>(gameState);
         gameStateList.add(gameState);
         assertEquals(GAME.getGameStates(),gameStateList);
 
