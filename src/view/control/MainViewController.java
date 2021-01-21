@@ -7,10 +7,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
+
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import model.Game;
 import model.Patch;
@@ -36,7 +35,6 @@ public class MainViewController {
     private LoadGameViewController loadGameViewController;
     private NewGameViewController newGameViewController;
     private PauseGameViewController pauseGameViewController;
-
 
     private Stage primaryStage;
     private Scene mainMenuScene;
@@ -129,7 +127,7 @@ public class MainViewController {
             BorderPane root = loader.load();
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
-            currentScene = scene;
+            //currentScene = scene;
 
 
             FXMLLoader newGameLoader = new FXMLLoader(getClass().getResource("/view/fxml/newGame.fxml"));
@@ -155,6 +153,12 @@ public class MainViewController {
             highscoresViewController.setOwnScene(new Scene(highscoreRoot));
 
 
+            FXMLLoader gameScreenLoader = new FXMLLoader(getClass().getResource("/view/fxml/GameScreen.fxml"));
+            Pane gameScreenRoot = gameScreenLoader.load();
+            gameScreenViewController = gameScreenLoader.getController();
+            gameScreenViewController.setMainViewController(this);
+            gameScreenViewController.setOwnScene(currentScene = new Scene(gameScreenRoot));
+
             showCurrentScene();
         }
 
@@ -173,8 +177,6 @@ public class MainViewController {
     public void showCurrentScene(){
         if(primaryStage != null) {
             primaryStage.setScene(currentScene);
-            primaryStage.setWidth(oldWidth);
-            primaryStage.setHeight(oldHeight);
             primaryStage.setTitle("SoPra");
             primaryStage.show();
         }
