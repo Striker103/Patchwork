@@ -14,13 +14,10 @@ public class PlayerTest {
     private final String NAME = "Ad";
     private final QuiltBoard QUILTBOARD = new QuiltBoard();
     private final Score SCORE;
-    private final int MONEY2 = 2;
-    private final String NAME2 = "Ab";
     {
         SCORE = new Score(5, true, PlayerType.HUMAN, "Ad");
     }
     private final Player PLAYER = new Player(BOARDPOSIZION, MONEY, NAME, PlayerType.AI_MEDIUM, false);
-    private final Player PLAYER2 = new Player(BOARDPOSIZION, MONEY2, NAME2, PlayerType.AI_MEDIUM, false);
 
     /**
      * Tests the Constructor
@@ -138,7 +135,7 @@ public class PlayerTest {
     @Test
     public void testgetHasSpecialTile(){
         PLAYER.setHasSpecialTile(true);
-        assertEquals(PLAYER.getHasSpecialTile(), true);
+        assertTrue(PLAYER.getHasSpecialTile());
     }
 
     /**
@@ -158,8 +155,7 @@ public class PlayerTest {
     public void testEquals()
     {
         Player PLAYER3 = new Player(10, 10, "WE", PlayerType.HUMAN, true);
-        Player PLAYER4 = new Player(10, 10, "WE", PlayerType.HUMAN, true);
-        assertTrue(PLAYER3.equals(PLAYER4));
+        assertEquals(PLAYER3,PLAYER3.copy());
     }
 
     /**
