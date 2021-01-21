@@ -8,7 +8,9 @@ import static model.PlayerType.HUMAN;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-
+/**
+ * @author Abdullah Ourfali
+ */
 public class GameTest {
     Game GAME = new Game(true);
     Game GAME2 = new Game(true, 10);

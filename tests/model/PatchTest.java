@@ -55,16 +55,6 @@ public class PatchTest{
         new Patch(ID, -1, BUTTONCOST, MATRIX, TIME);
     }
 
-
-//    /**
-//     * Tests Constructor with Button Cost Zero
-//     */
-//    @Test(expected = IllegalArgumentException.class)
-//    public void testConstructorButtonCostZero(){
-//        new Patch(ID, INCOME, 0, SHAPE, TIME);
-//    }
-
-
     /**
      * Tests Constructor with Button Cost Negative
      */

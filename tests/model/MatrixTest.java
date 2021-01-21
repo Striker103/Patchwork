@@ -4,6 +4,9 @@ import org.junit.*;
 
 import static org.junit.Assert.*;
 
+/**
+ * @author Lukas Kidin
+ */
 public class MatrixTest {
     private final Matrix    MATRIX1 = new Matrix(new int[][]{{0,1,1},{1,2,0},{2, 0, -1}}),
                             MATRIX2 = new Matrix(new int[][]{{1,2,3},{-4,5,-6},{1,0,1}}),
