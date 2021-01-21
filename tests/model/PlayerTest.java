@@ -159,6 +159,14 @@ public class PlayerTest {
         assertNotEquals(PLAYER,PLAYER2);
     }
 
+    @Test
+    public void testEquals()
+    {
+        Player PLAYER3 = new Player(10, 10, "WE", PlayerType.HUMAN, true);
+        Player PLAYER4 = new Player(10, 10, "WE", PlayerType.HUMAN, true);
+        assertTrue(PLAYER3.equals(PLAYER4));
+    }
+
     /**
      * Test that Copy() instantiates a new, independent object that has the same hash
      */
