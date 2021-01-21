@@ -65,7 +65,7 @@ public class GameTest {
         player2 = gameState.getPlayer2();
         GAME.addGameState(gameState);
         GAME.setCurrentGameState(0);
-        GameState gameState = GAME.getGameStates().get(0);
+        GameState gameState = GAME.getGameStates().get(GAME.getCurrentGameStateIndex());
         assertEquals(GAME.getCurrentGameState(), gameState);
     }
 
