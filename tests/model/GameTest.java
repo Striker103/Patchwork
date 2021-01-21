@@ -10,6 +10,7 @@ import static org.junit.Assert.assertNotEquals;
 
 /**
  * @author Abdullah Ourfali
+ * @author Pia Kilian
  */
 public class GameTest {
     Game GAME = new Game(true);
