@@ -157,6 +157,10 @@ public class PlayerTest {
     @Test
     public void testNotEquals(){
         assertNotEquals(PLAYER,PLAYER2);
+        Player PLAYER3 = new Player(10, 10, "WE", PlayerType.HUMAN, true);
+        Player PLAYER4 = new Player(10, 10, "WE", PlayerType.HUMAN, true);
+        assertEquals(PLAYER3,PLAYER4);
+
     }
 
     /**
