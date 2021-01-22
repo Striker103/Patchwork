@@ -81,7 +81,7 @@ public class PlayerController {
 	}
 
 	private void get1x1Patch(){
-		turnAUI.triggerPlayerTurn();
+		turnAUI.trigger1x1Placement();
 	}
 
 	private int calculateIncomePatches(Player currentPlayer) {
