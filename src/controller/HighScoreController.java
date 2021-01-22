@@ -49,6 +49,7 @@ public class HighScoreController {
 			return;
 		}
 
+		//TODO es gibt jetzt auch getCurrentGameState :D
 		Player player1 = mainController.getGame().getGameStates().get(mainController.getGame().getCurrentGameStateIndex()).getPlayer1();
 		Player player2 = mainController.getGame().getGameStates().get(mainController.getGame().getCurrentGameStateIndex()).getPlayer2();
 
