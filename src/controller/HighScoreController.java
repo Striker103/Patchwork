@@ -163,7 +163,7 @@ public class HighScoreController {
 	 * @param highscoreAUI the highscoreAUI
 	 */
     public void setHighScoreAUI(HighScoreAUI highscoreAUI) {
-		if(this.highscoreAUIChanged) throw new IllegalStateException("errorAUI was already set");
+		if(this.highscoreAUIChanged) throw new IllegalStateException("highscoreAUI was already set");
 		this.highscoreAUI = highscoreAUI;
 		this.highscoreAUIChanged = true;
     }

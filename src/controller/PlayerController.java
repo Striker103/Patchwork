@@ -138,7 +138,7 @@ public class PlayerController {
 	 * @param logAUI the logAUI
 	 */
 	public void setLogAUI(LogAUI logAUI) {
-		if(this.logAUIChanged) throw new IllegalStateException("errorAUI was already set");
+		if(this.logAUIChanged) throw new IllegalStateException("logAUI was already set");
 		this.logAUI = logAUI;
 		this.logAUIChanged = true;
 	}
@@ -148,7 +148,7 @@ public class PlayerController {
 	 * @param turnAUI the turnAUI
 	 */
 	public void setTurnAUI(TurnAUI turnAUI) {
-		if(this.turnAUIChanged) throw new IllegalStateException("errorAUI was already set");
+		if(this.turnAUIChanged) throw new IllegalStateException("turnAUI was already set");
 		this.turnAUI = turnAUI;
 		this.turnAUIChanged = true;
 	}

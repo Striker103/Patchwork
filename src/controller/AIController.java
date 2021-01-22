@@ -158,7 +158,7 @@ public class AIController {
 	 * @param hintAUI the hintAUI
 	 */
 	public void setHintAUI(HintAUI hintAUI) {
-		if(this.hintAUIChanged) throw new IllegalStateException("errorAUI was already set");
+		if(this.hintAUIChanged) throw new IllegalStateException("hintAUI was already set");
 		this.hintAUI = hintAUI;
 		this.hintAUIChanged = true;
 	}

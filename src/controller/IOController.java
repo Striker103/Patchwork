@@ -347,7 +347,7 @@ public class IOController {
 	 * @param loadGameAUI the loadGameAUI
 	 */
 	public void setLoadGameAUI(LoadGameAUI loadGameAUI) {
-		if(this.loadGameAUIChanged) throw new IllegalStateException("errorAUI was already set");
+		if(this.loadGameAUIChanged) throw new IllegalStateException("loadGameAUI was already set");
 		this.loadGameAUI = loadGameAUI;
 		this.loadGameAUIChanged = true;
 	}
