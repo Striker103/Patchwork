@@ -44,37 +44,37 @@ public class PlayerControllerTest {
         new PlayerController(mainController,errorAUI,turnAUI,logAUI);
     }
 
-    /**
-     * Test if null as main controller is an error
-     */
-    @Test (expected = IllegalArgumentException.class)
-    public void testConstructorNoMainController() {
-        new PlayerController(null,errorAUI,turnAUI,logAUI);
-    }
-
-    /**
-     * Test if null as errorAUI is an error
-     */
-    @Test (expected = IllegalArgumentException.class)
-    public void testConstructorNoErrorAUI() {
-        new PlayerController(mainController,null,turnAUI,logAUI);
-    }
-
-    /**
-     * Test if null as turnAUI is an error
-     */
-    @Test (expected = IllegalArgumentException.class)
-    public void testConstructorNoTurnAUI() {
-        new PlayerController(mainController,errorAUI,null,logAUI);
-    }
-
-    /**
-     * Test if null as logAUI is an error
-     */
-    @Test (expected = IllegalArgumentException.class)
-    public void testConstructorNoLogAUI() {
-        new PlayerController(mainController,errorAUI,turnAUI,null);
-    }
+//    /**
+//     * Test if null as main controller is an error
+//     */
+//    @Test (expected = IllegalArgumentException.class)
+//    public void testConstructorNoMainController() {
+//        new PlayerController(null,errorAUI,turnAUI,logAUI);
+//    }
+//
+//    /**
+//     * Test if null as errorAUI is an error
+//     */
+//    @Test (expected = IllegalArgumentException.class)
+//    public void testConstructorNoErrorAUI() {
+//        new PlayerController(mainController,null,turnAUI,logAUI);
+//    }
+//
+//    /**
+//     * Test if null as turnAUI is an error
+//     */
+//    @Test (expected = IllegalArgumentException.class)
+//    public void testConstructorNoTurnAUI() {
+//        new PlayerController(mainController,errorAUI,null,logAUI);
+//    }
+//
+//    /**
+//     * Test if null as logAUI is an error
+//     */
+//    @Test (expected = IllegalArgumentException.class)
+//    public void testConstructorNoLogAUI() {
+//        new PlayerController(mainController,errorAUI,turnAUI,null);
+//    }
 
 
 

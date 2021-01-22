@@ -32,20 +32,20 @@ public class HighScoreControllerTest {
         HighScoreController highScoreController = new HighScoreController(mainController,errorAUI,highscoreAUI);
     }
 
-    @Test (expected = IllegalArgumentException.class)
-    public void testConstructorMCNull() {
-        HighScoreController highScoreController = new HighScoreController(null,errorAUI,highscoreAUI);
-    }
-
-    @Test (expected = IllegalArgumentException.class)
-    public void testConstructorErrorNull() {
-        HighScoreController highScoreController = new HighScoreController(mainController,null,highscoreAUI);
-    }
-
-    @Test (expected = IllegalArgumentException.class)
-    public void testConstructorHighScoreNull() {
-        HighScoreController highScoreController = new HighScoreController(mainController,errorAUI,null);
-    }
+//    @Test (expected = IllegalArgumentException.class)
+//    public void testConstructorMCNull() {
+//        HighScoreController highScoreController = new HighScoreController(null,errorAUI,highscoreAUI);
+//    }
+//
+//    @Test (expected = IllegalArgumentException.class)
+//    public void testConstructorErrorNull() {
+//        HighScoreController highScoreController = new HighScoreController(mainController,null,highscoreAUI);
+//    }
+//
+//    @Test (expected = IllegalArgumentException.class)
+//    public void testConstructorHighScoreNull() {
+//        HighScoreController highScoreController = new HighScoreController(mainController,errorAUI,null);
+//    }
 
 
 
