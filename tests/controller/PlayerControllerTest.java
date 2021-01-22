@@ -103,5 +103,7 @@ public class PlayerControllerTest {
         public void triggerPlayerTurn(){
             playerTurnTriggerd = true;
         }
+        @Override
+        public void trigger1x1Placement(){}
     }
 }

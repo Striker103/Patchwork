@@ -79,6 +79,8 @@ public class MainViewController {
         public void triggerPlayerTurn() {
 
         }
+        @Override
+        public void trigger1x1Placement(){}
     };
 
     private LoadGameAUI loadGameAUI = new LoadGameAUI() {

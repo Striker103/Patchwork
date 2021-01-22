@@ -28,6 +28,8 @@ public class GamePreparationControllerTest {
         public void triggerPlayerTurn() {
 
         }
+        @Override
+        public void trigger1x1Placement(){}
     }
 
     private final Tuple<String, PlayerType> player1Tuple = new Tuple<>("Player1", PlayerType.HUMAN);

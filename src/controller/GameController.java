@@ -47,7 +47,7 @@ public class GameController {
 		endTurn();
 	}
 
-	public void takePatch(Patch patch, boolean[][] placing) {
+	public void takePatch(Patch patch, Matrix placing) {
 
 		//TODO
 		cloneGameState();
