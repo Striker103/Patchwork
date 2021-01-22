@@ -42,6 +42,7 @@ public class Game {
 	 */
 	public Game(boolean pIronman, int pSimulationSpeed){
 		this( pIronman );
+		this.gameStates = new ArrayList<GameState>();
 		if (pSimulationSpeed > 0) {
 			simulationSpeed = pSimulationSpeed;
 		} else {
@@ -55,7 +56,7 @@ public class Game {
 	 */
 	public Game(boolean pIronman) {
 		this.currentGameState = -1;
-		this.highscoreReachable = false;
+		this.highscoreReachable = true;
 		this.simulationSpeed = 0;
 		this.gameStates = new ArrayList<GameState>();
 		ironman = pIronman;
@@ -104,6 +105,14 @@ public class Game {
 	}
 
 	/**
+	 * Sets the new highScore reachable
+	 * @param highscoreReachable the new highScore reachable
+	 */
+	public void setHighscoreReachable(boolean highscoreReachable ){
+		this.highscoreReachable = highscoreReachable;
+	}
+
+	/**
 	 * Gets the game mode
 	 * @return the ironman mode
 	 */
@@ -129,7 +138,6 @@ public class Game {
 	 * Adds the state in parameter at last index
 	 * @param gameState the new state
 	 */
-
 	public void addGameState(GameState gameState) {
 		if(!currentGameStateLast()){
 			throw new IllegalStateException("the game state is not the last element");
