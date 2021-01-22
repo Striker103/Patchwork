@@ -18,7 +18,7 @@ public class Game {
 	/**
 	 * The highscore is reachable
 	 */
-	private boolean highscoreReachable;
+	private boolean highScoreReachable;
 
 	/**
 	 * Is ironman mode
@@ -56,10 +56,25 @@ public class Game {
 	 */
 	public Game(boolean pIronman) {
 		this.currentGameState = -1;
-		this.highscoreReachable = true;
+		this.highScoreReachable = true;
 		this.simulationSpeed = 0;
 		this.gameStates = new ArrayList<GameState>();
 		ironman = pIronman;
+	}
+
+	/**
+	 * Copy Constructor
+	 */
+	private Game(int currentGameState, boolean highScoreReachable, boolean ironman, int simulationSpeed, List<GameState> gameStates) {
+		this.currentGameState = currentGameState;
+		this.highScoreReachable = highScoreReachable;
+		this.ironman = ironman;
+		this.simulationSpeed = simulationSpeed;
+		List<GameState> copiedGameStates = new ArrayList<>();
+		for(GameState gameState : gameStates){
+			copiedGameStates.add(gameState.copy());
+		}
+		this.gameStates = copiedGameStates;
 	}
 
 	/**
@@ -100,16 +115,16 @@ public class Game {
 	 * Gets the reachabled highscore
 	 * @return the reachabled highscore
 	 */
-	public boolean isHighscoreReachable(){
-		return highscoreReachable;
+	public boolean isHighScoreReachable(){
+		return highScoreReachable;
 	}
 
 	/**
 	 * Sets the new highScore reachable
-	 * @param highscoreReachable the new highScore reachable
+	 * @param highScoreReachable the new highScore reachable
 	 */
-	public void setHighscoreReachable(boolean highscoreReachable ){
-		this.highscoreReachable = highscoreReachable;
+	public void setHighScoreReachable(boolean highScoreReachable){
+		this.highScoreReachable = highScoreReachable;
 	}
 
 	/**
@@ -151,7 +166,7 @@ public class Game {
 	 * @return Copy of the object
 	 */
 	public Game copy() {
-		return new Game(ironman);
+		return new Game(currentGameState, highScoreReachable,ironman,simulationSpeed,getGameStates());
 	}
 
 	/**

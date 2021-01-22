@@ -74,7 +74,7 @@ public class GameTest {
      */
     @Test
     public void testIsHighScoreReachable() {
-    assertFalse(GAME.isHighscoreReachable());
+    assertFalse(GAME.isHighScoreReachable());
     }
 
 
