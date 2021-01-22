@@ -16,18 +16,21 @@ public class GamePreparationController {
 
 	private final MainController mainController;
 
-	private final ErrorAUI errorAUI;
+	private ErrorAUI errorAUI;
+
+	/**
+	 * true if errorAUI is set
+	 */
+	private boolean errorAUIChanged = false;
 
 
 	/**
-	 * Constructor that sets the mainController and all AUIs
+	 * Constructor that sets the mainController
 	 *
 	 * @param mainController The controller that knows all other controllers
-	 * @param errorAUI the errorAUI
 	 */
-	public GamePreparationController(MainController mainController, ErrorAUI errorAUI) {
+	public GamePreparationController(MainController mainController){
 		this.mainController = mainController;
-		this.errorAUI = errorAUI;
 	}
 
 	/**
@@ -39,7 +42,7 @@ public class GamePreparationController {
 	 * @param ironman if true undo, redo and tips are not possible
 	 */
 	public void startGame(Tuple<Tuple<String,PlayerType>, Tuple<String,PlayerType>> players, File file, int speed, boolean ironman) {
-		boolean parametersOk = parametersAreOk(players, speed);
+		boolean parametersOk = parametersAreOk(players, speed, file);
 		if(!parametersOk)
 			return;
 		List<Patch> patches;
@@ -59,8 +62,16 @@ public class GamePreparationController {
 		gameController.endTurn();
 	}
 
-	private boolean parametersAreOk(Tuple<Tuple<String,PlayerType>, Tuple<String,PlayerType>> players,int speed)
+	private boolean parametersAreOk(Tuple<Tuple<String,PlayerType>, Tuple<String,PlayerType>> players,int speed, File file)
 	{
+		if(players == null){
+			errorAUI.showError("players cant be null");
+			return false;
+		}
+		if(players.getFirst()== null || players.getSecond() == null){
+			errorAUI.showError("tuples in players cant be null");
+			return false;
+		}
 		if(players.getFirst().getSecond() == null || players.getSecond().getSecond() == null){
 			errorAUI.showError("player types cant be null");
 			return false;
@@ -79,6 +90,10 @@ public class GamePreparationController {
 		}
 		if(players.getFirst().getFirst().equals(players.getSecond().getFirst())) {
 			errorAUI.showError("player names should not be equal");
+			return false;
+		}
+		if(file != null && !file.exists()) {
+			errorAUI.showError("cant open csv file");
 			return false;
 		}
 		return true;
@@ -102,6 +117,10 @@ public class GamePreparationController {
 	}
 
 
-
+	public void setErrorAUI(ErrorAUI errorAUI) {
+		if(this.errorAUIChanged) throw new IllegalStateException("errorAUI was already set");
+		this.errorAUI = errorAUI;
+		this.errorAUIChanged = true;
+	}
 }
 
