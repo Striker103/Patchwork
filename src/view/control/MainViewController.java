@@ -16,6 +16,7 @@ import model.Patch;
 import model.Score;
 import view.aui.*;
 
+import javafx.scene.image.*;
 import java.io.IOException;
 import java.util.List;
 
@@ -159,6 +160,11 @@ public class MainViewController {
             gameScreenViewController.setMainViewController(this);
             gameScreenViewController.setOwnScene(currentScene = new Scene(gameScreenRoot));
 
+
+
+
+            gameScreenViewController.loadTimeBoard();
+            gameScreenViewController.loadPatches();
             showCurrentScene();
         }
 

@@ -1,6 +1,5 @@
 package model;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -36,7 +35,7 @@ public class Player {
 	/**
 	 * Indicates whether the player receives 7 bonus points
 	 */
-	private boolean hasSpecialTile = false;
+	private boolean hasSpecialTile;
 
 	/**
 	 * Initializes a new Player-Object
@@ -132,33 +131,33 @@ public class Player {
 
 	/**
 	 * Set score
-	 * @param pScore
+	 * @param pScore the new Score
 	 */
 	public void setScore( Score pScore){ score = pScore;}
 	/**
 	 * Set the name
-	 * @param pName
+	 * @param pName the new Name of Player
 	 */
 	public void setName( String pName){ name= pName;}
 	/**
 	 * Set boardPosition
-	 * @param pBoardPosition
+	 * @param pBoardPosition the new board position
 	 */
 	public void setBoardPosition( int pBoardPosition){ boardPosition = pBoardPosition;}
 	/**
 	 * Set playerType
-	 * @param pPlayerType
+	 * @param pPlayerType new PlayerType
 	 */
 	public void setPlayerType( PlayerType pPlayerType){ playerType = pPlayerType;}
 	/**
 	 * Set quiltBoard
-	 * @param pQuiltBoard
+	 * @param pQuiltBoard new QuiltBoard
 	 */
 	public void setQuiltBoard( QuiltBoard pQuiltBoard){ quiltBoard = pQuiltBoard;}
 
 	/**
 	 * Set hasSpecialTile
-	 * @param hasSpecialTile
+	 * @param hasSpecialTile SpecialTile
 	 */
 	public void setHasSpecialTile(boolean hasSpecialTile) {
 		this.hasSpecialTile = hasSpecialTile;
