@@ -156,7 +156,7 @@ public class PlayerTest {
      */
     @Test
     public void testHashCode(){
-        assertNotEquals(PLAYER.hashCode(),PLAYER.copy().hashCode());
+        assertEquals(PLAYER.hashCode(),PLAYER.copy().hashCode());
     }
 
 }

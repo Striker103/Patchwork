@@ -54,13 +54,25 @@ public class Player {
 		this.quiltBoard = new QuiltBoard();
 	}
 
+	/**
+	 * Copy Constructor
+	 * @param boardPosition the boardPosition
+	 * @param money the money
+	 * @param name the name
+	 * @param quiltBoard the quiltBoard
+	 * @param playerType the playerType
+	 * @param score the score
+	 * @param hasSpecialTile the hasSpecialTile
+	 */
 	private Player(int boardPosition, int money, String name, QuiltBoard quiltBoard, PlayerType playerType, Score score, boolean hasSpecialTile) {
 		this.boardPosition = boardPosition;
 		this.money = money;
 		this.name = name;
 		this.quiltBoard = quiltBoard.copy();
 		this.playerType = playerType;
-		this.score = score.copy();
+		if(score != null){
+			this.score = score.copy();
+		}
 		this.hasSpecialTile = hasSpecialTile;
 	}
 
