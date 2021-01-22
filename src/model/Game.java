@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Abdullah Ourfali
@@ -178,6 +179,20 @@ public class Game {
 		return currentGameState == gameStates.size()-1;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Game game = (Game) o;
+		return currentGameState == game.currentGameState &&
+				highScoreReachable == game.highScoreReachable &&
+				ironman == game.ironman &&
+				simulationSpeed == game.simulationSpeed &&
+				gameStates.equals(game.gameStates);
+	}
 
-
+	@Override
+	public int hashCode() {
+		return Objects.hash(currentGameState, highScoreReachable, ironman, simulationSpeed, gameStates);
+	}
 }
