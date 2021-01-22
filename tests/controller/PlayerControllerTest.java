@@ -5,7 +5,6 @@ import model.Score;
 import org.junit.Before;
 import org.junit.Test;
 import view.aui.ErrorAUI;
-import view.aui.HighscoreAUI;
 import view.aui.LogAUI;
 import view.aui.TurnAUI;
 
@@ -33,7 +32,10 @@ public class PlayerControllerTest {
         errorAUI = new DummyAUI();
         turnAUI = new DummyAUI();
         logAUI = new DummyAUI();
-        mainController = new MainController(null,errorAUI,null,logAUI,turnAUI,null);
+        mainController = new MainController();
+        mainController.setErrorAUI(errorAUI);
+        mainController.setLogAUI(logAUI);
+        mainController.setTurnAUI(turnAUI);
     }
 
     /**
@@ -41,7 +43,7 @@ public class PlayerControllerTest {
      */
     @Test
     public void testConstructor() {
-        new PlayerController(mainController,errorAUI,turnAUI,logAUI);
+        new PlayerController(mainController);
     }
 
 //    /**

@@ -1,6 +1,7 @@
 package controller;
 
 import model.*;
+import org.junit.Before;
 import org.junit.Test;
 import view.aui.ErrorAUI;
 import view.aui.TurnAUI;
@@ -38,11 +39,17 @@ public class GamePreparationControllerTest {
     private final DummyAUI dummyAUI = new DummyAUI();
 
     private final MainController mainController =
-            new MainController(null, dummyAUI, null, null, new DummyAUI(), null );
+            new MainController();
 
     private final GamePreparationController gamePreparationController = mainController.getGamePreparationController();
 
 
+    @Before
+    public void setUp(){
+        //TODO so richtig rum?
+        mainController.setErrorAUI(dummyAUI);
+        mainController.setTurnAUI(new DummyAUI());
+    }
     //CHECK FOR ERRORS
 
         //METHOD WITH SPEED

@@ -5,13 +5,13 @@ import model.Score;
 import org.junit.Before;
 import org.junit.Test;
 import view.aui.ErrorAUI;
-import view.aui.HighscoreAUI;
+import view.aui.HighScoreAUI;
 import static org.junit.Assert.*;
 
 import java.util.List;
 
 public class HighScoreControllerTest {
-    private HighscoreAUI highscoreAUI;
+    private HighScoreAUI highscoreAUI;
 
     private MainController mainController;
 
@@ -22,14 +22,16 @@ public class HighScoreControllerTest {
     public void setUp(){
         errorAUI = new DummyAUI();
         highscoreAUI = new DummyAUI();
-        mainController = new MainController(highscoreAUI,errorAUI,null,null,null,null);
+        mainController = new MainController();
+        mainController.setErrorAUI(errorAUI);
+        mainController.setHighScoreAUI(highscoreAUI);
         Game game = new Game(false);
         mainController.setGame(game);
     }
 
     @Test
     public void testConstructor() {
-        HighScoreController highScoreController = new HighScoreController(mainController,errorAUI,highscoreAUI);
+        HighScoreController highScoreController = new HighScoreController(mainController);
     }
 
 //    @Test (expected = IllegalArgumentException.class)
@@ -51,7 +53,7 @@ public class HighScoreControllerTest {
 
 
 
-    class DummyAUI implements ErrorAUI, HighscoreAUI {
+    class DummyAUI implements ErrorAUI, HighScoreAUI {
         public boolean error = false;
 
         @Override

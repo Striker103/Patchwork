@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 
 public class UndoRedoControllerTest {
 
-    private final MainController mainController = new MainController(null, (message -> {}), null, null,(() -> {}), null);
+    private final MainController mainController = new MainController();
 
     private final  UndoRedoController undoRedoController = mainController.getUndoRedoController();
 
@@ -27,7 +27,8 @@ public class UndoRedoControllerTest {
 
     @Before
     public void setUp(){
-
+        mainController.setErrorAUI((message -> {}));
+        //TODO die zweite AUI setzen (() -> {})
     }
 
     @Test
