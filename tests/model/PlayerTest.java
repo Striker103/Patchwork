@@ -17,7 +17,7 @@ public class PlayerTest {
     {
         SCORE = new Score(5, true, PlayerType.HUMAN, "Ad");
     }
-    private final Player PLAYER = new Player( NAME, PlayerType.AI_MEDIUM);
+    private final Player PLAYER = new Player(NAME, PlayerType.AI_MEDIUM);
 
     /**
      * Tests the Constructor
@@ -156,7 +156,7 @@ public class PlayerTest {
      */
     @Test
     public void testHashCode(){
-        assertNotEquals(System.identityHashCode(PLAYER),System.identityHashCode(PLAYER.copy()));
+        assertNotEquals(PLAYER.hashCode(),PLAYER.copy().hashCode());
     }
 
 }

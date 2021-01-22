@@ -37,10 +37,11 @@ public class Player {
 	 */
 	private boolean hasSpecialTile;
 
-
-
-
-
+	/**
+	 * Creates a new Player with 5 money and the board position 0
+	 * @param name the name of the player
+	 * @param playerType the type of the player
+	 */
 	public Player(String name, PlayerType playerType) {
 		CheckUtil.assertNonNull(name,playerType);
 		if(name.isBlank()){
@@ -53,13 +54,23 @@ public class Player {
 		this.quiltBoard = new QuiltBoard();
 	}
 
+	private Player(int boardPosition, int money, String name, QuiltBoard quiltBoard, PlayerType playerType, Score score, boolean hasSpecialTile) {
+		this.boardPosition = boardPosition;
+		this.money = money;
+		this.name = name;
+		this.quiltBoard = quiltBoard.copy();
+		this.playerType = playerType;
+		this.score = score.copy();
+		this.hasSpecialTile = hasSpecialTile;
+	}
+
 	/**
 	 * Clones the object
 	 * @return Copy of the object
 	 */
 
 	public Player copy() {
-		return null;
+		return new Player(boardPosition,money,name,quiltBoard,playerType,score,hasSpecialTile);
 	}
 
 	/**
