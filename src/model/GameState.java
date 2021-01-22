@@ -36,7 +36,8 @@ public class GameState{
 	private final Player player2;
 
 	/**
-	 * Constructor for a new GameState Object. Starting position for the players is boardPosition 0
+	 * Constructor for a new GameState Object. Starting position for the players is boardPosition 0. Each player gets 5 start Buttons.
+	 * This constructor is only called once when a game starts
 	 *
 	 * @param playerNames 			names and types of players
 	 * @param patches 				list of patches
@@ -65,6 +66,7 @@ public class GameState{
 			timeBoard[i] = new TimeBoardComponent(i);
 		}
 		this.patches = patches.stream().map(Patch::copy).collect(Collectors.toList());
+		this.logEntry = "";
 	}
 
 	/**
