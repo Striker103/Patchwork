@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import model.*;
 import view.aui.ErrorAUI;
-import view.aui.HighscoreAUI;
+import view.aui.HighScoreAUI;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -13,22 +13,29 @@ import java.util.LinkedList;
 
 public class HighScoreController {
 
-	private HighscoreAUI highscoreAUI;
+	private HighScoreAUI highscoreAUI;
 
 	private MainController mainController;
 
 	private ErrorAUI errorAUI;
 
 	/**
-	 * Constructor that sets the mainController and all AUIs
-	 * @param mainController The controller that knows all other controllers
-	 * @param errorAUI the errorAUI
-	 * @param highscoreAUI the highScoreAUI
+	 * true if errorAUI is set
 	 */
-	public HighScoreController(MainController mainController, ErrorAUI errorAUI, HighscoreAUI highscoreAUI){
+	private boolean errorAUIChanged = false;
+
+	/**
+	 * true if errorAUI is set
+	 */
+	private boolean highscoreAUIChanged = false;
+
+	/**
+	 * Constructor that sets the mainController
+	 *
+	 * @param mainController The controller that knows all other controllers
+	 */
+	public HighScoreController(MainController mainController){
 		this.mainController = mainController;
-		this.errorAUI = errorAUI;
-		this.highscoreAUI = highscoreAUI;
 	}
 
 	/**
@@ -148,6 +155,27 @@ public class HighScoreController {
 			return null;
 		}
 
+	}
+
+	/**
+	 * set the highScoreAUI
+	 * @param highscoreAUI the highscoreAUI
+	 */
+    public void setHighScoreAUI(HighScoreAUI highscoreAUI) {
+		if(this.highscoreAUIChanged) throw new IllegalStateException("errorAUI was already set");
+		this.highscoreAUI = highscoreAUI;
+		this.highscoreAUIChanged = true;
+    }
+
+	/**
+	 * set the errorAUI
+	 * @param errorAUI the errorAUI
+	 */
+	public void setErrorAUI(ErrorAUI errorAUI) {
+		this.errorAUI = errorAUI;
+		if(this.errorAUIChanged) throw new IllegalStateException("errorAUI was already set");
+		this.errorAUI = errorAUI;
+		this.errorAUIChanged = true;
 	}
 
 //	public void setErrorAUI(ErrorAUI errorAUI){

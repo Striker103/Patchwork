@@ -10,24 +10,34 @@ public class GameController {
 
 	private final MainController mainController;
 
-	private final ErrorAUI errorAUI;
+	private ErrorAUI errorAUI;
 
-	private final LogAUI logAUI;
+	private LogAUI logAUI;
 
-	private final TurnAUI turnAUI;
+	private TurnAUI turnAUI;
 
 	/**
-	 * Constructor that sets the mainController and all AUIs
-	 * @param mainController The controller that knows all other controllers
-	 * @param errorAUI the errorAUI
-	 * @param logAUI the logAUI
-	 * @param turnAUI the turnAUI
+	 * true if errorAUI is set
 	 */
-	public GameController(MainController mainController, ErrorAUI errorAUI, LogAUI logAUI, TurnAUI turnAUI){
+	private boolean errorAUIChanged = false;
+
+	/**
+	 * true if logAUI is set
+	 */
+	private boolean logAUIChanged = false;
+
+	/**
+	 * true if logAUI is set
+	 */
+	private boolean turnAUIChanged = false;
+
+	/**
+	 * Constructor that sets the mainController
+	 * 
+	 * @param mainController The controller that knows all other controllers
+	 */
+	public GameController(MainController mainController){
 		this.mainController = mainController;
-		this.errorAUI = errorAUI;
-		this.logAUI = logAUI;
-		this.turnAUI = turnAUI;
 	}
 
 	public void advance() {
@@ -106,4 +116,33 @@ public class GameController {
 		}
 	}
 
+	/**
+	 * set the errorAUI
+	 * @param errorAUI the errorAUI
+	 */
+	public void setErrorAUI(ErrorAUI errorAUI) {
+		if(this.errorAUIChanged) throw new IllegalStateException("errorAUI was already set");
+		this.errorAUI = errorAUI;
+		this.errorAUIChanged = true;
+	}
+
+	/**
+	 * set the logAUI
+	 * @param logAUI the logAUI
+	 */
+	public void setLogAUI(LogAUI logAUI) {
+		if(this.logAUIChanged) throw new IllegalStateException("errorAUI was already set");
+		this.logAUI = logAUI;
+		this.logAUIChanged = true;
+	}
+
+	/**
+	 * set the turnAUi
+	 * @param turnAUI the turnAUI
+	 */
+	public void setTurnAUI(TurnAUI turnAUI) {
+		if(this.turnAUIChanged) throw new IllegalStateException("errorAUI was already set");
+		this.turnAUI = turnAUI;
+		this.turnAUIChanged = true;
+	}
 }

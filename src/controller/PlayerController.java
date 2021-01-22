@@ -15,27 +15,36 @@ public class PlayerController {
 
 	private final MainController mainController;
 
-	private final ErrorAUI errorAUI;
+	private ErrorAUI errorAUI;
 
-	private final TurnAUI turnAUI;
+	private TurnAUI turnAUI;
 
-	private final LogAUI logAUI;
+	private LogAUI logAUI;
+
+	/**
+	 * true if errorAUI is set
+	 */
+	private boolean errorAUIChanged = false;
+
+	/**
+	 * true if logAUIChanged is set
+	 */
+	private boolean logAUIChanged = false;
+
+	/**
+	 * true if turnAUIChanged is set
+	 */
+	private boolean turnAUIChanged = false;
 
 	private final int boardPos = 53;
 
 	/**
-	 * Constructor that sets the mainController and all AUIs
+	 * Constructor that sets the mainController
 	 *
 	 * @param mainController The controller that knows all other controllers
-	 * @param errorAUI the errorAUI
-	 * @param turnAUI  the turnAUI
-	 * @param logAUI  the logAUI
 	 */
-	public PlayerController(MainController mainController, ErrorAUI errorAUI, TurnAUI turnAUI, LogAUI logAUI){
+	public PlayerController(MainController mainController){
 		this.mainController = mainController;
-		this.errorAUI = errorAUI;
-		this.turnAUI = turnAUI;
-		this.logAUI = logAUI;
 	}
 
 	private void getIncomeMovement(int playerPos, int steps, Player currentPlayer) {
@@ -114,4 +123,33 @@ public class PlayerController {
 		logAUI.updateLog(currentPlayer.getName() + " bought " + patch.getPatchID() + " for " + patch.getButtonsCost() + " buttons");
 	}
 
+	/**
+	 * set the errorAUI
+	 * @param errorAUI the errorAUI
+	 */
+	public void setErrorAUI(ErrorAUI errorAUI) {
+		if(this.errorAUIChanged) throw new IllegalStateException("errorAUI was already set");
+		this.errorAUI = errorAUI;
+		this.errorAUIChanged = true;
+	}
+
+	/**
+	 * set the logAUI
+	 * @param logAUI the logAUI
+	 */
+	public void setLogAUI(LogAUI logAUI) {
+		if(this.logAUIChanged) throw new IllegalStateException("errorAUI was already set");
+		this.logAUI = logAUI;
+		this.logAUIChanged = true;
+	}
+
+	/**
+	 * set the turnAUI
+	 * @param turnAUI the turnAUI
+	 */
+	public void setTurnAUI(TurnAUI turnAUI) {
+		if(this.turnAUIChanged) throw new IllegalStateException("errorAUI was already set");
+		this.turnAUI = turnAUI;
+		this.turnAUIChanged = true;
+	}
 }

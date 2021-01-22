@@ -4,7 +4,6 @@ import controller.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
@@ -16,7 +15,6 @@ import model.Patch;
 import model.Score;
 import view.aui.*;
 
-import javafx.scene.image.*;
 import java.io.IOException;
 import java.util.List;
 
@@ -43,7 +41,7 @@ public class MainViewController {
 
 
 
-    private HighscoreAUI highscoreAUI = new HighscoreAUI() {
+    private HighScoreAUI highscoreAUI = new HighScoreAUI() {
         @Override
         public void showHighscores(List<Score> highscores) {
 
@@ -91,7 +89,7 @@ public class MainViewController {
     };
 
     public MainViewController(){
-        mainController = new MainController(highscoreAUI, errorAUI, hintAUI, logAUI, turnAUI, loadGameAUI);
+        mainController = new MainController();
     }
 
     public MainController getMainController(){

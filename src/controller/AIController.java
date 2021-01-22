@@ -33,21 +33,29 @@ public class AIController {
 	/**
 	 * The AUI that triggers showing of a hint
 	 */
-	private final HintAUI hintAUI;
+	private HintAUI hintAUI;
 	/**
 	 * The Error AUI
 	 */
-	private final ErrorAUI errorAUI;
+	private ErrorAUI errorAUI;
 
 	/**
-	 * Constructor that sets the mainController and all AUIs
-	 * @param mainController The controller that knows all other controllers
-	 * @param hintAUI The AUI that Triggers the Hint in the GUI
+	 * true if hintAUI is set
 	 */
-	public AIController(MainController mainController, HintAUI hintAUI,ErrorAUI errorAUI){
+	private boolean hintAUIChanged = false;
+
+	/**
+	 * true if errorAUI is set
+	 */
+	private boolean errorAUIChanged = false;
+
+	/**
+	 * Constructor that sets the mainController
+	 *
+	 * @param mainController The controller that knows all other controllers
+	 */
+	public AIController(MainController mainController){
 		this.mainController = mainController;
-		this.hintAUI = hintAUI;
-		this.errorAUI = errorAUI;
 	}
 
 	public void doTurn() {
@@ -133,5 +141,25 @@ public class AIController {
 			Matrix placement = afterTurn.getQuiltBoard().getPatchBoard().without(beforeTurn.getQuiltBoard().getPatchBoard());
 			hintAUI.showHintTakePatch(patchTaken,placement.toBooleanArray());
 		}
+	}
+
+	/**
+	 * set the errorAUI
+	 * @param errorAUI the errorAUI
+	 */
+	public void setErrorAUI(ErrorAUI errorAUI) {
+		if(this.errorAUIChanged) throw new IllegalStateException("errorAUI was already set");
+		this.errorAUI = errorAUI;
+		this.errorAUIChanged = true;
+	}
+
+	/**
+	 * set the hintAUI
+	 * @param hintAUI the hintAUI
+	 */
+	public void setHintAUI(HintAUI hintAUI) {
+		if(this.hintAUIChanged) throw new IllegalStateException("errorAUI was already set");
+		this.hintAUI = hintAUI;
+		this.hintAUIChanged = true;
 	}
 }

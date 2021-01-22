@@ -14,11 +14,13 @@ public class UndoRedoController {
 	private final MainController mainController;
 
 	/**
-	 * Constructor that sets the mainController and all AUIs
+	 * Constructor that sets the mainController
 	 *
 	 * @param mainController The controller that knows all other controllers
 	 */
-	public UndoRedoController(MainController mainController){this.mainController = mainController;}
+	public UndoRedoController(MainController mainController){
+		this.mainController = mainController;
+	}
 
 	/**
 	 * Sets the current GameState to its predecessor

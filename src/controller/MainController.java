@@ -55,15 +55,70 @@ public class MainController {
 	/**
 	 * generates all controllers and their AUIs
 	 */
-	public MainController(HighscoreAUI highscoreAUI, ErrorAUI errorAUI, HintAUI hintAUI, LogAUI logAUI, TurnAUI turnAUI, LoadGameAUI loadGameAUI)
+	public MainController()
 	{
-		gamePreparationController = new GamePreparationController(this, errorAUI);
-		gameController = new GameController(this, errorAUI, logAUI, turnAUI);
-		aIController = new AIController(this, hintAUI,errorAUI);
-		playerController = new PlayerController(this, errorAUI, turnAUI, logAUI);
+		gamePreparationController = new GamePreparationController(this);
+		gameController = new GameController(this);
+		aIController = new AIController(this);
+		playerController = new PlayerController(this);
 		undoRedoController = new UndoRedoController(this);
-		iOController = new IOController(this, errorAUI, loadGameAUI);
-		highScoreController = new HighScoreController(this, errorAUI, highscoreAUI);
+		iOController = new IOController(this);
+		highScoreController = new HighScoreController(this);
+	}
+
+	/**
+	 * sets all HighScoreAUIs
+	 * @param highScoreAUI the highScoreAUI
+	 */
+	public void setHighScoreAUI(HighScoreAUI highScoreAUI){
+		highScoreController.setHighScoreAUI(highScoreAUI);
+	}
+
+	/**
+	 * sets all Error AUIs
+	 * @param errorAUI the errorAUI
+	 */
+	public void setErrorAUI(ErrorAUI errorAUI){
+		gamePreparationController.setErrorAUI(errorAUI);
+		gameController.setErrorAUI(errorAUI);
+		aIController.setErrorAUI(errorAUI);
+		playerController.setErrorAUI(errorAUI);
+		iOController.setErrorAUI(errorAUI);
+		highScoreController.setErrorAUI(errorAUI);
+	}
+
+	/**
+	 * sets all hint AUIs
+	 * @param hintAUI the hintAUI
+	 */
+	public void setHintAUI(HintAUI hintAUI){
+		aIController.setHintAUI(hintAUI);
+	}
+
+	/**
+	 * sets all logAUIs
+	 * @param logAUI the logAUI
+	 */
+	public void setLogAUI(LogAUI logAUI){
+		gameController.setLogAUI(logAUI);
+		playerController.setLogAUI(logAUI);
+	}
+
+	/**
+	 * sets all turnAUIs
+	 * @param turnAUI the turnAUI
+	 */
+	public void setTurnAUI(TurnAUI turnAUI){
+		gameController.setTurnAUI(turnAUI);
+		playerController.setTurnAUI(turnAUI);
+	}
+
+	/**
+	 * sets all loadGameAUIs
+	 * @param loadGameAUI the loadGameAUI
+	 */
+	public void setLoadGameAUI(LoadGameAUI loadGameAUI){
+		iOController.setLoadGameAUI(loadGameAUI);
 	}
 
 	/**

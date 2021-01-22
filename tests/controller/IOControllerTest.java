@@ -21,7 +21,7 @@ public class IOControllerTest {
     @Test
     public void testImportCSV() {
 
-        IOController io = new IOController(null, null, null);
+        IOController io = new IOController(null);
         System.out.println(io.importCSV().toString());
 
     }

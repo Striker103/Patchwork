@@ -22,21 +22,29 @@ public class IOController {
 
 	private final MainController mainController;
 
-	private final ErrorAUI errorAUI;
+	private ErrorAUI errorAUI;
 
-	private final LoadGameAUI loadGameAUI;
+	private LoadGameAUI loadGameAUI;
+
+	/**
+	 * true if errorAUI is set
+	 */
+	private boolean errorAUIChanged = false;
+
+	/**
+	 * true if errorAUI is set
+	 */
+	private boolean loadGameAUIChanged = false;
 
 	private final String pathToCSV = "CSV/patchwork-pieces.csv";
 
 	/**
-	 * Constructor that sets the mainController and all AUIs
+	 * Constructor that sets the mainController
+	 *
 	 * @param mainController The controller that knows all other controllers
-	 * @param errorAUI the errorAUI
 	 */
-	public IOController(MainController mainController, ErrorAUI errorAUI, LoadGameAUI loadGameAUI){
+	public IOController(MainController mainController){
 		this.mainController = mainController;
-		this.errorAUI = errorAUI;
-		this.loadGameAUI = loadGameAUI;
 	}
 
 	/**
@@ -324,4 +332,23 @@ public class IOController {
 		return shape;
 	}
 
+	/**
+	 * set the errorAUI
+	 * @param errorAUI the errorAUI
+	 */
+	public void setErrorAUI(ErrorAUI errorAUI) {
+		if(this.errorAUIChanged) throw new IllegalStateException("errorAUI was already set");
+		this.errorAUI = errorAUI;
+		this.errorAUIChanged = true;
+	}
+
+	/**
+	 * set the loadGameAUI
+	 * @param loadGameAUI the loadGameAUI
+	 */
+	public void setLoadGameAUI(LoadGameAUI loadGameAUI) {
+		if(this.loadGameAUIChanged) throw new IllegalStateException("errorAUI was already set");
+		this.loadGameAUI = loadGameAUI;
+		this.loadGameAUIChanged = true;
+	}
 }
