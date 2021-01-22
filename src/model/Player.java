@@ -37,27 +37,20 @@ public class Player {
 	 */
 	private boolean hasSpecialTile;
 
-	/**
-	 * Initializes a new Player-Object
-	 * @param boardPosition position on the TimeBoard
-	 * @param money number of buttons
-	 * @param name name of the player
-	 * @param playerType the Type of Player
-	 */
 
-	public Player( int boardPosition, int money, String name, PlayerType playerType, boolean hasSpecialTile) {
-		CheckUtil.assertNonNull(name);
-		CheckUtil.assertNonNegative(money, boardPosition);
 
+
+
+	public Player(String name, PlayerType playerType) {
+		CheckUtil.assertNonNull(name,playerType);
 		if(name.isBlank()){
 			throw new IllegalArgumentException("Player name is empty.");
 		}
-		this.boardPosition=boardPosition;
-		this.money=money;
-		this.name=name;
+		this.boardPosition = 0;
+		this.money = 5;
+		this.name = name;
 		this.playerType = playerType;
-		this.hasSpecialTile = hasSpecialTile;
-
+		this.quiltBoard = new QuiltBoard();
 	}
 
 	/**
@@ -66,7 +59,7 @@ public class Player {
 	 */
 
 	public Player copy() {
-		return new Player(boardPosition, money, name, playerType, hasSpecialTile);
+		return null;
 	}
 
 	/**
@@ -109,6 +102,15 @@ public class Player {
 		return score;
 	}
 
+
+	/**
+	 * Creates the initilal Score for the Player
+	 * @param isIronman whether or not the game is an ironman game
+	 */
+	public void createScore(boolean isIronman){
+		score = new Score(0,isIronman,playerType,name);
+	}
+
 	/**
 	 * Returns the whether the player has the special tile
 	 * @return has special tile
@@ -121,7 +123,13 @@ public class Player {
 	 * adds money player money
 	 * @param money the money the player got
 	 */
-	public void setMoney(int money){this.money = this.money + money;}
+	public void addMoney(int money){this.money = this.money + money;}
+
+	/**
+	 * sets money player money
+	 * @param money the money the player has
+	 */
+	public void setMoney(int money){this.money =  money;}
 
 	/**
 	 * removes money player money

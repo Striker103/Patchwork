@@ -54,7 +54,7 @@ public class PlayerController {
 		}else{
 			income = steps;
 		}
-		currentPlayer.setMoney(income);
+		currentPlayer.addMoney(income);
 		logAUI.updateLog(currentPlayer.getName() + " got " + income + " buttons from movement");
 	}
 
@@ -70,7 +70,7 @@ public class PlayerController {
 				}
 				if(timeBoard[i].hasButton()){
 					int income = calculateIncomePatches(currentPlayer);
-					currentPlayer.setMoney(income);
+					currentPlayer.addMoney(income);
 					logAUI.updateLog(currentPlayer.getName() + " stepped over a Button and got " + income + " buttons");
 				}
 			}else{

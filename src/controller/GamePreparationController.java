@@ -58,8 +58,14 @@ public class GamePreparationController {
 		GameState gameState = new GameState(players, patches);
 		game.addGameState(gameState);
 		mainController.setGame(game);
+		setInitialScore(ironman);
 		GameController gameController = mainController.getGameController();
 		gameController.endTurn();
+	}
+
+	private void setInitialScore(boolean isIronman){
+		mainController.getGame().getCurrentGameState().getPlayer1().createScore(isIronman);
+		mainController.getGame().getCurrentGameState().getPlayer2().createScore(isIronman);
 	}
 
 	private boolean parametersAreOk(Tuple<Tuple<String,PlayerType>, Tuple<String,PlayerType>> players,int speed, File file)

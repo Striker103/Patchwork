@@ -9,22 +9,22 @@ import static org.junit.Assert.*;
  * Test for Player
  */
 public class PlayerTest {
-    private final int BOARDPOSIZION = 1;
-    private final int MONEY = 1;
+    private final int BOARDPOSIZION = 0;
+    private final int MONEY = 5;
     private final String NAME = "Ad";
     private final QuiltBoard QUILTBOARD = new QuiltBoard();
     private final Score SCORE;
     {
         SCORE = new Score(5, true, PlayerType.HUMAN, "Ad");
     }
-    private final Player PLAYER = new Player(BOARDPOSIZION, MONEY, NAME, PlayerType.AI_MEDIUM, false);
+    private final Player PLAYER = new Player( NAME, PlayerType.AI_MEDIUM);
 
     /**
      * Tests the Constructor
      */
     @Test
     public void testConstructor(){
-        new Player(BOARDPOSIZION, MONEY, NAME, PlayerType.AI_MEDIUM, false);
+        new Player(NAME, PlayerType.AI_MEDIUM);
     }
 
     /**
@@ -32,44 +32,9 @@ public class PlayerTest {
      */
     @Test (expected=IllegalArgumentException.class)
     public void testConstructorName(){
-        new Player (BOARDPOSIZION, MONEY, "", PlayerType.AI_MEDIUM, false);
+        new Player ( "", PlayerType.AI_MEDIUM);
     }
 
-    /**
-     * Tests the Constructor with maximum value of money
-     */
-    @Test
-    public void testConstructorMaxIntMoney(){ new Player (BOARDPOSIZION, Integer.MAX_VALUE, "B", PlayerType.AI_MEDIUM, false);}
-
-    /**
-     *Tests the Constructor with minimum value of money
-     */
-    @Test (expected=IllegalArgumentException.class)
-    public void testConstructorMinIntMoney(){ new Player (BOARDPOSIZION, Integer.MIN_VALUE, "A", PlayerType.AI_MEDIUM, false);}
-
-    /**
-     *Tests the Constructor with negative money
-     */
-    @Test (expected=IllegalArgumentException.class)
-    public void testConstructorNegativeMoney(){ new Player (BOARDPOSIZION, -3, "A", PlayerType.AI_MEDIUM, false);}
-
-    /**
-     *Tests the Constructor with minimum value of
-     */
-    @Test (expected=IllegalArgumentException.class)
-    public void testConstructorMaxIntBoardPosition(){new Player (Integer.MAX_VALUE, MONEY, "A", PlayerType.AI_MEDIUM, false); }
-
-    /**
-     *Tests the Constructor with maximum value of board position
-     */
-    @Test (expected=IllegalArgumentException.class)
-    public void testConstructorMinIntBoardPosition(){new Player (Integer.MIN_VALUE, MONEY, "A", PlayerType.AI_MEDIUM, false); }
-
-    /**
-     *Tests the Constructor with negative value of board position
-     */
-    @Test (expected=IllegalArgumentException.class)
-    public void testConstructorNegativeBoardPosition(){new Player (-2, MONEY, "A", PlayerType.AI_MEDIUM, false); }
 
     /**
      * Tests getBoardPosition()
@@ -125,8 +90,8 @@ public class PlayerTest {
      */
     @Test
     public void testSetMoney(){
-        PLAYER.setMoney(2);
-        assertEquals(PLAYER.getMoney(),3);
+        PLAYER.addMoney(2);
+        assertEquals(PLAYER.getMoney(),7);
     }
 
     /**
@@ -138,14 +103,6 @@ public class PlayerTest {
         assertEquals(PLAYER.getName(), "Ac");
     }
 
-    /**
-     * Tests setMinusMoney()
-     */
-    @Test
-    public void testSetMinusMoney(){
-        PLAYER.setMinusMoney(1);
-        assertEquals(PLAYER.getMoney(),0);
-    }
 
     /**
      * Tests setBoardPosition()
@@ -190,7 +147,7 @@ public class PlayerTest {
     @Test
     public void testEquals()
     {
-        Player PLAYER3 = new Player(10, 10, "WE", PlayerType.HUMAN, true);
+        Player PLAYER3 = new Player( "WE", PlayerType.HUMAN);
         assertEquals(PLAYER3,PLAYER3.copy());
     }
 
