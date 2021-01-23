@@ -11,22 +11,23 @@ public class EasyAI extends AI {
 
     @Override
     public GameState calculateTurn(GameState actualState,Player movingPlayer) {
-        List<GameState> resultContainer = getOptions(actualState);
+        List<GameState> resultContainer = getOptions(actualState, movingPlayer);
         return resultContainer.get(new Random().nextInt(resultContainer.size()));
     }
 
-    private LinkedList<GameState> getOptions(GameState actual){
+    private LinkedList<GameState> getOptions(GameState actual, Player movingPlayer){
         LinkedList<GameState> result = new LinkedList<>();
         GameState edited = actual.copy();
-        Player behind = edited.nextPlayer();
-        Player other = edited.getPlayer1().equals(behind)? edited.getPlayer1() : edited.getPlayer2();
-        int posBehind = behind.getBoardPosition();
-        int posOther = other.getBoardPosition();
+        final Player BEHIND = edited.getPlayer1().equals(movingPlayer)? edited.getPlayer1(): edited.getPlayer2();
+        final Player OTHER = edited.getPlayer1().equals(BEHIND)? edited.getPlayer1() : edited.getPlayer2();
+        int posBehind = BEHIND.getBoardPosition();
+        int posOther = OTHER.getBoardPosition();
+        final int MONEY_BEHIND = BEHIND.getMoney();
 
         int offset = 0;
         if(posOther != 54) offset = 1;
-        behind.setBoardPosition(posOther+offset);
-        behind.addMoney(behind.getMoney()+(posOther-posBehind)+offset);
+        BEHIND.setBoardPosition(posOther+offset);
+        BEHIND.addMoney(BEHIND.getMoney()+(posOther-posBehind)+offset);
         edited.setLogEntry("Passed and got coins");
         result.add(edited);
 
@@ -34,14 +35,15 @@ public class EasyAI extends AI {
 
         patches
                 .stream()
-                .filter(patch -> patch.getButtonsCost()<=actual.nextPlayer().getMoney())
-                .flatMap(patch -> generatePatchLocations(patch, actual.nextPlayer().getQuiltBoard()).stream())
+                .filter(patch -> patch.getButtonsCost()<=MONEY_BEHIND)
+                .flatMap(patch -> generatePatchLocations(patch, BEHIND.getQuiltBoard()).stream())
                 .map(tuple -> {
                     GameState temp = actual.copy();
                     temp.getPatches().remove(tuple.getFirst());
-                    temp.nextPlayer().setQuiltBoard(tuple.getSecond());
-                    temp.nextPlayer().addMoney(temp.nextPlayer().getMoney()-tuple.getFirst().getButtonsCost());
-                    temp.nextPlayer().setBoardPosition(temp.nextPlayer().getBoardPosition()+tuple.getFirst().getTime());
+                    Player next = temp.getPlayer1().equals(movingPlayer)? temp.getPlayer1(): temp.getPlayer2();
+                    next.setQuiltBoard(tuple.getSecond());
+                    next.addMoney(-tuple.getFirst().getButtonsCost());
+                    next.setBoardPosition(next.getBoardPosition()+tuple.getFirst().getTime());
                     temp.setLogEntry("Bought patch "+tuple.getFirst().getPatchID()+" and laid it onto the board");
                     return temp;
                 })

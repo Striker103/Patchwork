@@ -1,7 +1,6 @@
 package model;
 
 import ai.AIUtil;
-
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -111,7 +110,6 @@ public class Matrix implements Iterable<Integer>{
             for (int col = 0; col < getColumns(); col++) {
                 matrix[row][col] *= value;
             }
-
         }
         return this;
     }
