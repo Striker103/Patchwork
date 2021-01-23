@@ -69,13 +69,13 @@ public class AIController {
 		GameState calculatedTurn = null;
 		switch (playerWithTurn.getPlayerType()){
 			case AI_EASY:
-				calculatedTurn = easyAI.calculateTurn(currentGameState);
+				calculatedTurn = easyAI.calculateTurn(currentGameState,playerWithTurn);
 				break;
 			case AI_MEDIUM:
-				calculatedTurn = normalAI.calculateTurn(currentGameState);
+				calculatedTurn = normalAI.calculateTurn(currentGameState,playerWithTurn);
 				break;
 			case AI_HARD:
-				calculatedTurn = hardAI.calculateTurn(currentGameState);
+				calculatedTurn = hardAI.calculateTurn(currentGameState,playerWithTurn);
 				break;
 			case HUMAN:
 				break;
@@ -102,7 +102,7 @@ public class AIController {
 		Player oldPlayer2 = oldGameState.getPlayer2();
 
 		//Both Player after AI Turn
-		GameState newGameState =  normalAI.calculateTurn(oldGameState);
+		GameState newGameState =  normalAI.calculateTurn(oldGameState,mainController.getGameController().getNextPlayer());
 		Player newPlayer1 = newGameState.getPlayer1();
 		Player newPlayer2 = newGameState.getPlayer2();
 

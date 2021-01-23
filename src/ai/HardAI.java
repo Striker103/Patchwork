@@ -15,7 +15,7 @@ public class HardAI extends AI {
      * @return the best possible state for the ai to move
      */
     @Override
-    public GameState calculateTurn(GameState actualState) {
+    public GameState calculateTurn(GameState actualState,Player movingPlayer) {
         return null;
     }
 

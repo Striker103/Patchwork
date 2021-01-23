@@ -10,7 +10,7 @@ import java.util.Random;
 public class EasyAI extends AI {
 
     @Override
-    public GameState calculateTurn(GameState actualState) {
+    public GameState calculateTurn(GameState actualState,Player movingPlayer) {
         List<GameState> resultContainer = getOptions(actualState);
         return resultContainer.get(new Random().nextInt(resultContainer.size()));
     }
