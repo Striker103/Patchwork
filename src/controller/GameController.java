@@ -48,6 +48,7 @@ public class GameController {
 	 * Advance one field ahead of your opponent
 	 */
 	public void advance() {
+		mainController.getUndoRedoController().clearRedoList();
 		cloneGameState();
 		endTurn();
 		Game game = mainController.getGame();
