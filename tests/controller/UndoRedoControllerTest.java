@@ -97,9 +97,9 @@ public class UndoRedoControllerTest {
      *
      * Scenario:
      *
-     * a -> B (List of GameStates)
+     * a - B (List of GameStates)
      * undo()
-     * a -> B (List of GameStates)
+     * a - B (List of GameStates)
      *
      */
     @Test
@@ -150,9 +150,9 @@ public class UndoRedoControllerTest {
      *
      * Scenario:
      *
-     * a -> b -> A
+     * a - b - A
      * undo()
-     * A -> b -> a
+     * A - b - a
      */
     @Test
     public void testUndoGameState(){
@@ -201,11 +201,11 @@ public class UndoRedoControllerTest {
      *
      * Scenario:
      *
-     * a -> b -> A
+     * a - b - A
      * undo()
-     * A -> b -> a
+     * A - b - a
      * redo()
-     * a -> b -> A
+     * a - b - A
      *
      */
     @Test
@@ -273,9 +273,9 @@ public class UndoRedoControllerTest {
      *
      * Scenario:
      *
-     * a -> b -> A
+     * a - b - A
      * undo()
-     * A -> b -> a
+     * A - b - a
      * clear()
      * A
      *
@@ -312,11 +312,11 @@ public class UndoRedoControllerTest {
      *
      * Scenario (a_0 != a_1):
      *
-     * a -> b -> A_0
+     * a - b - A_0
      * undo()
-     * A -> b -> a_0
-     * a -> B
-     * a -> b -> A_1
+     * A - b  a_0
+     * a - B
+     * a - b - A_1
      *
      */
     @Test
@@ -365,7 +365,7 @@ public class UndoRedoControllerTest {
      *
      * Scenario:
      *
-     * a -> b -> A
+     * a - b - A
      *
      */
     private void advanceTwice(){
