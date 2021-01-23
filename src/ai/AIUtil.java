@@ -87,7 +87,8 @@ public final class AIUtil {
      * @return a LinkedHashSet containing all possible positions
      */
     protected static LinkedHashSet<Tuple<Matrix, Tuple<Integer, Boolean>>> generateAllPossiblePatches(Patch patch){
-        Matrix shape = patch.getShape();
+        Matrix shape = new Matrix(5,5);
+        shape.insert(patch.getShape(),0,0);
         LinkedHashSet<Tuple<Matrix, Tuple<Integer, Boolean>>> result = new LinkedHashSet<>();
         for(int side =0; side<2; side++){
             for (int degree = 0; degree < 4; degree++) {
@@ -96,7 +97,7 @@ public final class AIUtil {
                     for (int cols = 0; cols <= 9-trimmed.getColumns(); cols++) {
                         Matrix possiblePlace = new Matrix(9,9);
                         possiblePlace.insert( trimmed, rows, cols);
-                        result.add(new Tuple<>(possiblePlace, new Tuple<>(side, degree == 0)));
+                        result.add(new Tuple<>(possiblePlace, new Tuple<>(degree*90, side == 0)));
                     }
                 }
                 shape.rotate();
