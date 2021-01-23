@@ -132,7 +132,7 @@ public class UndoRedoControllerTest {
         System.out.println(mainController.getGame().getCurrentGameStateIndex());
 
 
-        assertEquals(mainController.getGameController().getNextPlayer().getName(), player1.getName());
+        assertEquals(mainController.getGameController().getNextPlayer().getName(), player2.getName());
         assertNotEquals(stateBefore, game.getCurrentGameState());
         assertEquals(secondState, game.getCurrentGameState());
         assertTrue(game.isHighScoreReachable());
