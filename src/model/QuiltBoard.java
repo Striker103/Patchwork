@@ -102,6 +102,14 @@ public class QuiltBoard {
 	}
 
 	/**
+	 * Is a 7x7 field filled
+	 * @return whether or not the player should get the special tile
+	 */
+	public boolean check7x7(){
+		return false;//TODO
+	}
+
+	/**
 	 * Prints the PatchBoard
 	 */
 	public void print(){
