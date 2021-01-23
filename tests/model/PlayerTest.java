@@ -161,6 +161,36 @@ public class PlayerTest {
     }
 
     /**
+     * Tests equals()
+     */
+    @Test
+    public void testEqualsFalse()
+    {
+        assertTrue(PLAYER.getClass().equals(PLAYER.getClass()));
+    }
+
+    /**
+     * Tests equals()
+     */
+    @Test
+    public void testEqualsNew()
+    {
+        Player PLAYER = new Player(NAME, PlayerType.AI_MEDIUM);
+        Player PLAYER2 = new Player(NAME, PlayerType.AI_MEDIUM);
+        PLAYER.setMoney(5);
+        PLAYER.setScore(SCORE);
+        PLAYER.setQuiltBoard(QUILTBOARD);
+        PLAYER.setBoardPosition(6);
+        PLAYER.setHasSpecialTile(true);
+        PLAYER2.setMoney(5);
+        PLAYER2.setScore(SCORE);
+        PLAYER2.setQuiltBoard(QUILTBOARD);
+        PLAYER2.setBoardPosition(6);
+        PLAYER2.setHasSpecialTile(true);
+        assertEquals(PLAYER,PLAYER2);
+    }
+
+    /**
      * Test that Copy() instantiates a new, independent object that has the same hash
      */
     @Test
