@@ -56,6 +56,10 @@ public class AIController {
 	 */
 	public AIController(MainController mainController){
 		this.mainController = mainController;
+		easyAI = new EasyAI();
+		normalAI = new NormalAI();
+		hardAI = new HardAI();
+
 	}
 
 	public void doTurn() {
