@@ -11,6 +11,11 @@ import java.nio.file.Files;
 import java.util.Comparator;
 import java.util.LinkedList;
 
+/**
+ * Controller for high score management
+ *
+ * @author Alexandra Latys
+ */
 public class HighScoreController {
 
 	private HighScoreAUI highscoreAUI;
