@@ -59,8 +59,6 @@ public class GamePreparationController {
 		game.addGameState(gameState);
 		mainController.setGame(game);
 		setInitialScore(ironman);
-		GameController gameController = mainController.getGameController();
-		gameController.endTurn();
 	}
 
 	private void setInitialScore(boolean isIronman){
