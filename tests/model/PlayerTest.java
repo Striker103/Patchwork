@@ -86,12 +86,21 @@ public class PlayerTest {
     }
 
     /**
+     * tests addMoney()
+     */
+    @Test
+    public void testAddMoney(){
+        PLAYER.addMoney(2);
+        assertEquals(PLAYER.getMoney(),7);
+    }
+
+    /**
      * tests setMoney()
      */
     @Test
     public void testSetMoney(){
-        PLAYER.addMoney(2);
-        assertEquals(PLAYER.getMoney(),7);
+        PLAYER.setMoney(2);
+        assertEquals(PLAYER.getMoney(),2);
     }
 
     /**
