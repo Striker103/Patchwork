@@ -6,4 +6,6 @@ public interface TurnAUI {
 
 	public abstract  void trigger1x1Placement();
 
+	public abstract void retriggerPatchPlacement();
+
 }

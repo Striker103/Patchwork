@@ -30,6 +30,9 @@ public class GamePreparationControllerTest {
         }
         @Override
         public void trigger1x1Placement(){}
+
+        @Override
+        public void retriggerPatchPlacement(){}
     }
 
     private final Tuple<String, PlayerType> player1Tuple = new Tuple<>("Player1", PlayerType.HUMAN);

@@ -48,7 +48,15 @@ public class GameController {
 	}
 
 	public void takePatch(Patch patch, Matrix placing) {
-
+		Player executingPlayer = getNextPlayer();
+		Matrix playerPatchBoard = executingPlayer.getQuiltBoard().getPatchBoard();
+		if(placing.getRows() != playerPatchBoard.getRows() || placing.getColumns() != playerPatchBoard.getColumns()){
+			throw new IllegalStateException("The placing needs to be the same size as the quiltboards!");
+		}
+		if(!playerPatchBoard.disjunctive(placing)){
+			errorAUI.showError("The is no space for that patch");
+			return;
+		}
 		//TODO
 		cloneGameState();
 		endTurn();

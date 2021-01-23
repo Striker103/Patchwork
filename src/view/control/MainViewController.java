@@ -81,6 +81,9 @@ public class MainViewController {
         }
         @Override
         public void trigger1x1Placement(){}
+
+        @Override
+        public void retriggerPatchPlacement(){}
     };
 
     private LoadGameAUI loadGameAUI = new LoadGameAUI() {

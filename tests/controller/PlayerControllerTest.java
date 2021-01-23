@@ -105,5 +105,8 @@ public class PlayerControllerTest {
         }
         @Override
         public void trigger1x1Placement(){}
+
+        @Override
+        public void retriggerPatchPlacement(){}
     }
 }
