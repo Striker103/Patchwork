@@ -1,60 +1,174 @@
 package controller;
 
-import model.Game;
-import model.Score;
+import model.*;
 import org.junit.Before;
 import org.junit.Test;
 import view.aui.ErrorAUI;
 import view.aui.HighScoreAUI;
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.util.List;
 
+/**
+ * HighScoreController test
+ * @author Yannick
+ */
 public class HighScoreControllerTest {
-    private HighScoreAUI highscoreAUI;
-
     private MainController mainController;
 
-    private ErrorAUI errorAUI;
+    private DummyAUI dummyAUI;
+
+    private HighScoreController highScoreController;
+
+    private final File file = new File("export/testFile.score");//TODO als was speichern wir scores?
+
+    private Player player;
 
 
+    /**
+     * Set up.
+     */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Before
     public void setUp(){
-        errorAUI = new DummyAUI();
-        highscoreAUI = new DummyAUI();
+        dummyAUI = new DummyAUI();
         mainController = new MainController();
-        mainController.setErrorAUI(errorAUI);
-        mainController.setHighScoreAUI(highscoreAUI);
-        Game game = new Game(false);
-        mainController.setGame(game);
+        mainController.setErrorAUI(dummyAUI);
+        mainController.setHighScoreAUI(dummyAUI);
+        Tuple<String, PlayerType> player1 = new Tuple<>("Horst",PlayerType.HUMAN);
+        Tuple<String, PlayerType> player2 = new Tuple<>("AI",PlayerType.AI_MEDIUM);
+        mainController.getGamePreparationController().startGame(new Tuple<>(player1,player2),null,2,false);
+
+        highScoreController = mainController.getHighScoreController();
+
+        player = mainController.getGame().getCurrentGameState().getPlayer1();
+
+
+        file.delete();
     }
 
+    /**
+     * Test constructor.
+     */
     @Test
     public void testConstructor() {
         HighScoreController highScoreController = new HighScoreController(mainController);
     }
 
-//    @Test (expected = IllegalArgumentException.class)
-//    public void testConstructorMCNull() {
-//        HighScoreController highScoreController = new HighScoreController(null,errorAUI,highscoreAUI);
-//    }
-//
-//    @Test (expected = IllegalArgumentException.class)
-//    public void testConstructorErrorNull() {
-//        HighScoreController highScoreController = new HighScoreController(mainController,null,highscoreAUI);
-//    }
-//
-//    @Test (expected = IllegalArgumentException.class)
-//    public void testConstructorHighScoreNull() {
-//        HighScoreController highScoreController = new HighScoreController(mainController,errorAUI,null);
-//    }
+    /**
+     * Test if an error is thrown when auis are set again
+     */
+    @Test (expected = IllegalStateException.class)
+    public void testSetAUIsTwice(){
+        HighScoreController localHSController = new HighScoreController(mainController);
+        localHSController.setErrorAUI(dummyAUI);
+        localHSController.setHighScoreAUI(dummyAUI);
+
+        assertFalse(dummyAUI.error);
+        assertFalse(dummyAUI.highScoresShown);
+
+        localHSController.setErrorAUI(dummyAUI);
+        localHSController.setHighScoreAUI(dummyAUI);
+
+    }
+
+    /**
+     * Tests if an error is triggered when the main controller has no game
+     */
+    @Test
+    public void testSaveScoreNoGame(){
+        mainController.setGame(null);
+        highScoreController.saveScores(file);
+        assertTrue(dummyAUI.error);
+    }
+
+    /**
+     * Tests if a score is saved and can be read again.
+     */
+    @Test
+    public void testSaveScore(){
+        mainController.getGameController().advance();
+        mainController.getGameController().advance();
+        highScoreController.saveScores(file);
+        highScoreController.showHighScores(file);
+        assertTrue(dummyAUI.highScoresShown);
+    }
+
+    /**
+     * Test save score wrong file ending.
+     */
+    @Test (expected = IllegalArgumentException.class)
+    public void testSaveScoreWrongFileEnding(){
+        mainController.getGameController().advance();
+        mainController.getGameController().advance();
+        highScoreController.saveScores(new File("export/testFile.freeCandy"));
+    }
+
+    /**
+     * Test if the file is clean after clear
+     */
+    @Test
+    public void testClearScores(){
+        mainController.getGameController().advance();
+        mainController.getGameController().advance();
+        highScoreController.saveScores(file);
+        highScoreController.showHighScores(file);
+        assertTrue(dummyAUI.highScoresShown);
+
+        dummyAUI.highScoresShown = false;
+        highScoreController.clearHighScores(file);
+        highScoreController.showHighScores(file);
+        assertFalse(dummyAUI.highScoresShown);
+
+    }
+
+    /**
+     * Test update score. Player gained the special tile
+     */
+    @Test
+    public void testUpdateScore7x7(){
+        int oldScore = player.getScore().getValue();
+        player.setHasSpecialTile(true);
+        highScoreController.updateScore(player);
+        assertEquals(player.getScore().getValue(),oldScore+7);
+    }
+
+    /**
+     * Test update score. Player placed a 1x1 patch
+     */
+    @Test
+    public void testUpdateScoreBoardChanged(){
+        int oldScore = player.getScore().getValue();
+        player.getQuiltBoard().add1x1Patch(1,1);
+        highScoreController.updateScore(player);
+        assertEquals(player.getScore().getValue(),oldScore+2);
+    }
+
+    /**
+     * Test update score. Players money changed
+     */
+    @Test
+    public void testUpdateScoreMoneyChanged(){
+        int oldScore = player.getScore().getValue();
+        player.addMoney(2);
+        highScoreController.updateScore(player);
+        assertEquals(player.getScore().getValue(),oldScore+2);
+    }
 
 
-
-
-
+    /**
+     * The type Dummy aui.
+     */
     class DummyAUI implements ErrorAUI, HighScoreAUI {
+        /**
+         * was showError triggered
+         */
         public boolean error = false;
+        /**
+         * was at least one score shown
+         */
+        public boolean highScoresShown = false;
 
         @Override
         public void showError(String message) {
@@ -63,8 +177,11 @@ public class HighScoreControllerTest {
 
         @Override
         public void showHighscores(List<Score> highscores){
+            highScoresShown = highscores.size()>0;
 
         }
+
+
     }
 
 }

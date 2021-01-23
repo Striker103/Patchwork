@@ -87,7 +87,7 @@ public class Game {
 	}
 
 	/**
-	 * Gets the currently state of the game
+	 * Gets the currently state of the game.
 	 * @return the currently state
 	 */
 	public GameState getCurrentGameState(){
