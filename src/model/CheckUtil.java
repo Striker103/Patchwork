@@ -17,6 +17,12 @@ public class CheckUtil {
                 throw new IllegalArgumentException("No null references allowed!");
         }
     }
+
+    /**
+     * Checks if any of the given values is negative
+     * @param ints the int values to be checked
+     * @throws IllegalArgumentException if any of the values is negative
+     */
     public static void assertNonNegative(int... ints){
         for(int i : ints){
             if(i<0){
@@ -25,6 +31,11 @@ public class CheckUtil {
         }
     }
 
+    /**
+     * Checks if the given values are positive
+     * @param ints the int values to be checked
+     * @throws IllegalArgumentException if any of the given values is not positive
+     */
     public static void assertPositive(int... ints){
         for(int i : ints){
             if(i<1){
