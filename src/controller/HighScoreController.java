@@ -20,7 +20,7 @@ public class HighScoreController {
 
 	private HighScoreAUI highscoreAUI;
 
-	private MainController mainController;
+	private final MainController mainController;
 
 	private ErrorAUI errorAUI;
 
@@ -54,9 +54,14 @@ public class HighScoreController {
 			return;
 		}
 
+		if (!mainController.getGame().isHighScoreReachable()){
+			errorAUI.showError("High score is not reachable.");
+			return;
+		}
+
 		//TODO es gibt jetzt auch getCurrentGameState :D
-		Player player1 = mainController.getGame().getGameStates().get(mainController.getGame().getCurrentGameStateIndex()).getPlayer1();
-		Player player2 = mainController.getGame().getGameStates().get(mainController.getGame().getCurrentGameStateIndex()).getPlayer2();
+		Player player1 = mainController.getGame().getCurrentGameState().getPlayer1();
+		Player player2 = mainController.getGame().getCurrentGameState().getPlayer2();
 
 		try {
 			CheckUtil.assertNonNull(player1, player2);
@@ -164,38 +169,26 @@ public class HighScoreController {
 	}
 
 	/**
-	 * set the highScoreAUI
-	 * @param highscoreAUI the highscoreAUI
-	 */
-    public void setHighScoreAUI(HighScoreAUI highscoreAUI) {
-		if(this.highscoreAUIChanged) throw new IllegalStateException("highscoreAUI was already set");
-		this.highscoreAUI = highscoreAUI;
-		this.highscoreAUIChanged = true;
-    }
-
-	/**
 	 * set the errorAUI
 	 * @param errorAUI the errorAUI
 	 */
-	public void setErrorAUI(ErrorAUI errorAUI) {
-		this.errorAUI = errorAUI;
-		if(this.errorAUIChanged) throw new IllegalStateException("errorAUI was already set");
-		this.errorAUI = errorAUI;
-		this.errorAUIChanged = true;
+	public void setErrorAUI(ErrorAUI errorAUI){
+		if (this.errorAUI == null)
+			this.errorAUI = errorAUI;
+		else
+			throw new IllegalStateException("ErrorAUI is already set");
 	}
 
-//	public void setErrorAUI(ErrorAUI errorAUI){
-//		if (this.errorAUI == null)
-//			this.errorAUI = errorAUI;
-//		else
-//			throw new IllegalStateException("ErrorAUI is already set");
-//	}
-//
-//	public void setHighscoreAUI(HighscoreAUI highscoreAUI){
-//		if (this.highscoreAUI == null)
-//			this.highscoreAUI = highscoreAUI;
-//		else
-//			throw new IllegalStateException("HighscoreAUI is already set");
-//	}
+
+	/**
+	 * set the highScoreAUI
+	 * @param highscoreAUI the highscoreAUI
+	 */
+	public void setHighScoreAUI(HighScoreAUI highscoreAUI){
+		if (this.highscoreAUI == null)
+			this.highscoreAUI = highscoreAUI;
+		else
+			throw new IllegalStateException("HighScoreAUI is already set");
+	}
 
 }
