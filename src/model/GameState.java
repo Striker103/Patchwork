@@ -53,8 +53,8 @@ public class GameState{
 		PlayerType player1Type = playerNames.getFirst().getSecond();
 		String player2name = playerNames.getSecond().getFirst();
 		PlayerType player2Type = playerNames.getSecond().getSecond();
-		Score player1Score = new Score(-155, ironman, player2Type, player1Name);
-		Score player2Score = new Score(-155, ironman, player1Type, player2name);
+		Score player1Score = new Score(0, ironman, player2Type, player1Name);
+		Score player2Score = new Score(0, ironman, player1Type, player2name);
 
 		if(player1Name.isBlank() || player2name.isBlank())
 			throw new IllegalArgumentException("At least one player name is missing");
