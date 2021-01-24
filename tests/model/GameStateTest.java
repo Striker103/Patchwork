@@ -38,7 +38,7 @@ public class GameStateTest {
 
         Patch patch = new Patch(1, 2, 5, new Matrix(shape), 2);
         patches.add(patch);
-        gameState = new GameState(playerNames, patches);
+        gameState = new GameState(playerNames, patches, false);
         player1 = gameState.getPlayer1();
         player2 = gameState.getPlayer2();
     }
@@ -48,7 +48,7 @@ public class GameStateTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorNull(){
-        new GameState(null, null);
+        new GameState(null, null, false);
     }
 
     /**
@@ -97,7 +97,7 @@ public class GameStateTest {
         Tuple<String, PlayerType> playerOne = new Tuple<>("", AI_EASY);
         Tuple<String, PlayerType> playerTwo = new Tuple<>("", AI_HARD);
         playerNames = new Tuple<>(playerOne, playerTwo);
-        new GameState(playerNames, patches);
+        new GameState(playerNames, patches, false);
     }
 
 }

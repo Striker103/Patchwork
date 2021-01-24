@@ -44,21 +44,23 @@ public class GameState{
 	 *
 	 * @throws IllegalArgumentException when player name is empty
 	 */
-	public GameState(Tuple<Tuple<String, PlayerType>, Tuple<String, PlayerType>> playerNames, List<Patch> patches)
+	public GameState(Tuple<Tuple<String, PlayerType>, Tuple<String, PlayerType>> playerNames, List<Patch> patches, boolean ironman)
 	{
 		CheckUtil.assertNonNull(playerNames, patches);
 		CheckUtil.assertNonNull(playerNames.getFirst(), playerNames.getSecond());
 
-		Tuple<String, PlayerType> firstPlayerNameAndType = playerNames.getFirst();
-		Tuple<String, PlayerType> secondPlayerNameAndType = playerNames.getSecond();
+		String player1Name = playerNames.getFirst().getFirst();
+		PlayerType player1Type = playerNames.getFirst().getSecond();
+		String player2name = playerNames.getSecond().getFirst();
+		PlayerType player2Type = playerNames.getSecond().getSecond();
+		Score player1Score = new Score(-155, ironman, player2Type, player1Name);
+		Score player2Score = new Score(-155, ironman, player1Type, player2name);
 
-		if(firstPlayerNameAndType.getFirst().isBlank() || secondPlayerNameAndType.getFirst().isBlank())
+		if(player1Name.isBlank() || player2name.isBlank())
 			throw new IllegalArgumentException("At least one player name is missing");
 
-
-
-		player1 = new Player( firstPlayerNameAndType.getFirst(), firstPlayerNameAndType.getSecond());
-		player2 = new Player( secondPlayerNameAndType.getFirst(), secondPlayerNameAndType.getSecond());
+		player1 = new Player( player1Name, player1Type, player1Score);
+		player2 = new Player( player2name, player2Type, player2Score);
 
 		timeBoard = new TimeBoardComponent[54];
 		for(int i = 0; i < timeBoard.length; i++)
