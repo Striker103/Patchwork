@@ -158,7 +158,7 @@ public class GameScreenViewController {
     {
         int[] arr = new int[3];
         if(index == 1){ arr[0] = 90;         arr[1] = 60;   arr[2] = 1; }
-        else if(index == 2){ arr[0] = 30;    arr[1] = 60;               }
+        else if(index == 2){ arr[0] = 30;    arr[1] = 60;   arr[2] = 1; }
         else if(index == 3){ arr[0] = 90;    arr[1] = 60;   arr[2] = 1; }
         else if(index == 4){ arr[0] = 60;    arr[1] = 60;               }
         else if(index == 5){ arr[0] = 120;   arr[1] = 90;   arr[2] = 1; }
@@ -185,7 +185,7 @@ public class GameScreenViewController {
         else if(index == 26){ arr[0] = 90;   arr[1] = 60;   arr[2] = 1; }
         else if(index == 27){ arr[0] = 90;   arr[1] = 90;               }
         else if(index == 28){ arr[0] = 90;   arr[1] = 90;               }
-        else if(index == 29){ arr[0] = 120;  arr[1] = 90;               }
+        else if(index == 29){ arr[0] = 120;  arr[1] = 90;   arr[2] = 1; }
         else if(index == 30){ arr[0] = 120;  arr[1] = 60;               }
         else if(index == 31){ arr[0] = 90;   arr[1] = 90;               }
         else if(index == 32){ arr[0] = 120;  arr[1] = 60;               }
