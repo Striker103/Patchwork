@@ -25,7 +25,10 @@ public class GameScreenViewController {
     private Scene ownScene;
 
     private Patch activePatch;
+
     private int rotation;
+
+
 
     private List<Patch> patches;
 
@@ -119,6 +122,16 @@ public class GameScreenViewController {
             }
             activePatch.imageView1.setRotate(rotation);
         }
+        else if(keyEvent.getCode() == KeyCode.Q || keyEvent.getCode() == KeyCode.SHIFT || keyEvent.getCode() == KeyCode.NUMPAD4) {
+            if(!activePatch.flipped) {
+                activePatch.flipped = true;
+                activePatch.imageView1.setScaleX(-1);
+            }
+            else{
+                activePatch.flipped = false;
+                activePatch.imageView1.setScaleX(1);
+            }
+        }
     }
 
     /**
@@ -128,6 +141,7 @@ public class GameScreenViewController {
         int id;
         ImageView imageView1;
         boolean noNicePatch;
+        boolean flipped;
 
         /**
          * Constructor for a new patch. Loads it, sets high and with and noNicePatch
@@ -145,6 +159,7 @@ public class GameScreenViewController {
             if(arr[2] == 1)
                 noNicePatch = true;
             imageView1 = imageView;
+            flipped = false;
         }
     }
 
