@@ -55,6 +55,11 @@ public class GamePreparationController {
 			game = new Game(ironman, speed);
 		}
 		GameState gameState = new GameState(players, patches, ironman);
+		Player player1 = gameState.getPlayer1();
+		Player player2 = gameState.getPlayer2();
+		HighScoreController highScoreController = mainController.getHighScoreController();
+		highScoreController.updateScore(player1);
+		highScoreController.updateScore(player2);
 		game.addGameState(gameState);
 		mainController.setGame(game);
 	}
