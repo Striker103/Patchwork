@@ -25,6 +25,9 @@ public class UndoRedoControllerTest {
 
     private Game game;
 
+    /**
+     * Sets up the test
+     */
     @Before
     public void setUp(){
 

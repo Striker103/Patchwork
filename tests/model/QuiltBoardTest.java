@@ -28,7 +28,9 @@ public class QuiltBoardTest{
 
     Matrix placementMatrix;
 
-
+    /**
+     * sets up the test
+     */
     @Before
     public void setUp() {
         quiltBoard = new QuiltBoard();
@@ -60,8 +62,8 @@ public class QuiltBoardTest{
     @Test
     public void testAddPatch() {
         quiltBoard.addPatch(PATCH, placementMatrix, 0, false);
-        assertTrue(quiltBoard.getPatches().get(0).equals(PATCH));
-        assertTrue(quiltBoard.getPatchBoard().equals(placementMatrix));
+        assertEquals(quiltBoard.getPatches().get(0), PATCH);
+        assertEquals(quiltBoard.getPatchBoard(), placementMatrix);
     }
     /**
      * Tests addPatch with 2 overlapping patches
