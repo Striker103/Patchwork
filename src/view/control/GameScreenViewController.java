@@ -1,5 +1,7 @@
 package view.control;
 
+import com.sun.scenario.effect.Offset;
+import controller.GameController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -7,6 +9,7 @@ import javafx.scene.Scene;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.control.ListView;
@@ -16,6 +19,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import model.GameState;
+import model.Matrix;
 
 
 public class GameScreenViewController {
@@ -24,13 +29,13 @@ public class GameScreenViewController {
     
     private Scene ownScene;
 
-    private Patch activePatch;
+    private PatchView activePatchView;
 
     private int rotation;
 
 
 
-    private List<Patch> patches;
+    private List<PatchView> patchViews;
 
     @FXML
     private Pane pane;
@@ -69,7 +74,7 @@ public class GameScreenViewController {
 
     //TODO fix patch 8 and those two small Patches. patchListView throws errors when a patch which was already clicked is clicked again
     public void loadPatches() throws FileNotFoundException {
-        patches = new ArrayList<>();
+        patchViews = new ArrayList<>();
         for(int i = 1; i < 34; i++) {
             String path = "Resources/Patches/Patch" + i + ".png";
 
@@ -81,7 +86,7 @@ public class GameScreenViewController {
 
             patchListView.getItems().add(imageView);
 
-            patches.add(new Patch(i));
+            patchViews.add(new PatchView(i));
         }
 
     }
@@ -96,71 +101,129 @@ public class GameScreenViewController {
      */
     public void handleKeyPressed(KeyEvent keyEvent){
         if(keyEvent.getCode() == KeyCode.W || keyEvent.getCode() == KeyCode.KP_UP || keyEvent.getCode() == KeyCode.NUMPAD5){
-            activePatch.imageView1.setY(activePatch.imageView1.getY() - 30);
+            activePatchView.moveUp();
         }else if(keyEvent.getCode() == KeyCode.S || keyEvent.getCode() == KeyCode.KP_DOWN || keyEvent.getCode() == KeyCode.NUMPAD2){
-            activePatch.imageView1.setY(activePatch.imageView1.getY() + 30);
+            activePatchView.moveDown();
         }
         else if(keyEvent.getCode() == KeyCode.A || keyEvent.getCode() == KeyCode.KP_LEFT || keyEvent.getCode() == KeyCode.NUMPAD1 ){
-            activePatch.imageView1.setX(activePatch.imageView1.getX() - 30);
+            activePatchView.moveLeft();
         }
         else if(keyEvent.getCode() == KeyCode.D || keyEvent.getCode() == KeyCode.KP_RIGHT || keyEvent.getCode() == KeyCode.NUMPAD3){
-            activePatch.imageView1.setX(activePatch.imageView1.getX() + 30);
+            activePatchView.moveRight();
         }
         else if(keyEvent.getCode() == KeyCode.E || keyEvent.getCode() == KeyCode.SPACE || keyEvent.getCode() == KeyCode.NUMPAD6){
-            if(rotation == 270){
-                rotation = 0;
-            } else{
-                rotation += 90;
-            }
-            if(activePatch.noNicePatch && (rotation == 0 || rotation == 180)){
-                activePatch.imageView1.setX(activePatch.imageView1.getX()+15);
-                activePatch.imageView1.setY(activePatch.imageView1.getY()+15);
-            }
-            if(activePatch.noNicePatch && (rotation == 90 || rotation == 270)){
-                activePatch.imageView1.setX(activePatch.imageView1.getX()-15);
-                activePatch.imageView1.setY(activePatch.imageView1.getY()-15);
-            }
-            activePatch.imageView1.setRotate(rotation);
+            activePatchView.rotate();
         }
         else if(keyEvent.getCode() == KeyCode.Q || keyEvent.getCode() == KeyCode.SHIFT || keyEvent.getCode() == KeyCode.NUMPAD4) {
-            if(!activePatch.flipped) {
-                activePatch.flipped = true;
-                activePatch.imageView1.setScaleX(-1);
-            }
-            else{
-                activePatch.flipped = false;
-                activePatch.imageView1.setScaleX(1);
-            }
+            activePatchView.flip();
+        }
+        //TODO new Key
+        else if(keyEvent.getCode() == KeyCode.ENTER){
+
+            GameController gameController = mainViewController.getMainController().getGameController();
+            GameState gameState = mainViewController.getMainController().getGame().getCurrentGameState();
+            gameController.takePatch(gameState.getPatchByID(activePatchView.id), activePatchView.getPlacing(), rotation, activePatchView.flipped);
+        }
+        else if(keyEvent.getCode() == KeyCode.R){
+
+            activePatchView.getPlacing().print();
         }
     }
 
     /**
      * in id the number of the patch is stored. noNicePatch is true if the patch does not rotate properly
      */
-    private class Patch extends ImageView {
-        int id;
-        ImageView imageView1;
-        boolean noNicePatch;
-        boolean flipped;
+    private class PatchView extends ImageView {
+        private int id;
+        private boolean noNicePatch;
+        private boolean flipped;
+        private int rotation;
+        private int posX = 3;
+        private int posY = 3;
+        private int delta = 0;
+        private static final int OFFSET_X = 0;
+        private static final int OFFSET_Y = 0;
+        private static final int STEPPING = 30;
+        private Matrix shape = new Matrix(new boolean[][]{{true, true},
+                                                         {true, false},
+                                                         {true, true}});
+
 
         /**
          * Constructor for a new patch. Loads it, sets high and with and noNicePatch
          *
          * @param i number of Patch
+         * //TODO change parameter into patch
          */
-        private Patch(int i){
-            File file;
-            file = new File("Resources/Patches/Patch" + i + ".png");
+        private PatchView(int i){
             id = i;
-            ImageView imageView = new ImageView(file.toURI().toString());
+            //this.setImage(new Image(new File("Resources/Patches/Patch" + i + ".png").toURI().toString()));
+            try {
+                this.setImage(new Image(this.getClass().getResource("/view/images/Patches/Patch" + i + ".png").toURI().toString()));
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+
             int[] arr = checkPatch(i);
-            imageView.setFitHeight(arr[0]);
-            imageView.setFitWidth(arr[1]);
+            this.setFitHeight(arr[0]);
+            this.setFitWidth(arr[1]);
             if(arr[2] == 1)
                 noNicePatch = true;
-            imageView1 = imageView;
             flipped = false;
+            rotation = 0;
         }
+
+        void flip(){
+            flipped = !flipped;
+            this.setScaleX(flipped ? 1 : -1);
+        }
+        void rotate(){
+            rotation += 90;
+            rotation %= 360;
+            this.setRotate(rotation);
+            if(noNicePatch){
+                delta = rotation % 180 != 0 ? STEPPING / 2 : 0;
+            }
+            moveX();
+            moveY();
+        }
+
+        void moveUp(){
+            posY--;
+            moveY();
+        }
+        void moveDown(){
+            posY++;
+            moveY();
+
+        }
+        void moveLeft(){
+            posX--;
+            moveX();
+        }
+        void moveRight(){
+            posX++;
+            moveX();
+        }
+
+        public Matrix getPlacing() {
+            Matrix matrix = new Matrix(9 , 9);
+
+            Matrix placing = shape.copy();
+
+            matrix.insert(placing, posY, posX);
+
+            return matrix;
+        }
+
+        private void moveX(){
+            this.setX(OFFSET_X + posX * STEPPING + delta);
+
+        }
+        private void moveY(){
+            this.setY(OFFSET_Y + posY * STEPPING+ delta);
+        }
+
     }
 
     /**
@@ -238,12 +301,12 @@ public class GameScreenViewController {
     public void onDragDetected(){
 
         int index = patchListView.getSelectionModel().getSelectedIndex();
-        Patch patch = patches.get(index);
-        pane.getChildren().add(patch.imageView1);
-        patch.imageView1.setX(90);
-        patch.imageView1.setY(90);
+        PatchView patchView = patchViews.get(index);
+        pane.getChildren().add(patchView);
+        patchView.setX(90);
+        patchView.setY(90);
 
-        activePatch = patch;
+        activePatchView = patchView;
         rotation = 0;
     }
 

@@ -119,6 +119,11 @@ public class GameState{
 		return false;
 	}
 
+	public Patch getPatchByID(final int id){
+		//noinspection OptionalGetWithoutIsPresent
+		return patches.stream().filter(p -> p.getPatchID() == id).findFirst().get();
+	}
+
 	/**
 	 * Copies the GameState
 	 * @return A copy of the GameState object
