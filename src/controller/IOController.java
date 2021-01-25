@@ -133,7 +133,7 @@ public class IOController {
 		List<Patch> patchList = new LinkedList<>();
 
 		for (int i = 1; i < records.size(); i++) {
-			patchList.add(generatePatch(records.get(i),i));
+			patchList.add(generatePatch(records.get(i)));
 		}
 
 		return patchList;
@@ -281,7 +281,7 @@ public class IOController {
 		}
 	}
 
-	private Patch generatePatch(List<String> line, int patchID){
+	private Patch generatePatch(List<String> line){
 
 		final int matrixLength = 15;
 
@@ -302,7 +302,11 @@ public class IOController {
 		int time = Integer.parseInt(line.get(2));
 		int buttonIncome = Integer.parseInt(line.get(3));
 
-		return new Patch(patchID, buttonIncome, buttonCost, new Matrix(shape), time);
+		Matrix shapeMatrix = new Matrix(shape);
+
+		int patchID = Arrays.hashCode(shapeMatrix.toBooleanArray());
+
+		return new Patch(patchID, buttonIncome, buttonCost, shapeMatrix, time);
 
 	}
 
