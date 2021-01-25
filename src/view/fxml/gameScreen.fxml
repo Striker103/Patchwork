@@ -130,7 +130,7 @@
       </HBox>
    </children>
    <children>
-      <Text layoutX="10.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="use W A S D to change position" />
-      <Text layoutX="10.0" layoutY="305.0" strokeType="OUTSIDE" strokeWidth="0.0" text="use E to flip clockwise" />
+      <Text layoutX="10.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="use W A S D or 1 2 3 5 to change position" />
+      <Text layoutX="10.0" layoutY="305.0" strokeType="OUTSIDE" strokeWidth="0.0" text="use E or 6 to rotate clockwise" />
    </children>
 </Pane>

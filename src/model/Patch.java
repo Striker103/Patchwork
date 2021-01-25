@@ -67,7 +67,10 @@ public class Patch {
 		if(this.shape.count(1)==0) throw new IllegalArgumentException("Patch has no shape defined");
 	}
 
-
+	/**
+	 * Gives a copy of the patch object
+	 * @return a copy of the object
+	 */
 	public Patch copy() {
 		return new Patch(this.patchID,this.buttonIncome,this.buttonsCost,this.shape.copy(),this.time);
 	}

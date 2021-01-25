@@ -25,7 +25,10 @@ public class GameScreenViewController {
     private Scene ownScene;
 
     private Patch activePatch;
+
     private int rotation;
+
+
 
     private List<Patch> patches;
 
@@ -92,18 +95,18 @@ public class GameScreenViewController {
      * @param keyEvent the pressed kay
      */
     public void handleKeyPressed(KeyEvent keyEvent){
-        if(keyEvent.getCode() == KeyCode.W){
+        if(keyEvent.getCode() == KeyCode.W || keyEvent.getCode() == KeyCode.KP_UP || keyEvent.getCode() == KeyCode.NUMPAD5){
             activePatch.imageView1.setY(activePatch.imageView1.getY() - 30);
-        }else if(keyEvent.getCode() == KeyCode.S){
+        }else if(keyEvent.getCode() == KeyCode.S || keyEvent.getCode() == KeyCode.KP_DOWN || keyEvent.getCode() == KeyCode.NUMPAD2){
             activePatch.imageView1.setY(activePatch.imageView1.getY() + 30);
         }
-        else if(keyEvent.getCode() == KeyCode.A){
+        else if(keyEvent.getCode() == KeyCode.A || keyEvent.getCode() == KeyCode.KP_LEFT || keyEvent.getCode() == KeyCode.NUMPAD1 ){
             activePatch.imageView1.setX(activePatch.imageView1.getX() - 30);
         }
-        else if(keyEvent.getCode() == KeyCode.D){
+        else if(keyEvent.getCode() == KeyCode.D || keyEvent.getCode() == KeyCode.KP_RIGHT || keyEvent.getCode() == KeyCode.NUMPAD3){
             activePatch.imageView1.setX(activePatch.imageView1.getX() + 30);
         }
-        else if(keyEvent.getCode() == KeyCode.E){
+        else if(keyEvent.getCode() == KeyCode.E || keyEvent.getCode() == KeyCode.SPACE || keyEvent.getCode() == KeyCode.NUMPAD6){
             if(rotation == 270){
                 rotation = 0;
             } else{
@@ -119,6 +122,16 @@ public class GameScreenViewController {
             }
             activePatch.imageView1.setRotate(rotation);
         }
+        else if(keyEvent.getCode() == KeyCode.Q || keyEvent.getCode() == KeyCode.SHIFT || keyEvent.getCode() == KeyCode.NUMPAD4) {
+            if(!activePatch.flipped) {
+                activePatch.flipped = true;
+                activePatch.imageView1.setScaleX(-1);
+            }
+            else{
+                activePatch.flipped = false;
+                activePatch.imageView1.setScaleX(1);
+            }
+        }
     }
 
     /**
@@ -128,6 +141,7 @@ public class GameScreenViewController {
         int id;
         ImageView imageView1;
         boolean noNicePatch;
+        boolean flipped;
 
         /**
          * Constructor for a new patch. Loads it, sets high and with and noNicePatch
@@ -145,6 +159,7 @@ public class GameScreenViewController {
             if(arr[2] == 1)
                 noNicePatch = true;
             imageView1 = imageView;
+            flipped = false;
         }
     }
 

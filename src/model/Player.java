@@ -101,6 +101,11 @@ public class Player {
 	public PlayerType getPlayerType() {
 		return playerType;
 	}
+
+	/**
+	 * Returns the quilt board of the player
+	 * @return the quilt board
+	 */
 	public QuiltBoard getQuiltBoard () {
 		return quiltBoard;
 	}
