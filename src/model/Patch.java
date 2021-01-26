@@ -150,10 +150,10 @@ public class Patch {
 	 * @return equality of two patches
 	 */
 	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		Patch patch = (Patch) o;
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null || getClass() != obj.getClass()) return false;
+		Patch patch = (Patch) obj;
 		return buttonIncome == patch.buttonIncome && buttonsCost == patch.buttonsCost && time == patch.time && shape.equals(patch.shape);
 	}
 
