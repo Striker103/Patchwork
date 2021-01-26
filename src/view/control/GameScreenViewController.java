@@ -33,7 +33,7 @@ public class GameScreenViewController {
 
     private int rotation;
 
-
+    private TimeToken activeTimeToken;
 
     private List<PatchView> patchViews;
 
@@ -65,11 +65,27 @@ public class GameScreenViewController {
         mainViewController.showCurrentScene();
     }
 
-    public void loadTimeBoard() throws FileNotFoundException {
-        //TODO fix path
-        //FileInputStream stream = new FileInputStream("Resources/TimeBoard/TimeBoard.png");
-        //Image image = new Image(stream);
-        //imageView.setImage(image);
+    public void loadTimeBoard(){
+        ImageView timeBoard = new ImageView();
+        try {
+            timeBoard.setImage(new Image(this.getClass().getResource("/view/images/TimeBoard/TimeBoard.png").toURI().toString()));
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        timeBoard.setFitWidth(270);
+        timeBoard.setFitHeight(270);
+        timeBoard.setX(360);
+        timeBoard.setY(90);
+        pane.getChildren().add(timeBoard);
+
+
+        TimeToken timeToken = new TimeToken(1);
+        timeToken.setX(437);
+        timeToken.setY(115); //115
+        timeToken.setFitWidth(15);
+        timeToken.setFitHeight(15);
+        activeTimeToken = timeToken;
+        pane.getChildren().add(activeTimeToken);
     }
 
     //TODO when a patch which was already clicked is clicked again there are warnings
@@ -91,6 +107,7 @@ public class GameScreenViewController {
             imageView.setFitWidth(width * 30);
             patchViews.add(new PatchView(p, i));
         }
+        patchListView.getItems().add(activeTimeToken);
     }
 
     public void PaneDragged(MouseEvent mouseEvent) {
@@ -163,6 +180,9 @@ public class GameScreenViewController {
             System.out.println("NoNicePatch?: " + activePatchView.noNicePatch);
             System.out.println("flipped? " + activePatchView.flipped);
             System.out.println();
+        }else if(keyEvent.getCode() == KeyCode.T){ //just to test the movement of the time token on the time board
+            activeTimeToken.moveToken();
+            System.out.println("POB:" + activeTimeToken.positionOnBoard + " FP:" + activeTimeToken.firstPosX + "," + activeTimeToken.firstPosY + "  LP: " + activeTimeToken.lastPosX + "," + activeTimeToken.lastPosY +"  CP:"+ activeTimeToken.currentPositionX + "," + activeTimeToken.currentPositionY);
         }
     }
 
@@ -304,10 +324,7 @@ public class GameScreenViewController {
 
             int dif = Math.abs(width - height);
 
-            if(checkEdges(dif, arr))
-                return true;
-
-            return false;
+            return checkEdges(dif, arr);
         }
 
         private boolean checkEdges(int i, int[][] arr){
@@ -405,6 +422,81 @@ public class GameScreenViewController {
                     this.matrix = new Matrix(imgArray);
                 }
             }
+        }
+
+    }
+
+    private class TimeToken extends ImageView {
+        private int id;
+        private int firstPosX = 0;
+        private int firstPosY = 0;
+        private int lastPosX = 14;
+        private int lastPosY = 14;
+
+        private int positionOnBoard = 0;
+        int currentPositionX = 4;
+        int currentPositionY = 0;
+
+        private static final int STEPPING = 28;
+        private int verticalDirection = 1; // -1 = left, 1 = right
+        private int horizontalDirection = 1; // -1 = up, 1 = down
+
+
+        private TimeToken(int id) {
+            try {
+                this.setImage(new Image(this.getClass().getResource("/view/images/circle.png").toURI().toString()));
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+            this.setFitWidth(200);
+            this.setFitHeight(200);
+            //Player currentPlayer = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1();
+            this.id = id;
+        }
+
+        void moveToken(int steps){
+            for(int i = 0; i < steps; i++){
+                moveToken();
+            }
+        }
+        void moveToken(){
+            if(verticalDirection == 1 && currentPositionX +2 <= this.lastPosX){
+                this.setX(this.getX() + STEPPING * verticalDirection);
+                currentPositionX+=2;
+                positionOnBoard++;
+                if(this.currentPositionX == this.lastPosX && this.currentPositionY == this.firstPosY) {
+                    this.horizontalDirection = 1;
+                    this.firstPosY += 2;
+                }
+            }
+            else if(verticalDirection == -1 && currentPositionX -2 >= this.firstPosX) {
+                this.setX(this.getX() + STEPPING * verticalDirection);
+                currentPositionX -= 2;
+                positionOnBoard++;
+                if (this.currentPositionX == this.firstPosX && this.currentPositionY == this.lastPosY) {
+                    this.horizontalDirection = -1;
+                    this.lastPosY -= 2;
+                }
+            }
+            else if(horizontalDirection == 1 && currentPositionY +2 <= this.lastPosY){
+                this.setY(this.getY() + STEPPING * horizontalDirection);
+                currentPositionY+=2;
+                positionOnBoard++;
+                if(this.currentPositionX == this.lastPosX && this.currentPositionY == this.lastPosY) {
+                    this.verticalDirection = -1;
+                    this.lastPosX -= 2;
+                }
+            }
+            else if(horizontalDirection == -1 && currentPositionY -2 >= this.firstPosY){
+                this.setY(this.getY() + STEPPING * horizontalDirection);
+                currentPositionY-=2;
+                positionOnBoard++;
+                if(this.currentPositionX == this.firstPosX && this.currentPositionY == this.firstPosY) {
+                    this.verticalDirection = 1;
+                    this.firstPosX += 2;
+                }
+            }
+
         }
 
     }
