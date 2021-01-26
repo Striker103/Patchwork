@@ -5,6 +5,9 @@ import org.junit.Before;
 import org.junit.Test;
 import view.aui.ErrorAUI;
 import view.aui.HighScoreAUI;
+import view.aui.LogAUI;
+import view.aui.TurnAUI;
+
 import static org.junit.Assert.*;
 
 import java.io.File;
@@ -21,7 +24,7 @@ public class HighScoreControllerTest {
 
     private HighScoreController highScoreController;
 
-    private final File file = new File("export/testFile.score");//TODO als was speichern wir scores?
+    private final File file = new File("export/testFile.json");
 
     private Player player;
 
@@ -36,6 +39,8 @@ public class HighScoreControllerTest {
         mainController = new MainController();
         mainController.setErrorAUI(dummyAUI);
         mainController.setHighScoreAUI(dummyAUI);
+        mainController.setLogAUI(dummyAUI);
+        mainController.setTurnAUI(dummyAUI);
         Tuple<String, PlayerType> player1 = new Tuple<>("Horst",PlayerType.HUMAN);
         Tuple<String, PlayerType> player2 = new Tuple<>("AI",PlayerType.AI_MEDIUM);
         mainController.getGamePreparationController().startGame(new Tuple<>(player1,player2),null,2,false);
@@ -98,11 +103,12 @@ public class HighScoreControllerTest {
     /**
      * Test save score wrong file ending.
      */
-    @Test (expected = IllegalArgumentException.class)
+    @Test
     public void testSaveScoreWrongFileEnding(){
         mainController.getGameController().advance();
         mainController.getGameController().advance();
         highScoreController.saveScores(new File("export/testFile.freeCandy"));
+        assertTrue(dummyAUI.error);
     }
 
     /**
@@ -160,7 +166,7 @@ public class HighScoreControllerTest {
     /**
      * The type Dummy aui.
      */
-    class DummyAUI implements ErrorAUI, HighScoreAUI {
+    class DummyAUI implements ErrorAUI, HighScoreAUI, LogAUI, TurnAUI {
         /**
          * was showError triggered
          */
@@ -169,6 +175,7 @@ public class HighScoreControllerTest {
          * was at least one score shown
          */
         public boolean highScoresShown = false;
+
 
         @Override
         public void showError(String message) {
@@ -182,6 +189,25 @@ public class HighScoreControllerTest {
         }
 
 
+        @Override
+        public void updateLog(String log) {
+
+        }
+
+        @Override
+        public void triggerPlayerTurn() {
+
+        }
+
+        @Override
+        public void trigger1x1Placement() {
+
+        }
+
+        @Override
+        public void retriggerPatchPlacement() {
+
+        }
     }
 
 }
