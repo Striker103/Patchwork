@@ -3,6 +3,7 @@ package view.control;
 import controller.GameController;
 import controller.GamePreparationController;
 import controller.IOController;
+import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -24,9 +25,10 @@ import javafx.scene.image.PixelReader;
 
 
 public class GameScreenViewController {
-    
+
     MainViewController mainViewController;
-    
+
+
     private Scene ownScene;
 
     private PatchView activePatchView;
@@ -43,11 +45,6 @@ public class GameScreenViewController {
     @FXML
     private ImageView imageView;
 
-    @FXML
-    private GridPane gridPane1;
-
-    @FXML
-    private GridPane gridPane2;
 
     @FXML
     private ListView<ImageView> patchListView;
@@ -74,17 +71,25 @@ public class GameScreenViewController {
         }
         timeBoard.setFitWidth(270);
         timeBoard.setFitHeight(270);
-        timeBoard.setX(360);
+        timeBoard.setX(510);
         timeBoard.setY(90);
         pane.getChildren().add(timeBoard);
 
+        //timetoken 1
+        TimeToken timeToken1 = new TimeToken(1);
+        timeToken1.setX(599);
+        timeToken1.setY(120);
+        timeToken1.setFitWidth(15);
+        timeToken1.setFitHeight(15);
+        pane.getChildren().add(timeToken1);
 
-        TimeToken timeToken = new TimeToken(1);
-        timeToken.setX(437);
-        timeToken.setY(115); //115
-        timeToken.setFitWidth(15);
-        timeToken.setFitHeight(15);
-        activeTimeToken = timeToken;
+        //timetoken2
+        TimeToken timeToken2 = new TimeToken(2);
+        timeToken2.setX(599);
+        timeToken2.setY(122);
+        timeToken2.setFitWidth(15);
+        timeToken2.setFitHeight(15);
+        activeTimeToken = timeToken2;
         pane.getChildren().add(activeTimeToken);
     }
 
@@ -107,7 +112,6 @@ public class GameScreenViewController {
             imageView.setFitWidth(width * 30);
             patchViews.add(new PatchView(p, i));
         }
-        patchListView.getItems().add(activeTimeToken);
     }
 
     public void PaneDragged(MouseEvent mouseEvent) {
@@ -437,17 +441,18 @@ public class GameScreenViewController {
         int currentPositionX = 4;
         int currentPositionY = 0;
 
-        private static final int STEPPING = 28;
+        private static final double STEPPING = 26.5;
         private int verticalDirection = 1; // -1 = left, 1 = right
         private int horizontalDirection = 1; // -1 = up, 1 = down
 
 
         private TimeToken(int id) {
             try {
-                this.setImage(new Image(this.getClass().getResource("/view/images/circle.png").toURI().toString()));
+                this.setImage(new Image(this.getClass().getResource("/view/images/TimeTokens/TimeToken"+ id + ".png").toURI().toString()));
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
+            pane.setPrefSize(1280, 720);
             this.setFitWidth(200);
             this.setFitHeight(200);
             //Player currentPlayer = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1();
@@ -455,16 +460,22 @@ public class GameScreenViewController {
         }
 
         void moveToken(int steps){
-            for(int i = 0; i < steps; i++){
+            for (int i = 0; i < steps; i++) {
+                if(positionOnBoard >= 53){
+                    System.out.println("Goal reached!");
+                    break;
+                }
                 moveToken();
             }
         }
+
+
         void moveToken(){
             if(verticalDirection == 1 && currentPositionX +2 <= this.lastPosX){
                 this.setX(this.getX() + STEPPING * verticalDirection);
                 currentPositionX+=2;
                 positionOnBoard++;
-                if(this.currentPositionX == this.lastPosX && this.currentPositionY == this.firstPosY) {
+                if(Math.abs(this.currentPositionX - this.lastPosX) <= 1 && Math.abs(this.currentPositionY - this.firstPosY) <= 1) {
                     this.horizontalDirection = 1;
                     this.firstPosY += 2;
                 }
@@ -473,7 +484,7 @@ public class GameScreenViewController {
                 this.setX(this.getX() + STEPPING * verticalDirection);
                 currentPositionX -= 2;
                 positionOnBoard++;
-                if (this.currentPositionX == this.firstPosX && this.currentPositionY == this.lastPosY) {
+                if (Math.abs(this.currentPositionX - this.firstPosX) <= 1 && Math.abs(this.currentPositionY - this.lastPosY) <= 1) {
                     this.horizontalDirection = -1;
                     this.lastPosY -= 2;
                 }
@@ -482,7 +493,7 @@ public class GameScreenViewController {
                 this.setY(this.getY() + STEPPING * horizontalDirection);
                 currentPositionY+=2;
                 positionOnBoard++;
-                if(this.currentPositionX == this.lastPosX && this.currentPositionY == this.lastPosY) {
+                if(Math.abs(this.currentPositionX - this.lastPosX) <= 1 && Math.abs(this.currentPositionY - this.lastPosY) <= 1) {
                     this.verticalDirection = -1;
                     this.lastPosX -= 2;
                 }
@@ -491,15 +502,54 @@ public class GameScreenViewController {
                 this.setY(this.getY() + STEPPING * horizontalDirection);
                 currentPositionY-=2;
                 positionOnBoard++;
-                if(this.currentPositionX == this.firstPosX && this.currentPositionY == this.firstPosY) {
+                if(Math.abs(this.currentPositionX - this.firstPosX) <= 1 && Math.abs(this.currentPositionY - this.firstPosY) <= 1) {
                     this.verticalDirection = 1;
                     this.firstPosX += 2;
                 }
             }
+            if(positionOnBoard == 19|| positionOnBoard == 21){
+                currentPositionY--;
+                this.setY(this.getY() - 0.25 * STEPPING);
+            }
+            if(positionOnBoard == 20 ){
+                this.setY(this.getY() - 0.5 * STEPPING);
+            }
+            if(positionOnBoard == 25 || positionOnBoard == 27 ){
+                currentPositionX++;
+                this.setX(this.getX() + 0.25 * STEPPING);
+            }
+            if(positionOnBoard == 26 ){
+                this.setX(this.getX() + 0.5 * STEPPING);
+            }
 
+            if(positionOnBoard == 31 || positionOnBoard == 33 ){
+                currentPositionY++;
+                this.setY(this.getY() + 0.25 * STEPPING);
+            }
+            if(positionOnBoard == 32 ){
+                this.setY(this.getY() + 0.5 * STEPPING);
+            }
+
+            if(positionOnBoard == 44 || positionOnBoard == 46 ){
+                currentPositionX++;
+                this.setX(this.getX() + 0.25 * STEPPING);
+            }
+            if(positionOnBoard == 45 ){
+                this.setX(this.getX() + 0.5 * STEPPING);
+            }
+
+            if(positionOnBoard == 49 || positionOnBoard == 51 ){
+                currentPositionX--;
+                this.setX(this.getX() - 0.25 * STEPPING);
+            }
+            if(positionOnBoard == 50 ){
+                this.setX(this.getX() - 0.5 * STEPPING);
+            }
         }
 
     }
+
+
 
     @FXML
     public void onUndoAction(ActionEvent actionEvent) {
