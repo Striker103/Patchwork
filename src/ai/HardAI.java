@@ -61,8 +61,17 @@ public class HardAI extends AI {
             if(bestOption.getFirst().equals(actualState)) return null;
             if(bestOption.getFirst().getPatches().equals(actualState.getPatches())) return bestOption.getFirst(); //chosen when advanced
             //we have to figure out the best placement and the patch used, fug
-            bestOption.getSecond().setQuiltBoard(placePatch(bestOption.getSecond().getQuiltBoard(), bestOption.getSecond().getQuiltBoard().getPatches().remove(bestOption.getSecond().getQuiltBoard().getPatches().size()-1)).getFirst());
-            return bestOption.getFirst();
+            Patch used = bestOption.getSecond().getQuiltBoard().getPatches().remove(bestOption.getSecond().getQuiltBoard().getPatches().size()-1); //luckily, it is the last patch added
+            GameState copy = actualState.copy();
+            Player moving;
+            if(copy.getPlayer1().equals(movingPlayer)){ //evaluate players
+                moving = copy.getPlayer1();
+            }
+            else{
+                moving = copy.getPlayer2();
+            }
+            moving.setQuiltBoard(placePatch(moving.getQuiltBoard(), used).getFirst());
+            return copy;
         }
         return null;
     }
