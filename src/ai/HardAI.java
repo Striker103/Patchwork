@@ -105,9 +105,9 @@ public class HardAI extends AI {
         int filledSpots = boardMatrix.amountCells()-boardMatrix.count(0) + patchMatrix.amountCells()-patchMatrix.count(0);
         return AIUtil.generateAllPossiblePatches(patch)
                 .parallelStream()                                                                                   //Generate Patches and parallelize
-                .filter(patchPosition -> patchPosition.getFirst().disjunctive(boardMatrix))                                    //Filter all places which are not valid
+                .filter(patchPosition -> patchPosition.getFirst().disjunctive(boardMatrix))                         //Filter all places which are not valid
                 .map(place -> { QuiltBoard copy = actualBoard.copy();
-                                //copy.addPatch(patch);
+                                copy.addPatch(patch, place.getFirst(), place.getSecond().getFirst() * 90, place.getSecond().getSecond());
                                 return new Tuple<>(copy, evaluateBoard(copy, filledSpots));})                       //map the valid places onto the quiltboard and evaluate the happiness
                 .max(Comparator.comparingDouble(Tuple::getSecond))                                                  //Search maximum of happiness eg. best placement
                 .orElse(null);
