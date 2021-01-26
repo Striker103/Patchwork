@@ -132,5 +132,7 @@
    <children>
       <Text layoutX="10.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="use W A S D or 1 2 3 5 to change position" />
       <Text layoutX="10.0" layoutY="305.0" strokeType="OUTSIDE" strokeWidth="0.0" text="use E or 6 to rotate clockwise" />
+      <Text layoutX="10.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0" text="use Q or 4 to flip your patch" />
+      <Text layoutX="10.0" layoutY="335.0" strokeType="OUTSIDE" strokeWidth="0.0" text="use R or 0 to place your Patch" />
    </children>
 </Pane>

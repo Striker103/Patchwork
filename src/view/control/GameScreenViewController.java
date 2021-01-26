@@ -1,12 +1,11 @@
 package view.control;
 
-import com.sun.scenario.effect.Offset;
 import controller.GameController;
+import controller.GamePreparationController;
+import controller.IOController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
@@ -19,8 +18,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import model.GameState;
-import model.Matrix;
+import javafx.scene.paint.Color;
+import model.*;
+import javafx.scene.image.PixelReader;
 
 
 public class GameScreenViewController {
@@ -33,7 +33,7 @@ public class GameScreenViewController {
 
     private int rotation;
 
-
+    private TimeToken activeTimeToken;
 
     private List<PatchView> patchViews;
 
@@ -65,30 +65,49 @@ public class GameScreenViewController {
         mainViewController.showCurrentScene();
     }
 
-    public void loadTimeBoard() throws FileNotFoundException {
-        FileInputStream stream = new FileInputStream("Resources/TimeBoard/TimeBoard.png");
-        Image image = new Image(stream);
-        //Image image = new Image(String.valueOf(new File("../Resources/TimeBoard/TimeBoard.png")));
-        imageView.setImage(image);
+    public void loadTimeBoard(){
+        ImageView timeBoard = new ImageView();
+        try {
+            timeBoard.setImage(new Image(this.getClass().getResource("/view/images/TimeBoard/TimeBoard.png").toURI().toString()));
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        timeBoard.setFitWidth(270);
+        timeBoard.setFitHeight(270);
+        timeBoard.setX(360);
+        timeBoard.setY(90);
+        pane.getChildren().add(timeBoard);
+
+
+        TimeToken timeToken = new TimeToken(1);
+        timeToken.setX(437);
+        timeToken.setY(115); //115
+        timeToken.setFitWidth(15);
+        timeToken.setFitHeight(15);
+        activeTimeToken = timeToken;
+        pane.getChildren().add(activeTimeToken);
     }
 
-    //TODO fix patch 8 and those two small Patches. patchListView throws errors when a patch which was already clicked is clicked again
+    //TODO when a patch which was already clicked is clicked again there are warnings
     public void loadPatches() throws FileNotFoundException {
         patchViews = new ArrayList<>();
+        IOController ioController = mainViewController.getMainController().getIOController();
+        List<Patch> patches = ioController.importCSVNotShuffled();
         for(int i = 1; i < 34; i++) {
-            String path = "Resources/Patches/Patch" + i + ".png";
-
+            String path = "src/view/images/Patches/Patch" + i + ".png";
             imageView = new ImageView(new Image(new FileInputStream(path)));
-            int[] arr = checkPatch(i);
-            imageView.setFitHeight(arr[0]);
-            imageView.setFitWidth(arr[1]);
-
 
             patchListView.getItems().add(imageView);
-
-            patchViews.add(new PatchView(i));
+            Patch p = patches.get(i-1);
+            Matrix shape = p.getShape();
+            Matrix trim = shape.trim();
+            int height = trim.getRows();
+            int width = trim.getColumns();
+            imageView.setFitHeight(height * 30);
+            imageView.setFitWidth(width * 30);
+            patchViews.add(new PatchView(p, i));
         }
-
+        patchListView.getItems().add(activeTimeToken);
     }
 
     public void PaneDragged(MouseEvent mouseEvent) {
@@ -100,83 +119,140 @@ public class GameScreenViewController {
      * @param keyEvent the pressed kay
      */
     public void handleKeyPressed(KeyEvent keyEvent){
-        if(keyEvent.getCode() == KeyCode.W || keyEvent.getCode() == KeyCode.KP_UP || keyEvent.getCode() == KeyCode.NUMPAD5){
-            activePatchView.moveUp();
-        }else if(keyEvent.getCode() == KeyCode.S || keyEvent.getCode() == KeyCode.KP_DOWN || keyEvent.getCode() == KeyCode.NUMPAD2){
-            activePatchView.moveDown();
+        if(keyEvent.getCode() == KeyCode.W || keyEvent.getCode() == KeyCode.NUMPAD5){
+            if(activePatchView.moveIsLegit('w')){
+                activePatchView.moveUp();
+            }else{
+                System.out.println("are you blind?");
+            }
+        }else if(keyEvent.getCode() == KeyCode.S  || keyEvent.getCode() == KeyCode.NUMPAD2){
+            if(activePatchView.moveIsLegit('s')){
+                activePatchView.moveDown();
+            }else{
+                System.out.println("are you blind?");
+            }
         }
-        else if(keyEvent.getCode() == KeyCode.A || keyEvent.getCode() == KeyCode.KP_LEFT || keyEvent.getCode() == KeyCode.NUMPAD1 ){
-            activePatchView.moveLeft();
+        else if(keyEvent.getCode() == KeyCode.A || keyEvent.getCode() == KeyCode.NUMPAD1 ){
+            if(activePatchView.moveIsLegit('a')){
+                activePatchView.moveLeft();
+            }else{
+                System.out.println("are you blind?");
+            }
         }
-        else if(keyEvent.getCode() == KeyCode.D || keyEvent.getCode() == KeyCode.KP_RIGHT || keyEvent.getCode() == KeyCode.NUMPAD3){
-            activePatchView.moveRight();
+        else if(keyEvent.getCode() == KeyCode.D || keyEvent.getCode() == KeyCode.NUMPAD3){
+            if(activePatchView.moveIsLegit('d')){
+                activePatchView.moveRight();
+            }else{
+                System.out.println("are you blind?");
+            }
         }
-        else if(keyEvent.getCode() == KeyCode.E || keyEvent.getCode() == KeyCode.SPACE || keyEvent.getCode() == KeyCode.NUMPAD6){
-            activePatchView.rotate();
+        else if(keyEvent.getCode() == KeyCode.E || keyEvent.getCode() == KeyCode.NUMPAD6){
+            if(activePatchView.rotationIsLegit()){
+                activePatchView.rotate();
+            }else{
+                System.out.println("please move away from the corner a little bit");
+            }
         }
-        else if(keyEvent.getCode() == KeyCode.Q || keyEvent.getCode() == KeyCode.SHIFT || keyEvent.getCode() == KeyCode.NUMPAD4) {
+        else if(keyEvent.getCode() == KeyCode.Q || keyEvent.getCode() == KeyCode.NUMPAD4) {
             activePatchView.flip();
         }
-        //TODO new Key
-        else if(keyEvent.getCode() == KeyCode.ENTER){
+        else if(keyEvent.getCode() == KeyCode.R || keyEvent.getCode() == KeyCode.NUMPAD0){
 
-            GameController gameController = mainViewController.getMainController().getGameController();
-            GameState gameState = mainViewController.getMainController().getGame().getCurrentGameState();
-            gameController.takePatch(gameState.getPatchByID(activePatchView.id), activePatchView.getPlacing(), rotation, activePatchView.flipped);
-        }
-        else if(keyEvent.getCode() == KeyCode.R){
+            try{
+                GameController gameController = mainViewController.getMainController().getGameController();
+                GameState gameState = mainViewController.getMainController().getGame().getCurrentGameState();
+                gameController.takePatch(gameState.getPatchByID(activePatchView.id), activePatchView.readyToGo(), rotation, activePatchView.flipped);
+            }catch(NullPointerException e){
+                System.out.println("the patch is not placed yet");
+            }
+        }else if(keyEvent.getCode() == KeyCode.C){ //only for debugging
+            Matrix ready = activePatchView.readyToGo();
+            ready.print();
+            System.out.println();
+        }else if(keyEvent.getCode() == KeyCode.V){ //only for debugging
 
-            activePatchView.getPlacing().print();
+            activePatchView.matrix.print();
+            System.out.println();
+            System.out.println("posX: " + activePatchView.posX);
+            System.out.println("posY: " + activePatchView.posY);
+            System.out.println("height: " + activePatchView.height);
+            System.out.println("width: " + activePatchView.width);
+            System.out.println("NoNicePatch?: " + activePatchView.noNicePatch);
+            System.out.println("flipped? " + activePatchView.flipped);
+            System.out.println();
+        }else if(keyEvent.getCode() == KeyCode.T){ //just to test the movement of the time token on the time board
+            activeTimeToken.moveToken();
+            System.out.println("POB:" + activeTimeToken.positionOnBoard + " FP:" + activeTimeToken.firstPosX + "," + activeTimeToken.firstPosY + "  LP: " + activeTimeToken.lastPosX + "," + activeTimeToken.lastPosY +"  CP:"+ activeTimeToken.currentPositionX + "," + activeTimeToken.currentPositionY);
         }
     }
+
 
     /**
      * in id the number of the patch is stored. noNicePatch is true if the patch does not rotate properly
      */
     private class PatchView extends ImageView {
-        private int id;
+        private final int id;
         private boolean noNicePatch;
         private boolean flipped;
         private int rotation;
         private int posX = 3;
         private int posY = 3;
         private int delta = 0;
+        private final int height;
+        private final int width;
         private static final int OFFSET_X = 0;
         private static final int OFFSET_Y = 0;
         private static final int STEPPING = 30;
-        private Matrix shape = new Matrix(new boolean[][]{{true, true},
-                                                         {true, false},
-                                                         {true, true}});
+        Matrix matrix;
 
 
         /**
          * Constructor for a new patch. Loads it, sets high and with and noNicePatch
          *
          * @param i number of Patch
-         * //TODO change parameter into patch
          */
-        private PatchView(int i){
-            id = i;
-            //this.setImage(new Image(new File("Resources/Patches/Patch" + i + ".png").toURI().toString()));
+        private PatchView(Patch p, int i){
             try {
                 this.setImage(new Image(this.getClass().getResource("/view/images/Patches/Patch" + i + ".png").toURI().toString()));
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
+            Matrix shape = p.getShape();
+            Matrix trim = shape.trim();
 
-            int[] arr = checkPatch(i);
-            this.setFitHeight(arr[0]);
-            this.setFitWidth(arr[1]);
-            if(arr[2] == 1)
+            id = p.getPatchID();
+            this.height = trim.getRows();
+            this.width = trim.getColumns();
+            this.setFitHeight(height * 30);
+            this.setFitWidth(width * 30);
+            if((height + width) % 2 != 0)
                 noNicePatch = true;
             flipped = false;
             rotation = 0;
+
+
+            Matrix tmp = new Matrix (width, width);
+            int dif = width - height;
+            tmp.insert(trim, dif/2 , 0);
+            matrix = tmp;
         }
 
+        /**
+         * flips the Patch and the matrix
+         */
         void flip(){
+            if(rotation == 90 || rotation == 270){
+                swapColumns(matrix.getIntMatrix());
+            }else{
+                swapRows(matrix.getIntMatrix());
+            }
             flipped = !flipped;
-            this.setScaleX(flipped ? 1 : -1);
+            this.setScaleX(flipped ? -1 : 1);
         }
+
+        /**
+         * rotates the Patch and the matrix
+         */
         void rotate(){
             rotation += 90;
             rotation %= 360;
@@ -186,6 +262,7 @@ public class GameScreenViewController {
             }
             moveX();
             moveY();
+            rotate90();
         }
 
         void moveUp(){
@@ -195,7 +272,78 @@ public class GameScreenViewController {
         void moveDown(){
             posY++;
             moveY();
+        }
 
+        /**
+         * checks the respective edge to see whether the patch already touches it
+         *
+         * @param c character
+         * @return true if the move is ok
+         */
+        private boolean moveIsLegit(char c){
+            Matrix matrix = readyToGo();
+            int[][] arr = matrix.getIntMatrix();
+            if(c == 'w'){
+                for(int i = 0 ; i < 9 ; i++)
+                {
+                    if(arr[0][i] == 1)
+                        return false;
+                }
+            }else if(c == 's'){
+                for(int i = 0 ; i < 9 ; i++)
+                {
+                    if(arr[8][i] == 1)
+                        return false;
+                }
+            }else if(c == 'a'){
+                for(int i = 0 ; i < 9 ; i++)
+                {
+                    if(arr[i][0] == 1)
+                        return false;
+                }
+            }else if(c == 'd'){
+                for(int i = 0 ; i < 9 ; i++)
+                {
+                    if(arr[i][8] == 1)
+                        return false;
+                }
+            }
+            return true;
+        }
+
+        /**
+         * checks if the patch can be turned without leaving the Board
+         *
+         * @return true if the Patch can be turned
+         */
+        private boolean rotationIsLegit(){
+            if(height == width)
+                return true;
+            Matrix matrix = readyToGo();
+            int[][] arr = matrix.getIntMatrix();
+
+            int dif = Math.abs(width - height);
+
+            return checkEdges(dif, arr);
+        }
+
+        private boolean checkEdges(int i, int[][] arr){
+            for(int j = 0 ; j < i && j < 2; j++)
+            {
+                if(rotation == 90 || rotation == 270)
+                {
+                    for(int k = 0 ; k < 9 ; k++){
+                        if(arr[k][j] == 1 || arr[k][8-j] == 1)
+                            return false;
+                    }
+                }else{
+                    for(int k = 0 ; k < 9 ; k++){
+                        if(arr[j][k] == 1 || arr[8-j][k] == 1)
+                            return false;
+                    }
+                }
+            }
+            return true;
         }
         void moveLeft(){
             posX--;
@@ -206,13 +354,25 @@ public class GameScreenViewController {
             moveX();
         }
 
-        public Matrix getPlacing() {
+        /**
+         * places the Patch matrix in a 9x9 matrix and adjusts placement
+         *
+         * @return the matrix which should represent the board you see on the screen
+         */
+        private Matrix readyToGo(){
             Matrix matrix = new Matrix(9 , 9);
+            Matrix placing = this.matrix;
+            Matrix trim = placing.trim();
 
-            Matrix placing = shape.copy();
-
-            matrix.insert(placing, posY, posX);
-
+            if(noNicePatch && (rotation == 90 || rotation == 270)){
+                matrix.insert(trim, posY, (posX + 1));
+            }else if((width-height) == 4 && (rotation == 90 || rotation == 270)){
+                matrix.insert(trim, posY - 2, posX + 2);
+            }else if((width-height) == 2 && (rotation == 90 || rotation == 270)){
+                matrix.insert(trim, posY - 1, posX + 1);
+            }else{
+                matrix.insert(trim, posY, posX);
+            }
             return matrix;
         }
 
@@ -224,53 +384,121 @@ public class GameScreenViewController {
             this.setY(OFFSET_Y + posY * STEPPING+ delta);
         }
 
+        private void rotate90(){
+            Matrix rotated = matrix.rotate();
+            matrix = rotated;
+        }
+
+        /**
+         *
+         * flips on the x axis
+         *
+         * @param imgArray the matrix to be flipped
+         */
+        private void swapRows(int[][] imgArray){
+            for (int i = 0; i < imgArray.length; i++) {
+                for (int j = 0; j < imgArray[i].length / 2; j++) {
+                    int temp = imgArray[i][j];
+                    imgArray[i][j] = imgArray[i][imgArray.length - 1 - j];
+                    imgArray[i][imgArray.length - 1 -j] = temp;
+
+                    this.matrix = new Matrix(imgArray);
+                }
+            }
+        }
+
+        /**
+         * flips on the y axis
+         *
+         * @param imgArray the matrix to be flipped
+         */
+        private void swapColumns(int[][] imgArray){
+            for (int i = 0; i < imgArray.length / 2; i++) {
+                for (int j = 0; j < imgArray[i].length; j++) {
+                    int temp = imgArray[i][j];
+                    imgArray[i][j] = imgArray[imgArray.length - 1 - i][j];
+                    imgArray[imgArray.length - 1 -i][j] = temp;
+
+                    this.matrix = new Matrix(imgArray);
+                }
+            }
+        }
+
     }
 
-    /**
-     * arr[0] is the height of the patch, arr[1] is the width, arr[2] is 1 if the Patch does not rotate properly
-     *
-     * @param index the number of the png
-     * @return array with information
-     */
-    private int[] checkPatch(int index)
-    {
-        int[] arr = new int[3];
-        if(index == 1){ arr[0] = 90;         arr[1] = 60;   arr[2] = 1; }
-        else if(index == 2){ arr[0] = 30;    arr[1] = 60;   arr[2] = 1; }
-        else if(index == 3){ arr[0] = 90;    arr[1] = 60;   arr[2] = 1; }
-        else if(index == 4){ arr[0] = 60;    arr[1] = 60;               }
-        else if(index == 5){ arr[0] = 120;   arr[1] = 90;   arr[2] = 1; }
-        else if(index == 6){ arr[0] = 60;    arr[1] = 60;               }
-        else if(index == 7){ arr[0] = 90;    arr[1] = 90;               }
-        else if(index == 8){ arr[0] = 90;    arr[1] = 30;               }
-        else if(index == 9){ arr[0] = 90;    arr[1] = 60;   arr[2] = 1; }
-        else if(index == 10){ arr[0] = 120;  arr[1] = 60;               }
-        else if(index == 11){ arr[0] = 90;   arr[1] = 60;   arr[2] = 1; }
-        else if(index == 12){ arr[0] = 60;   arr[1] = 90;   arr[2] = 1; }
-        else if(index == 13){ arr[0] = 90;   arr[1] = 150;              }
-        else if(index == 14){ arr[0] = 90;   arr[1] = 90;               }
-        else if(index == 15){ arr[0] = 120;  arr[1] = 90;   arr[2] = 1; }
-        else if(index == 16){ arr[0] = 60;   arr[1] = 60;               }
-        else if(index == 17){ arr[0] = 120;  arr[1] = 60;               }
-        else if(index == 18){ arr[0] = 90;   arr[1] = 60;   arr[2] = 1; }
-        else if(index == 19){ arr[0] = 120;  arr[1] = 60;               }
-        else if(index == 20){ arr[0] = 120;  arr[1] = 30;   arr[2] = 1; }
-        else if(index == 21){ arr[0] = 150;  arr[1] = 30;               }
-        else if(index == 22){ arr[0] = 120;  arr[1] = 60;               }
-        else if(index == 23){ arr[0] = 120;  arr[1] = 60;               }
-        else if(index == 24){ arr[0] = 90;   arr[1] = 90;               }
-        else if(index == 25){ arr[0] = 120;  arr[1] = 90;   arr[2] = 1; }
-        else if(index == 26){ arr[0] = 90;   arr[1] = 60;   arr[2] = 1; }
-        else if(index == 27){ arr[0] = 90;   arr[1] = 90;               }
-        else if(index == 28){ arr[0] = 90;   arr[1] = 90;               }
-        else if(index == 29){ arr[0] = 120;  arr[1] = 90;   arr[2] = 1; }
-        else if(index == 30){ arr[0] = 120;  arr[1] = 60;               }
-        else if(index == 31){ arr[0] = 90;   arr[1] = 90;               }
-        else if(index == 32){ arr[0] = 120;  arr[1] = 60;               }
-        else if(index == 33){ arr[0] = 120;  arr[1] = 90;   arr[2] = 1; }
+    private class TimeToken extends ImageView {
+        private int id;
+        private int firstPosX = 0;
+        private int firstPosY = 0;
+        private int lastPosX = 14;
+        private int lastPosY = 14;
+
+        private int positionOnBoard = 0;
+        int currentPositionX = 4;
+        int currentPositionY = 0;
+
+        private static final int STEPPING = 28;
+        private int verticalDirection = 1; // -1 = left, 1 = right
+        private int horizontalDirection = 1; // -1 = up, 1 = down
 
 
-        return arr;
+        private TimeToken(int id) {
+            try {
+                this.setImage(new Image(this.getClass().getResource("/view/images/circle.png").toURI().toString()));
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+            this.setFitWidth(200);
+            this.setFitHeight(200);
+            //Player currentPlayer = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1();
+            this.id = id;
+        }
+
+        void moveToken(int steps){
+            for(int i = 0; i < steps; i++){
+                moveToken();
+            }
+        }
+        void moveToken(){
+            if(verticalDirection == 1 && currentPositionX +2 <= this.lastPosX){
+                this.setX(this.getX() + STEPPING * verticalDirection);
+                currentPositionX+=2;
+                positionOnBoard++;
+                if(this.currentPositionX == this.lastPosX && this.currentPositionY == this.firstPosY) {
+                    this.horizontalDirection = 1;
+                    this.firstPosY += 2;
+                }
+            }
+            else if(verticalDirection == -1 && currentPositionX -2 >= this.firstPosX) {
+                this.setX(this.getX() + STEPPING * verticalDirection);
+                currentPositionX -= 2;
+                positionOnBoard++;
+                if (this.currentPositionX == this.firstPosX && this.currentPositionY == this.lastPosY) {
+                    this.horizontalDirection = -1;
+                    this.lastPosY -= 2;
+                }
+            }
+            else if(horizontalDirection == 1 && currentPositionY +2 <= this.lastPosY){
+                this.setY(this.getY() + STEPPING * horizontalDirection);
+                currentPositionY+=2;
+                positionOnBoard++;
+                if(this.currentPositionX == this.lastPosX && this.currentPositionY == this.lastPosY) {
+                    this.verticalDirection = -1;
+                    this.lastPosX -= 2;
+                }
+            }
+            else if(horizontalDirection == -1 && currentPositionY -2 >= this.firstPosY){
+                this.setY(this.getY() + STEPPING * horizontalDirection);
+                currentPositionY-=2;
+                positionOnBoard++;
+                if(this.currentPositionX == this.firstPosX && this.currentPositionY == this.firstPosY) {
+                    this.verticalDirection = 1;
+                    this.firstPosX += 2;
+                }
+            }
+
+        }
+
     }
 
     @FXML
@@ -309,5 +537,4 @@ public class GameScreenViewController {
         activePatchView = patchView;
         rotation = 0;
     }
-
 }

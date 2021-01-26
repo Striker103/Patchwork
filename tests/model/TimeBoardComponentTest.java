@@ -13,6 +13,9 @@ public class TimeBoardComponentTest {
 
     private TimeBoardComponent timeBoardComponent;
 
+    /**
+     * sets up the test
+     */
     @Before
     public void setUp() {
         timeBoardComponent = new TimeBoardComponent(3);

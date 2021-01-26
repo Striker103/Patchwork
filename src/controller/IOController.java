@@ -140,6 +140,25 @@ public class IOController {
 	}
 
 	/**
+	 * Imports default patches
+	 * @return patches
+	 */
+	public List<Patch> importCSVNotShuffled() {
+
+		File file = new File(pathToCSV);
+
+		if (file.isDirectory() || !file.canWrite()){
+			errorAUI.showError("Invalid file.");
+			return null;
+		}
+
+		List<Patch> patchList = importCSV(file);
+
+
+		return patchList;
+	}
+
+	/**
 	 * Imports default patches and shuffles them
 	 * @return shuffled default patches
 	 */
