@@ -1,23 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.scene.text.Text?>
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="660.0" prefWidth="973.0" onKeyPressed="#handleKeyPressed" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.control.GameScreenViewController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#handleKeyPressed" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.control.GameScreenViewController">
    <children>
-      <Pane fx:id="pane" maxHeight="1.8" onDragDetected="#PaneDragged" style="-fx-border-color: #000000;" GridPane.rowIndex="1"/>
+      <Pane fx:id="pane" maxHeight="1.8" onDragDetected="#PaneDragged" style="-fx-border-color: #000000;" GridPane.rowIndex="1" />
 
-      <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="667.0" prefWidth="972.0">
+      <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="667.0" prefWidth="1280.0">
          <children>
             <VBox prefHeight="607.0" prefWidth="275.0">
                <children>
@@ -44,6 +37,9 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
                   </GridPane>
                   <VBox alignment="BOTTOM_LEFT" prefHeight="345.0" prefWidth="290.0">
                      <children>
@@ -61,9 +57,9 @@
                   </VBox>
                </children>
             </VBox>
-            <HBox alignment="BOTTOM_CENTER" prefHeight="667.0" prefWidth="504.0">
+            <HBox alignment="BOTTOM_CENTER" prefHeight="667.0" prefWidth="700.0">
                <children>
-                  <VBox alignment="CENTER" prefHeight="667.0" prefWidth="391.0">
+                  <VBox alignment="CENTER" prefHeight="667.0" prefWidth="403.0">
                      <children>
                         <HBox alignment="TOP_CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="391.0" spacing="20.0">
                            <children>
@@ -84,7 +80,7 @@
                   </VBox>
                </children>
             </HBox>
-            <VBox alignment="TOP_RIGHT" prefHeight="660.0" prefWidth="420.0">
+            <VBox alignment="TOP_RIGHT" prefHeight="667.0" prefWidth="306.0">
                <children>
                   <GridPane fx:id="gridPane2" gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="270.0" prefWidth="270.0">
                      <columnConstraints>
@@ -125,14 +121,11 @@
                      </children>
                   </VBox>
                </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
             </VBox>
          </children>
       </HBox>
-   </children>
-   <children>
-      <Text layoutX="10.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="use W A S D or 1 2 3 5 to change position" />
-      <Text layoutX="10.0" layoutY="305.0" strokeType="OUTSIDE" strokeWidth="0.0" text="use E or 6 to rotate clockwise" />
-      <Text layoutX="10.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0" text="use Q or 4 to flip your patch" />
-      <Text layoutX="10.0" layoutY="335.0" strokeType="OUTSIDE" strokeWidth="0.0" text="use R or 0 to place your Patch" />
    </children>
 </Pane>
