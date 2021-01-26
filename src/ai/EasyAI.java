@@ -17,24 +17,14 @@ public class EasyAI extends AI {
 
     private LinkedList<GameState> getOptions(GameState actual, Player movingPlayer){
         LinkedList<GameState> result = new LinkedList<>();
-        GameState edited = actual.copy();
-        final Player BEHIND = edited.getPlayer1().equals(movingPlayer)? edited.getPlayer1(): edited.getPlayer2();
-        final Player OTHER = edited.getPlayer1().equals(BEHIND)? edited.getPlayer1() : edited.getPlayer2();
-        int posBehind = BEHIND.getBoardPosition();
-        int posOther = OTHER.getBoardPosition();
+        result.add(AIUtil.generateAdvance(actual, movingPlayer).getFirst());
+
+        final Player BEHIND = actual.getPlayer1().equals(movingPlayer)? actual.getPlayer1(): actual.getPlayer2();
         final int MONEY_BEHIND = BEHIND.getMoney();
 
-        int offset = 0;
-        if(posOther != 54) offset = 1;
-        BEHIND.setBoardPosition(posOther+offset);
-        BEHIND.addMoney(BEHIND.getMoney()+(posOther-posBehind)+offset);
-        edited.setLogEntry("Passed and got coins");
-        result.add(edited);
+        List<Patch> patches = AIUtil.getNextPatches(actual);
 
-        List<Patch> patches = getNextPatches(actual);
-
-        patches
-                .stream()
+        patches.stream()
                 .filter(patch -> patch.getButtonsCost()<=MONEY_BEHIND)
                 .flatMap(patch -> generatePatchLocations(patch, BEHIND.getQuiltBoard()).stream())
                 .map(tuple -> {
@@ -62,9 +52,5 @@ public class EasyAI extends AI {
                                 return new Tuple<>(patch,temp);})
                 .forEach(result::add);
         return result;
-    }
-
-    private List<Patch> getNextPatches(GameState actual) {
-        return actual.getPatches().subList(0,3);
     }
 }

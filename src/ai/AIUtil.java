@@ -1,12 +1,10 @@
 package ai;
 
-import model.Matrix;
-import model.Patch;
-import model.QuiltBoard;
-import model.Tuple;
+import model.*;
 
 import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.List;
 
 /**
  * Class for Utilities addressing the AI
@@ -105,5 +103,25 @@ public final class AIUtil {
             shape.flip();
         }
         return result;
+    }
+
+    public static Tuple<GameState, Player> generateAdvance(GameState state, Player next){
+        GameState edited = state.copy();
+        final Player BEHIND = edited.getPlayer1().equals(next)? edited.getPlayer1(): edited.getPlayer2();
+        final Player OTHER = edited.getPlayer1().equals(BEHIND)? edited.getPlayer1() : edited.getPlayer2();
+        int posBehind = BEHIND.getBoardPosition();
+        int posOther = OTHER.getBoardPosition();
+        final int MONEY_BEHIND = BEHIND.getMoney();
+
+        int offset = 0;
+        if(posOther != 54) offset = 1;
+        BEHIND.setBoardPosition(posOther+offset);
+        BEHIND.addMoney(BEHIND.getMoney()+(posOther-posBehind)+offset);
+        edited.setLogEntry("Passed and got coins");
+        return new Tuple<>(edited, OTHER);
+    }
+
+    public static List<Patch> getNextPatches(GameState actual) {
+        return actual.getPatches().subList(0,3);
     }
 }
