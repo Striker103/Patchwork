@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * Represents a patch that is going to be placed on players quiltboard
@@ -120,18 +121,18 @@ public class Patch {
 		return patchID;
 	}
 
-	/** Checks if two patches have the same id
-	 *
-	 * @param obj The potentially equal patch
-	 * @return equality of two patches
-	 */
-	@Override
-	public boolean equals(Object obj){
-		if (this == obj) return true;
-		if (obj == null || getClass() != obj.getClass()) return false;
-		Patch patch = (Patch) obj;
-		return this.patchID == patch.patchID;
-	}
+//	/** Checks if two patches have the same id
+//	 *
+//	 * @param obj The potentially equal patch
+//	 * @return equality of two patches
+//	 */
+//	@Override
+//	public boolean equals(Object obj){
+//		if (this == obj) return true;
+//		if (obj == null || getClass() != obj.getClass()) return false;
+//		Patch patch = (Patch) obj;
+//		return this.patchID == patch.patchID;
+//	}
 
 
 	@Override
@@ -142,4 +143,22 @@ public class Patch {
 
 	}
 
+
+	/** Checks equality excluding id
+	 *
+	 * @param obj The potentially equal patch
+	 * @return equality of two patches
+	 */
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Patch patch = (Patch) o;
+		return buttonIncome == patch.buttonIncome && buttonsCost == patch.buttonsCost && time == patch.time && shape.equals(patch.shape);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(buttonIncome, buttonsCost, shape, time);
+	}
 }
