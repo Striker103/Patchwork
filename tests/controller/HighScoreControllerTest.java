@@ -98,6 +98,7 @@ public class HighScoreControllerTest {
         highScoreController.saveScores(file);
         highScoreController.showHighScores(file);
         assertTrue(dummyAUI.highScoresShown);
+        assertFalse(dummyAUI.error);
     }
 
     /**
@@ -108,6 +109,32 @@ public class HighScoreControllerTest {
         mainController.getGameController().advance();
         mainController.getGameController().advance();
         highScoreController.saveScores(new File("export/testFile.freeCandy"));
+        assertTrue(dummyAUI.error);
+    }
+
+    /**
+     * Test save score with null
+     */
+    @Test
+    public void testSaveScoreFileNull(){
+        mainController.getGameController().advance();
+        mainController.getGameController().advance();
+        highScoreController.saveScores(null);
+        assertTrue(dummyAUI.error);
+    }
+
+    /**
+     * test save score when the file already exists
+     */
+    @Test
+    public void testSaveScoreFileAlreadyExists(){
+        mainController.getGameController().advance();
+        mainController.getGameController().advance();
+        highScoreController.saveScores(file);
+        assertFalse(dummyAUI.error);
+        mainController.getGameController().advance();
+        mainController.getGameController().advance();
+        highScoreController.saveScores(file);
         assertTrue(dummyAUI.error);
     }
 
@@ -161,7 +188,25 @@ public class HighScoreControllerTest {
         highScoreController.updateScore(player);
         assertEquals(player.getScore().getValue(),oldScore+2);
     }
+    /**
+     * Test show score with file null
+     */
+    @Test
+    public void testShowScoreFileNull(){
+        highScoreController.showHighScores(null);
+        assertTrue(dummyAUI.highScoresShown);
+        assertFalse(dummyAUI.error);
+    }
 
+    /**
+     * Test show score with wrong file ending
+     */
+    @Test
+    public void testShowScoreWrongFile(){
+        highScoreController.showHighScores(new File("export/testFile.freeCandy"));
+        assertTrue(dummyAUI.highScoresShown);
+        assertFalse(dummyAUI.error);
+    }
 
     /**
      * The type Dummy aui.
@@ -176,6 +221,10 @@ public class HighScoreControllerTest {
          */
         public boolean highScoresShown = false;
 
+        public DummyAUI(){
+            error=false;
+            highScoresShown=false;
+        }
 
         @Override
         public void showError(String message) {
