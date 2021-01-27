@@ -97,6 +97,7 @@ public class HighScoreControllerTest {
         mainController.getGameController().advance();
         highScoreController.saveScores(file);
         highScoreController.showHighScores(file);
+        System.out.println(dummyAUI.errorMessage);
         assertTrue(dummyAUI.highScoresShown);
         assertFalse(dummyAUI.error);
     }
@@ -131,6 +132,7 @@ public class HighScoreControllerTest {
         mainController.getGameController().advance();
         mainController.getGameController().advance();
         highScoreController.saveScores(file);
+        System.out.println(dummyAUI.errorMessage);
         assertFalse(dummyAUI.error);
         mainController.getGameController().advance();
         mainController.getGameController().advance();
@@ -221,6 +223,8 @@ public class HighScoreControllerTest {
          */
         public boolean highScoresShown = false;
 
+        String errorMessage = "";
+
         public DummyAUI(){
             error=false;
             highScoresShown=false;
@@ -229,6 +233,7 @@ public class HighScoreControllerTest {
         @Override
         public void showError(String message) {
             error = true;
+            errorMessage = message;
         }
 
         @Override
