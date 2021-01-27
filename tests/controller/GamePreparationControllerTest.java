@@ -48,7 +48,9 @@ public class GamePreparationControllerTest {
 
     private final GamePreparationController gamePreparationController = mainController.getGamePreparationController();
 
-
+    /**
+     * Sets up the test
+     */
     @Before
     public void setUp(){
         //TODO so richtig rum?

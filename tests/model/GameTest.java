@@ -60,7 +60,7 @@ public class GameTest {
 
         Patch patch = new Patch(1, 2, 5, new Matrix(shape), 2);
         patches.add(patch);
-        gameState = new GameState(playerNames, patches);
+        gameState = new GameState(playerNames, patches, false);
         player1 = gameState.getPlayer1();
         player2 = gameState.getPlayer2();
         GAME.addGameState(gameState);
@@ -114,7 +114,7 @@ public class GameTest {
 
         Patch patch = new Patch(1, 2, 5, new Matrix(shape), 2);
         patches.add(patch);
-        gameState = new GameState(playerNames, patches);
+        gameState = new GameState(playerNames, patches, false);
         player1 = gameState.getPlayer1();
         player2 = gameState.getPlayer2();
         GAME.addGameState(gameState);
@@ -150,8 +150,8 @@ public class GameTest {
         Patch patch2 = new Patch(1, 2, 5, new Matrix(shape2), 3);
         patches.add(patch);
         patches.add(patch2);
-        gameState = new GameState(playerNames, patches);
-        gameState2 = new GameState(playerNames, patches2);
+        gameState = new GameState(playerNames, patches, false);
+        gameState2 = new GameState(playerNames, patches2, false);
         player1 = gameState2.getPlayer1();
         player2 = gameState2.getPlayer2();
         GAME.addGameState(gameState);

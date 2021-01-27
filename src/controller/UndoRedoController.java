@@ -2,6 +2,7 @@ package controller;
 
 import model.Game;
 import model.GameState;
+import model.Player;
 
 import java.util.List;
 
@@ -28,8 +29,29 @@ public class UndoRedoController {
 	public void undo() {
 		Game game = mainController.getGame();
 		List<GameState> gameStates = game.getGameStates();
+		Player nextMovingPlayer = mainController.getGameController().getNextPlayer();
+
+		//Cant undo first move with other player
+		if(game.getCurrentGameStateIndex()==1){
+			return;
+		}
+
 		if(game.getCurrentGameStateIndex()>0){
 			game.setCurrentGameState(game.getCurrentGameStateIndex()-1);
+		}else{
+			//only 1 GameState
+			return;
+		}
+		game.setHighScoreReachable(false);
+		//Find last gamestate with same moving player
+		boolean moveWasNotFirstMove = false;
+		while(game.getCurrentGameStateIndex()>0){
+			moveWasNotFirstMove = true;
+			if(mainController.getGameController().getNextPlayer() == nextMovingPlayer){
+				break;
+			}else{
+				game.setCurrentGameState(game.getCurrentGameStateIndex()-1);
+			}
 		}
 	}
 
@@ -39,7 +61,12 @@ public class UndoRedoController {
 	public void redo() {
 		Game game = mainController.getGame();
 		List<GameState> gameStates = game.getGameStates();
+		Player movingPlayer = mainController.getGameController().getNextPlayer();
 		if(!game.currentGameStateLast()){
+			game.setCurrentGameState(game.getCurrentGameStateIndex()+1);
+		}
+		//Find next gamestate with same moving player
+		while(!game.currentGameStateLast()&&mainController.getGameController().getNextPlayer()!=movingPlayer){
 			game.setCurrentGameState(game.getCurrentGameStateIndex()+1);
 		}
 	}

@@ -78,12 +78,19 @@ public class Matrix implements Iterable<Integer>{
     }
 
     /**
+     * Gets the attribute of the matrix
+     * @return the matrix as an int Array
+     */
+    public int[][] getIntMatrix(){return matrix;}
+
+    /**
      * States the squareness of this matrix
      * @return true iff the matrix has same amount of rows and columns
      */
     public boolean isSquare(){
         return getColumns()==getRows();
     }
+
 
     /**
      * Tests whether another Matrix is disjunctive to this matrix

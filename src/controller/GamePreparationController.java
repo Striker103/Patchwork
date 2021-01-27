@@ -54,17 +54,16 @@ public class GamePreparationController {
 		}else{
 			game = new Game(ironman, speed);
 		}
-
-		GameState gameState = new GameState(players, patches);
+		GameState gameState = new GameState(players, patches, ironman);
+		Player player1 = gameState.getPlayer1();
+		Player player2 = gameState.getPlayer2();
+		HighScoreController highScoreController = mainController.getHighScoreController();
+		highScoreController.updateScore(player1);
+		highScoreController.updateScore(player2);
 		game.addGameState(gameState);
 		mainController.setGame(game);
-		setInitialScore(ironman);
 	}
 
-	private void setInitialScore(boolean isIronman){
-		mainController.getGame().getCurrentGameState().getPlayer1().createScore(isIronman);
-		mainController.getGame().getCurrentGameState().getPlayer2().createScore(isIronman);
-	}
 
 	private boolean parametersAreOk(Tuple<Tuple<String,PlayerType>, Tuple<String,PlayerType>> players,int speed, File file)
 	{

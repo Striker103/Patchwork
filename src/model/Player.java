@@ -42,7 +42,7 @@ public class Player {
 	 * @param name the name of the player
 	 * @param playerType the type of the player
 	 */
-	public Player(String name, PlayerType playerType) {
+	public Player(String name, PlayerType playerType, Score score) {
 		CheckUtil.assertNonNull(name,playerType);
 		if(name.isBlank()){
 			throw new IllegalArgumentException("Player name is empty.");
@@ -52,6 +52,7 @@ public class Player {
 		this.name = name;
 		this.playerType = playerType;
 		this.quiltBoard = new QuiltBoard();
+		this.score = score;
 	}
 
 	/**
@@ -100,6 +101,11 @@ public class Player {
 	public PlayerType getPlayerType() {
 		return playerType;
 	}
+
+	/**
+	 * Returns the quilt board of the player
+	 * @return the quilt board
+	 */
 	public QuiltBoard getQuiltBoard () {
 		return quiltBoard;
 	}
@@ -123,15 +129,6 @@ public class Player {
 	 */
 	public Score getScore(){
 		return score;
-	}
-
-
-	/**
-	 * Creates the initilal Score for the Player
-	 * @param isIronman whether or not the game is an ironman game
-	 */
-	public void createScore(boolean isIronman){
-		score = new Score(0,isIronman,playerType,name);
 	}
 
 	/**

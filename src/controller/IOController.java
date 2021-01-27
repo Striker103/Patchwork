@@ -133,8 +133,27 @@ public class IOController {
 		List<Patch> patchList = new LinkedList<>();
 
 		for (int i = 1; i < records.size(); i++) {
-			patchList.add(generatePatch(records.get(i),i));
+			patchList.add(generatePatch(records.get(i), i));
 		}
+
+		return patchList;
+	}
+
+	/**
+	 * Imports default patches
+	 * @return patches
+	 */
+	public List<Patch> importCSVNotShuffled() {
+
+		File file = new File(pathToCSV);
+
+		if (file.isDirectory() || !file.canWrite()){
+			errorAUI.showError("Invalid file.");
+			return null;
+		}
+
+		List<Patch> patchList = importCSV(file);
+
 
 		return patchList;
 	}
@@ -281,7 +300,7 @@ public class IOController {
 		}
 	}
 
-	private Patch generatePatch(List<String> line, int patchID){
+	private Patch generatePatch(List<String> line, int id){
 
 		final int matrixLength = 15;
 
@@ -302,7 +321,9 @@ public class IOController {
 		int time = Integer.parseInt(line.get(2));
 		int buttonIncome = Integer.parseInt(line.get(3));
 
-		return new Patch(patchID, buttonIncome, buttonCost, new Matrix(shape), time);
+		Matrix shapeMatrix = new Matrix(shape);
+
+		return new Patch(id, buttonIncome, buttonCost, shapeMatrix, time);
 
 	}
 

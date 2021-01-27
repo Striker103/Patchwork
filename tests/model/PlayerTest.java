@@ -17,14 +17,14 @@ public class PlayerTest {
     {
         SCORE = new Score(5, true, PlayerType.HUMAN, "Ad");
     }
-    private final Player PLAYER = new Player(NAME, PlayerType.AI_MEDIUM);
+    private final Player PLAYER = new Player(NAME, PlayerType.AI_MEDIUM, SCORE);
 
     /**
      * Tests the Constructor
      */
     @Test
     public void testConstructor(){
-        new Player(NAME, PlayerType.AI_MEDIUM);
+        new Player(NAME, PlayerType.AI_MEDIUM, SCORE);
     }
 
     /**
@@ -32,7 +32,7 @@ public class PlayerTest {
      */
     @Test (expected=IllegalArgumentException.class)
     public void testConstructorName(){
-        new Player ( "", PlayerType.AI_MEDIUM);
+        new Player ( "", PlayerType.AI_MEDIUM, SCORE);
     }
 
 
@@ -86,12 +86,21 @@ public class PlayerTest {
     }
 
     /**
+     * tests addMoney()
+     */
+    @Test
+    public void testAddMoney(){
+        PLAYER.addMoney(2);
+        assertEquals(PLAYER.getMoney(),7);
+    }
+
+    /**
      * tests setMoney()
      */
     @Test
     public void testSetMoney(){
-        PLAYER.addMoney(2);
-        assertEquals(PLAYER.getMoney(),7);
+        PLAYER.setMoney(2);
+        assertEquals(PLAYER.getMoney(),2);
     }
 
     /**
@@ -147,8 +156,38 @@ public class PlayerTest {
     @Test
     public void testEquals()
     {
-        Player PLAYER3 = new Player( "WE", PlayerType.HUMAN);
+        Player PLAYER3 = new Player( "WE", PlayerType.HUMAN, SCORE);
         assertEquals(PLAYER3,PLAYER3.copy());
+    }
+
+    /**
+     * Tests equals()
+     */
+    @Test
+    public void testEqualsFalse()
+    {
+        assertTrue(PLAYER.getClass().equals(PLAYER.getClass()));
+    }
+
+    /**
+     * Tests equals()
+     */
+    @Test
+    public void testEqualsNew()
+    {
+        Player PLAYER = new Player(NAME, PlayerType.AI_MEDIUM, SCORE);
+        Player PLAYER2 = new Player(NAME, PlayerType.AI_MEDIUM, SCORE);
+        PLAYER.setMoney(5);
+        PLAYER.setScore(SCORE);
+        PLAYER.setQuiltBoard(QUILTBOARD);
+        PLAYER.setBoardPosition(6);
+        PLAYER.setHasSpecialTile(true);
+        PLAYER2.setMoney(5);
+        PLAYER2.setScore(SCORE);
+        PLAYER2.setQuiltBoard(QUILTBOARD);
+        PLAYER2.setBoardPosition(6);
+        PLAYER2.setHasSpecialTile(true);
+        assertEquals(PLAYER,PLAYER2);
     }
 
     /**

@@ -11,23 +11,18 @@ import java.nio.file.Files;
 import java.util.Comparator;
 import java.util.LinkedList;
 
+/**
+ * Controller for high score management
+ *
+ * @author Alexandra Latys
+ */
 public class HighScoreController {
 
 	private HighScoreAUI highscoreAUI;
 
-	private MainController mainController;
+	private final MainController mainController;
 
 	private ErrorAUI errorAUI;
-
-	/**
-	 * true if errorAUI is set
-	 */
-	private boolean errorAUIChanged = false;
-
-	/**
-	 * true if errorAUI is set
-	 */
-	private boolean highscoreAUIChanged = false;
 
 	/**
 	 * Constructor that sets the mainController
@@ -44,14 +39,50 @@ public class HighScoreController {
 	 */
 	public void saveScores(File file) {
 
+		if (file == null){
+			errorAUI.showError("Invalid file.");
+			return;
+		}
+
+		String[] split = file.toPath().toString().split("\\.");
+		String ending = split[split.length - 1];
+
+		if (!ending.equals("json")){
+			errorAUI.showError("Wrong file extension");
+			return;
+		}
+
+		if (!file.exists()){
+			try {
+				if (!file.createNewFile()){
+					errorAUI.showError("File already exists.");
+					return;
+				}
+			} catch (IOException e) {
+				errorAUI.showError("IOException occurred.");
+				return;
+			}
+		}
+
+		if (file.isDirectory() || !file.canWrite()){
+			errorAUI.showError("Invalid file.");
+			return;
+		}
+
+
+
 		if(!mainController.hasGame()) {
 			errorAUI.showError("No game existing.");
 			return;
 		}
 
-		//TODO es gibt jetzt auch getCurrentGameState :D
-		Player player1 = mainController.getGame().getGameStates().get(mainController.getGame().getCurrentGameStateIndex()).getPlayer1();
-		Player player2 = mainController.getGame().getGameStates().get(mainController.getGame().getCurrentGameStateIndex()).getPlayer2();
+		if (!mainController.getGame().isHighScoreReachable()){
+			errorAUI.showError("High score is not reachable.");
+			return;
+		}
+
+		Player player1 = mainController.getGame().getCurrentGameState().getPlayer1();
+		Player player2 = mainController.getGame().getCurrentGameState().getPlayer2();
 
 		try {
 			CheckUtil.assertNonNull(player1, player2);
@@ -85,6 +116,37 @@ public class HighScoreController {
 	 * @param file file
 	 */
 	public void showHighScores(File file){
+
+		if (file == null){
+			errorAUI.showError("Invalid file.");
+			return;
+		}
+
+		String[] split = file.toPath().toString().split("\\.");
+		String ending = split[split.length - 1];
+
+		if (!ending.equals("json")){
+			errorAUI.showError("Wrong file extension");
+			return;
+		}
+
+		if (!file.exists()){
+			try {
+				if (!file.createNewFile()){
+					errorAUI.showError("File already exists.");
+					return;
+				}
+			} catch (IOException e) {
+				errorAUI.showError("IOException occurred.");
+				return;
+			}
+		}
+
+		if (file.isDirectory() || !file.canWrite()){
+			errorAUI.showError("Invalid file.");
+			return;
+		}
+
 		highscoreAUI.showHighscores(readHighScores(file));
 	}
 
@@ -94,6 +156,9 @@ public class HighScoreController {
 	 * @param player player
 	 */
 	public void updateScore(Player player) {
+
+		if (player == null)
+			return;
 
 		//Calculate money
 		int scoreValue = player.getMoney();
@@ -116,6 +181,8 @@ public class HighScoreController {
 		Score score = player.getScore();
 
 		LinkedList<Score> scores = readHighScores(file);
+
+
 		if (scores != null) {
 			scores.add(score);
 
@@ -146,10 +213,32 @@ public class HighScoreController {
 	private LinkedList<Score> readHighScores(File file) {
 
 		try {
+			if (!file.exists()){
+				if (!file.createNewFile()) {
+					errorAUI.showError("File already exists.");
+					return null;
+				}
+
+
+			}
+
+		} catch (IOException e) {
+			errorAUI.showError("IOException occurred.");
+			return null;
+		}
+
+		try {
 			String json = Files.readString(file.toPath());
 
 			Gson gson = new Gson();
-			return gson.fromJson(json, new TypeToken<LinkedList<Score>>(){}.getType());
+
+			LinkedList<Score> list = gson.fromJson(json, new TypeToken<LinkedList<Score>>(){}.getType());
+
+			if (list != null){
+				return list;
+			} else {
+				return new LinkedList<>();
+			}
 
 		} catch (IOException exception) {
 			errorAUI.showError("IOError occurred.");
@@ -158,39 +247,29 @@ public class HighScoreController {
 
 	}
 
-	/**
-	 * set the highScoreAUI
-	 * @param highscoreAUI the highscoreAUI
-	 */
-    public void setHighScoreAUI(HighScoreAUI highscoreAUI) {
-		if(this.highscoreAUIChanged) throw new IllegalStateException("highscoreAUI was already set");
-		this.highscoreAUI = highscoreAUI;
-		this.highscoreAUIChanged = true;
-    }
+
 
 	/**
 	 * set the errorAUI
 	 * @param errorAUI the errorAUI
 	 */
-	public void setErrorAUI(ErrorAUI errorAUI) {
-		this.errorAUI = errorAUI;
-		if(this.errorAUIChanged) throw new IllegalStateException("errorAUI was already set");
-		this.errorAUI = errorAUI;
-		this.errorAUIChanged = true;
+	public void setErrorAUI(ErrorAUI errorAUI){
+		if (this.errorAUI == null)
+			this.errorAUI = errorAUI;
+		else
+			throw new IllegalStateException("ErrorAUI is already set");
 	}
 
-//	public void setErrorAUI(ErrorAUI errorAUI){
-//		if (this.errorAUI == null)
-//			this.errorAUI = errorAUI;
-//		else
-//			throw new IllegalStateException("ErrorAUI is already set");
-//	}
-//
-//	public void setHighscoreAUI(HighscoreAUI highscoreAUI){
-//		if (this.highscoreAUI == null)
-//			this.highscoreAUI = highscoreAUI;
-//		else
-//			throw new IllegalStateException("HighscoreAUI is already set");
-//	}
+
+	/**
+	 * set the highScoreAUI
+	 * @param highscoreAUI the highscoreAUI
+	 */
+	public void setHighScoreAUI(HighScoreAUI highscoreAUI){
+		if (this.highscoreAUI == null)
+			this.highscoreAUI = highscoreAUI;
+		else
+			throw new IllegalStateException("HighScoreAUI is already set");
+	}
 
 }
