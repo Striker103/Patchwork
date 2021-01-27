@@ -28,6 +28,7 @@ public class GameScreenViewController {
 
     MainViewController mainViewController;
 
+    GameState gameState;
 
     private Scene ownScene;
 
@@ -45,9 +46,20 @@ public class GameScreenViewController {
     @FXML
     private ImageView imageView;
 
+    @FXML
+    private ImageView imageView1;
+
+    @FXML
+    private ImageView imageView2;
+
+    @FXML
+    private ImageView imageView3;
 
     @FXML
     private ListView<ImageView> patchListView;
+
+    @FXML
+    private ListView<ImageView> patchListView2;
 
     public void setMainViewController(MainViewController mainViewController) {
         this.mainViewController = mainViewController;
@@ -69,26 +81,26 @@ public class GameScreenViewController {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-        timeBoard.setFitWidth(270);
-        timeBoard.setFitHeight(270);
-        timeBoard.setX(510);
-        timeBoard.setY(90);
+        timeBoard.setFitWidth(360); //was 270 x 270
+        timeBoard.setFitHeight(360);
+        timeBoard.setX(445);
+        timeBoard.setY(40);
         pane.getChildren().add(timeBoard);
 
         //timetoken 1
         TimeToken timeToken1 = new TimeToken(1);
-        timeToken1.setX(599);
-        timeToken1.setY(120);
-        timeToken1.setFitWidth(15);
-        timeToken1.setFitHeight(15);
+        timeToken1.setX(558);
+        timeToken1.setY(82);
+        timeToken1.setFitWidth(20);
+        timeToken1.setFitHeight(20);
         pane.getChildren().add(timeToken1);
 
         //timetoken2
         TimeToken timeToken2 = new TimeToken(2);
-        timeToken2.setX(599);
-        timeToken2.setY(122);
-        timeToken2.setFitWidth(15);
-        timeToken2.setFitHeight(15);
+        timeToken2.setX(560);
+        timeToken2.setY(82);
+        timeToken2.setFitWidth(20);
+        timeToken2.setFitHeight(20);
         activeTimeToken = timeToken2;
         pane.getChildren().add(activeTimeToken);
     }
@@ -99,6 +111,7 @@ public class GameScreenViewController {
         IOController ioController = mainViewController.getMainController().getIOController();
         List<Patch> patches = ioController.importCSVNotShuffled();
         for(int i = 1; i < 34; i++) {
+            //String path = "src/view/images/Patches/Patch" + gameState.getPatches().get(i).getPatchID() + ".png";  //TODO: loads the patches in the same order as the patchlist
             String path = "src/view/images/Patches/Patch" + i + ".png";
             imageView = new ImageView(new Image(new FileInputStream(path)));
 
@@ -112,6 +125,52 @@ public class GameScreenViewController {
             imageView.setFitWidth(width * 30);
             patchViews.add(new PatchView(p, i));
         }
+
+        showChooseablePatches();
+    }
+
+    public void showChooseablePatches(){
+        //imageView1.setImage(new Image(new FileInputStream("src/view/images/Patches/Patch2.png")));
+        IOController ioController = mainViewController.getMainController().getIOController();
+        List<Patch> patches = ioController.importCSVNotShuffled();
+        imageView1.setImage(patchViews.get(0).getImage());
+        Patch p = patches.get(patchViews.get(0).id - 1);
+        Matrix shape = p.getShape();
+        Matrix trim = shape.trim();
+        int height = trim.getRows();
+        int width = trim.getColumns();
+        imageView1.setFitHeight(height * 30);
+        imageView1.setFitWidth(width * 30);
+
+        imageView2.setImage(patchViews.get(1).getImage());
+        Patch p2 = patches.get(patchViews.get(1).id - 1 );
+        Matrix shape2 = p2.getShape();
+        Matrix trim2 = shape2.trim();
+        int height2 = trim2.getRows();
+        int width2 = trim2.getColumns();
+        imageView2.setFitHeight(height2 * 30);
+        imageView2.setFitWidth(width2 * 30);
+
+        imageView3.setImage(patchViews.get(2).getImage());
+        Patch p3 = patches.get(patchViews.get(2).id - 1);
+        Matrix shape3 = p3.getShape();
+        Matrix trim3 = shape3.trim();
+        int height3 = trim3.getRows();
+        int width3 = trim3.getColumns();
+        imageView3.setFitHeight(height3 * 30);
+        imageView3.setFitWidth(width3 * 30);
+    }
+
+    public int findSmallestPatch(){
+        int index = 0;
+        for(int i = 0; i < 33; i++){
+            gameState = mainViewController.getMainController().getGame().getCurrentGameState();
+            if(gameState.getPatches().get(i).getPatchID() == 1){
+                index = i;
+                break;
+            }
+        }
+        return index;
     }
 
     public void PaneDragged(MouseEvent mouseEvent) {
@@ -189,6 +248,9 @@ public class GameScreenViewController {
             System.out.println("POB:" + activeTimeToken.positionOnBoard + " FP:" + activeTimeToken.firstPosX + "," + activeTimeToken.firstPosY + "  LP: " + activeTimeToken.lastPosX + "," + activeTimeToken.lastPosY +"  CP:"+ activeTimeToken.currentPositionX + "," + activeTimeToken.currentPositionY);
         }
     }
+
+
+
 
 
     /**
@@ -441,7 +503,7 @@ public class GameScreenViewController {
         int currentPositionX = 4;
         int currentPositionY = 0;
 
-        private static final double STEPPING = 26.5;
+        private static final double STEPPING = 36;
         private int verticalDirection = 1; // -1 = left, 1 = right
         private int horizontalDirection = 1; // -1 = up, 1 = down
 
@@ -461,7 +523,7 @@ public class GameScreenViewController {
 
         void moveToken(int steps){
             for (int i = 0; i < steps; i++) {
-                if(positionOnBoard >= 53){
+                if(this.positionOnBoard >= 53){
                     System.out.println("Goal reached!");
                     break;
                 }
@@ -576,10 +638,44 @@ public class GameScreenViewController {
      * list. Then it makes this Patch visible and sets its position. At the end active Patch is set and rotation is reset.
      */
     @FXML
-    public void onDragDetected(){
-
+    public void onDragDetected1(){
+/*
         int index = patchListView.getSelectionModel().getSelectedIndex();
         PatchView patchView = patchViews.get(index);
+        pane.getChildren().add(patchView);
+        patchView.setX(90);
+        patchView.setY(90);
+
+        activePatchView = patchView;
+        rotation = 0;*/
+    }
+
+
+    @FXML
+    public void onChoose1Action(ActionEvent actionEvent) {
+        PatchView patchView = patchViews.get(0);
+        pane.getChildren().add(patchView);
+        patchView.setX(90);
+        patchView.setY(90);
+
+        activePatchView = patchView;
+        rotation = 0;
+    }
+
+    @FXML
+    public void onChoose2Action(ActionEvent actionEvent) {
+        PatchView patchView = patchViews.get(1);
+        pane.getChildren().add(patchView);
+        patchView.setX(90);
+        patchView.setY(90);
+
+        activePatchView = patchView;
+        rotation = 0;
+    }
+
+    @FXML
+    public void onChoose3Action(ActionEvent actionEvent) {
+        PatchView patchView = patchViews.get(2);
         pane.getChildren().add(patchView);
         patchView.setX(90);
         patchView.setY(90);
