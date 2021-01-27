@@ -42,7 +42,7 @@ public class HighScoreControllerTest {
         mainController.setLogAUI(dummyAUI);
         mainController.setTurnAUI(dummyAUI);
         Tuple<String, PlayerType> player1 = new Tuple<>("Horst",PlayerType.HUMAN);
-        Tuple<String, PlayerType> player2 = new Tuple<>("AI",PlayerType.AI_MEDIUM);
+        Tuple<String, PlayerType> player2 = new Tuple<>("AI",PlayerType.HUMAN);
         mainController.getGamePreparationController().startGame(new Tuple<>(player1,player2),null,2,false);
 
         highScoreController = mainController.getHighScoreController();
@@ -97,7 +97,6 @@ public class HighScoreControllerTest {
         mainController.getGameController().advance();
         highScoreController.saveScores(file);
         highScoreController.showHighScores(file);
-        System.out.println(dummyAUI.errorMessage);
         assertTrue(dummyAUI.highScoresShown);
         assertFalse(dummyAUI.error);
     }
@@ -132,7 +131,6 @@ public class HighScoreControllerTest {
         mainController.getGameController().advance();
         mainController.getGameController().advance();
         highScoreController.saveScores(file);
-        System.out.println(dummyAUI.errorMessage);
         assertFalse(dummyAUI.error);
         mainController.getGameController().advance();
         mainController.getGameController().advance();
@@ -196,8 +194,8 @@ public class HighScoreControllerTest {
     @Test
     public void testShowScoreFileNull(){
         highScoreController.showHighScores(null);
-        assertTrue(dummyAUI.highScoresShown);
-        assertFalse(dummyAUI.error);
+        assertFalse(dummyAUI.highScoresShown);
+        assertTrue(dummyAUI.error);
     }
 
     /**
@@ -206,8 +204,8 @@ public class HighScoreControllerTest {
     @Test
     public void testShowScoreWrongFile(){
         highScoreController.showHighScores(new File("export/testFile.freeCandy"));
-        assertTrue(dummyAUI.highScoresShown);
-        assertFalse(dummyAUI.error);
+        assertFalse(dummyAUI.highScoresShown);
+        assertTrue(dummyAUI.error);
     }
 
     /**
