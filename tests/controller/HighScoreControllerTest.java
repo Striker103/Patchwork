@@ -11,6 +11,10 @@ import view.aui.TurnAUI;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -35,6 +39,15 @@ public class HighScoreControllerTest {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @Before
     public void setUp(){
+
+        Path directory = Paths.get("export");
+        try {
+            if (!directory.toFile().exists()) {
+                Files.createDirectory(directory);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         dummyAUI = new DummyAUI();
         mainController = new MainController();
         mainController.setErrorAUI(dummyAUI);
@@ -51,6 +64,7 @@ public class HighScoreControllerTest {
 
 
         file.delete();
+
     }
 
     /**
