@@ -20,19 +20,19 @@ import java.util.List;
 
 public class MainViewController {
 
-    private double oldHeight = 720, oldWidth = 1280;
+    private static final int oldHeight = 720, oldWidth = 1280;
     private MainController mainController;
 
     @FXML
     private Button newGameButton;
 
 
-    private GameScreenViewController gameScreenViewController;
-    private GameSummaryViewController gameSummaryViewController;
-    private HighscoresViewController highscoresViewController;
-    private LoadGameViewController loadGameViewController;
-    private NewGameViewController newGameViewController;
-    private PauseGameViewController pauseGameViewController;
+    private static GameScreenViewController gameScreenViewController;
+    private static GameSummaryViewController gameSummaryViewController;
+    private static HighscoresViewController highscoresViewController;
+    private static LoadGameViewController loadGameViewController;
+    private static NewGameViewController newGameViewController;
+    private static PauseGameViewController pauseGameViewController;
 
     private Stage primaryStage;
     private Scene mainMenuScene;
@@ -130,7 +130,7 @@ public class MainViewController {
             BorderPane root = loader.load();
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
-            //currentScene = scene;
+            currentScene = scene;
 
 
             FXMLLoader newGameLoader = new FXMLLoader(getClass().getResource("/view/fxml/newGame.fxml"));
@@ -164,7 +164,7 @@ public class MainViewController {
             gameScreenViewController.setMainViewController(this);
             scene = new Scene(gameScreenRoot);
             gameScreenViewController.setOwnScene(scene);
-            currentScene = scene;
+            //currentScene = scene;
             gameScreenViewController.loadPatches();
             gameScreenViewController.loadTimeBoard();
             gameScreenViewController.loadSpecialPatches();
@@ -198,7 +198,7 @@ public class MainViewController {
     public void onNewGameAction(ActionEvent actionEvent) {
         if(newGameViewController == null)
             System.out.println("Ist null");
-        //newGameViewController.showScene();
+        newGameViewController.showScene();
     }
 
     @FXML
