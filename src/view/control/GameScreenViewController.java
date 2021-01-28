@@ -12,6 +12,8 @@ import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.*;
 import javafx.scene.input.KeyCode;
@@ -54,6 +56,24 @@ public class GameScreenViewController {
 
     @FXML
     private ImageView imageView3;
+
+    @FXML
+    private Label cost1;
+
+    @FXML
+    private Label time1;
+
+    @FXML
+    private Label cost2;
+
+    @FXML
+    private Label time2;
+
+    @FXML
+    private Label cost3;
+
+    @FXML
+    private Label time3;
 
     @FXML
     private ListView<ImageView> patchListView;
@@ -134,31 +154,37 @@ public class GameScreenViewController {
         IOController ioController = mainViewController.getMainController().getIOController();
         List<Patch> patches = ioController.importCSVNotShuffled();
         imageView1.setImage(patchViews.get(0).getImage());
-        Patch p = patches.get(patchViews.get(0).id - 1);
-        Matrix shape = p.getShape();
+        Patch patch = patches.get(patchViews.get(0).id - 1);
+        Matrix shape = patch.getShape();
         Matrix trim = shape.trim();
         int height = trim.getRows();
         int width = trim.getColumns();
         imageView1.setFitHeight(height * 30);
         imageView1.setFitWidth(width * 30);
+        cost1.setText("Cost: " + patch.getButtonsCost());
+        time1.setText("Time: " + patch.getTime());
 
         imageView2.setImage(patchViews.get(1).getImage());
-        Patch p2 = patches.get(patchViews.get(1).id - 1 );
-        Matrix shape2 = p2.getShape();
-        Matrix trim2 = shape2.trim();
-        int height2 = trim2.getRows();
-        int width2 = trim2.getColumns();
-        imageView2.setFitHeight(height2 * 30);
-        imageView2.setFitWidth(width2 * 30);
+        patch = patches.get(patchViews.get(1).id - 1 );
+        shape = patch.getShape();
+        trim = shape.trim();
+        height = trim.getRows();
+        width = trim.getColumns();
+        imageView2.setFitHeight(height * 30);
+        imageView2.setFitWidth(width * 30);
+        cost2.setText("Cost: " + patch.getButtonsCost());
+        time2.setText("Time: " + patch.getTime());
 
         imageView3.setImage(patchViews.get(2).getImage());
-        Patch p3 = patches.get(patchViews.get(2).id - 1);
-        Matrix shape3 = p3.getShape();
-        Matrix trim3 = shape3.trim();
-        int height3 = trim3.getRows();
-        int width3 = trim3.getColumns();
-        imageView3.setFitHeight(height3 * 30);
-        imageView3.setFitWidth(width3 * 30);
+        patch = patches.get(patchViews.get(2).id - 1);
+        shape = patch.getShape();
+        trim = shape.trim();
+        height = trim.getRows();
+        width = trim.getColumns();
+        imageView3.setFitHeight(height * 30);
+        imageView3.setFitWidth(width * 30);
+        cost3.setText("Cost: " + patch.getButtonsCost());
+        time3.setText("Time: " + patch.getTime());
     }
 
     public int findSmallestPatch(){

@@ -45,11 +45,19 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <VBox.margin>
-                        <Insets left="50.0" top="50.0" />
+                        <Insets />
                      </VBox.margin>
                   </GridPane>
                   <VBox alignment="BOTTOM_LEFT" prefHeight="345.0" prefWidth="290.0">
                      <children>
+                        <VBox prefHeight="232.0" prefWidth="320.0" spacing="10.0">
+                           <children>
+                              <Label text="Move the patch using the WASD or NUM 5123 keys" />
+                              <Label text="Rotate the patch using the R or NUM 6 key" />
+                              <Label text="Flip the patch using the Q key " />
+                              <Label text="Place the patch using the ENTER key" />
+                           </children>
+                        </VBox>
                         <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="100.0" text="Player1">
                            <font>
                               <Font size="18.0" />
@@ -84,10 +92,10 @@
                                     <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="215.0" prefWidth="180.0" spacing="10.0">
                                        <children>
                                           <ImageView fx:id="imageView1" fitHeight="170.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                                          <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="200.0">
+                                          <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="200.0" spacing="30.0">
                                              <children>
-                                                <Label text="Label" />
-                                                <Label text="Label" />
+                                                <Label fx:id="cost1" text="Label" />
+                                                <Label fx:id="time1" text="Label" />
                                              </children>
                                           </HBox>
                                           <Button fx:id="chooseButton1" mnemonicParsing="false" onAction="#onChoose1Action" text="Choose" />
@@ -96,10 +104,10 @@
                                     <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="215.0" prefWidth="180.0" spacing="10.0">
                                        <children>
                                           <ImageView fx:id="imageView2" fitHeight="170.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                                          <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="200.0">
+                                          <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="200.0" spacing="30.0">
                                              <children>
-                                                <Label text="Label" />
-                                                <Label text="Label" />
+                                                <Label fx:id="cost2" text="Label" />
+                                                <Label fx:id="time2" text="Label" />
                                              </children>
                                           </HBox>
                                           <Button fx:id="chooseButton2" mnemonicParsing="false" onAction="#onChoose2Action" text="Choose" />
@@ -108,10 +116,10 @@
                                     <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="215.0" prefWidth="180.0" spacing="10.0">
                                        <children>
                                           <ImageView fx:id="imageView3" fitHeight="170.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                                          <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="200.0">
+                                          <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="200.0" spacing="30.0">
                                              <children>
-                                                <Label text="Label" />
-                                                <Label text="Label" />
+                                                <Label fx:id="cost3" text="Label" />
+                                                <Label fx:id="time3" text="Label" />
                                              </children>
                                           </HBox>
                                           <Button fx:id="chooseButton3" mnemonicParsing="false" onAction="#onChoose3Action" text="Choose" />
@@ -153,7 +161,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <VBox.margin>
-                        <Insets right="50.0" top="50.0" />
+                        <Insets />
                      </VBox.margin>
                   </GridPane>
                   <VBox alignment="BOTTOM_RIGHT" prefHeight="365.0" prefWidth="373.0">
