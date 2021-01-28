@@ -28,9 +28,9 @@ import javafx.scene.image.PixelReader;
 
 public class GameScreenViewController {
 
-    MainViewController mainViewController;
+    private MainViewController mainViewController;
 
-    GameState gameState;
+    private GameState gameState;
 
     private Scene ownScene;
 
@@ -78,8 +78,15 @@ public class GameScreenViewController {
     @FXML
     private ListView<ImageView> patchListView;
 
-    @FXML
-    private ListView<ImageView> patchListView2;
+
+    public GameScreenViewController(){
+        //loadTimeBoard();
+        /*try {
+            loadPatches();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }*/
+    }
 
     public void setMainViewController(MainViewController mainViewController) {
         this.mainViewController = mainViewController;
@@ -105,9 +112,8 @@ public class GameScreenViewController {
         timeBoard.setFitHeight(360);
         timeBoard.setX(445);
         timeBoard.setY(40);
-        pane.getChildren().add(timeBoard);
+        this.pane.getChildren().add(timeBoard);
 
-        //timetoken 1
         TimeToken timeToken1 = new TimeToken(1);
         timeToken1.setX(558);
         timeToken1.setY(82);
@@ -115,7 +121,6 @@ public class GameScreenViewController {
         timeToken1.setFitHeight(20);
         pane.getChildren().add(timeToken1);
 
-        //timetoken2
         TimeToken timeToken2 = new TimeToken(2);
         timeToken2.setX(560);
         timeToken2.setY(82);
@@ -185,6 +190,48 @@ public class GameScreenViewController {
         imageView3.setFitWidth(width * 30);
         cost3.setText("Cost: " + patch.getButtonsCost());
         time3.setText("Time: " + patch.getTime());
+    }
+
+    public void loadSpecialPatches() throws FileNotFoundException {
+        String path = "src/view/images/Patches/SpecialPatch.png";
+        for(int i = 1; i < 6; i++){
+            imageView = new ImageView(new Image(new FileInputStream(path)));
+            if(i == 1){
+                imageView.setFitHeight(25);
+                imageView.setFitWidth(25);
+                imageView.setX(490);
+                imageView.setY(290);
+                pane.getChildren().add(imageView);
+            }
+            if(i == 2){
+                imageView.setFitHeight(25);
+                imageView.setFitWidth(25);
+                imageView.setX(562);
+                imageView.setY(115);
+                pane.getChildren().add(imageView);
+            }
+            if(i == 3){
+                imageView.setFitHeight(25);
+                imageView.setFitWidth(25);
+                imageView.setX(703);
+                imageView.setY(220);
+                pane.getChildren().add(imageView);
+            }
+            if(i == 4){
+                imageView.setFitHeight(25);
+                imageView.setFitWidth(25);
+                imageView.setX(579);
+                imageView.setY(151);
+                pane.getChildren().add(imageView);
+            }
+            if(i == 5){
+                imageView.setFitHeight(25);
+                imageView.setFitWidth(25);
+                imageView.setX(597);
+                imageView.setY(255);
+                pane.getChildren().add(imageView);
+            }
+        }
     }
 
     public int findSmallestPatch(){
@@ -278,7 +325,6 @@ public class GameScreenViewController {
 
 
 
-
     /**
      * in id the number of the patch is stored. noNicePatch is true if the patch does not rotate properly
      */
@@ -287,8 +333,8 @@ public class GameScreenViewController {
         private boolean noNicePatch;
         private boolean flipped;
         private int rotation;
-        private int posX = 3;
-        private int posY = 3;
+        private int posX = 4;
+        private int posY = 4;
         private int delta = 0;
         private final int height;
         private final int width;
@@ -681,8 +727,8 @@ public class GameScreenViewController {
     public void onChoose1Action(ActionEvent actionEvent) {
         PatchView patchView = patchViews.get(0);
         pane.getChildren().add(patchView);
-        patchView.setX(90);
-        patchView.setY(90);
+        patchView.setX(110);
+        patchView.setY(140);
 
         activePatchView = patchView;
         rotation = 0;
@@ -692,8 +738,8 @@ public class GameScreenViewController {
     public void onChoose2Action(ActionEvent actionEvent) {
         PatchView patchView = patchViews.get(1);
         pane.getChildren().add(patchView);
-        patchView.setX(90);
-        patchView.setY(90);
+        patchView.setX(110);
+        patchView.setY(140);
 
         activePatchView = patchView;
         rotation = 0;
@@ -703,8 +749,8 @@ public class GameScreenViewController {
     public void onChoose3Action(ActionEvent actionEvent) {
         PatchView patchView = patchViews.get(2);
         pane.getChildren().add(patchView);
-        patchView.setX(90);
-        patchView.setY(90);
+        patchView.setX(110);
+        patchView.setY(140);
 
         activePatchView = patchView;
         rotation = 0;
