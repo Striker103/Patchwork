@@ -33,7 +33,7 @@ public class Main extends Application {
 		controller.setPrimaryStage(primaryStage);
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-		controller.setMainMenuNode(scene);
+		controller.setMainMenuScene(scene);
 		controller.initialize();
 	}
 	

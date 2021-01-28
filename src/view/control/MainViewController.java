@@ -20,13 +20,12 @@ import java.util.List;
 
 public class MainViewController {
 
-    private double oldHeight = 800, oldWidth = 600;
+    private double oldHeight = 720, oldWidth = 1280;
     private MainController mainController;
 
     @FXML
     private Button newGameButton;
 
-    private Parent ownNode;
 
     private GameScreenViewController gameScreenViewController;
     private GameSummaryViewController gameSummaryViewController;
@@ -101,11 +100,11 @@ public class MainViewController {
         return mainController;
     }
 
-    public Scene getMainMenuNode() {
+    public Scene getMainMenuScene() {
         return mainMenuScene;
     }
 
-    public void setMainMenuNode(Scene mainMenuScene) {
+    public void setMainMenuScene(Scene mainMenuScene) {
         this.mainMenuScene = mainMenuScene;
     }
 
@@ -138,44 +137,43 @@ public class MainViewController {
             Pane newGameRoot = newGameLoader.load();
             newGameViewController = newGameLoader.getController();
             newGameViewController.setMainViewController(this);
-            //scene = new Scene(newGameRoot);
-            newGameViewController.setOwnScene(new Scene(newGameRoot));
+            scene = new Scene(newGameRoot);
+            newGameViewController.setOwnScene(scene);
+            //currentScene = scene;
 
 
             FXMLLoader loadGameLoader = new FXMLLoader(getClass().getResource("/view/fxml/LoadGame.fxml"));
             Pane loadGameRoot = loadGameLoader.load();
             loadGameViewController = loadGameLoader.getController();
             loadGameViewController.setMainViewController(this);
-            //scene = new Scene(loadGameRoot);
-            loadGameViewController.setOwnScene(new Scene(loadGameRoot));
+            scene = new Scene(loadGameRoot);
+            loadGameViewController.setOwnScene(scene);
 
 
             FXMLLoader highscoreLoader = new FXMLLoader(getClass().getResource("/view/fxml/highscores.fxml"));
             Pane highscoreRoot = highscoreLoader.load();
             highscoresViewController = highscoreLoader.getController();
             highscoresViewController.setMainViewController(this);
-            highscoresViewController.setOwnScene(new Scene(highscoreRoot));
+            scene = new Scene(highscoreRoot);
+            highscoresViewController.setOwnScene(scene);
 
 
             FXMLLoader gameScreenLoader = new FXMLLoader(getClass().getResource("/view/fxml/GameScreen.fxml"));
             Pane gameScreenRoot = gameScreenLoader.load();
             gameScreenViewController = gameScreenLoader.getController();
             gameScreenViewController.setMainViewController(this);
-            gameScreenViewController.setOwnScene(currentScene = new Scene(gameScreenRoot));
-
-
-
-
-            gameScreenViewController.loadTimeBoard();
+            scene = new Scene(gameScreenRoot);
+            gameScreenViewController.setOwnScene(scene);
+            currentScene = scene;
             gameScreenViewController.loadPatches();
+            gameScreenViewController.loadTimeBoard();
+            gameScreenViewController.loadSpecialPatches();
+
             showCurrentScene();
+            System.out.println("hiiiiiii");
         }
 
 
-
-        /*this.primaryStage.setMinHeight(600 + (this.primaryStage.getHeight() - this.primaryStage.getScene().getHeight()));
-        System.out.println(this.primaryStage.getMinHeight());
-        this.primaryStage.setMinWidth(800);*/
     }
 
     private void showScene() {
@@ -191,14 +189,16 @@ public class MainViewController {
         }
     }
 
-    private void showMainNode() {
+    private void showMainScene() {
         currentScene = mainMenuScene;
         showCurrentScene();
     }
 
     @FXML
     public void onNewGameAction(ActionEvent actionEvent) {
-        newGameViewController.showScene();
+        if(newGameViewController == null)
+            System.out.println("Ist null");
+        //newGameViewController.showScene();
     }
 
     @FXML
