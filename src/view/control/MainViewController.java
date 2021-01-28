@@ -130,7 +130,7 @@ public class MainViewController {
             BorderPane root = loader.load();
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
-            currentScene = scene;
+            //currentScene = scene;
 
 
             FXMLLoader newGameLoader = new FXMLLoader(getClass().getResource("/view/fxml/newGame.fxml"));
@@ -164,7 +164,7 @@ public class MainViewController {
             gameScreenViewController.setMainViewController(this);
             scene = new Scene(gameScreenRoot);
             gameScreenViewController.setOwnScene(scene);
-            //currentScene = scene;
+            currentScene = scene;
             gameScreenViewController.loadPatches();
             gameScreenViewController.loadTimeBoard();
             gameScreenViewController.loadSpecialPatches();

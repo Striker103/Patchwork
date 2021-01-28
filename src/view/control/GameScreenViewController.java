@@ -319,6 +319,11 @@ public class GameScreenViewController {
         }else if(keyEvent.getCode() == KeyCode.T){ //just to test the movement of the time token on the time board
             activeTimeToken.moveToken();
             System.out.println("POB:" + activeTimeToken.positionOnBoard + " FP:" + activeTimeToken.firstPosX + "," + activeTimeToken.firstPosY + "  LP: " + activeTimeToken.lastPosX + "," + activeTimeToken.lastPosY +"  CP:"+ activeTimeToken.currentPositionX + "," + activeTimeToken.currentPositionY);
+        }else if(keyEvent.getCode() == KeyCode.Z){ //just to test the movement of the time token on the time board
+            Tuple<String, PlayerType> player1 = new Tuple<>("Horst",PlayerType.HUMAN);
+            Tuple<String, PlayerType> player2 = new Tuple<>("AI",PlayerType.HUMAN);
+            mainViewController.getMainController().getGamePreparationController().startGame(new Tuple<>(player1,player2),null,false);
+
         }
     }
 
