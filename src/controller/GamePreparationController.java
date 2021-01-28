@@ -102,6 +102,13 @@ public class GamePreparationController {
 		return true;
 	}
 
+	/**
+	 * sets up a new game
+	 *
+	 * @param players two tuples each with name and playerType in it
+	 * @param file the csv file of the patches (can be null)
+	 * @param ironman if true undo, redo and tips are not possible
+	 */
 	public void startGame(Tuple<Tuple<String,PlayerType>, Tuple<String,PlayerType>> players, File file, boolean ironman) {
 		startGame(players, file, 0, ironman);
 	}
@@ -119,7 +126,11 @@ public class GamePreparationController {
 		return patches;
 	}
 
-
+	/**
+	 * Setter for errorAUI
+	 *
+	 * @param errorAUI errorAUI
+	 */
 	public void setErrorAUI(ErrorAUI errorAUI) {
 		if(this.errorAUIChanged) throw new IllegalStateException("errorAUI was already set");
 		this.errorAUI = errorAUI;

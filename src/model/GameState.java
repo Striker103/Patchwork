@@ -119,6 +119,12 @@ public class GameState{
 		return false;
 	}
 
+	/**
+	 * Returns patch with the specified ID
+	 * @param id ID
+	 * @return patch with this ID
+	 * @throws java.util.NoSuchElementException if no patch with this ID exists
+	 */
 	public Patch getPatchByID(final int id){
 		//noinspection OptionalGetWithoutIsPresent
 		return patches.stream().filter(p -> p.getPatchID() == id).findFirst().get();
