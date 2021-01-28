@@ -338,8 +338,8 @@ public class GameScreenViewController {
         private boolean noNicePatch;
         private boolean flipped;
         private int rotation;
-        private int posX = 4;
-        private int posY = 4;
+        private int posX = 5;
+        private int posY = 5;
         private int delta = 0;
         private final int height;
         private final int width;
@@ -508,13 +508,13 @@ public class GameScreenViewController {
             Matrix trim = placing.trim();
 
             if(noNicePatch && (rotation == 90 || rotation == 270)){
-                matrix.insert(trim, posY, (posX + 1));
+                matrix.insert(trim, posY -2, (posX - 1));
             }else if((width-height) == 4 && (rotation == 90 || rotation == 270)){
-                matrix.insert(trim, posY - 2, posX + 2);
+                matrix.insert(trim, posY - 4, posX);
             }else if((width-height) == 2 && (rotation == 90 || rotation == 270)){
-                matrix.insert(trim, posY - 1, posX + 1);
+                matrix.insert(trim, posY - 3, posX - 1);
             }else{
-                matrix.insert(trim, posY, posX);
+                matrix.insert(trim, posY -2, posX -2);
             }
             return matrix;
         }
@@ -732,8 +732,8 @@ public class GameScreenViewController {
     public void onChoose1Action(ActionEvent actionEvent) {
         PatchView patchView = patchViews.get(0);
         pane.getChildren().add(patchView);
-        patchView.setX(110);
-        patchView.setY(140);
+        patchView.setX(150);
+        patchView.setY(150);
 
         activePatchView = patchView;
         rotation = 0;
@@ -743,8 +743,8 @@ public class GameScreenViewController {
     public void onChoose2Action(ActionEvent actionEvent) {
         PatchView patchView = patchViews.get(1);
         pane.getChildren().add(patchView);
-        patchView.setX(110);
-        patchView.setY(140);
+        patchView.setX(150);
+        patchView.setY(150);
 
         activePatchView = patchView;
         rotation = 0;
@@ -754,8 +754,8 @@ public class GameScreenViewController {
     public void onChoose3Action(ActionEvent actionEvent) {
         PatchView patchView = patchViews.get(2);
         pane.getChildren().add(patchView);
-        patchView.setX(110);
-        patchView.setY(140);
+        patchView.setX(150);
+        patchView.setY(150);
 
         activePatchView = patchView;
         rotation = 0;
