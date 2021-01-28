@@ -28,7 +28,6 @@ public class UndoRedoController {
 	 */
 	public void undo() {
 		Game game = mainController.getGame();
-		List<GameState> gameStates = game.getGameStates();
 		Player nextMovingPlayer = mainController.getGameController().getNextPlayer();
 
 		//Cant undo first move with other player
@@ -44,9 +43,7 @@ public class UndoRedoController {
 		}
 		game.setHighScoreReachable(false);
 		//Find last gamestate with same moving player
-		boolean moveWasNotFirstMove = false;
 		while(game.getCurrentGameStateIndex()>0){
-			moveWasNotFirstMove = true;
 			if(mainController.getGameController().getNextPlayer() == nextMovingPlayer){
 				break;
 			}else{

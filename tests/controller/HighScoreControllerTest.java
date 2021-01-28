@@ -153,6 +153,27 @@ public class HighScoreControllerTest {
     }
 
     /**
+     * Test save score with a folder as path
+     */
+    @Test
+    public void testSaveScoreFileIsFolder(){
+        mainController.getGameController().advance();
+        mainController.getGameController().advance();
+        highScoreController.saveScores(new File("export/"));
+        assertTrue(dummyAUI.error);
+    }
+    /**
+     * Test save score with a folder as path
+     */
+    @Test
+    public void testSaveScoreNoPermission(){
+        mainController.getGameController().advance();
+        mainController.getGameController().advance();
+        highScoreController.saveScores(new File("export/noPermission.json"));
+        assertTrue(dummyAUI.error);
+    }
+
+    /**
      * Test if the file is clean after clear
      */
     @Test
@@ -219,6 +240,25 @@ public class HighScoreControllerTest {
     public void testShowScoreWrongFile(){
         highScoreController.showHighScores(new File("export/testFile.freeCandy"));
         assertFalse(dummyAUI.highScoresShown);
+        assertTrue(dummyAUI.error);
+    }
+
+    /**
+     * Test show score with wrong file ending
+     */
+    @Test
+    public void testShowScoreFilePath(){
+        highScoreController.showHighScores(new File("export/"));
+        assertFalse(dummyAUI.highScoresShown);
+        assertTrue(dummyAUI.error);
+    }
+
+    /**
+     * Test show score without permission
+     */
+    @Test
+    public void testShowScoreNoPermission(){
+        highScoreController.showHighScores(new File("export/noPermission.json"));
         assertTrue(dummyAUI.error);
     }
 
