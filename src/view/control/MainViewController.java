@@ -38,15 +38,6 @@ public class MainViewController {
     private Scene mainMenuScene;
     private Scene currentScene;
 
-
-
-    private HighScoreAUI highscoreAUI = new HighScoreAUI() {
-        @Override
-        public void showHighscores(List<Score> highscores) {
-
-        }
-    };
-
     private ErrorAUI errorAUI = new ErrorAUI() {
         @Override
         public void showError(String message) {
@@ -166,6 +157,8 @@ public class MainViewController {
             scene = new Scene(gameScreenRoot);
             gameScreenViewController.setOwnScene(scene);
             //currentScene = scene;
+
+            mainController.setHighScoreAUI(highscoresViewController);
 
         }
 
