@@ -60,6 +60,8 @@ public class LoadGameViewController implements LoadGameAUI {
                 System.out.println("this should not happen.");
 
             mainViewController.getGameScreenViewController().showScene();
+            mainViewController.getGameScreenViewController().initGame();
+            mainViewController.getGameScreenViewController().initList();
         }
 
     }
