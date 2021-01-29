@@ -30,6 +30,8 @@ import javafx.scene.image.PixelReader;
 
 public class GameScreenViewController {
 
+    public Label player1Name;
+    public Label player2Name;
     private MainViewController mainViewController;
 
     private Player currentPlayer;
@@ -111,6 +113,17 @@ public class GameScreenViewController {
 
     public void setMainViewController(MainViewController mainViewController) {
         this.mainViewController = mainViewController;
+    }
+
+    public void initGame(String firstPlayer, String secondPlayer){
+        System.out.println("bla");
+        List<Patch> patches = mainViewController.getMainController().getGame().getCurrentGameState().getPatches();
+        for(Patch patch : patches)
+        {
+            System.out.println(patch.getPatchID());
+        }
+        player1Name.setText(firstPlayer);
+        player2Name.setText(secondPlayer);
     }
 
     public void setOwnScene(Scene scene)  {

@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.Pane;
+import model.PlayerType;
+import model.Tuple;
 
 import java.nio.charset.MalformedInputException;
 
@@ -49,6 +51,20 @@ public class NewGameViewController {
 
     public void onStartGameAction(ActionEvent actionEvent) {
         mainViewController.getGameScreenViewController().showScene();
+
+        //TODO check if everything is set
+        if(parametersAreOk()){
+            Tuple<String, PlayerType> player1 = new Tuple<>("Adria",PlayerType.HUMAN);
+            Tuple<String, PlayerType> player2 = new Tuple<>("Jack",PlayerType.HUMAN);
+            String p1 = "Adria";
+            String p2 = "Jack";
+            mainViewController.getMainController().getGamePreparationController().startGame(new Tuple<>(player1,player2),null,false);
+            mainViewController.getGameScreenViewController().initGame(p1, p2);
+        }
+    }
+
+    private boolean parametersAreOk() {
+        return true;
     }
 
     public void onBackAction(ActionEvent actionEvent) {

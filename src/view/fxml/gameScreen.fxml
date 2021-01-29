@@ -58,7 +58,7 @@
                               <Label text="Place the patch using the ENTER key" />
                            </children>
                         </VBox>
-                        <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="100.0" text="Player1">
+                        <Label fx:id="player1Name" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="100.0" text="Player1">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -183,7 +183,7 @@
                   </GridPane>
                   <VBox alignment="BOTTOM_RIGHT" prefHeight="365.0" prefWidth="373.0">
                      <children>
-                        <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="39.0" prefWidth="109.0" text="Player2">
+                        <Label fx:id="player2Name" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="39.0" prefWidth="109.0" text="Player2">
                            <font>
                               <Font size="18.0" />
                            </font>
