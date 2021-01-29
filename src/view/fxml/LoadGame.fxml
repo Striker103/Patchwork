@@ -10,15 +10,17 @@
             <font>
                 <Font size="60.0" />
             </font></Text>
-        <TableView layoutX="312.0" layoutY="164.0" prefHeight="404.0" prefWidth="577.0">
+        <TableView fx:id="tableView" layoutX="312.0" layoutY="164.0" prefHeight="404.0" prefWidth="577.0">
             <columns>
-                <TableColumn prefWidth="220.0" text="Game" />
-                <TableColumn prefWidth="150.0" text="Game Type " />
-                <TableColumn prefWidth="210.0" text="Saving Time" />
+                <TableColumn fx:id="gameColumn" prefWidth="277.0" text="Game" />
+                <TableColumn fx:id="typeColumn" prefWidth="170.0" text="Game Type " />
+            <TableColumn fx:id="ironmanColumn" prefWidth="129.0" text="Ironman" />
             </columns>
         </TableView>
-        <Button fx:id="cancelButton" cancelButton="true" layoutX="846.0" layoutY="695.0" mnemonicParsing="false" onAction="#onCancelAction" prefHeight="47.0" prefWidth="70.0" text="Cancel" />
-        <Button fx:id="playButton" defaultButton="true" layoutX="959.0" layoutY="695.0" mnemonicParsing="false" onAction="#onPlayAction" prefHeight="47.0" prefWidth="70.0" text="Play" />
-        <TextField layoutX="312.0" layoutY="589.0" prefHeight="47.0" prefWidth="577.0" text="Search" />
+      <HBox alignment="CENTER" layoutY="650.0" prefHeight="150.0" prefWidth="1200.0" spacing="60.0">
+         <children>
+              <Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" onAction="#onCancelAction" prefHeight="50.0" prefWidth="150.0" text="Cancel" />
+              <Button fx:id="playButton" defaultButton="true" mnemonicParsing="false" onAction="#onPlayAction" prefHeight="50.0" prefWidth="150.0" text="Play" />
+         </children></HBox>
     </children>
 </Pane>

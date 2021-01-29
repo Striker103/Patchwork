@@ -133,7 +133,7 @@ public class MainController {
 	 * sets the game
 	 * @param game the new game
 	 */
-	void setGame(Game game) {
+	public void setGame(Game game) {
 		this.game = game;
 	}
 

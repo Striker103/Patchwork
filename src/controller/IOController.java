@@ -56,7 +56,7 @@ public class IOController {
 
 		CheckUtil.assertNonNull(game, file);
 
-		if (file.isDirectory() || !file.canWrite()) {
+		if (file.isDirectory() || (file.exists() && !file.canWrite())) {
 			errorAUI.showError("File is invalid");
 			return;
 		}
