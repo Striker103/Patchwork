@@ -12,7 +12,9 @@ import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.*;
@@ -30,6 +32,8 @@ public class GameScreenViewController {
 
     private MainViewController mainViewController;
 
+    private Player currentPlayer;
+
     private GameState gameState;
 
     private Scene ownScene;
@@ -37,6 +41,10 @@ public class GameScreenViewController {
     private PatchView activePatchView;
 
     private int rotation;
+
+    private TimeToken timeToken1;
+
+    private TimeToken timeToken2;
 
     private TimeToken activeTimeToken;
 
@@ -47,6 +55,15 @@ public class GameScreenViewController {
 
     @FXML
     private ImageView imageView;
+
+    @FXML
+    private Button chooseButton1;
+
+    @FXML
+    private Button chooseButton2;
+
+    @FXML
+    private Button chooseButton3;
 
     @FXML
     private ImageView imageView1;
@@ -78,6 +95,10 @@ public class GameScreenViewController {
     @FXML
     private ListView<ImageView> patchListView;
 
+    public void setCurrentPlayer(Player player){
+        currentPlayer = player;
+    }
+
 
     public GameScreenViewController(){
         //loadTimeBoard();
@@ -92,13 +113,21 @@ public class GameScreenViewController {
         this.mainViewController = mainViewController;
     }
 
-    public void setOwnScene(Scene scene) {
+    public void setOwnScene(Scene scene)  {
         this.ownScene = scene;
     }
 
     public void showScene(){
         mainViewController.setCurrentScene(ownScene);
         mainViewController.showCurrentScene();
+        try {
+            loadTimeBoard();
+            loadPatches();
+            loadSpecialPatches();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void loadTimeBoard(){
@@ -128,6 +157,7 @@ public class GameScreenViewController {
         timeToken2.setFitHeight(20);
         activeTimeToken = timeToken2;
         pane.getChildren().add(activeTimeToken);
+
     }
 
     //TODO when a patch which was already clicked is clicked again there are warnings
@@ -150,7 +180,6 @@ public class GameScreenViewController {
             imageView.setFitWidth(width * 30);
             patchViews.add(new PatchView(p, i));
         }
-
         showChooseablePatches();
     }
 
@@ -168,6 +197,10 @@ public class GameScreenViewController {
         imageView1.setFitWidth(width * 30);
         cost1.setText("Cost: " + patch.getButtonsCost());
         time1.setText("Time: " + patch.getTime());
+        /*if(activeTimeToken.player.getMoney() < patch.getButtonsCost())
+            chooseButton1.setDisable(true);
+        else
+            chooseButton1.setDisable(false);*/
 
         imageView2.setImage(patchViews.get(1).getImage());
         patch = patches.get(patchViews.get(1).id - 1 );
@@ -254,7 +287,7 @@ public class GameScreenViewController {
      *
      * @param keyEvent the pressed kay
      */
-    public void handleKeyPressed(KeyEvent keyEvent){
+    public void handleKeyPressed(KeyEvent keyEvent) throws InterruptedException {
         if(keyEvent.getCode() == KeyCode.W || keyEvent.getCode() == KeyCode.NUMPAD5){
             if(activePatchView.moveIsLegit('w')){
                 activePatchView.moveUp();
@@ -317,9 +350,10 @@ public class GameScreenViewController {
             System.out.println("flipped? " + activePatchView.flipped);
             System.out.println();
         }else if(keyEvent.getCode() == KeyCode.T){ //just to test the movement of the time token on the time board
-            activeTimeToken.moveToken();
-            System.out.println("POB:" + activeTimeToken.positionOnBoard + " FP:" + activeTimeToken.firstPosX + "," + activeTimeToken.firstPosY + "  LP: " + activeTimeToken.lastPosX + "," + activeTimeToken.lastPosY +"  CP:"+ activeTimeToken.currentPositionX + "," + activeTimeToken.currentPositionY);
-        }else if(keyEvent.getCode() == KeyCode.Z){ //just to test the movement of the time token on the time board
+            activeTimeToken.moveToken(
+            );
+            //System.out.println("POB:" + activeTimeToken.positionOnBoard + " FP:" + activeTimeToken.firstPosX + "," + activeTimeToken.firstPosY + "  LP: " + activeTimeToken.lastPosX + "," + activeTimeToken.lastPosY +"  CP:"+ activeTimeToken.currentPositionX + "," + activeTimeToken.currentPositionY);
+        }else if(keyEvent.getCode() == KeyCode.Z){ //Starts a new game
             Tuple<String, PlayerType> player1 = new Tuple<>("Horst",PlayerType.HUMAN);
             Tuple<String, PlayerType> player2 = new Tuple<>("AI",PlayerType.HUMAN);
             mainViewController.getMainController().getGamePreparationController().startGame(new Tuple<>(player1,player2),null,false);
@@ -577,15 +611,26 @@ public class GameScreenViewController {
         private int lastPosY = 14;
 
         private int positionOnBoard = 0;
-        int currentPositionX = 4;
-        int currentPositionY = 0;
+        private int currentPositionX = 4;
+        private int currentPositionY = 0;
 
         private static final double STEPPING = 36;
         private int verticalDirection = 1; // -1 = left, 1 = right
         private int horizontalDirection = 1; // -1 = up, 1 = down
 
+        private Player player;
 
+        /**
+         * Constructor for a time token
+         * @param id the id of the token (in our case either 1 or 2)
+         */
         private TimeToken(int id) {
+            if(id == 1){
+                //player = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1();
+            }
+            else if(id == 2){
+                //player = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2();
+            }
             try {
                 this.setImage(new Image(this.getClass().getResource("/view/images/TimeTokens/TimeToken"+ id + ".png").toURI().toString()));
             } catch (URISyntaxException e) {
@@ -598,7 +643,11 @@ public class GameScreenViewController {
             this.id = id;
         }
 
-        void moveToken(int steps){
+        /**
+         * Moves time token with a specified number of steps
+         * @param steps the number of steps to take
+         */
+        void moveToken(int steps) {
             for (int i = 0; i < steps; i++) {
                 if(this.positionOnBoard >= 53){
                     System.out.println("Goal reached!");
@@ -608,7 +657,9 @@ public class GameScreenViewController {
             }
         }
 
-
+        /**
+         * Moves the time token one step at a time
+         */
         void moveToken(){
             if(verticalDirection == 1 && currentPositionX +2 <= this.lastPosX){
                 this.setX(this.getX() + STEPPING * verticalDirection);
@@ -684,6 +735,7 @@ public class GameScreenViewController {
             if(positionOnBoard == 50 ){
                 this.setX(this.getX() - 0.5 * STEPPING);
             }
+
         }
 
     }
@@ -728,13 +780,16 @@ public class GameScreenViewController {
     }
 
 
+
     @FXML
     public void onChoose1Action(ActionEvent actionEvent) {
         PatchView patchView = patchViews.get(0);
         pane.getChildren().add(patchView);
         patchView.setX(150);
         patchView.setY(150);
-
+        if(!patchView.isVisible()){
+            patchView.setVisible(true);
+        }
         activePatchView = patchView;
         rotation = 0;
     }
@@ -745,19 +800,28 @@ public class GameScreenViewController {
         pane.getChildren().add(patchView);
         patchView.setX(150);
         patchView.setY(150);
-
+        if(!patchView.isVisible()){
+            patchView.setVisible(true);
+        }
         activePatchView = patchView;
         rotation = 0;
     }
 
     @FXML
     public void onChoose3Action(ActionEvent actionEvent) {
-        PatchView patchView = patchViews.get(2);
-        pane.getChildren().add(patchView);
-        patchView.setX(150);
-        patchView.setY(150);
+            PatchView patchView = patchViews.get(2);
+            pane.getChildren().add(patchView);
+            patchView.setX(150);
+            patchView.setY(150);
+            if (!patchView.isVisible()) {
+                patchView.setVisible(true);
+            }
+            activePatchView = patchView;
+            rotation = 0;
+    }
 
-        activePatchView = patchView;
-        rotation = 0;
+    @FXML
+    public void onCancelAction(){
+        activePatchView.setVisible(false);
     }
 }

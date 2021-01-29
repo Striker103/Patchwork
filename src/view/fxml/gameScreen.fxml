@@ -84,12 +84,17 @@
                               <Button fx:id="redoButton" mnemonicParsing="false" onAction="#onRedoAction" prefHeight="30.0" prefWidth="50.0" text="Redo" />
                            </children>
                         </HBox>
-                        <ImageView fx:id="imageView" fitHeight="247.0" fitWidth="331.0" pickOnBounds="true" preserveRatio="true" />
-                        <VBox alignment="BOTTOM_CENTER" prefHeight="374.0" prefWidth="403.0">
+                        <HBox prefHeight="24.0" prefWidth="600.0">
                            <children>
-                              <HBox prefHeight="213.0" prefWidth="581.0" spacing="30.0">
+                              <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancelAction" text="Cancel" />
+                           </children>
+                        </HBox>
+                        <ImageView fx:id="imageView" fitHeight="247.0" fitWidth="331.0" pickOnBounds="true" preserveRatio="true" />
+                        <VBox alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="387.0" prefWidth="600.0" spacing="10.0">
+                           <children>
+                              <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="207.0" prefWidth="600.0" spacing="30.0">
                                  <children>
-                                    <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="215.0" prefWidth="180.0" spacing="10.0">
+                                    <VBox alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="215.0" prefWidth="180.0" spacing="10.0">
                                        <children>
                                           <ImageView fx:id="imageView1" fitHeight="170.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
                                           <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="200.0" spacing="30.0">
@@ -98,10 +103,14 @@
                                                 <Label fx:id="time1" text="Label" />
                                              </children>
                                           </HBox>
-                                          <Button fx:id="chooseButton1" mnemonicParsing="false" onAction="#onChoose1Action" text="Choose" />
+                                          <VBox alignment="BOTTOM_CENTER">
+                                             <children>
+                                                <Button fx:id="chooseButton1" mnemonicParsing="false" onAction="#onChoose1Action" text="Choose" />
+                                             </children>
+                                          </VBox>
                                        </children>
                                     </VBox>
-                                    <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="215.0" prefWidth="180.0" spacing="10.0">
+                                    <VBox alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="215.0" prefWidth="180.0" spacing="10.0">
                                        <children>
                                           <ImageView fx:id="imageView2" fitHeight="170.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
                                           <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="200.0" spacing="30.0">
@@ -110,10 +119,14 @@
                                                 <Label fx:id="time2" text="Label" />
                                              </children>
                                           </HBox>
-                                          <Button fx:id="chooseButton2" mnemonicParsing="false" onAction="#onChoose2Action" text="Choose" />
+                                          <VBox alignment="BOTTOM_CENTER">
+                                             <children>
+                                                <Button fx:id="chooseButton2" mnemonicParsing="false" onAction="#onChoose2Action" text="Choose" />
+                                             </children>
+                                          </VBox>
                                        </children>
                                     </VBox>
-                                    <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="215.0" prefWidth="180.0" spacing="10.0">
+                                    <VBox alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="215.0" prefWidth="180.0" spacing="10.0">
                                        <children>
                                           <ImageView fx:id="imageView3" fitHeight="170.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
                                           <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="200.0" spacing="30.0">
@@ -122,12 +135,16 @@
                                                 <Label fx:id="time3" text="Label" />
                                              </children>
                                           </HBox>
-                                          <Button fx:id="chooseButton3" mnemonicParsing="false" onAction="#onChoose3Action" text="Choose" />
+                                          <VBox alignment="BOTTOM_CENTER">
+                                             <children>
+                                                <Button fx:id="chooseButton3" mnemonicParsing="false" onAction="#onChoose3Action" text="Choose" />
+                                             </children>
+                                          </VBox>
                                        </children>
                                     </VBox>
                                  </children>
                               </HBox>
-                              <ListView fx:id="patchListView" editable="true" onMousePressed="#onDragDetected1" orientation="HORIZONTAL" prefHeight="123.0" prefWidth="391.0" />
+                              <ListView fx:id="patchListView" editable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMousePressed="#onDragDetected1" orientation="HORIZONTAL" prefHeight="130.0" prefWidth="600.0" />
                               <Button fx:id="passButton" mnemonicParsing="false" onAction="#onPassAction" prefHeight="37.0" prefWidth="70.0" text="Pass" />
                            </children>
                         </VBox>
@@ -161,7 +178,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <VBox.margin>
-                        <Insets right="50.0" top="50.0" />
+                        <Insets right="60.0" top="60.0" />
                      </VBox.margin>
                   </GridPane>
                   <VBox alignment="BOTTOM_RIGHT" prefHeight="365.0" prefWidth="373.0">

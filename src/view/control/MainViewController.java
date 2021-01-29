@@ -100,6 +100,10 @@ public class MainViewController {
         return mainController;
     }
 
+    public GameScreenViewController getGameScreenViewController(){
+        return gameScreenViewController;
+    }
+
     public Scene getMainMenuScene() {
         return mainMenuScene;
     }
@@ -162,18 +166,13 @@ public class MainViewController {
             scene = new Scene(gameScreenRoot);
             gameScreenViewController.setOwnScene(scene);
             //currentScene = scene;
-            gameScreenViewController.loadPatches();
-            gameScreenViewController.loadTimeBoard();
-            gameScreenViewController.loadSpecialPatches();
 
-            System.out.println("hiiiiiii");
         }
-
 
     }
 
-    private void showScene() {
-        setCurrentScene(currentScene);
+    public void showScene() {
+        setCurrentScene(mainMenuScene);
         showCurrentScene();
     }
 
@@ -183,15 +182,9 @@ public class MainViewController {
         }
     }
 
-    private void showMainScene() {
-        currentScene = mainMenuScene;
-        showCurrentScene();
-    }
 
     @FXML
     public void onNewGameAction(ActionEvent actionEvent) {
-        if(newGameViewController == null)
-            System.out.println("Ist null");
         newGameViewController.showScene();
     }
 
@@ -204,4 +197,5 @@ public class MainViewController {
     public void onHighscoresAction(ActionEvent actionEvent) {
         highscoresViewController.showScene();
     }
+
 }

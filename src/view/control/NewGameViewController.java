@@ -45,14 +45,14 @@ public class NewGameViewController {
         AIDifficultySpinner = new Spinner<String>();
         AI2DifficultySpinner = new Spinner<String>();
         simulationSpeedSpinner = new Spinner<String>();
-
-        setSpinners();
     }
 
     public void onStartGameAction(ActionEvent actionEvent) {
+        mainViewController.getGameScreenViewController().showScene();
     }
 
     public void onBackAction(ActionEvent actionEvent) {
+        mainViewController.showScene();
     }
 
     public void onLoadCSVFileAction(ActionEvent actionEvent) {
@@ -61,6 +61,7 @@ public class NewGameViewController {
     public void showScene() {
         mainViewController.setCurrentScene(ownScene);
         mainViewController.showCurrentScene();
+        setSpinners();
     }
 
     public void setMainViewController(MainViewController mainViewController) {
@@ -98,9 +99,11 @@ public class NewGameViewController {
 
             if (!"AI vs AI".equals(newValue)) {
                 AI2DifficultySpinner.setDisable(true);
+                simulationSpeedSpinner.setDisable(true);
             }
             else
                 AI2DifficultySpinner.setDisable(false);
+                simulationSpeedSpinner.setDisable(false);
         });
 
         ObservableList<String> AIList = FXCollections.observableArrayList("Easy", "Normal", "Hard");
