@@ -27,12 +27,12 @@ public class MainViewController {
     private Button newGameButton;
 
 
-    private static GameScreenViewController gameScreenViewController;
-    private static GameSummaryViewController gameSummaryViewController;
-    private static HighscoresViewController highscoresViewController;
-    private static LoadGameViewController loadGameViewController;
-    private static NewGameViewController newGameViewController;
-    private static PauseGameViewController pauseGameViewController;
+    private  GameScreenViewController gameScreenViewController;
+    private  GameSummaryViewController gameSummaryViewController;
+    private  HighscoresViewController highscoresViewController;
+    private  LoadGameViewController loadGameViewController;
+    private  NewGameViewController newGameViewController;
+    private  PauseGameViewController pauseGameViewController;
 
     private Stage primaryStage;
     private Scene mainMenuScene;
@@ -124,13 +124,10 @@ public class MainViewController {
         this.currentScene = currentScene;
     }
 
-    public void initialize() throws IOException {
+
+    public void init() throws IOException {
         if (primaryStage != null) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/fxml/StartGame.fxml"));
-            BorderPane root = loader.load();
-            Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
-            //currentScene = scene;
+            Scene scene;
 
 
             FXMLLoader newGameLoader = new FXMLLoader(getClass().getResource("/view/fxml/newGame.fxml"));
@@ -164,12 +161,11 @@ public class MainViewController {
             gameScreenViewController.setMainViewController(this);
             scene = new Scene(gameScreenRoot);
             gameScreenViewController.setOwnScene(scene);
-            currentScene = scene;
+            //currentScene = scene;
             gameScreenViewController.loadPatches();
             gameScreenViewController.loadTimeBoard();
             gameScreenViewController.loadSpecialPatches();
 
-            showCurrentScene();
             System.out.println("hiiiiiii");
         }
 
@@ -184,8 +180,6 @@ public class MainViewController {
     public void showCurrentScene(){
         if(primaryStage != null) {
             primaryStage.setScene(currentScene);
-            primaryStage.setTitle("SoPra");
-            primaryStage.show();
         }
     }
 
