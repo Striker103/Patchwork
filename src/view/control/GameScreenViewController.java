@@ -1,9 +1,7 @@
 package view.control;
 
 import controller.GameController;
-import controller.GamePreparationController;
 import controller.IOController;
-import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -12,8 +10,6 @@ import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -21,11 +17,9 @@ import javafx.scene.image.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import model.*;
-import javafx.scene.image.PixelReader;
+import view.PatchMap;
 
 
 public class GameScreenViewController {
@@ -36,24 +30,17 @@ public class GameScreenViewController {
     public Label player2Buttons;
     private MainViewController mainViewController;
 
+    private IOController ioController;
     private Player currentPlayer;
-
     private GameState gameState;
-
     private Scene ownScene;
-
     private PatchView activePatchView;
-
     private int rotation;
-
     private TimeToken timeToken1;
-
     private TimeToken timeToken2;
-
     private TimeToken activeTimeToken;
-
     private List<PatchView> patchViews;
-
+    private List<Patch> patches;
     private Game game;
 
     @FXML
@@ -63,40 +50,13 @@ public class GameScreenViewController {
     private ImageView imageView;
 
     @FXML
-    private Button chooseButton1;
+    private Button chooseButton1, chooseButton2, chooseButton3;
 
     @FXML
-    private Button chooseButton2;
+    private ImageView imageView1, imageView2, imageView3;
 
     @FXML
-    private Button chooseButton3;
-
-    @FXML
-    private ImageView imageView1;
-
-    @FXML
-    private ImageView imageView2;
-
-    @FXML
-    private ImageView imageView3;
-
-    @FXML
-    private Label cost1;
-
-    @FXML
-    private Label time1;
-
-    @FXML
-    private Label cost2;
-
-    @FXML
-    private Label time2;
-
-    @FXML
-    private Label cost3;
-
-    @FXML
-    private Label time3;
+    private Label cost1, time1, cost2, time2, cost3, time3;
 
     @FXML
     private ListView<ImageView> patchListView;
@@ -106,15 +66,7 @@ public class GameScreenViewController {
     }
 
 
-
-
     public GameScreenViewController(){
-        //loadTimeBoard();
-        /*try {
-            loadPatches();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }*/
     }
 
     public void setMainViewController(MainViewController mainViewController) {
@@ -122,18 +74,36 @@ public class GameScreenViewController {
     }
 
     public void initGame(){
+
+        ioController = mainViewController.getMainController().getIOController();
         game = mainViewController.getMainController().getGame();
-        List<Patch> patches = game.getCurrentGameState().getPatches();
+        patches = game.getCurrentGameState().getPatches();
 
         player1Name.setText(game.getCurrentGameState().getPlayer1().getName());
         player2Name.setText(game.getCurrentGameState().getPlayer2().getName());
         updateMoney();
+        updateList();
+        showChooseablePatches();
+        try {
+            loadPatches();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public void updateMoney()
     {
         player1Buttons.setText("Buttons: " + game.getCurrentGameState().getPlayer1().getMoney());
         player2Buttons.setText("Buttons: " + game.getCurrentGameState().getPlayer2().getMoney());
+    }
+
+    public void updateList()
+    {
+        patchViews = new ArrayList<>();
+        patches = game.getCurrentGameState().getPatches();
+
+        for(Patch patch : patches)
+        patchViews.add(new PatchView(patch));
     }
 
     public void setOwnScene(Scene scene)  {
@@ -145,7 +115,7 @@ public class GameScreenViewController {
         mainViewController.showCurrentScene();
         try {
             loadTimeBoard();
-            loadPatches();
+            //loadPatches();
             loadSpecialPatches();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -185,25 +155,19 @@ public class GameScreenViewController {
 
     //TODO when a patch which was already clicked is clicked again there are warnings
     public void loadPatches() throws FileNotFoundException {
-        patchViews = new ArrayList<>();
-        IOController ioController = mainViewController.getMainController().getIOController();
-        List<Patch> patches = ioController.importCSVNotShuffled();
-        for(int i = 1; i < 34; i++) {
-            //String path = "src/view/images/Patches/Patch" + gameState.getPatches().get(i).getPatchID() + ".png";  //TODO: loads the patches in the same order as the patchlist
-            String path = "src/view/images/Patches/Patch" + i + ".png";
-            imageView = new ImageView(new Image(new FileInputStream(path)));
+        for(Patch patch : patches)
+        {
+            String path = PatchMap.getInstance().getImagePath(patch);
+            imageView = new ImageView(new Image(new FileInputStream("src/" + path)));
 
             patchListView.getItems().add(imageView);
-            Patch p = patches.get(i-1);
-            Matrix shape = p.getShape();
+            Matrix shape = patch.getShape();
             Matrix trim = shape.trim();
             int height = trim.getRows();
             int width = trim.getColumns();
             imageView.setFitHeight(height * 30);
             imageView.setFitWidth(width * 30);
-            patchViews.add(new PatchView(p, i));
         }
-        showChooseablePatches();
     }
 
     public void showChooseablePatches(){
@@ -306,88 +270,6 @@ public class GameScreenViewController {
     }
 
     /**
-     * changes position and rotation of the activePatch
-     *
-     * @param keyEvent the pressed kay
-     */
-    public void handleKeyPressed(KeyEvent keyEvent) throws InterruptedException {
-        if(keyEvent.getCode() == KeyCode.W || keyEvent.getCode() == KeyCode.NUMPAD5){
-            if(activePatchView.moveIsLegit('w')){
-                activePatchView.moveUp();
-            }else{
-                System.out.println("are you blind?");
-            }
-        }else if(keyEvent.getCode() == KeyCode.S  || keyEvent.getCode() == KeyCode.NUMPAD2){
-            if(activePatchView.moveIsLegit('s')){
-                activePatchView.moveDown();
-            }else{
-                System.out.println("are you blind?");
-            }
-        }
-        else if(keyEvent.getCode() == KeyCode.A || keyEvent.getCode() == KeyCode.NUMPAD1 ){
-            if(activePatchView.moveIsLegit('a')){
-                activePatchView.moveLeft();
-            }else{
-                System.out.println("are you blind?");
-            }
-        }
-        else if(keyEvent.getCode() == KeyCode.D || keyEvent.getCode() == KeyCode.NUMPAD3){
-            if(activePatchView.moveIsLegit('d')){
-                activePatchView.moveRight();
-            }else{
-                System.out.println("are you blind?");
-            }
-        }
-        else if(keyEvent.getCode() == KeyCode.E || keyEvent.getCode() == KeyCode.NUMPAD6){
-            if(activePatchView.rotationIsLegit()){
-                activePatchView.rotate();
-            }else{
-                System.out.println("please move away from the corner a little bit");
-            }
-        }
-        else if(keyEvent.getCode() == KeyCode.Q || keyEvent.getCode() == KeyCode.NUMPAD4) {
-            activePatchView.flip();
-        }
-        else if(keyEvent.getCode() == KeyCode.R || keyEvent.getCode() == KeyCode.NUMPAD0){
-
-            try{
-                GameController gameController = mainViewController.getMainController().getGameController();
-                GameState gameState = mainViewController.getMainController().getGame().getCurrentGameState();
-                gameController.takePatch(gameState.getPatchByID(activePatchView.id), activePatchView.readyToGo(), rotation, activePatchView.flipped);
-            }catch(NullPointerException e){
-                System.out.println("the patch is not placed yet");
-            }
-        }else if(keyEvent.getCode() == KeyCode.C){ //only for debugging
-            Matrix ready = activePatchView.readyToGo();
-            ready.print();
-            System.out.println();
-        }else if(keyEvent.getCode() == KeyCode.V){ //only for debugging
-
-            activePatchView.matrix.print();
-            System.out.println();
-            System.out.println("posX: " + activePatchView.posX);
-            System.out.println("posY: " + activePatchView.posY);
-            System.out.println("height: " + activePatchView.height);
-            System.out.println("width: " + activePatchView.width);
-            System.out.println("NoNicePatch?: " + activePatchView.noNicePatch);
-            System.out.println("flipped? " + activePatchView.flipped);
-            System.out.println();
-        }else if(keyEvent.getCode() == KeyCode.T){ //just to test the movement of the time token on the time board
-            activeTimeToken.moveToken(
-            );
-            //System.out.println("POB:" + activeTimeToken.positionOnBoard + " FP:" + activeTimeToken.firstPosX + "," + activeTimeToken.firstPosY + "  LP: " + activeTimeToken.lastPosX + "," + activeTimeToken.lastPosY +"  CP:"+ activeTimeToken.currentPositionX + "," + activeTimeToken.currentPositionY);
-        }else if(keyEvent.getCode() == KeyCode.Z){ //Starts a new game
-            Tuple<String, PlayerType> player1 = new Tuple<>("Horst",PlayerType.HUMAN);
-            Tuple<String, PlayerType> player2 = new Tuple<>("AI",PlayerType.HUMAN);
-            mainViewController.getMainController().getGamePreparationController().startGame(new Tuple<>(player1,player2),null,false);
-
-        }
-    }
-
-
-
-
-    /**
      * in id the number of the patch is stored. noNicePatch is true if the patch does not rotate properly
      */
     private class PatchView extends ImageView {
@@ -409,11 +291,12 @@ public class GameScreenViewController {
         /**
          * Constructor for a new patch. Loads it, sets high and with and noNicePatch
          *
-         * @param i number of Patch
+         * @param p the patch
          */
-        private PatchView(Patch p, int i){
+        private PatchView(Patch p){
+            String path = PatchMap.getInstance().getImagePath(p);
             try {
-                this.setImage(new Image(this.getClass().getResource("/view/images/Patches/Patch" + i + ".png").toURI().toString()));
+                this.setImage(new Image(this.getClass().getResource(path).toURI().toString()));
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
@@ -758,13 +641,8 @@ public class GameScreenViewController {
             if(positionOnBoard == 50 ){
                 this.setX(this.getX() - 0.5 * STEPPING);
             }
-
         }
-
     }
-
-
-
     @FXML
     public void onUndoAction(ActionEvent actionEvent) {
     }
@@ -846,5 +724,84 @@ public class GameScreenViewController {
     @FXML
     public void onCancelAction(){
         activePatchView.setVisible(false);
+    }
+
+    /**
+     * changes position and rotation of the activePatch
+     *
+     * @param keyEvent the pressed kay
+     */
+    public void handleKeyPressed(KeyEvent keyEvent) throws InterruptedException {
+        if(keyEvent.getCode() == KeyCode.W || keyEvent.getCode() == KeyCode.NUMPAD5){
+            if(activePatchView.moveIsLegit('w')){
+                activePatchView.moveUp();
+            }else{
+                System.out.println("are you blind?");
+            }
+        }else if(keyEvent.getCode() == KeyCode.S  || keyEvent.getCode() == KeyCode.NUMPAD2){
+            if(activePatchView.moveIsLegit('s')){
+                activePatchView.moveDown();
+            }else{
+                System.out.println("are you blind?");
+            }
+        }
+        else if(keyEvent.getCode() == KeyCode.A || keyEvent.getCode() == KeyCode.NUMPAD1 ){
+            if(activePatchView.moveIsLegit('a')){
+                activePatchView.moveLeft();
+            }else{
+                System.out.println("are you blind?");
+            }
+        }
+        else if(keyEvent.getCode() == KeyCode.D || keyEvent.getCode() == KeyCode.NUMPAD3){
+            if(activePatchView.moveIsLegit('d')){
+                activePatchView.moveRight();
+            }else{
+                System.out.println("are you blind?");
+            }
+        }
+        else if(keyEvent.getCode() == KeyCode.E || keyEvent.getCode() == KeyCode.NUMPAD6){
+            if(activePatchView.rotationIsLegit()){
+                activePatchView.rotate();
+            }else{
+                System.out.println("please move away from the corner a little bit");
+            }
+        }
+        else if(keyEvent.getCode() == KeyCode.Q || keyEvent.getCode() == KeyCode.NUMPAD4) {
+            activePatchView.flip();
+        }
+        else if(keyEvent.getCode() == KeyCode.R || keyEvent.getCode() == KeyCode.NUMPAD0){
+
+            try{
+                GameController gameController = mainViewController.getMainController().getGameController();
+                GameState gameState = mainViewController.getMainController().getGame().getCurrentGameState();
+                gameController.takePatch(gameState.getPatchByID(activePatchView.id), activePatchView.readyToGo(), rotation, activePatchView.flipped);
+            }catch(NullPointerException e){
+                System.out.println("the patch is not placed yet");
+            }
+        }else if(keyEvent.getCode() == KeyCode.C){ //only for debugging
+            Matrix ready = activePatchView.readyToGo();
+            ready.print();
+            System.out.println();
+        }else if(keyEvent.getCode() == KeyCode.V){ //only for debugging
+
+            activePatchView.matrix.print();
+            System.out.println();
+            System.out.println("posX: " + activePatchView.posX);
+            System.out.println("posY: " + activePatchView.posY);
+            System.out.println("height: " + activePatchView.height);
+            System.out.println("width: " + activePatchView.width);
+            System.out.println("NoNicePatch?: " + activePatchView.noNicePatch);
+            System.out.println("flipped? " + activePatchView.flipped);
+            System.out.println();
+        }else if(keyEvent.getCode() == KeyCode.T){ //just to test the movement of the time token on the time board
+            activeTimeToken.moveToken(
+            );
+            //System.out.println("POB:" + activeTimeToken.positionOnBoard + " FP:" + activeTimeToken.firstPosX + "," + activeTimeToken.firstPosY + "  LP: " + activeTimeToken.lastPosX + "," + activeTimeToken.lastPosY +"  CP:"+ activeTimeToken.currentPositionX + "," + activeTimeToken.currentPositionY);
+        }else if(keyEvent.getCode() == KeyCode.Z){ //Starts a new game
+            Tuple<String, PlayerType> player1 = new Tuple<>("Horst",PlayerType.HUMAN);
+            Tuple<String, PlayerType> player2 = new Tuple<>("AI",PlayerType.HUMAN);
+            mainViewController.getMainController().getGamePreparationController().startGame(new Tuple<>(player1,player2),null,false);
+
+        }
     }
 }
