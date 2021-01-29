@@ -60,6 +60,10 @@ public class PatchView extends ImageView {
         return patch;
     }
 
+    public int getRotation() {
+        return rotation;
+    }
+
     public Matrix getMatrix() {
         return matrix;
     }

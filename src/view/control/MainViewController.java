@@ -161,6 +161,13 @@ public class MainViewController {
             mainController.setHighScoreAUI(highscoresViewController);
             mainController.setLoadGameAUI(loadGameViewController);
 
+            //TODO
+            mainController.setErrorAUI(errorAUI);
+            mainController.setLogAUI(logAUI);
+            mainController.setTurnAUI(turnAUI);
+            mainController.setHintAUI(hintAUI);
+
+
         }
 
     }
