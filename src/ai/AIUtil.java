@@ -107,8 +107,8 @@ public final class AIUtil {
 
     public static Tuple<GameState, Player> generateAdvance(GameState state, Player next){
         GameState edited = state.copy();
-        final Player BEHIND = edited.getPlayer1().equals(next)? edited.getPlayer1(): edited.getPlayer2();
-        final Player OTHER = edited.getPlayer1().equals(BEHIND)? edited.getPlayer1() : edited.getPlayer2();
+        final Player BEHIND = edited.getPlayer1().lightEquals(next)? edited.getPlayer1(): edited.getPlayer2();
+        final Player OTHER = edited.getPlayer1().lightEquals(BEHIND)? edited.getPlayer1() : edited.getPlayer2();
         int posBehind = BEHIND.getBoardPosition();
         int posOther = OTHER.getBoardPosition();
         final int MONEY_BEHIND = BEHIND.getMoney();
