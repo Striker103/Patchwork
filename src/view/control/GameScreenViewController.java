@@ -115,15 +115,11 @@ public class GameScreenViewController {
         this.mainViewController = mainViewController;
     }
 
-    public void initGame(String firstPlayer, String secondPlayer){
-        System.out.println("bla");
+    public void initGame(){
         List<Patch> patches = mainViewController.getMainController().getGame().getCurrentGameState().getPatches();
-        for(Patch patch : patches)
-        {
-            System.out.println(patch.getPatchID());
-        }
-        player1Name.setText(firstPlayer);
-        player2Name.setText(secondPlayer);
+
+        player1Name.setText(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1().getName());
+        player2Name.setText(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2().getName());
     }
 
     public void setOwnScene(Scene scene)  {
