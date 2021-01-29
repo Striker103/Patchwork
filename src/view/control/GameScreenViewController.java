@@ -82,7 +82,7 @@ public class GameScreenViewController {
         player1Name.setText(game.getCurrentGameState().getPlayer1().getName());
         player2Name.setText(game.getCurrentGameState().getPlayer2().getName());
         updateMoney();
-        updateList();
+        initList();
         showChooseablePatches();
         try {
             loadPatches();
@@ -97,13 +97,31 @@ public class GameScreenViewController {
         player2Buttons.setText("Buttons: " + game.getCurrentGameState().getPlayer2().getMoney());
     }
 
-    public void updateList()
+    public void initList()
     {
+        patchListView.getItems().clear();
+
         patchViews = new ArrayList<>();
         patches = game.getCurrentGameState().getPatches();
 
         for(Patch patch : patches)
         patchViews.add(new PatchView(patch));
+
+
+        try {
+            loadPatches();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        showChooseablePatches();
+    }
+
+    public void updateList(){
+        Patch patch = activePatchView.patch;
+        game.getCurrentGameState().takePatchOutOfPatchList(patch);
+
+        initList();
+
     }
 
     public void setOwnScene(Scene scene)  {
@@ -170,46 +188,52 @@ public class GameScreenViewController {
         }
     }
 
+    //TODO behaviour of list if less then three patches are in the list view
     public void showChooseablePatches(){
-        //imageView1.setImage(new Image(new FileInputStream("src/view/images/Patches/Patch2.png")));
-        IOController ioController = mainViewController.getMainController().getIOController();
-        List<Patch> patches = ioController.importCSVNotShuffled();
-        imageView1.setImage(patchViews.get(0).getImage());
-        Patch patch = patches.get(patchViews.get(0).id - 1);
-        Matrix shape = patch.getShape();
-        Matrix trim = shape.trim();
-        int height = trim.getRows();
-        int width = trim.getColumns();
-        imageView1.setFitHeight(height * 30);
-        imageView1.setFitWidth(width * 30);
-        cost1.setText("Cost: " + patch.getButtonsCost());
-        time1.setText("Time: " + patch.getTime());
-        /*if(activeTimeToken.player.getMoney() < patch.getButtonsCost())
-            chooseButton1.setDisable(true);
-        else
-            chooseButton1.setDisable(false);*/
+        Patch patch;
+        Matrix shape;
+        Matrix trim;
+        int height;
+        int width;
+        if(patches.size() >= 1){
+            imageView1.setImage(patchViews.get(0).getImage());
+            patch = patches.get(0);
+            shape = patch.getShape();
+            trim = shape.trim();
+            height = trim.getRows();
+            width = trim.getColumns();
+            imageView1.setFitHeight(height * 30);
+            imageView1.setFitWidth(width * 30);
+            cost1.setText("Cost: " + patch.getButtonsCost());
+            time1.setText("Time: " + patch.getTime());
+        }
+        if(patches.size() >= 2){
+            imageView2.setImage(patchViews.get(1).getImage());
+            patch = patches.get(1);
+            shape = patch.getShape();
+            trim = shape.trim();
+            height = trim.getRows();
+            width = trim.getColumns();
+            imageView2.setFitHeight(height * 30);
+            imageView2.setFitWidth(width * 30);
+            cost2.setText("Cost: " + patch.getButtonsCost());
+            time2.setText("Time: " + patch.getTime());
+        }
 
-        imageView2.setImage(patchViews.get(1).getImage());
-        patch = patches.get(patchViews.get(1).id - 1 );
-        shape = patch.getShape();
-        trim = shape.trim();
-        height = trim.getRows();
-        width = trim.getColumns();
-        imageView2.setFitHeight(height * 30);
-        imageView2.setFitWidth(width * 30);
-        cost2.setText("Cost: " + patch.getButtonsCost());
-        time2.setText("Time: " + patch.getTime());
+        if(patches.size() >= 3){
+            imageView3.setImage(patchViews.get(2).getImage());
+            patch = patches.get(2);
+            shape = patch.getShape();
+            trim = shape.trim();
+            height = trim.getRows();
+            width = trim.getColumns();
+            imageView3.setFitHeight(height * 30);
+            imageView3.setFitWidth(width * 30);
+            cost3.setText("Cost: " + patch.getButtonsCost());
+            time3.setText("Time: " + patch.getTime());
+        }
 
-        imageView3.setImage(patchViews.get(2).getImage());
-        patch = patches.get(patchViews.get(2).id - 1);
-        shape = patch.getShape();
-        trim = shape.trim();
-        height = trim.getRows();
-        width = trim.getColumns();
-        imageView3.setFitHeight(height * 30);
-        imageView3.setFitWidth(width * 30);
-        cost3.setText("Cost: " + patch.getButtonsCost());
-        time3.setText("Time: " + patch.getTime());
+
     }
 
     public void loadSpecialPatches() throws FileNotFoundException {
@@ -285,6 +309,7 @@ public class GameScreenViewController {
         private static final int OFFSET_X = 0;
         private static final int OFFSET_Y = 0;
         private static final int STEPPING = 30;
+        private Patch patch;
         Matrix matrix;
 
 
@@ -303,6 +328,7 @@ public class GameScreenViewController {
             Matrix shape = p.getShape();
             Matrix trim = shape.trim();
 
+            patch = p;
             id = p.getPatchID();
             this.height = trim.getRows();
             this.width = trim.getColumns();
@@ -684,6 +710,9 @@ public class GameScreenViewController {
 
     @FXML
     public void onChoose1Action(ActionEvent actionEvent) {
+        if(patches.size() == 0){
+            return;
+        }
         PatchView patchView = patchViews.get(0);
         pane.getChildren().add(patchView);
         patchView.setX(150);
@@ -693,10 +722,14 @@ public class GameScreenViewController {
         }
         activePatchView = patchView;
         rotation = 0;
+        updateList();
     }
 
     @FXML
     public void onChoose2Action(ActionEvent actionEvent) {
+        if(patches.size() <= 1){
+            return;
+        }
         PatchView patchView = patchViews.get(1);
         pane.getChildren().add(patchView);
         patchView.setX(150);
@@ -706,19 +739,24 @@ public class GameScreenViewController {
         }
         activePatchView = patchView;
         rotation = 0;
+        updateList();
     }
 
     @FXML
     public void onChoose3Action(ActionEvent actionEvent) {
-            PatchView patchView = patchViews.get(2);
-            pane.getChildren().add(patchView);
-            patchView.setX(150);
-            patchView.setY(150);
-            if (!patchView.isVisible()) {
-                patchView.setVisible(true);
-            }
-            activePatchView = patchView;
-            rotation = 0;
+        if(patches.size() <= 2){
+            return;
+        }
+        PatchView patchView = patchViews.get(2);
+        pane.getChildren().add(patchView);
+        patchView.setX(150);
+        patchView.setY(150);
+        if (!patchView.isVisible()) {
+            patchView.setVisible(true);
+        }
+        activePatchView = patchView;
+        rotation = 0;
+        updateList();
     }
 
     @FXML

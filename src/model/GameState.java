@@ -190,12 +190,21 @@ public class GameState{
 		throw new IllegalStateException("Methode deprecated. Please use getNextPlayer from GameController");
 	}
 
+
 	/**
 	 * Whether or not not the special tile is available in this gamestate
 	 * @return availability of the special tile
 	 */
 	public boolean specialTileAvailable(){
 		return !player1.getHasSpecialTile() && !player2.getHasSpecialTile();
+	}
+
+	/**
+	 * Removes the takeOutPatch from the patches list
+	 * @param takeOutPatch the patch to take out of the list
+	 */
+	public void takePatchOutOfPatchList(Patch takeOutPatch){
+		patches.remove(takeOutPatch);
 	}
 
 
