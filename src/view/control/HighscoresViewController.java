@@ -92,10 +92,10 @@ public class HighscoresViewController implements HighScoreAUI {
     @Override
     public void showHighscores(List<Score> highscores) {
 
-        opponentColumn.setCellValueFactory(new PropertyValueFactory<>("opponent type"));
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        scoreColumn.setCellValueFactory(new PropertyValueFactory<>("score"));
-        ironmanColumn.setCellValueFactory(new PropertyValueFactory<>("ironman?"));
+        opponentColumn.setCellValueFactory(new PropertyValueFactory<>("opponentType"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("playerName"));
+        scoreColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
+        ironmanColumn.setCellValueFactory(new PropertyValueFactory<>("ironman"));
 
         tableView.getItems().addAll(highscores);
 
