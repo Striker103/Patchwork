@@ -114,14 +114,9 @@ public class PlayerController {
 	 *
 	 * @param patch the patch the player wants to buy
 	 */
-	boolean payPatch(Player currentPlayer, Patch patch) {
-		if (currentPlayer.getMoney() < patch.getButtonsCost()) {
-			errorAUI.showError("when you are to broke to buy a Patch <sad pikachu face>");
-			return false;
-		}
+	void payPatch(Player currentPlayer, Patch patch) {
 		currentPlayer.setMinusMoney(patch.getButtonsCost());
 		logAUI.updateLog(currentPlayer.getName() + " bought " + patch.getPatchID() + " for " + patch.getButtonsCost() + " buttons");
-		return true;
 	}
 
 	/**

@@ -25,24 +25,44 @@ public class MinMaxTree<E> {
         children = new HashSet<>();
     }
 
+    /**
+     * Add some children to the tree
+     * @param childs the trees which should be added to the tree
+     */
     @SafeVarargs
     public final void add(MinMaxTree<E>... childs){
         children.addAll(Arrays.asList(childs));
     }
 
+    /**
+     * get the children of the tree
+     * @return the hashList of the tree. This is no copy
+     */
     public HashSet<MinMaxTree<E>> getChildren(){
         return children;
     }
 
-    public boolean remove(MinMaxTree<E> toRemove){
-        return children.remove(toRemove);
-    }
-
+    /**
+     * gets the node content
+     * @return the content of the node. may be null.
+     */
     public E getNodeContent(){
         return nodeContent;
     }
 
-    public int calculateMinMaxWeight(final Function<E, Integer> mapper){
+    /**
+     * calculates the best Child of the Children based on the value function which will be applied on leafs on this tree. Take a look on MiniMaxAlgorithms.
+     * @param mapper the function to evaluate the leafnodes
+     * @return the best option for the actual Content with this function. null if there is none
+     */
+    public E calculateMinMaxNode(final Function<E, Integer> mapper){
+        return children.stream()
+                .map(child -> new Tuple<>(child.getNodeContent(), child.calculateMinMaxWeight(mapper)))
+                .max(Comparator.comparingInt(Tuple::getSecond))
+                .orElse(new Tuple<>(null, 1)).getFirst();
+    }
+
+    private int calculateMinMaxWeight(final Function<E, Integer> mapper){
         if(children.isEmpty()) return mapper.apply(nodeContent);
         if(nodeType) return children.stream().map(node -> node.calculateMinMaxWeight(mapper)).max(Comparator.naturalOrder()).orElse(0);
         return children.stream().map(node -> node.calculateMinMaxWeight(mapper)).min(Comparator.naturalOrder()).orElse(0);
@@ -54,6 +74,16 @@ public class MinMaxTree<E> {
         }
         else{
             children.forEach(tree -> tree.createOnLevel(funct, level-1));
+        }
+    }
+
+    public void createOnLevelAndDelete(final Function<E, HashSet<MinMaxTree<E>>> funct, int level){
+        if(level==0){
+            children.addAll(funct.apply(nodeContent));
+            nodeContent = null;
+        }
+        else{
+            children.forEach(tree -> tree.createOnLevelAndDelete(funct, level-1));
         }
     }
 
