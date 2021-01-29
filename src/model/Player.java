@@ -209,6 +209,10 @@ public class Player {
 				Objects.equals(playerType, that.playerType) &&
 				Objects.equals(score, that.score) ;
 	}
+
+	public boolean lightEquals(Player other){
+		return this.name.equals(other.name) && this.playerType==other.playerType;
+	}
 	/**
 	 * Generates HashCode
 	 * @return HashCode
