@@ -42,8 +42,16 @@ public class HighscoresViewController implements HighScoreAUI {
     private final String highScorePath = "data/highScores/highScoreData.json";
 
 
+    @FXML
     public void onOkAction(ActionEvent actionEvent) {
         mainViewController.showScene();
+    }
+
+    @FXML
+    public void onClear(ActionEvent actionEvent){
+        mainViewController.getMainController().getHighScoreController().clearHighScores(new File(highScorePath));
+        tableView.getItems().clear();
+        mainViewController.getMainController().getHighScoreController().showHighScores(new File(highScorePath));
     }
 
     public void setMainViewController(MainViewController mainViewController) {

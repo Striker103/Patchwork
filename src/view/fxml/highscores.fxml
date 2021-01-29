@@ -19,6 +19,11 @@
             <TableColumn fx:id="ironmanColumn" prefWidth="93.0" text="Ironman?" />
          </columns>
       </TableView>
-      <Button fx:id="okButton" layoutX="1023.0" layoutY="708.0" mnemonicParsing="false" onAction="#onOkAction" prefHeight="47.0" prefWidth="70.0" text="OK" />
+      <HBox alignment="CENTER" layoutX="-3.0" layoutY="650.0" prefHeight="150.0" prefWidth="1200.0" spacing="60.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#onClear" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: #FF7F64;" text="Clear HighScores" />
+            <Button fx:id="okButton" mnemonicParsing="false" onAction="#onOkAction" prefHeight="50.0" prefWidth="150.0" text="Back" />
+         </children>
+      </HBox>
    </children>
 </Pane>
