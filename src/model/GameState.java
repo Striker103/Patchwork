@@ -207,5 +207,52 @@ public class GameState{
 		patches.remove(takeOutPatch);
 	}
 
+	/**
+	 * Gets the patches that could be placed by the player
+	 * @return the first three patches of the patch list
+	 */
+	public Patch[] getNext3Patches(){
+		Patch[] nextPatches = new Patch[3];
+		for (int i=0;i<3;i++){
+			try {
+				nextPatches[i] = patches.get(i);
+			}catch (Exception e){
+				nextPatches[i] = null;
+			}
+		}
+		return nextPatches;
+	}
+
+	/**
+	 * Remove the choosen Patch by index and append all patches before
+	 * @param index the index of the patch from 0-2
+	 */
+	public void tookPatch(int index){
+		if(index>2||index<0){
+			throw new IllegalArgumentException("Please give the choosen Patch (0-2)");
+		}
+		for(int i = 0;i<index;i++){
+			Patch indexPatch = patches.get(0);
+			patches.remove(0);
+			patches.add(indexPatch);
+		}
+		patches.remove(0);
+	}
+	/**
+	 * Remove the choosen Patch by object and append all patches before
+	 * @param choosenPatch the patch by object reference
+	 */
+	public void tookPatch(Patch choosenPatch){
+		if(patches.indexOf(choosenPatch)>2){
+			throw new IllegalArgumentException("Please choose one of the first three patches");
+		}
+		for(int i = 0;i<patches.indexOf(choosenPatch);i++){
+			Patch indexPatch = patches.get(0);
+			patches.remove(0);
+			patches.add(indexPatch);
+		}
+		patches.remove(0);
+	}
+
 
 }
