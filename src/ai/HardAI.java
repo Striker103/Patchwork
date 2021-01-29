@@ -24,66 +24,65 @@ public class HardAI extends AI {
     @Override
     public GameState calculateTurn(GameState actualState,Player movingPlayer) {
 
-        final long START_TIME = System.currentTimeMillis(); // Time measurement
-        if(movingPlayer.getQuiltBoard().getPatchBoard().count(0)>40){ // When enough spaces are empty, we care for placement later
-            final MinMaxTree<Tuple<GameState, Player>> tree = new MinMaxTree<>(new Tuple<>(actualState, movingPlayer), true); //Let us build a tree
-            final Function<Tuple<GameState, Player>, HashSet<MinMaxTree<Tuple<GameState, Player>>>> createFunction = state -> {
-                HashSet<MinMaxTree<Tuple<GameState, Player>>> set = AIUtil.getNextPatches(state.getFirst()).stream() //next patch options
-                        .filter(patch -> patch.getButtonsCost()<=movingPlayer.getMoney()) //check money
-                        .map(patch -> {
-                            GameState copy = state.getFirst().copy();
-                            Iterator<Patch> iterator = copy.getPatches().iterator();
-                            Patch nextPatch = iterator.next();
-                            List<Patch> toAdd = new ArrayList<>();
-                            while (nextPatch!=null&& ! nextPatch.equals(patch))
-                            {
-                                iterator.remove();
-                                toAdd.add(nextPatch);
-                                nextPatch = iterator.next();
-                            }
+        final long START_TIME = System.currentTimeMillis(); // Time measurement// When enough spaces are empty, we care for placement later
+        final MinMaxTree<Tuple<GameState, Player>> tree = new MinMaxTree<>(new Tuple<>(actualState, movingPlayer), true); //Let us build a tree
+        final Function<Tuple<GameState, Player>, HashSet<MinMaxTree<Tuple<GameState, Player>>>> createFunction = state -> {
+            HashSet<MinMaxTree<Tuple<GameState, Player>>> set = AIUtil.getNextPatches(state.getFirst()).stream() //next patch options
+                    .filter(patch -> patch.getButtonsCost() <= movingPlayer.getMoney()) //check money
+                    .map(patch -> {
+                        GameState copy = state.getFirst().copy();
+                        Iterator<Patch> iterator = copy.getPatches().iterator();
+                        Patch nextPatch = iterator.next();
+                        List<Patch> toAdd = new ArrayList<>();
+                        while (nextPatch != null && !nextPatch.equals(patch)) {
                             iterator.remove();
-                            copy.getPatches().addAll(toAdd);
-                            Player moving, other;
-                            if(copy.getPlayer1().lightEquals(state.getSecond())){ //evaluate players
-                                moving = copy.getPlayer1();
-                                other = copy.getPlayer2();
-                            }
-                            else{
-                                moving = copy.getPlayer2();
-                                other = copy.getPlayer1();
-                            }
-                            moving.getQuiltBoard().getPatches().add(patch); //add patch to list, not to board
-                            moving.setBoardPosition(Math.max(moving.getBoardPosition()+patch.getTime(), 54)); //change board position
-                            Score score = moving.getScore(); //edit score
-                            score.setValue(score.getValue() + calculatePatchValue(patch, moving));
-                            Player next = moving.getBoardPosition()> other.getBoardPosition()?other:moving; //get next moving player
-                            return new MinMaxTree<>(new Tuple<>(copy, next), other.lightEquals(movingPlayer));
-                        })
-                        .collect(Collectors.toCollection(HashSet::new));
-                set.add(new MinMaxTree<>(AIUtil.generateAdvance(state.getFirst(), state.getSecond()), state.getSecond().lightEquals(movingPlayer))); //get advance option
-                return set; };
-
-            for (int i = 0; START_TIME+7000>System.currentTimeMillis() && i<7; i++) { //For when there is time, build additional layer
-                if(i<2) tree.createOnLevel(createFunction,i);
-                else tree.createOnLevelAndDelete(createFunction, i);
-            }
-            var bestOption = tree.calculateMinMaxNode(tuple -> tuple.getFirst().getPlayer1().getScore().getValue() - tuple.getFirst().getPlayer2().getScore().getValue()); //get max or base
-            if(bestOption.getFirst().equals(actualState)) return null;
-            if(bestOption.getFirst().getPatches().equals(actualState.getPatches())) return bestOption.getFirst(); //chosen when advanced
-            //we have to figure out the best placement and the patch used
-            Patch used = bestOption.getSecond().getQuiltBoard().getPatches().remove(bestOption.getSecond().getQuiltBoard().getPatches().size()-1); //luckily, it is the last patch added
+                            toAdd.add(nextPatch);
+                            nextPatch = iterator.next();
+                        }
+                        iterator.remove();
+                        copy.getPatches().addAll(toAdd);
+                        Player moving, other;
+                        if (copy.getPlayer1().lightEquals(state.getSecond())) { //evaluate players
+                            moving = copy.getPlayer1();
+                            other = copy.getPlayer2();
+                        } else {
+                            moving = copy.getPlayer2();
+                            other = copy.getPlayer1();
+                        }
+                        moving.getQuiltBoard().getPatches().add(patch); //add patch to list, not to board
+                        moving.setBoardPosition(Math.max(moving.getBoardPosition() + patch.getTime(), 54)); //change board position
+                        Score score = moving.getScore(); //edit score
+                        score.setValue(score.getValue() + calculatePatchValue(patch, moving));
+                        Player next = moving.getBoardPosition() > other.getBoardPosition() ? other : moving; //get next moving player
+                        return new MinMaxTree<>(new Tuple<>(copy, next), other.lightEquals(movingPlayer));
+                    })
+                    .collect(Collectors.toCollection(HashSet::new));
+            set.add(new MinMaxTree<>(AIUtil.generateAdvance(state.getFirst(), state.getSecond()), state.getSecond().lightEquals(movingPlayer))); //get advance option
+            return set;
+        };
+        for (int i = 0; START_TIME + 7000 > System.currentTimeMillis() && i < 7; i++) { //For when there is time, build additional layer
+            if (i < 2) tree.createOnLevel(createFunction, i);
+            else tree.createOnLevelAndDelete(createFunction, i);
+        }
+        var bestOption = tree.calculateMinMaxNode(tuple -> tuple.getFirst().getPlayer1().getScore().getValue() - tuple.getFirst().getPlayer2().getScore().getValue()); //get max or base
+        if (bestOption.getFirst().equals(actualState)) return null;
+        if (bestOption.getFirst().getPatches().equals(actualState.getPatches()))
+            return bestOption.getFirst(); //chosen when advanced
+        //we have to figure out the best placement and the patch used
+        if (movingPlayer.getQuiltBoard().getPatchBoard().count(0) > 40) {
+            Patch used = bestOption.getSecond().getQuiltBoard().getPatches().remove(bestOption.getSecond().getQuiltBoard().getPatches().size() - 1); //luckily, it is the last patch added
             GameState copy = actualState.copy();
             Player moving;
-            if(copy.getPlayer1().lightEquals(movingPlayer)){ //evaluate players
+            if (copy.getPlayer1().lightEquals(movingPlayer)) { //evaluate players
                 moving = copy.getPlayer1();
-            }
-            else{
+            } else {
                 moving = copy.getPlayer2();
             }
             moving.setQuiltBoard(placePatch(moving.getQuiltBoard(), used).getFirst());
-            copy.setLogEntry("Took patch "+used.getPatchID());
+            copy.setLogEntry("Took patch " + used.getPatchID());
             return copy;
         }
+
         return null;
     }
 
