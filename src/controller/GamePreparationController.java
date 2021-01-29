@@ -47,6 +47,29 @@ public class GamePreparationController {
 			return;
 		List<Patch> patches;
 		patches = getPatches(file);
+
+		int index = 0;
+
+		for(Patch patch : patches){
+			Matrix shape = patch.getShape();
+			Matrix trim = shape.trim();
+			int height = trim.getRows();
+			int width = trim.getColumns();
+			if(height == 1 && width == 2){
+				break;
+			}
+			index++;
+		}
+
+		List<Patch> patchesBeforeSmallest;
+		if(index < 33){
+			List<Patch> patchesAfterSmallest = patches.subList(index + 1, patches.size());
+			patchesBeforeSmallest = patches.subList(0, index+1);
+			patchesAfterSmallest.addAll(patchesBeforeSmallest);
+			patches = patchesAfterSmallest;
+		}
+
+
 		Game game;
 		if(speed == 0)
 		{

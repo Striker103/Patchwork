@@ -26,8 +26,8 @@ public class PatchMap {
 
         List<Patch> patches = ioController.importCSVNotShuffled();
 
-        for (int i = 0; i < patches.size(); i++){
-            map.put(patches.get(i), "/view/images/Patches/Patch" + i + ".png");
+        for (int i = 1; i < patches.size()+1; i++){
+            map.put(patches.get(i-1), "/view/images/Patches/Patch" + i + ".png");
         }
 
     }
