@@ -11,19 +11,14 @@
             <Font size="60.0" />
          </font>
       </Text>
-      <TableView layoutX="312.0" layoutY="215.0" prefHeight="404.0" prefWidth="577.0">
+      <TableView fx:id="tableView" layoutX="312.0" layoutY="215.0" prefHeight="404.0" prefWidth="577.0">
          <columns>
-            <TableColumn prefWidth="97.0" text="Opponent type" />
-            <TableColumn prefWidth="227.0" text="Name" />
-            <TableColumn prefWidth="159.0" text="Score" />
-            <TableColumn prefWidth="93.0" text="Ironman?" />
+            <TableColumn fx:id="opponentColumn" prefWidth="97.0" text="Opponent type" />
+            <TableColumn fx:id="nameColumn" prefWidth="227.0" text="Name" />
+            <TableColumn fx:id="scoreColumn" prefWidth="159.0" text="Score" />
+            <TableColumn fx:id="ironmanColumn" prefWidth="93.0" text="Ironman?" />
          </columns>
       </TableView>
       <Button fx:id="okButton" layoutX="1023.0" layoutY="708.0" mnemonicParsing="false" onAction="#onOkAction" prefHeight="47.0" prefWidth="70.0" text="OK" />
-      <Label layoutX="454.0" layoutY="639.0" prefHeight="47.0" prefWidth="292.0" text="Doubleclick for more information">
-         <font>
-            <Font size="19.0" />
-         </font>
-      </Label>
    </children>
 </Pane>
