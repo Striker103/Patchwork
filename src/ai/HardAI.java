@@ -24,14 +24,16 @@ public class HardAI extends AI {
     @Override
     public GameState calculateTurn(final GameState actualState,final Player movingPlayer) {
 
+        final double actualTurn = evaluateBoard(movingPlayer.getQuiltBoard());
+
         final long START_TIME = System.currentTimeMillis(); // Time measurement// When enough spaces are empty, we care for placement later
         final MinMaxTree<Tuple<GameState, Player>> tree = new MinMaxTree<>(new Tuple<>(actualState, movingPlayer), true); //Let us build a tree
         final Function<Tuple<GameState, Player>, HashSet<MinMaxTree<Tuple<GameState, Player>>>> createFunction = state -> {
             HashSet<MinMaxTree<Tuple<GameState, Player>>> set = Arrays.stream(state.getFirst().getNext3Patches()) //next patch options
                     .filter(patch -> patch.getButtonsCost() <= movingPlayer.getMoney()) //check money
-                    .map(patch -> {
+                    .flatMap(patch -> {
                         GameState copy = state.getFirst().copy();
-                        state.getFirst().tookPatch(patch);
+                        copy.tookPatch(patch); // Remove Patch from copy
                         Player moving, other;
                         if (copy.getPlayer1().lightEquals(state.getSecond())) { //evaluate players
                             moving = copy.getPlayer1();
@@ -40,12 +42,34 @@ public class HardAI extends AI {
                             moving = copy.getPlayer2();
                             other = copy.getPlayer1();
                         }
-                        moving.getQuiltBoard().getPatches().add(patch); //add patch to list, not to board
-                        moving.setBoardPosition(Math.max(moving.getBoardPosition() + patch.getTime(), 54)); //change board position
-                        Score score = moving.getScore(); //edit score
-                        score.setValue(score.getValue() + calculatePatchValue(patch, moving));
-                        Player next = moving.getBoardPosition() > other.getBoardPosition() ? other : moving; //get next moving player
-                        return new MinMaxTree<>(new Tuple<>(copy, next), other.lightEquals(movingPlayer));
+                        if(movingPlayer.getQuiltBoard().getPatchBoard().count(0)>40) {
+                            moving.getQuiltBoard().getPatches().add(patch); //add patch to list, not to board
+                            moving.setBoardPosition(Math.min(moving.getBoardPosition() + patch.getTime(), 54)); //change board position
+                            Score score = moving.getScore(); //edit score
+                            score.setValue(score.getValue() + calculatePatchValue(patch, moving));
+                            Player next = moving.getBoardPosition() > other.getBoardPosition() ? other : moving; //get next moving player
+                            LinkedHashSet<MinMaxTree<Tuple<GameState, Player>>> temp = new LinkedHashSet<>();
+                            temp.add(new MinMaxTree<>(new Tuple<>(copy, next), other.lightEquals(movingPlayer)));
+                            return temp.stream();
+                        }
+                        else{
+                            return AIUtil.generateAllPossiblePatches(patch).stream()
+                                    .filter(placement -> moving.getQuiltBoard().getPatchBoard().disjunctive(placement.getFirst()))
+                                    .map(placement -> {
+                                        Player copyMove = moving.copy();
+                                        GameState copyState = copy.copy();
+                                        copyMove.getQuiltBoard().addPatch(patch, placement.getFirst(), placement.getSecond().getFirst() *90, placement.getSecond().getSecond());
+                                        copyMove.setBoardPosition(Math.min(copyMove.getBoardPosition() + patch.getTime(), 54)); //change board position
+                                        Score score = copyMove.getScore(); //edit score
+                                        score.setValue(score.getValue() + calculatePatchValue(patch, moving));
+                                        Player next = copyMove.getBoardPosition() > other.getBoardPosition() ? other : copyMove; //get next moving player
+                                        return new MinMaxTree<>(new Tuple<>(copyState, next), other.lightEquals(copyMove));
+                                    })
+                                    .map(child -> new Tuple<>(evaluateBoard(child.getNodeContent().getSecond().getQuiltBoard()), child))
+                                    .sorted((o1, o2) -> (int) Math.signum(o1.getFirst()-o2.getFirst()))
+                                    .limit(3)
+                                    .map(Tuple::getSecond);
+                        }
                     })
                     .collect(Collectors.toCollection(HashSet::new));
             set.add(new MinMaxTree<>(AIUtil.generateAdvance(state.getFirst(), state.getSecond()), state.getSecond().lightEquals(movingPlayer))); //get advance option
@@ -141,6 +165,10 @@ public class HardAI extends AI {
         double result = 1-(circumferenceInner/filledSpots);
         result += intermediate;
         return result;
+    }
+
+    private double evaluateBoard(QuiltBoard quiltBoard) {
+        return evaluateBoard(quiltBoard, 81-quiltBoard.getPatchBoard().count(0));
     }
 
 
