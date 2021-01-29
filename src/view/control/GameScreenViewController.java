@@ -558,14 +558,12 @@ public class GameScreenViewController {
             activePatchView.flip();
         }
         else if(keyEvent.getCode() == KeyCode.R || keyEvent.getCode() == KeyCode.NUMPAD0){
+            GameController gameController = mainViewController.getMainController().getGameController();
+            GameState gameState = mainViewController.getMainController().getGame().getCurrentGameState();
+            gameController.takePatch(activePatchView.getPatch(), activePatchView.readyToGo(), activePatchView.getRotation(), activePatchView.getFlipped());
+            System.out.println("patch placed");
 
-//            try{
-                GameController gameController = mainViewController.getMainController().getGameController();
-                GameState gameState = mainViewController.getMainController().getGame().getCurrentGameState();
-                gameController.takePatch(activePatchView.getPatch(), activePatchView.readyToGo(), activePatchView.getRotation(), activePatchView.getFlipped());
-//            }catch(NullPointerException e){
-//                System.out.println("the patch is not placed yet");
-//            }
+
         }else if(keyEvent.getCode() == KeyCode.C){ //only for debugging
             Matrix ready = activePatchView.readyToGo();
             ready.print();

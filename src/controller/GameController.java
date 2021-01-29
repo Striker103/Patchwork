@@ -85,19 +85,26 @@ public class GameController {
 			turnAUI.retriggerPatchPlacement();
 			return;
 		}
+
+		if (executingPlayer.getMoney() < patch.getButtonsCost()) {
+			errorAUI.showError("when you are to broke to buy a Patch <sad pikachu face>");
+			endTurn();
+			return;
+		}
 		//Clone the GameState
 		mainController.getUndoRedoController().clearRedoList();
 		cloneGameState();
-		endTurn();
 		executingPlayer = getNextPlayer();
 		playerBoard = executingPlayer.getQuiltBoard();
 		playerPatchBoard = playerBoard.getPatchBoard();
 
 
 		//Paying of patch
-		if(!mainController.getPlayerController().payPatch(executingPlayer,patch)){
-			return;
-		}
+		mainController.getPlayerController().payPatch(executingPlayer,patch);
+
+		mainController.getGame().getCurrentGameState().tookPatch(patch);
+
+
 
 		//Placement of patch
 		playerBoard.addPatch(patch,placing,rotation,flipped);
