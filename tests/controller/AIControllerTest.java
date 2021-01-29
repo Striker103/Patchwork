@@ -105,8 +105,9 @@ public class AIControllerTest {
     public void testDoTurnWithHardAI() {
         gamePreparationController.startGame(HardAIVsEasyAI, null, 5,false);
         gameController.cloneGameState();
-
+        long startTime = System.currentTimeMillis();
         aiController.doTurn();
+        assertTrue(startTime-System.currentTimeMillis()<10000);
     }
 
     /**
