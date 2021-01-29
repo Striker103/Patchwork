@@ -232,8 +232,8 @@ public class GameState{
 			throw new IllegalArgumentException("Please give the choosen Patch (0-2)");
 		}
 		for(int i = 0;i<index;i++){
-			Patch indexPatch = patches.get(i);
-			patches.remove(i);
+			Patch indexPatch = patches.get(0);
+			patches.remove(0);
 			patches.add(indexPatch);
 		}
 		patches.remove(0);
@@ -247,8 +247,8 @@ public class GameState{
 			throw new IllegalArgumentException("Please choose one of the first three patches");
 		}
 		for(int i = 0;i<patches.indexOf(choosenPatch);i++){
-			Patch indexPatch = patches.get(i);
-			patches.remove(i);
+			Patch indexPatch = patches.get(0);
+			patches.remove(0);
 			patches.add(indexPatch);
 		}
 		patches.remove(0);
