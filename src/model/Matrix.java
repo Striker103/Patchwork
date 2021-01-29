@@ -178,8 +178,14 @@ public class Matrix implements Iterable<Integer>{
             }
         }
 
-        int rows = emptyRows.length- AIUtil.filledPlaces(new boolean[][]{emptyRows});
-        int cols = emptyColumns.length-AIUtil.filledPlaces(new boolean[][]{emptyColumns});
+        int rows = emptyRows.length;
+        for (boolean bool: emptyRows) {
+            if(bool) rows--;
+        }
+        int cols = emptyColumns.length;
+        for (boolean bool: emptyColumns) {
+            if(bool) cols--;
+        }
         Matrix result = new Matrix(rows,cols);
 
         rows=0;
