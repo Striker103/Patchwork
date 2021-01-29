@@ -22,25 +22,16 @@ public class HardAI extends AI {
      * @return the best possible state for the ai to move
      */
     @Override
-    public GameState calculateTurn(GameState actualState,Player movingPlayer) {
+    public GameState calculateTurn(final GameState actualState,final Player movingPlayer) {
 
         final long START_TIME = System.currentTimeMillis(); // Time measurement// When enough spaces are empty, we care for placement later
         final MinMaxTree<Tuple<GameState, Player>> tree = new MinMaxTree<>(new Tuple<>(actualState, movingPlayer), true); //Let us build a tree
         final Function<Tuple<GameState, Player>, HashSet<MinMaxTree<Tuple<GameState, Player>>>> createFunction = state -> {
-            HashSet<MinMaxTree<Tuple<GameState, Player>>> set = AIUtil.getNextPatches(state.getFirst()).stream() //next patch options
+            HashSet<MinMaxTree<Tuple<GameState, Player>>> set = Arrays.stream(state.getFirst().getNext3Patches()) //next patch options
                     .filter(patch -> patch.getButtonsCost() <= movingPlayer.getMoney()) //check money
                     .map(patch -> {
                         GameState copy = state.getFirst().copy();
-                        Iterator<Patch> iterator = copy.getPatches().iterator();
-                        Patch nextPatch = iterator.next();
-                        List<Patch> toAdd = new ArrayList<>();
-                        while (nextPatch != null && !nextPatch.equals(patch)) {
-                            iterator.remove();
-                            toAdd.add(nextPatch);
-                            nextPatch = iterator.next();
-                        }
-                        iterator.remove();
-                        copy.getPatches().addAll(toAdd);
+                        state.getFirst().tookPatch(patch);
                         Player moving, other;
                         if (copy.getPlayer1().lightEquals(state.getSecond())) { //evaluate players
                             moving = copy.getPlayer1();
