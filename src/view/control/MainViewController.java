@@ -159,6 +159,7 @@ public class MainViewController {
             //currentScene = scene;
 
             mainController.setHighScoreAUI(highscoresViewController);
+            mainController.setLoadGameAUI(loadGameViewController);
 
         }
 

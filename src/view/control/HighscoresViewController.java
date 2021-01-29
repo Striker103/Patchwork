@@ -41,7 +41,6 @@ public class HighscoresViewController implements HighScoreAUI {
 
     private final String highScorePath = "data/highScores/highScoreData.json";
 
-
     @FXML
     public void onOkAction(ActionEvent actionEvent) {
         mainViewController.showScene();
@@ -55,6 +54,11 @@ public class HighscoresViewController implements HighScoreAUI {
     }
 
     public void setMainViewController(MainViewController mainViewController) {
+        this.mainViewController = mainViewController;
+
+    }
+
+    public void showScene() {
 
         Path directory = Paths.get("data");
         try {
@@ -75,15 +79,11 @@ public class HighscoresViewController implements HighScoreAUI {
             e.printStackTrace();
         }
 
-        this.mainViewController = mainViewController;
-
         opponentColumn.setSortable(false);
         nameColumn.setSortable(false);
         scoreColumn.setSortable(false);
         ironmanColumn.setSortable(false);
-    }
 
-    public void showScene() {
         tableView.getItems().clear();
 
         mainViewController.setCurrentScene(ownScene);
