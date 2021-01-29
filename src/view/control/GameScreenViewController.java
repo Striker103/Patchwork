@@ -32,6 +32,8 @@ public class GameScreenViewController {
 
     public Label player1Name;
     public Label player2Name;
+    public Label player1Buttons;
+    public Label player2Buttons;
     private MainViewController mainViewController;
 
     private Player currentPlayer;
@@ -51,6 +53,8 @@ public class GameScreenViewController {
     private TimeToken activeTimeToken;
 
     private List<PatchView> patchViews;
+
+    private Game game;
 
     @FXML
     private Pane pane;
@@ -102,6 +106,8 @@ public class GameScreenViewController {
     }
 
 
+
+
     public GameScreenViewController(){
         //loadTimeBoard();
         /*try {
@@ -116,10 +122,18 @@ public class GameScreenViewController {
     }
 
     public void initGame(){
-        List<Patch> patches = mainViewController.getMainController().getGame().getCurrentGameState().getPatches();
+        game = mainViewController.getMainController().getGame();
+        List<Patch> patches = game.getCurrentGameState().getPatches();
 
-        player1Name.setText(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1().getName());
-        player2Name.setText(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2().getName());
+        player1Name.setText(game.getCurrentGameState().getPlayer1().getName());
+        player2Name.setText(game.getCurrentGameState().getPlayer2().getName());
+        updateMoney();
+    }
+
+    public void updateMoney()
+    {
+        player1Buttons.setText("Buttons: " + game.getCurrentGameState().getPlayer1().getMoney());
+        player2Buttons.setText("Buttons: " + game.getCurrentGameState().getPlayer2().getMoney());
     }
 
     public void setOwnScene(Scene scene)  {

@@ -63,7 +63,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="100.0" text="Buttons">
+                        <Label fx:id="player1Buttons" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="100.0" text="Buttons">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -188,7 +188,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="55.0" prefWidth="157.0" text="Buttons">
+                        <Label fx:id="player2Buttons" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="55.0" prefWidth="157.0" text="Buttons">
                            <font>
                               <Font size="18.0" />
                            </font>
