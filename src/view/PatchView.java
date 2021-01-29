@@ -1,7 +1,9 @@
-package model;
+package view;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import model.Matrix;
+import model.Patch;
 import view.PatchMap;
 
 import java.net.URISyntaxException;

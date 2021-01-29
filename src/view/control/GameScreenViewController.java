@@ -20,6 +20,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import model.*;
 import view.PatchMap;
+import view.PatchView;
 
 
 public class GameScreenViewController {
