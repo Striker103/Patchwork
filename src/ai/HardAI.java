@@ -80,11 +80,11 @@ public class HardAI extends AI {
             else tree.createOnLevelAndDelete(createFunction, i);
         }
         var bestOption = tree.calculateMinMaxNode(tuple -> tuple.getFirst().getPlayer1().getScore().getValue() - tuple.getFirst().getPlayer2().getScore().getValue()); //get max or base
-        if (bestOption.getFirst().equals(actualState)) return null;
-        if (bestOption.getFirst().getPatches().equals(actualState.getPatches()))
-            return bestOption.getFirst(); //chosen when advanced
-        //we have to figure out the best placement and the patch used
         if (movingPlayer.getQuiltBoard().getPatchBoard().count(0) > 40) {
+            if (bestOption.getFirst().equals(actualState)) return null;
+            if (bestOption.getFirst().getPatches().equals(actualState.getPatches()))
+                return bestOption.getFirst(); //chosen when advanced
+            //we have to figure out the best placement and the patch used
             Patch used = bestOption.getSecond().getQuiltBoard().getPatches().remove(bestOption.getSecond().getQuiltBoard().getPatches().size() - 1); //luckily, it is the last patch added
             GameState copy = actualState.copy();
             Player moving;
@@ -98,7 +98,7 @@ public class HardAI extends AI {
             return copy;
         }
 
-        return null;
+        return bestOption.getFirst();
     }
 
     /**
