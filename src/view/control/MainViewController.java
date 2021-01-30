@@ -81,6 +81,11 @@ public class MainViewController {
 
         @Override
         public void retriggerPatchPlacement(){}
+
+        @Override
+        public void updatePatches() {
+            gameScreenViewController.updateList();
+        }
     };
 
     private LoadGameAUI loadGameAUI = new LoadGameAUI() {

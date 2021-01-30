@@ -21,7 +21,6 @@ import javafx.scene.layout.Pane;
 import model.*;
 import view.PatchMap;
 import view.PatchView;
-import view.aui.ErrorAUI;
 
 
 public class GameScreenViewController{
@@ -85,7 +84,7 @@ public class GameScreenViewController{
         player1Name.setText(game.getCurrentGameState().getPlayer1().getName());
         player2Name.setText(game.getCurrentGameState().getPlayer2().getName());
         updateMoney();
-        initList();
+        refreshList();
         showChooseablePatches();
         try {
             loadPatches();
@@ -111,7 +110,7 @@ public class GameScreenViewController{
         player2Buttons.setText("Buttons: " + game.getCurrentGameState().getPlayer2().getMoney());
     }
 
-    public void initList()
+    public void refreshList()
     {
         patchListView.getItems().clear();
 
@@ -132,9 +131,9 @@ public class GameScreenViewController{
 
     public void updateList(){
         Patch patch = activePatchView.getPatch();
-        game.getCurrentGameState().takePatchOutOfPatchList(patch);
+        game.getCurrentGameState().tookPatch(patch);
 
-        initList();
+        refreshList();
 
     }
 
@@ -502,7 +501,6 @@ public class GameScreenViewController{
         }
         activePatchView = patchView;
         rotation = 0;
-        updateList();
     }
 
     @FXML
@@ -525,7 +523,6 @@ public class GameScreenViewController{
         }
         activePatchView = patchView;
         rotation = 0;
-        updateList();
     }
 
     @FXML
@@ -548,7 +545,6 @@ public class GameScreenViewController{
         }
         activePatchView = patchView;
         rotation = 0;
-        updateList();
     }
 
     @FXML

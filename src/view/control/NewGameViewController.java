@@ -138,7 +138,7 @@ public class NewGameViewController {
 
        mainViewController.getMainController().getGamePreparationController().startGame(gameTuple, csvFile, simulationSpeedSpinner.getValue(), ironman);
        mainViewController.getGameScreenViewController().initGame();
-       mainViewController.getGameScreenViewController().initList();
+       mainViewController.getGameScreenViewController().refreshList();
        mainViewController.getGameScreenViewController().showScene();
 
     }
