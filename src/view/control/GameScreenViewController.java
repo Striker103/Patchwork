@@ -629,10 +629,10 @@ public class GameScreenViewController implements TurnAUI {
                 return;
             activePatchView.setFirstPlayer(isFirstPlayer());
             Player currentPlayer = mainViewController.getMainController().getGameController().getNotMovingPlayer();
-            isPlaced = true;
             GameController gameController = mainViewController.getMainController().getGameController();
             boolean placed = gameController.place1x1Patch(activePatchView.getPosX() -2, activePatchView.getPosY()-2, currentPlayer);
             if(placed){
+                isPlaced = true;
                 refreshList();
                 System.out.println("1x1 Patch placed");
             }else{
