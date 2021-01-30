@@ -140,7 +140,7 @@ public class NewGameViewController {
 
        mainViewController.getPauseGameViewController().setGameSaveFile(new File(generateFilePath()));
        mainViewController.getGameScreenViewController().initGame();
-       mainViewController.getGameScreenViewController().initList();
+       mainViewController.getGameScreenViewController().refreshList();
        mainViewController.getGameScreenViewController().showScene();
 
     }

@@ -27,6 +27,8 @@ public class MainViewController implements HighScoreReturn {
     @FXML
     private Button newGameButton;
 
+    private String cssName = "style.css";
+
 
     private  GameScreenViewController gameScreenViewController;
     private  GameSummaryViewController gameSummaryViewController;
@@ -42,6 +44,11 @@ public class MainViewController implements HighScoreReturn {
     private ErrorAUI errorAUI = new ErrorAUI() {
         @Override
         public void showError(String message) {
+            System.out.println("test");
+            Alert alarm = new Alert(Alert.AlertType.ERROR);
+            alarm.setTitle("Error");
+            alarm.setContentText(message);
+            alarm.showAndWait();
 
         }
     };
@@ -75,6 +82,11 @@ public class MainViewController implements HighScoreReturn {
 
         @Override
         public void retriggerPatchPlacement(){}
+
+        @Override
+        public void updatePatches() {
+            gameScreenViewController.updateList();
+        }
     };
 
     public MainViewController(){

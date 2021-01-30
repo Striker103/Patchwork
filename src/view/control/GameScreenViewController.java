@@ -23,7 +23,7 @@ import view.PatchMap;
 import view.PatchView;
 
 
-public class GameScreenViewController {
+public class GameScreenViewController{
 
     public Label player1Name;
     public Label player2Name;
@@ -84,7 +84,7 @@ public class GameScreenViewController {
         player1Name.setText(game.getCurrentGameState().getPlayer1().getName());
         player2Name.setText(game.getCurrentGameState().getPlayer2().getName());
         updateMoney();
-        initList();
+        refreshList();
         showChooseablePatches();
         try {
             loadPatches();
@@ -110,7 +110,7 @@ public class GameScreenViewController {
         player2Buttons.setText("Buttons: " + game.getCurrentGameState().getPlayer2().getMoney());
     }
 
-    public void initList()
+    public void refreshList()
     {
         patchListView.getItems().clear();
 
@@ -131,9 +131,9 @@ public class GameScreenViewController {
 
     public void updateList(){
         Patch patch = activePatchView.getPatch();
-        game.getCurrentGameState().takePatchOutOfPatchList(patch);
+        game.getCurrentGameState().tookPatch(patch);
 
-        initList();
+        refreshList();
 
     }
 
@@ -305,6 +305,7 @@ public class GameScreenViewController {
 
     public void PaneDragged(MouseEvent mouseEvent) {
     }
+
 
     private class TimeToken extends ImageView {
         private int id;
@@ -501,7 +502,6 @@ public class GameScreenViewController {
         }
         activePatchView = patchView;
         rotation = 0;
-        updateList();
     }
 
     @FXML
@@ -524,7 +524,6 @@ public class GameScreenViewController {
         }
         activePatchView = patchView;
         rotation = 0;
-        updateList();
     }
 
     @FXML
@@ -547,7 +546,6 @@ public class GameScreenViewController {
         }
         activePatchView = patchView;
         rotation = 0;
-        updateList();
     }
 
     @FXML
@@ -600,7 +598,6 @@ public class GameScreenViewController {
             GameController gameController = mainViewController.getMainController().getGameController();
             GameState gameState = mainViewController.getMainController().getGame().getCurrentGameState();
             gameController.takePatch(activePatchView.getPatch(), activePatchView.readyToGo(), activePatchView.getRotation(), activePatchView.getFlipped());
-            System.out.println("patch placed");
 
 
         }else if(keyEvent.getCode() == KeyCode.C){ //only for debugging

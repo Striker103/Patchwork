@@ -68,7 +68,7 @@ public class LoadGameViewController implements LoadGameAUI {
 
             mainViewController.getGameScreenViewController().showScene();
             mainViewController.getGameScreenViewController().initGame();
-            mainViewController.getGameScreenViewController().initList();
+            mainViewController.getGameScreenViewController().refreshList();
         }
 
     }
