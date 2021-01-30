@@ -38,6 +38,11 @@ public class GamePreparationControllerTest {
         public void updatePatches() {
 
         }
+
+        @Override
+        public void moveToken(String name, int time) {
+
+        }
     }
 
     private final Tuple<String, PlayerType> player1Tuple = new Tuple<>("Player1", PlayerType.HUMAN);

@@ -115,6 +115,7 @@ public class GameController {
 		}
 		//Moving on timeboard
 		mainController.getPlayerController().moveTimeToken(executingPlayer,patch.getTime());
+		turnAUI.moveToken(executingPlayer.getName(), patch.getTime());
 		endTurn();
 
 	}

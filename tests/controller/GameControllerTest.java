@@ -303,5 +303,10 @@ public class GameControllerTest {
         public void updatePatches() {
 
         }
+
+        @Override
+        public void moveToken(String name, int time) {
+
+        }
     }
 }

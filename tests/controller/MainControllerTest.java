@@ -68,6 +68,11 @@ public class MainControllerTest {
         }
 
         @Override
+        public void moveToken(String name, int time) {
+
+        }
+
+        @Override
         public void loadGame(List<Tuple<Game, File>> games) {
 
         }

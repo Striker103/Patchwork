@@ -9,4 +9,6 @@ public interface TurnAUI {
 	public abstract void retriggerPatchPlacement();
 
 	public abstract void updatePatches();
+
+	public abstract void moveToken(String name, int time);
 }

@@ -77,6 +77,7 @@ public class GameScreenViewController implements TurnAUI {
     }
 
     public void initGame(){
+        loadTimeBoard();
 
         ioController = mainViewController.getMainController().getIOController();
         game = mainViewController.getMainController().getGame();
@@ -89,6 +90,7 @@ public class GameScreenViewController implements TurnAUI {
         showChooseablePatches();
         try {
             loadPatches();
+            loadSpecialPatches();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -109,6 +111,11 @@ public class GameScreenViewController implements TurnAUI {
     {
         player1Buttons.setText("Buttons: " + game.getCurrentGameState().getPlayer1().getMoney());
         player2Buttons.setText("Buttons: " + game.getCurrentGameState().getPlayer2().getMoney());
+    }
+
+    public void updatePlayerPositions(){
+        int posP1 = game.getCurrentGameState().getPlayer1().getBoardPosition();
+        int posP2 = game.getCurrentGameState().getPlayer2().getBoardPosition();
     }
 
     public void refreshList()
@@ -138,13 +145,13 @@ public class GameScreenViewController implements TurnAUI {
     public void showScene(){
         mainViewController.setCurrentScene(ownScene);
         mainViewController.showCurrentScene();
-        try {
-            loadTimeBoard();
+        //try {
+            //loadTimeBoard();
             //loadPatches();
-            loadSpecialPatches();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+            //loadSpecialPatches();
+        //} catch (FileNotFoundException e) {
+           // e.printStackTrace();
+        //}
 
     }
 
@@ -161,14 +168,14 @@ public class GameScreenViewController implements TurnAUI {
         timeBoard.setY(40);
         this.pane.getChildren().add(timeBoard);
 
-        TimeToken timeToken1 = new TimeToken(1);
+        timeToken1 = new TimeToken(1);
         timeToken1.setX(558);
         timeToken1.setY(82);
         timeToken1.setFitWidth(20);
         timeToken1.setFitHeight(20);
         pane.getChildren().add(timeToken1);
 
-        TimeToken timeToken2 = new TimeToken(2);
+        timeToken2 = new TimeToken(2);
         timeToken2.setX(560);
         timeToken2.setY(82);
         timeToken2.setFitWidth(20);
@@ -304,6 +311,7 @@ public class GameScreenViewController implements TurnAUI {
     public void triggerPlayerTurn() {
         refreshList();
         updateMoney();
+        updatePlayerPositions();
     }
 
     @Override
@@ -320,6 +328,16 @@ public class GameScreenViewController implements TurnAUI {
     public void updatePatches() {
         refreshList();
         updateMoney();
+    }
+
+    @Override
+    public void moveToken(String name, int time) {
+        if(name.equals(player1Name.getText())){
+            timeToken1.moveToken(time);
+        }else{
+            timeToken2.moveToken(time);
+        }
+
     }
 
 
@@ -355,6 +373,7 @@ public class GameScreenViewController implements TurnAUI {
             this.setFitHeight(200);
             //Player currentPlayer = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1();
             this.id = id;
+
         }
 
         /**
@@ -621,7 +640,7 @@ public class GameScreenViewController implements TurnAUI {
         }else if(keyEvent.getCode() == KeyCode.T){ //just to test the movement of the time token on the time board
             activeTimeToken.moveToken(
             );
-            //System.out.println("POB:" + activeTimeToken.positionOnBoard + " FP:" + activeTimeToken.firstPosX + "," + activeTimeToken.firstPosY + "  LP: " + activeTimeToken.lastPosX + "," + activeTimeToken.lastPosY +"  CP:"+ activeTimeToken.currentPositionX + "," + activeTimeToken.currentPositionY);
+
         }else if(keyEvent.getCode() == KeyCode.N){ //only for debugging
             System.out.println("current Player:" + mainViewController.getMainController().getGameController().getNextPlayer().getName());
             Matrix firstPlayerBoard = game.getCurrentGameState().getPlayer1().getQuiltBoard().getPatchBoard();

@@ -55,6 +55,11 @@ public class UndoRedoControllerTest {
             public void updatePatches() {
 
             }
+
+            @Override
+            public void moveToken(String name, int time) {
+
+            }
         });
 
         mainController.setLogAUI((message) -> {});

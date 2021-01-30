@@ -113,5 +113,10 @@ public class PlayerControllerTest {
         public void updatePatches() {
 
         }
+
+        @Override
+        public void moveToken(String name, int time) {
+
+        }
     }
 }
