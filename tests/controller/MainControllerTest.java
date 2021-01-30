@@ -3,10 +3,12 @@ package controller;
 import model.Game;
 import model.Patch;
 import model.Score;
+import model.Tuple;
 import org.junit.Before;
 import org.junit.Test;
 import view.aui.*;
 
+import java.io.File;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -66,7 +68,7 @@ public class MainControllerTest {
         }
 
         @Override
-        public void loadGame(List<Game> games) {
+        public void loadGame(List<Tuple<Game, File>> games) {
 
         }
     }
