@@ -6,7 +6,7 @@ public interface TurnAUI {
 
 	public abstract  void trigger1x1Placement();
 
-	public abstract void retriggerPatchPlacement();
+	public abstract void reTriggerPatchPlacement();
 
 	public abstract void updatePatches();
 

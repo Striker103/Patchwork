@@ -140,7 +140,7 @@
                                     </VBox>
                                  </children>
                               </HBox>
-                              <ListView fx:id="patchListView" editable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMousePressed="#onDragDetected1" orientation="HORIZONTAL" prefHeight="130.0" prefWidth="600.0" />
+                              <ListView fx:id="patchListView" editable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="HORIZONTAL" prefHeight="130.0" prefWidth="600.0" />
                               <Button fx:id="passButton" mnemonicParsing="false" onAction="#onPassAction" prefHeight="37.0" prefWidth="70.0" text="Pass" />
                            </children>
                         </VBox>

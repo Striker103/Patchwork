@@ -295,7 +295,7 @@ public class GameControllerTest {
         }
 
         @Override
-        public void retriggerPatchPlacement() {
+        public void reTriggerPatchPlacement() {
 
         }
 

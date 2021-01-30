@@ -1,8 +1,6 @@
 package view.control;
 
 import controller.GameController;
-import controller.IOController;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import java.io.FileInputStream;
@@ -10,13 +8,11 @@ import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import model.*;
 import view.PatchMap;
@@ -32,13 +28,8 @@ public class GameScreenViewController implements TurnAUI {
     public Label player2Buttons;
     private MainViewController mainViewController;
     private String firstPlayerName;
-
-    private IOController ioController;
-    private Player currentPlayer;
-    private GameState gameState;
     private Scene ownScene;
     private PatchView activePatchView;
-    private int rotation;
     private TimeToken timeToken1;
     private TimeToken timeToken2;
     private TimeToken activeTimeToken;
@@ -47,13 +38,10 @@ public class GameScreenViewController implements TurnAUI {
     private Game game;
 
     @FXML
-    private Pane pane;
+    Pane pane;
 
     @FXML
     private ImageView imageView;
-
-    @FXML
-    private Button chooseButton1, chooseButton2, chooseButton3;
 
     @FXML
     private ImageView imageView1, imageView2, imageView3;
@@ -63,10 +51,6 @@ public class GameScreenViewController implements TurnAUI {
 
     @FXML
     private ListView<ImageView> patchListView;
-
-    public void setCurrentPlayer(Player player){
-        currentPlayer = player;
-    }
 
 
     public GameScreenViewController(){
@@ -79,7 +63,6 @@ public class GameScreenViewController implements TurnAUI {
     public void initGame(){
         loadTimeBoard();
 
-        ioController = mainViewController.getMainController().getIOController();
         game = mainViewController.getMainController().getGame();
         patches = game.getCurrentGameState().getPatches();
 
@@ -87,7 +70,7 @@ public class GameScreenViewController implements TurnAUI {
         player2Name.setText(game.getCurrentGameState().getPlayer2().getName());
         updateMoney();
         refreshList();
-        showChooseablePatches();
+        showSelectablePatches();
         try {
             loadPatches();
             loadSpecialPatches();
@@ -113,11 +96,6 @@ public class GameScreenViewController implements TurnAUI {
         player2Buttons.setText("Buttons: " + game.getCurrentGameState().getPlayer2().getMoney());
     }
 
-    public void updatePlayerPositions(){
-        int posP1 = game.getCurrentGameState().getPlayer1().getBoardPosition();
-        int posP2 = game.getCurrentGameState().getPlayer2().getBoardPosition();
-    }
-
     public void refreshList()
     {
 
@@ -134,7 +112,7 @@ public class GameScreenViewController implements TurnAUI {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        showChooseablePatches();
+        showSelectablePatches();
         activePatchView = patchViews.get(0);
     }
 
@@ -145,14 +123,6 @@ public class GameScreenViewController implements TurnAUI {
     public void showScene(){
         mainViewController.setCurrentScene(ownScene);
         mainViewController.showCurrentScene();
-        //try {
-            //loadTimeBoard();
-            //loadPatches();
-            //loadSpecialPatches();
-        //} catch (FileNotFoundException e) {
-           // e.printStackTrace();
-        //}
-
     }
 
     public void loadTimeBoard(){
@@ -203,7 +173,7 @@ public class GameScreenViewController implements TurnAUI {
     }
 
     //TODO behaviour of list if less then three patches are in the list view
-    public void showChooseablePatches(){
+    public void showSelectablePatches(){
         Patch patch;
         Matrix shape;
         Matrix trim;
@@ -246,8 +216,6 @@ public class GameScreenViewController implements TurnAUI {
             cost3.setText("Cost: " + patch.getButtonsCost());
             time3.setText("Time: " + patch.getTime());
         }
-
-
     }
 
     public void loadSpecialPatches() throws FileNotFoundException {
@@ -292,26 +260,13 @@ public class GameScreenViewController implements TurnAUI {
         }
     }
 
-    public int findSmallestPatch(){
-        int index = 0;
-        for(int i = 0; i < 33; i++){
-            gameState = mainViewController.getMainController().getGame().getCurrentGameState();
-            if(gameState.getPatches().get(i).getPatchID() == 1){
-                index = i;
-                break;
-            }
-        }
-        return index;
-    }
-
-    public void PaneDragged(MouseEvent mouseEvent) {
+    public void PaneDragged() {
     }
 
     @Override
     public void triggerPlayerTurn() {
         refreshList();
         updateMoney();
-        updatePlayerPositions();
     }
 
     @Override
@@ -319,8 +274,7 @@ public class GameScreenViewController implements TurnAUI {
 
     }
 
-    @Override
-    public void retriggerPatchPlacement() {
+    public void reTriggerPatchPlacement() {
 
     }
 
@@ -342,7 +296,6 @@ public class GameScreenViewController implements TurnAUI {
 
 
     private class TimeToken extends ImageView {
-        private int id;
         private int firstPosX = 0;
         private int firstPosY = 0;
         private int lastPosX = 14;
@@ -356,7 +309,6 @@ public class GameScreenViewController implements TurnAUI {
         private int verticalDirection = 1; // -1 = left, 1 = right
         private int horizontalDirection = 1; // -1 = up, 1 = down
 
-        private Player player;
 
         /**
          * Constructor for a time token
@@ -371,8 +323,6 @@ public class GameScreenViewController implements TurnAUI {
             pane.setPrefSize(1280, 720);
             this.setFitWidth(200);
             this.setFitHeight(200);
-            //Player currentPlayer = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1();
-            this.id = id;
 
         }
 
@@ -471,47 +421,28 @@ public class GameScreenViewController implements TurnAUI {
         }
     }
     @FXML
-    public void onUndoAction(ActionEvent actionEvent) {
+    public void onUndoAction() {
     }
 
     @FXML
-    public void onPauseAction(ActionEvent actionEvent) {
+    public void onPauseAction() {
         mainViewController.getPauseGameViewController().showScene();
     }
 
     @FXML
-    public void onPassAction(ActionEvent actionEvent) {
+    public void onPassAction() {
     }
 
     @FXML
-    public void onRedoAction(ActionEvent actionEvent) {
+    public void onRedoAction() {
     }
 
     @FXML
-    public void onHintAction(ActionEvent actionEvent) {
+    public void onHintAction() {
     }
 
-    /**
-     * is called when a patch is clicked in the patchListView. it gets the index of the clicked Patch and gets the right Patch out of the patches
-     * list. Then it makes this Patch visible and sets its position. At the end active Patch is set and rotation is reset.
-     */
     @FXML
-    public void onDragDetected1(){
-/*
-        int index = patchListView.getSelectionModel().getSelectedIndex();
-        PatchView patchView = patchViews.get(index);
-        pane.getChildren().add(patchView);
-        patchView.setX(90);
-        patchView.setY(90);
-
-        activePatchView = patchView;
-        rotation = 0;*/
-    }
-
-
-
-    @FXML
-    public void onChoose1Action(ActionEvent actionEvent) {
+    public void onChoose1Action() {
         pane.getChildren().remove(patchViews.get(0));
         pane.getChildren().remove(patchViews.get(1));
         pane.getChildren().remove(patchViews.get(2));
@@ -523,21 +454,19 @@ public class GameScreenViewController implements TurnAUI {
         pane.getChildren().add(patchView);
         if(firstPlayer){
             patchView.setX(150);
-            patchView.setY(150);
         }else{
             patchView.setX(1040);
-            patchView.setY(150);
         }
+        patchView.setY(150);
 
         if(!patchView.isVisible()){
             patchView.setVisible(true);
         }
         activePatchView = patchView;
-        rotation = 0;
     }
 
     @FXML
-    public void onChoose2Action(ActionEvent actionEvent) {
+    public void onChoose2Action() {
         pane.getChildren().remove(patchViews.get(0));
         pane.getChildren().remove(patchViews.get(1));
         pane.getChildren().remove(patchViews.get(2));
@@ -549,20 +478,18 @@ public class GameScreenViewController implements TurnAUI {
         pane.getChildren().add(patchView);
         if(firstPlayer){
             patchView.setX(150);
-            patchView.setY(150);
         }else{
             patchView.setX(1040);
-            patchView.setY(150);
         }
+        patchView.setY(150);
         if(!patchView.isVisible()){
             patchView.setVisible(true);
         }
         activePatchView = patchView;
-        rotation = 0;
     }
 
     @FXML
-    public void onChoose3Action(ActionEvent actionEvent) {
+    public void onChoose3Action() {
         pane.getChildren().remove(patchViews.get(0));
         pane.getChildren().remove(patchViews.get(1));
         pane.getChildren().remove(patchViews.get(2));
@@ -574,16 +501,14 @@ public class GameScreenViewController implements TurnAUI {
         pane.getChildren().add(patchView);
         if(firstPlayer){
             patchView.setX(150);
-            patchView.setY(150);
         }else{
             patchView.setX(1040);
-            patchView.setY(150);
         }
+        patchView.setY(150);
         if (!patchView.isVisible()) {
             patchView.setVisible(true);
         }
         activePatchView = patchView;
-        rotation = 0;
     }
 
     /**
@@ -627,12 +552,14 @@ public class GameScreenViewController implements TurnAUI {
             activePatchView.flip();
             activePatchView.setFirstPlayer(isFirstPlayer());
         }else if(keyEvent.getCode() == KeyCode.R || keyEvent.getCode() == KeyCode.NUMPAD7){
+            pane.getChildren().remove(patchViews.get(0));
+            pane.getChildren().remove(patchViews.get(1));
+            pane.getChildren().remove(patchViews.get(2));
             GameController gameController = mainViewController.getMainController().getGameController();
             gameController.advance();
         }
         else if(keyEvent.getCode() == KeyCode.F || keyEvent.getCode() == KeyCode.NUMPAD9){
             GameController gameController = mainViewController.getMainController().getGameController();
-            GameState gameState = mainViewController.getMainController().getGame().getCurrentGameState();
             gameController.takePatch(activePatchView.getPatch(), activePatchView.readyToGo(), activePatchView.getRotation(), activePatchView.getFlipped());
 
 

@@ -47,7 +47,7 @@ public class UndoRedoControllerTest {
             }
 
             @Override
-            public void retriggerPatchPlacement() {
+            public void reTriggerPatchPlacement() {
 
             }
 

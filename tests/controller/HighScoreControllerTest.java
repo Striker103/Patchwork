@@ -296,7 +296,7 @@ public class HighScoreControllerTest {
         }
 
         @Override
-        public void retriggerPatchPlacement() {
+        public void reTriggerPatchPlacement() {
 
         }
 

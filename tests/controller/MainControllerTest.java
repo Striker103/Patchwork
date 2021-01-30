@@ -58,7 +58,7 @@ public class MainControllerTest {
         }
 
         @Override
-        public void retriggerPatchPlacement() {
+        public void reTriggerPatchPlacement() {
 
         }
 

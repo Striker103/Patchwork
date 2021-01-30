@@ -82,7 +82,7 @@ public class GameController {
 		}
 		//The patch cant be placed there
 		if(!playerPatchBoard.disjunctive(placing)){
-			turnAUI.retriggerPatchPlacement();
+			turnAUI.reTriggerPatchPlacement();
 			return;
 		}
 

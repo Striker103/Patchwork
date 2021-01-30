@@ -42,7 +42,6 @@ public class MainViewController implements HighScoreReturn {
     private Scene currentScene;
 
     private ErrorAUI errorAUI = message -> {
-        System.out.println("test");
         Alert alarm = new Alert(Alert.AlertType.ERROR);
         alarm.setTitle("Error");
         alarm.setContentText(message);
