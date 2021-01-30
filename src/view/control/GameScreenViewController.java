@@ -113,6 +113,7 @@ public class GameScreenViewController implements TurnAUI {
 
     public void refreshList()
     {
+
         patchListView.getItems().clear();
 
         patchViews = new ArrayList<>();
@@ -121,21 +122,13 @@ public class GameScreenViewController implements TurnAUI {
         for(Patch patch : patches)
         patchViews.add(new PatchView(patch));
 
-
         try {
             loadPatches();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         showChooseablePatches();
-    }
-
-    public void updateList(){
-        Patch patch = activePatchView.getPatch();
-        game.getCurrentGameState().tookPatch(patch);
-
-        refreshList();
-
+        activePatchView = patchViews.get(0);
     }
 
     public void setOwnScene(Scene scene)  {
@@ -309,7 +302,8 @@ public class GameScreenViewController implements TurnAUI {
 
     @Override
     public void triggerPlayerTurn() {
-
+        refreshList();
+        updateMoney();
     }
 
     @Override
@@ -324,8 +318,8 @@ public class GameScreenViewController implements TurnAUI {
 
     @Override
     public void updatePatches() {
-        updateList();
-
+        refreshList();
+        updateMoney();
     }
 
 
@@ -499,6 +493,9 @@ public class GameScreenViewController implements TurnAUI {
 
     @FXML
     public void onChoose1Action(ActionEvent actionEvent) {
+        pane.getChildren().remove(patchViews.get(0));
+        pane.getChildren().remove(patchViews.get(1));
+        pane.getChildren().remove(patchViews.get(2));
         if(patches.size() == 0){
             return;
         }
@@ -522,6 +519,9 @@ public class GameScreenViewController implements TurnAUI {
 
     @FXML
     public void onChoose2Action(ActionEvent actionEvent) {
+        pane.getChildren().remove(patchViews.get(0));
+        pane.getChildren().remove(patchViews.get(1));
+        pane.getChildren().remove(patchViews.get(2));
         if(patches.size() <= 1){
             return;
         }
@@ -544,6 +544,9 @@ public class GameScreenViewController implements TurnAUI {
 
     @FXML
     public void onChoose3Action(ActionEvent actionEvent) {
+        pane.getChildren().remove(patchViews.get(0));
+        pane.getChildren().remove(patchViews.get(1));
+        pane.getChildren().remove(patchViews.get(2));
         if(patches.size() <= 2){
             return;
         }
@@ -562,11 +565,6 @@ public class GameScreenViewController implements TurnAUI {
         }
         activePatchView = patchView;
         rotation = 0;
-    }
-
-    @FXML
-    public void onCancelAction(){
-        activePatchView.setVisible(false);
     }
 
     /**

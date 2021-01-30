@@ -1,6 +1,8 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -231,7 +233,7 @@ public class GameState{
 		if(index>2||index<0){
 			throw new IllegalArgumentException("Please give the choosen Patch (0-2)");
 		}
-		for(int i = 0;i<index + 1 ;i++){
+		for(int i = 0;i<index;i++){
 			Patch indexPatch = patches.get(0);
 			patches.remove(0);
 			patches.add(indexPatch);
@@ -239,19 +241,22 @@ public class GameState{
 		patches.remove(0);
 	}
 	/**
-	 * Remove the choosen Patch by object and append all patches before
-	 * @param choosenPatch the patch by object reference
+	 * Remove the chosen Patch by object and append all patches before
+	 * @param chosenPatch the patch by object reference
 	 */
-	public void tookPatch(Patch choosenPatch){
-		if(patches.indexOf(choosenPatch)>2){
+	public void tookPatch(Patch chosenPatch){
+		if(patches.indexOf(chosenPatch)>2){
 			throw new IllegalArgumentException("Please choose one of the first three patches");
 		}
-		for(int i = 0;i<patches.indexOf(choosenPatch) + 1;i++){
+		for(int i = 0;i<patches.indexOf(chosenPatch) + 1;i++){
 			Patch indexPatch = patches.get(0);
 			patches.remove(0);
 			patches.add(indexPatch);
 		}
+
+
 		patches.remove(0);
+
 	}
 
 

@@ -84,11 +84,6 @@
                               <Button fx:id="redoButton" mnemonicParsing="false" onAction="#onRedoAction" prefHeight="30.0" prefWidth="50.0" text="Redo" />
                            </children>
                         </HBox>
-                        <HBox prefHeight="24.0" prefWidth="600.0">
-                           <children>
-                              <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancelAction" text="Cancel" />
-                           </children>
-                        </HBox>
                         <ImageView fx:id="imageView" fitHeight="247.0" fitWidth="331.0" pickOnBounds="true" preserveRatio="true" />
                         <VBox alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="387.0" prefWidth="600.0" spacing="10.0">
                            <children>

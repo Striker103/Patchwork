@@ -101,7 +101,6 @@ public class GameController {
 
 		//Paying of patch
 		mainController.getPlayerController().payPatch(executingPlayer,patch);
-		turnAUI.updatePatches();
 
 		mainController.getGame().getCurrentGameState().tookPatch(patch);
 
