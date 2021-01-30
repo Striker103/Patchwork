@@ -30,6 +30,7 @@ public class GameScreenViewController {
     public Label player1Buttons;
     public Label player2Buttons;
     private MainViewController mainViewController;
+    private String firstPlayerName;
 
     private IOController ioController;
     private Player currentPlayer;
@@ -90,6 +91,17 @@ public class GameScreenViewController {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        firstPlayerName = getFirstPlayerName();
+
+    }
+
+    private String getFirstPlayerName(){
+        return mainViewController.getMainController().getGameController().getNextPlayer().getName();
+    }
+
+    private boolean isFirstPlayer(){
+        Player nextPlayer = mainViewController.getMainController().getGameController().getNextPlayer();
+        return nextPlayer.getName().equals(firstPlayerName);
     }
 
     public void updateMoney()
@@ -472,10 +484,17 @@ public class GameScreenViewController {
         if(patches.size() == 0){
             return;
         }
+        boolean firstPlayer = isFirstPlayer();
         PatchView patchView = patchViews.get(0);
         pane.getChildren().add(patchView);
-        patchView.setX(150);
-        patchView.setY(150);
+        if(firstPlayer){
+            patchView.setX(150);
+            patchView.setY(150);
+        }else{
+            patchView.setX(1040);
+            patchView.setY(150);
+        }
+
         if(!patchView.isVisible()){
             patchView.setVisible(true);
         }
@@ -489,10 +508,16 @@ public class GameScreenViewController {
         if(patches.size() <= 1){
             return;
         }
+        boolean firstPlayer = isFirstPlayer();
         PatchView patchView = patchViews.get(1);
         pane.getChildren().add(patchView);
-        patchView.setX(150);
-        patchView.setY(150);
+        if(firstPlayer){
+            patchView.setX(150);
+            patchView.setY(150);
+        }else{
+            patchView.setX(1040);
+            patchView.setY(150);
+        }
         if(!patchView.isVisible()){
             patchView.setVisible(true);
         }
@@ -506,10 +531,16 @@ public class GameScreenViewController {
         if(patches.size() <= 2){
             return;
         }
+        boolean firstPlayer = isFirstPlayer();
         PatchView patchView = patchViews.get(2);
         pane.getChildren().add(patchView);
-        patchView.setX(150);
-        patchView.setY(150);
+        if(firstPlayer){
+            patchView.setX(150);
+            patchView.setY(150);
+        }else{
+            patchView.setX(1040);
+            patchView.setY(150);
+        }
         if (!patchView.isVisible()) {
             patchView.setVisible(true);
         }
@@ -532,31 +563,37 @@ public class GameScreenViewController {
         if(keyEvent.getCode() == KeyCode.W || keyEvent.getCode() == KeyCode.NUMPAD5){
             if(activePatchView.moveIsLegit('w')){
                 activePatchView.moveUp();
+                activePatchView.setFirstPlayer(isFirstPlayer());
             }
         }else if(keyEvent.getCode() == KeyCode.S  || keyEvent.getCode() == KeyCode.NUMPAD2){
             if(activePatchView.moveIsLegit('s')){
                 activePatchView.moveDown();
+                activePatchView.setFirstPlayer(isFirstPlayer());
             }
         }
         else if(keyEvent.getCode() == KeyCode.A || keyEvent.getCode() == KeyCode.NUMPAD1 ){
             if(activePatchView.moveIsLegit('a')){
                 activePatchView.moveLeft();
+                activePatchView.setFirstPlayer(isFirstPlayer());
             }
         }
         else if(keyEvent.getCode() == KeyCode.D || keyEvent.getCode() == KeyCode.NUMPAD3){
             if(activePatchView.moveIsLegit('d')){
                 activePatchView.moveRight();
+                activePatchView.setFirstPlayer(isFirstPlayer());
             }
         }
         else if(keyEvent.getCode() == KeyCode.E || keyEvent.getCode() == KeyCode.NUMPAD6){
             if(activePatchView.rotationIsLegit()){
                 activePatchView.rotate();
+                activePatchView.setFirstPlayer(isFirstPlayer());
             }else{
                 System.out.println("please move away from the corner a little bit");
             }
         }
         else if(keyEvent.getCode() == KeyCode.Q || keyEvent.getCode() == KeyCode.NUMPAD4) {
             activePatchView.flip();
+            activePatchView.setFirstPlayer(isFirstPlayer());
         }
         else if(keyEvent.getCode() == KeyCode.R || keyEvent.getCode() == KeyCode.NUMPAD0){
             GameController gameController = mainViewController.getMainController().getGameController();
@@ -573,6 +610,16 @@ public class GameScreenViewController {
             activeTimeToken.moveToken(
             );
             //System.out.println("POB:" + activeTimeToken.positionOnBoard + " FP:" + activeTimeToken.firstPosX + "," + activeTimeToken.firstPosY + "  LP: " + activeTimeToken.lastPosX + "," + activeTimeToken.lastPosY +"  CP:"+ activeTimeToken.currentPositionX + "," + activeTimeToken.currentPositionY);
+        }else if(keyEvent.getCode() == KeyCode.N){ //only for debugging
+            System.out.println("current Player:" + mainViewController.getMainController().getGameController().getNextPlayer().getName());
+            Matrix firstPlayerBoard = game.getCurrentGameState().getPlayer1().getQuiltBoard().getPatchBoard();
+            firstPlayerBoard.print();
+            System.out.println();
+        }else if(keyEvent.getCode() == KeyCode.M){ //only for debugging
+            System.out.println("current Player:" + mainViewController.getMainController().getGameController().getNextPlayer().getName());
+            Matrix secondPlayerBoard = game.getCurrentGameState().getPlayer2().getQuiltBoard().getPatchBoard();
+            secondPlayerBoard.print();
+            System.out.println();
         }
     }
 }

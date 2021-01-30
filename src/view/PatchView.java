@@ -4,8 +4,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import model.Matrix;
 import model.Patch;
-import view.PatchMap;
-
 import java.net.URISyntaxException;
 
 public class PatchView extends ImageView {
@@ -24,6 +22,7 @@ public class PatchView extends ImageView {
     private static final int STEPPING = 30;
     private final Patch patch;
     private Matrix matrix;
+    private boolean firstPlayer;
 
     /**
      * Constructor for a new patch. Loads it, sets high and with and noNicePatch
@@ -74,6 +73,10 @@ public class PatchView extends ImageView {
         return flipped;
     }
 
+    public void setFirstPlayer(boolean b){
+        firstPlayer = b;
+    }
+
     /**
      * flips the Patch and the matrix
      */
@@ -109,6 +112,29 @@ public class PatchView extends ImageView {
     public void moveDown(){
         posY++;
         moveY();
+    }
+    public void moveLeft(){
+        posX--;
+        moveX();
+    }
+    public void moveRight(){
+        posX++;
+        moveX();
+    }
+    private void moveX(){
+        int extraY = 0;
+        if(!firstPlayer){
+            extraY = 890;
+        }
+        this.setX(OFFSET_X + posX * STEPPING + delta + extraY);
+
+    }
+    private void moveY(){
+        this.setY(OFFSET_Y + posY * STEPPING+ delta);
+    }
+
+    private void rotate90(){
+        matrix = matrix.rotate();
     }
 
     /**
@@ -182,14 +208,6 @@ public class PatchView extends ImageView {
         }
         return true;
     }
-    public void moveLeft(){
-        posX--;
-        moveX();
-    }
-    public void moveRight(){
-        posX++;
-        moveX();
-    }
 
     /**
      * places the Patch matrix in a 9x9 matrix and adjusts placement
@@ -211,18 +229,6 @@ public class PatchView extends ImageView {
             matrix.insert(trim, posY -2, posX -2);
         }
         return matrix;
-    }
-
-    private void moveX(){
-        this.setX(OFFSET_X + posX * STEPPING + delta);
-
-    }
-    private void moveY(){
-        this.setY(OFFSET_Y + posY * STEPPING+ delta);
-    }
-
-    private void rotate90(){
-        matrix = matrix.rotate();
     }
 
     /**
