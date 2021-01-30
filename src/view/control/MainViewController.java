@@ -41,16 +41,13 @@ public class MainViewController implements HighScoreReturn {
     private Scene mainMenuScene;
     private Scene currentScene;
 
-    private ErrorAUI errorAUI = new ErrorAUI() {
-        @Override
-        public void showError(String message) {
-            System.out.println("test");
-            Alert alarm = new Alert(Alert.AlertType.ERROR);
-            alarm.setTitle("Error");
-            alarm.setContentText(message);
-            alarm.showAndWait();
+    private ErrorAUI errorAUI = message -> {
+        System.out.println("test");
+        Alert alarm = new Alert(Alert.AlertType.ERROR);
+        alarm.setTitle("Error");
+        alarm.setContentText(message);
+        alarm.showAndWait();
 
-        }
     };
 
     private HintAUI hintAUI = new HintAUI() {
@@ -65,29 +62,10 @@ public class MainViewController implements HighScoreReturn {
         }
     };
 
-    private LogAUI logAUI = new LogAUI() {
-        @Override
-        public void updateLog(String log) {
+    private LogAUI logAUI = log -> {
 
-        }
     };
 
-    private TurnAUI turnAUI = new TurnAUI() {
-        @Override
-        public void triggerPlayerTurn() {
-
-        }
-        @Override
-        public void trigger1x1Placement(){}
-
-        @Override
-        public void retriggerPatchPlacement(){}
-
-        @Override
-        public void updatePatches() {
-            gameScreenViewController.updateList();
-        }
-    };
 
     public MainViewController(){
         mainController = new MainController();
@@ -194,11 +172,11 @@ public class MainViewController implements HighScoreReturn {
 
             mainController.setHighScoreAUI(highscoresViewController);
             mainController.setLoadGameAUI(loadGameViewController);
+            mainController.setTurnAUI(gameScreenViewController);
+            mainController.setErrorAUI(errorAUI);
 
             //TODO
-            mainController.setErrorAUI(errorAUI);
             mainController.setLogAUI(logAUI);
-            mainController.setTurnAUI(turnAUI);
             mainController.setHintAUI(hintAUI);
 
 

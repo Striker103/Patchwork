@@ -21,9 +21,10 @@ import javafx.scene.layout.Pane;
 import model.*;
 import view.PatchMap;
 import view.PatchView;
+import view.aui.TurnAUI;
 
 
-public class GameScreenViewController{
+public class GameScreenViewController implements TurnAUI {
 
     public Label player1Name;
     public Label player2Name;
@@ -306,6 +307,27 @@ public class GameScreenViewController{
     public void PaneDragged(MouseEvent mouseEvent) {
     }
 
+    @Override
+    public void triggerPlayerTurn() {
+
+    }
+
+    @Override
+    public void trigger1x1Placement() {
+
+    }
+
+    @Override
+    public void retriggerPatchPlacement() {
+
+    }
+
+    @Override
+    public void updatePatches() {
+        updateList();
+
+    }
+
 
     private class TimeToken extends ImageView {
         private int id;
@@ -329,12 +351,6 @@ public class GameScreenViewController{
          * @param id the id of the token (in our case either 1 or 2)
          */
         private TimeToken(int id) {
-            if(id == 1){
-                //player = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1();
-            }
-            else if(id == 2){
-                //player = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2();
-            }
             try {
                 this.setImage(new Image(this.getClass().getResource("/view/images/TimeTokens/TimeToken"+ id + ".png").toURI().toString()));
             } catch (URISyntaxException e) {
@@ -558,7 +574,7 @@ public class GameScreenViewController{
      *
      * @param keyEvent the pressed kay
      */
-    public void handleKeyPressed(KeyEvent keyEvent) throws InterruptedException {
+    public void handleKeyPressed(KeyEvent keyEvent){
         if(keyEvent.getCode() == KeyCode.W || keyEvent.getCode() == KeyCode.NUMPAD5){
             if(activePatchView.moveIsLegit('w')){
                 activePatchView.moveUp();
