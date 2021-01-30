@@ -82,6 +82,22 @@ public class PatchView extends ImageView {
         firstPlayer = b;
     }
 
+    public int getPosX() {
+        return posX;
+    }
+
+    public int getPosY() {
+        return posY;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
     /**
      * flips the Patch and the matrix
      */
@@ -127,11 +143,17 @@ public class PatchView extends ImageView {
         moveX();
     }
     private void moveX(){
+        int otherBoard = 0;
+        if(height == 1 && width == 1 && !firstPlayer){
+            otherBoard = -890;
+        } else if(height == 1 && width == 1 && firstPlayer){
+            otherBoard = 890;
+        }
         int extraY = 0;
         if(!firstPlayer){
             extraY = 890;
         }
-        this.setX(OFFSET_X + posX * STEPPING + delta + extraY);
+        this.setX(OFFSET_X + posX * STEPPING + delta + extraY + otherBoard);
 
     }
     private void moveY(){

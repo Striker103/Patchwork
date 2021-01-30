@@ -126,12 +126,14 @@ public class GameController {
 	 * @param yPosition The row of the position
 	 * @param player    The Player who placed the patch
 	 */
-	public void place1x1Patch(int xPosition, int yPosition, Player player){
+	public boolean place1x1Patch(int xPosition, int yPosition, Player player){
+		boolean placed = false;
 		try{
-			player.getQuiltBoard().add1x1Patch(xPosition,yPosition);
+			placed = player.getQuiltBoard().add1x1Patch(xPosition,yPosition);
 		}catch (IllegalArgumentException e){
 			errorAUI.showError(e.getMessage());
 		}
+		return placed;
 	}
 
 	/**

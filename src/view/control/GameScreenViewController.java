@@ -290,9 +290,9 @@ public class GameScreenViewController implements TurnAUI {
     public void placeSpecialTile(){
         boolean firstPlayer = isFirstPlayer();
         if(firstPlayer){
-            specialPatches.get(specialPatchIndex).setX(150);
-        }else{
             specialPatches.get(specialPatchIndex).setX(1040);
+        }else{
+            specialPatches.get(specialPatchIndex).setX(150);
         }
         specialPatches.get(specialPatchIndex).setY(150);
         pane.getChildren().add(specialPatches.get(specialPatchIndex));
@@ -478,6 +478,8 @@ public class GameScreenViewController implements TurnAUI {
 
     @FXML
     public void onChoose1Action() {
+        if((activePatchView.getHeight() == 1 && activePatchView.getWidth() == 1))
+            return;
         removePatches();
         if(patches.size() == 0){
             return;
@@ -500,6 +502,8 @@ public class GameScreenViewController implements TurnAUI {
 
     @FXML
     public void onChoose2Action() {
+        if((activePatchView.getHeight() == 1 && activePatchView.getWidth() == 1))
+            return;
         removePatches();
         if(patches.size() <= 1){
             return;
@@ -521,6 +525,8 @@ public class GameScreenViewController implements TurnAUI {
 
     @FXML
     public void onChoose3Action() {
+        if((activePatchView.getHeight() == 1 && activePatchView.getWidth() == 1))
+            return;
         removePatches();
         if(patches.size() <= 2){
             return;
@@ -594,7 +600,8 @@ public class GameScreenViewController implements TurnAUI {
             gameController.advance();
         }
         else if(keyEvent.getCode() == KeyCode.F || keyEvent.getCode() == KeyCode.NUMPAD9){
-            isPlaced = true;
+            if(!isPlaced)
+                return;
             GameController gameController = mainViewController.getMainController().getGameController();
             gameController.takePatch(activePatchView.getPatch(), activePatchView.readyToGo(), activePatchView.getRotation(), activePatchView.getFlipped());
 
@@ -617,6 +624,20 @@ public class GameScreenViewController implements TurnAUI {
             Matrix secondPlayerBoard = game.getCurrentGameState().getPlayer2().getQuiltBoard().getPatchBoard();
             secondPlayerBoard.print();
             System.out.println();
+        }else if(keyEvent.getCode() == KeyCode.X || keyEvent.getCode() == KeyCode.NUMPAD8){
+            if(!(activePatchView.getHeight() == 1 && activePatchView.getWidth() == 1))
+                return;
+            activePatchView.setFirstPlayer(isFirstPlayer());
+            Player currentPlayer = mainViewController.getMainController().getGameController().getNotMovingPlayer();
+            isPlaced = true;
+            GameController gameController = mainViewController.getMainController().getGameController();
+            boolean placed = gameController.place1x1Patch(activePatchView.getPosX() -2, activePatchView.getPosY()-2, currentPlayer);
+            if(placed){
+                refreshList();
+                System.out.println("1x1 Patch placed");
+            }else{
+                System.out.println("there is already a patch");
+            }
         }
     }
 }
