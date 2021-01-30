@@ -21,9 +21,10 @@ import javafx.scene.layout.Pane;
 import model.*;
 import view.PatchMap;
 import view.PatchView;
+import view.aui.ErrorAUI;
 
 
-public class GameScreenViewController {
+public class GameScreenViewController{
 
     public Label player1Name;
     public Label player2Name;
@@ -305,6 +306,7 @@ public class GameScreenViewController {
 
     public void PaneDragged(MouseEvent mouseEvent) {
     }
+
 
     private class TimeToken extends ImageView {
         private int id;
@@ -599,7 +601,6 @@ public class GameScreenViewController {
             GameController gameController = mainViewController.getMainController().getGameController();
             GameState gameState = mainViewController.getMainController().getGame().getCurrentGameState();
             gameController.takePatch(activePatchView.getPatch(), activePatchView.readyToGo(), activePatchView.getRotation(), activePatchView.getFlipped());
-            System.out.println("patch placed");
 
 
         }else if(keyEvent.getCode() == KeyCode.C){ //only for debugging
