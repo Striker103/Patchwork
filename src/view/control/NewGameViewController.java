@@ -137,14 +137,16 @@ public class NewGameViewController {
 
 
        mainViewController.getMainController().getGamePreparationController().startGame(gameTuple, csvFile, simulationSpeedSpinner.getValue(), ironman);
+
+       mainViewController.getPauseGameViewController().setGameSaveFile(new File(generateFilePath()));
        mainViewController.getGameScreenViewController().initGame();
        mainViewController.getGameScreenViewController().refreshList();
        mainViewController.getGameScreenViewController().showScene();
 
     }
 
-    private boolean parametersAreOk() {
-        return true;
+    private String generateFilePath(){
+        return mainViewController.getLoadGameViewController().getSaveGamesPath() + "/" + System.currentTimeMillis() + ".json";
     }
 
     public void onBackAction(ActionEvent actionEvent) {

@@ -13,12 +13,13 @@ import javafx.stage.Stage;
 import model.Game;
 import model.Patch;
 import model.Score;
+import view.HighScoreReturn;
 import view.aui.*;
 
 import java.io.IOException;
 import java.util.List;
 
-public class MainViewController {
+public class MainViewController implements HighScoreReturn {
 
     private static final int oldHeight = 720, oldWidth = 1280;
     private MainController mainController;
@@ -88,13 +89,6 @@ public class MainViewController {
         }
     };
 
-    private LoadGameAUI loadGameAUI = new LoadGameAUI() {
-        @Override
-        public void loadGame(List<Game> games) {
-
-        }
-    };
-
     public MainViewController(){
         mainController = new MainController();
     }
@@ -105,6 +99,27 @@ public class MainViewController {
 
     public GameScreenViewController getGameScreenViewController(){
         return gameScreenViewController;
+    }
+
+    public PauseGameViewController getPauseGameViewController() {
+        return pauseGameViewController;
+    }
+
+    public LoadGameViewController getLoadGameViewController() {
+        return loadGameViewController;
+    }
+
+
+    public GameSummaryViewController getGameSummaryViewController() {
+        return gameSummaryViewController;
+    }
+
+    public HighscoresViewController getHighscoresViewController() {
+        return highscoresViewController;
+    }
+
+    public NewGameViewController getNewGameViewController() {
+        return newGameViewController;
     }
 
     public Scene getMainMenuScene() {
@@ -170,6 +185,13 @@ public class MainViewController {
             gameScreenViewController.setOwnScene(scene);
             //currentScene = scene;
 
+            FXMLLoader pauseGameLoader = new FXMLLoader(getClass().getResource("/view/fxml/PauseGame.fxml"));
+            Pane pauseGameRoot = pauseGameLoader.load();
+            pauseGameViewController = pauseGameLoader.getController();
+            pauseGameViewController.setMainViewController(this);
+            scene = new Scene(pauseGameRoot);
+            pauseGameViewController.setOwnScene(scene);
+
             mainController.setHighScoreAUI(highscoresViewController);
             mainController.setLoadGameAUI(loadGameViewController);
 
@@ -184,6 +206,7 @@ public class MainViewController {
 
     }
 
+    @Override
     public void showScene() {
         setCurrentScene(mainMenuScene);
         showCurrentScene();
@@ -208,7 +231,7 @@ public class MainViewController {
 
     @FXML
     public void onHighscoresAction(ActionEvent actionEvent) {
-        highscoresViewController.showScene();
+        highscoresViewController.showScene(this);
     }
 
 }

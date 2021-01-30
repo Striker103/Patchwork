@@ -8,6 +8,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import model.Score;
+import view.HighScoreReturn;
 import view.aui.HighScoreAUI;
 
 import javax.swing.text.TabableView;
@@ -39,11 +40,13 @@ public class HighscoresViewController implements HighScoreAUI {
 
     private Scene ownScene;
 
+    private HighScoreReturn highScoreReturn;
+
     private final String highScorePath = "data/highScores/highScoreData.json";
 
     @FXML
     public void onOkAction(ActionEvent actionEvent) {
-        mainViewController.showScene();
+        highScoreReturn.showScene();
     }
 
     @FXML
@@ -58,7 +61,9 @@ public class HighscoresViewController implements HighScoreAUI {
 
     }
 
-    public void showScene() {
+    public void showScene(HighScoreReturn highScoreReturn) {
+
+        this.highScoreReturn = highScoreReturn;
 
         Path directory = Paths.get("data");
         try {
