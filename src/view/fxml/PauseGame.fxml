@@ -15,6 +15,7 @@
             <Button fx:id="helpButton" mnemonicParsing="false" onAction="#onHelpAction" text="Help" />
             <Button fx:id="saveButton" mnemonicParsing="false" onAction="#onSaveAction" text="Save" />
             <Button fx:id="highscoresButton" mnemonicParsing="false" onAction="#onHighscoresAction" text="Highscores" />
+            <Button mnemonicParsing="false" onAction="#onMainMenuAction" text="Main Menu" />
          </children>
       </VBox>
    </center>

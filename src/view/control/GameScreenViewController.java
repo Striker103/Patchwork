@@ -446,6 +446,7 @@ public class GameScreenViewController {
 
     @FXML
     public void onPauseAction(ActionEvent actionEvent) {
+        mainViewController.getPauseGameViewController().showScene();
     }
 
     @FXML

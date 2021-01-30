@@ -1,16 +1,14 @@
 package view.control;
 
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Pane;
 import model.Game;
+import model.Tuple;
 import view.aui.LoadGameAUI;
 
 import java.io.File;
@@ -31,18 +29,19 @@ public class LoadGameViewController implements LoadGameAUI {
     private Button cancelButton;
 
     @FXML
-    private TableView<Game> tableView;
+    private TableView<Tuple<Game, File>> tableView;
 
     @FXML
-    private TableColumn<Game, String> gameColumn;
+    private TableColumn<Tuple<Game, File>, String> gameColumn;
 
     @FXML
-    private TableColumn<Game, String> typeColumn;
+    private TableColumn<Tuple<Game, File>, String> typeColumn;
 
     @FXML
-    private TableColumn<Game, String> ironmanColumn;
+    private TableColumn<Tuple<Game, File>, String> ironmanColumn;
 
     private final String saveGamesPath = "data/saveGames";
+
 
 
     public void onCancelAction(ActionEvent actionEvent) {
@@ -51,13 +50,21 @@ public class LoadGameViewController implements LoadGameAUI {
 
     public void onPlayAction(ActionEvent actionEvent) {
 
-        Game selectedGame = tableView.getSelectionModel().getSelectedItem();
+        Tuple<Game, File> selectedGame = tableView.getSelectionModel().getSelectedItem();
 
         if (selectedGame != null){
-            if (!mainViewController.getMainController().hasGame())
-                mainViewController.getMainController().setGame(selectedGame);
-            else
+            if (!mainViewController.getMainController().hasGame()){
+
+                mainViewController.getMainController().setGame(selectedGame.getFirst());
+                mainViewController.getPauseGameViewController().setGameSaveFile(selectedGame.getSecond());
+
+            } else{
                 System.out.println("this should not happen.");
+                return;
+            }
+
+
+
 
             mainViewController.getGameScreenViewController().showScene();
             mainViewController.getGameScreenViewController().initGame();
@@ -109,21 +116,27 @@ public class LoadGameViewController implements LoadGameAUI {
     }
 
     @Override
-    public void loadGame(List<Game> games) {
+    public void loadGame(List<Tuple<Game, File>> games) {
 
-        gameColumn.setCellValueFactory((param -> new SimpleStringProperty(formatGameName(param.getValue()))));
-        typeColumn.setCellValueFactory((param -> new SimpleStringProperty(formatGameType(param.getValue()))));
-        ironmanColumn.setCellValueFactory(new PropertyValueFactory<>("ironman"));
+
+        gameColumn.setCellValueFactory((param -> new SimpleStringProperty(formatGameName(param.getValue().getFirst()))));
+        typeColumn.setCellValueFactory((param -> new SimpleStringProperty(formatGameType(param.getValue().getFirst()))));
+        ironmanColumn.setCellValueFactory((param -> new SimpleStringProperty(String.valueOf(param.getValue().getFirst().isIronman()))));
+
 
         tableView.getItems().addAll(games);
 
     }
 
-    public String formatGameName(Game game){
+    private String formatGameName(Game game){
         return game.getCurrentGameState().getPlayer1().getName() + " - " + game.getCurrentGameState().getPlayer2().getName();
     }
 
-    public String formatGameType(Game game){
+    private String formatGameType(Game game){
         return game.getCurrentGameState().getPlayer1().getPlayerType() + " - " + game.getCurrentGameState().getPlayer2().getPlayerType();
+    }
+
+    public String getSaveGamesPath() {
+        return saveGamesPath;
     }
 }

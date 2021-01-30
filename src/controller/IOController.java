@@ -89,12 +89,12 @@ public class IOController {
 		File[] files = file.listFiles();
 
 		if (files != null) {
-			List<Game> games = new LinkedList<>();
+			List<Tuple<Game, File>> games = new LinkedList<>();
 
 			for (File possibleGame : files) {
 
 				if (possibleGame.canWrite() && possibleGame.isFile()){
-					games.add(readGame(possibleGame));
+					games.add(new Tuple<>(readGame(possibleGame), possibleGame));
 				}
 
 			}
@@ -105,6 +105,7 @@ public class IOController {
 		}
 
 	}
+
 
 	/**
 	 * Imports patches from csv file
