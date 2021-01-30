@@ -443,9 +443,7 @@ public class GameScreenViewController implements TurnAUI {
 
     @FXML
     public void onChoose1Action() {
-        pane.getChildren().remove(patchViews.get(0));
-        pane.getChildren().remove(patchViews.get(1));
-        pane.getChildren().remove(patchViews.get(2));
+        removePatches();
         if(patches.size() == 0){
             return;
         }
@@ -467,9 +465,7 @@ public class GameScreenViewController implements TurnAUI {
 
     @FXML
     public void onChoose2Action() {
-        pane.getChildren().remove(patchViews.get(0));
-        pane.getChildren().remove(patchViews.get(1));
-        pane.getChildren().remove(patchViews.get(2));
+        removePatches();
         if(patches.size() <= 1){
             return;
         }
@@ -490,9 +486,7 @@ public class GameScreenViewController implements TurnAUI {
 
     @FXML
     public void onChoose3Action() {
-        pane.getChildren().remove(patchViews.get(0));
-        pane.getChildren().remove(patchViews.get(1));
-        pane.getChildren().remove(patchViews.get(2));
+        removePatches();
         if(patches.size() <= 2){
             return;
         }
@@ -509,6 +503,12 @@ public class GameScreenViewController implements TurnAUI {
             patchView.setVisible(true);
         }
         activePatchView = patchView;
+    }
+
+    public void removePatches(){
+        pane.getChildren().remove(patchViews.get(0));
+        pane.getChildren().remove(patchViews.get(1));
+        pane.getChildren().remove(patchViews.get(2));
     }
 
     /**
@@ -552,9 +552,7 @@ public class GameScreenViewController implements TurnAUI {
             activePatchView.flip();
             activePatchView.setFirstPlayer(isFirstPlayer());
         }else if(keyEvent.getCode() == KeyCode.R || keyEvent.getCode() == KeyCode.NUMPAD7){
-            pane.getChildren().remove(patchViews.get(0));
-            pane.getChildren().remove(patchViews.get(1));
-            pane.getChildren().remove(patchViews.get(2));
+            removePatches();
             GameController gameController = mainViewController.getMainController().getGameController();
             gameController.advance();
         }

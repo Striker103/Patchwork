@@ -46,6 +46,7 @@ public class MainViewController implements HighScoreReturn {
         alarm.setTitle("Error");
         alarm.setContentText(message);
         alarm.showAndWait();
+        gameScreenViewController.removePatches();
 
     };
 
