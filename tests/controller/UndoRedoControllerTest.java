@@ -50,6 +50,11 @@ public class UndoRedoControllerTest {
             public void retriggerPatchPlacement() {
 
             }
+
+            @Override
+            public void updatePatches() {
+
+            }
         });
 
         mainController.setLogAUI((message) -> {});

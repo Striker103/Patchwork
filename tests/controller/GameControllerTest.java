@@ -298,5 +298,10 @@ public class GameControllerTest {
         public void retriggerPatchPlacement() {
 
         }
+
+        @Override
+        public void updatePatches() {
+
+        }
     }
 }

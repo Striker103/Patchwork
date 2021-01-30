@@ -108,5 +108,10 @@ public class PlayerControllerTest {
 
         @Override
         public void retriggerPatchPlacement(){}
+
+        @Override
+        public void updatePatches() {
+
+        }
     }
 }

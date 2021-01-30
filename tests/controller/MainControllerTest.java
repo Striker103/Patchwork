@@ -61,6 +61,11 @@ public class MainControllerTest {
         }
 
         @Override
+        public void updatePatches() {
+
+        }
+
+        @Override
         public void loadGame(List<Game> games) {
 
         }
