@@ -52,8 +52,8 @@ public class Patch {
 	 */
 	public Patch(int patchID, int buttonIncome, int buttonsCost, Matrix shape, int time) {
 		CheckUtil.assertNonNull(patchID,buttonIncome,buttonsCost,shape,time);
-		CheckUtil.assertNonNegative(buttonIncome,buttonsCost);
-		CheckUtil.assertPositive(patchID,time);
+		CheckUtil.assertNonNegative(buttonIncome,buttonsCost,time);
+		CheckUtil.assertPositive(patchID);
 
 		if(shape.getRows() != MAXSIZEY|| shape.getColumns() != MAXSIZEX) {
 			throw new IllegalArgumentException("Shape has to be a 5x3 array");

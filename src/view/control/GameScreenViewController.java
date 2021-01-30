@@ -8,6 +8,8 @@ import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.*;
@@ -36,6 +38,9 @@ public class GameScreenViewController implements TurnAUI {
     private List<PatchView> patchViews;
     private List<Patch> patches;
     private Game game;
+    private List<PatchView> specialPatches;
+    private int specialPatchIndex = 0;
+    private boolean isPlaced = true;
 
     @FXML
     Pane pane;
@@ -78,6 +83,17 @@ public class GameScreenViewController implements TurnAUI {
             e.printStackTrace();
         }
         firstPlayerName = getFirstPlayerName();
+        int[][] arr = new int[3][5];
+        arr[0][0] = 1;
+        Matrix shape = new Matrix(arr);
+
+        specialPatches = new ArrayList<>();
+        for(int i = 0; i< 5; i++)
+        {
+            Patch patch = new Patch(999 + i, 0 , 0 , shape ,0);
+            specialPatches.add(new PatchView(patch));
+        }
+
 
     }
 
@@ -114,6 +130,8 @@ public class GameScreenViewController implements TurnAUI {
         }
         showSelectablePatches();
         activePatchView = patchViews.get(0);
+        if(!isPlaced)
+            placeSpecialTile();
     }
 
     public void setOwnScene(Scene scene)  {
@@ -269,12 +287,29 @@ public class GameScreenViewController implements TurnAUI {
         updateMoney();
     }
 
+    public void placeSpecialTile(){
+        boolean firstPlayer = isFirstPlayer();
+        if(firstPlayer){
+            specialPatches.get(specialPatchIndex).setX(150);
+        }else{
+            specialPatches.get(specialPatchIndex).setX(1040);
+        }
+        specialPatches.get(specialPatchIndex).setY(150);
+        pane.getChildren().add(specialPatches.get(specialPatchIndex));
+        activePatchView = specialPatches.get(specialPatchIndex);
+        specialPatchIndex++;
+    }
+
     @Override
     public void trigger1x1Placement() {
-
+        isPlaced = false;
     }
 
     public void reTriggerPatchPlacement() {
+        Alert alarm = new Alert(Alert.AlertType.ERROR);
+        alarm.setTitle("Error");
+        alarm.setContentText("there is already a patch on this position");
+        alarm.showAndWait();
 
     }
 
@@ -552,11 +587,14 @@ public class GameScreenViewController implements TurnAUI {
             activePatchView.setFirstPlayer(isFirstPlayer());
             activePatchView.flip();
         }else if(keyEvent.getCode() == KeyCode.R || keyEvent.getCode() == KeyCode.NUMPAD7){
+            if(!isPlaced)
+                return;
             removePatches();
             GameController gameController = mainViewController.getMainController().getGameController();
             gameController.advance();
         }
         else if(keyEvent.getCode() == KeyCode.F || keyEvent.getCode() == KeyCode.NUMPAD9){
+            isPlaced = true;
             GameController gameController = mainViewController.getMainController().getGameController();
             gameController.takePatch(activePatchView.getPatch(), activePatchView.readyToGo(), activePatchView.getRotation(), activePatchView.getFlipped());
 

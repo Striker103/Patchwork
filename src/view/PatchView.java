@@ -30,7 +30,12 @@ public class PatchView extends ImageView {
      * @param p the patch
      */
     public PatchView(Patch p){
-        String path = PatchMap.getInstance().getImagePath(p);
+        String path = "";
+        if(p.getPatchID() >= 999){
+            path = "/view/images/Patches/SpecialPatch.png";
+        }else{
+            path = PatchMap.getInstance().getImagePath(p);
+        }
         try {
             this.setImage(new Image(this.getClass().getResource(path).toURI().toString()));
         } catch (URISyntaxException e) {
