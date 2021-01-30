@@ -39,6 +39,7 @@ public class GameScreenViewController implements TurnAUI {
     private List<Patch> patches;
     private Game game;
     private List<PatchView> specialPatches;
+    private List<PatchView> specialPatchesOnBoard;
     private int specialPatchIndex = 0;
     private boolean isPlaced = true;
 
@@ -66,6 +67,18 @@ public class GameScreenViewController implements TurnAUI {
     }
 
     public void initGame(){
+        int[][] arr = new int[3][5];
+        arr[0][0] = 1;
+        Matrix shape = new Matrix(arr);
+        specialPatchesOnBoard = new ArrayList<>();
+        specialPatches = new ArrayList<>();
+        for(int i = 0; i< 5; i++)
+        {
+            Patch patch = new Patch(999 + i, 0 , 0 , shape ,0);
+            specialPatches.add(new PatchView(patch));
+            specialPatchesOnBoard.add(new PatchView(patch));
+        }
+
         loadTimeBoard();
 
         game = mainViewController.getMainController().getGame();
@@ -83,16 +96,7 @@ public class GameScreenViewController implements TurnAUI {
             e.printStackTrace();
         }
         firstPlayerName = getFirstPlayerName();
-        int[][] arr = new int[3][5];
-        arr[0][0] = 1;
-        Matrix shape = new Matrix(arr);
 
-        specialPatches = new ArrayList<>();
-        for(int i = 0; i< 5; i++)
-        {
-            Patch patch = new Patch(999 + i, 0 , 0 , shape ,0);
-            specialPatches.add(new PatchView(patch));
-        }
 
 
     }
@@ -237,46 +241,47 @@ public class GameScreenViewController implements TurnAUI {
     }
 
     public void loadSpecialPatches() throws FileNotFoundException {
-        String path = "src/view/images/Patches/SpecialPatch.png";
-        for(int i = 1; i < 6; i++){
-            imageView = new ImageView(new Image(new FileInputStream(path)));
+        for(int i = 0; i < 5; i++){
+            PatchView patchView = specialPatchesOnBoard.get(i);
+            if(i == 0){
+                patchView.setFitHeight(25);
+                patchView.setFitWidth(25);
+                patchView.setX(490);
+                patchView.setY(290);
+                pane.getChildren().add(patchView);
+            }
             if(i == 1){
-                imageView.setFitHeight(25);
-                imageView.setFitWidth(25);
-                imageView.setX(490);
-                imageView.setY(290);
-                pane.getChildren().add(imageView);
+                patchView.setFitHeight(25);
+                patchView.setFitWidth(25);
+                patchView.setX(562);
+                patchView.setY(115);
+                pane.getChildren().add(patchView);
             }
             if(i == 2){
-                imageView.setFitHeight(25);
-                imageView.setFitWidth(25);
-                imageView.setX(562);
-                imageView.setY(115);
-                pane.getChildren().add(imageView);
+                patchView.setFitHeight(25);
+                patchView.setFitWidth(25);
+                patchView.setX(703);
+                patchView.setY(220);
+                pane.getChildren().add(patchView);
             }
             if(i == 3){
-                imageView.setFitHeight(25);
-                imageView.setFitWidth(25);
-                imageView.setX(703);
-                imageView.setY(220);
-                pane.getChildren().add(imageView);
+                patchView.setFitHeight(25);
+                patchView.setFitWidth(25);
+                patchView.setX(579);
+                patchView.setY(151);
+                pane.getChildren().add(patchView);
             }
             if(i == 4){
-                imageView.setFitHeight(25);
-                imageView.setFitWidth(25);
-                imageView.setX(579);
-                imageView.setY(151);
-                pane.getChildren().add(imageView);
-            }
-            if(i == 5){
-                imageView.setFitHeight(25);
-                imageView.setFitWidth(25);
-                imageView.setX(597);
-                imageView.setY(255);
-                pane.getChildren().add(imageView);
+                patchView.setFitHeight(25);
+                patchView.setFitWidth(25);
+                patchView.setX(597);
+                patchView.setY(255);
+                pane.getChildren().add(patchView);
             }
         }
     }
+
+
 
     public void PaneDragged() {
     }
@@ -296,6 +301,7 @@ public class GameScreenViewController implements TurnAUI {
         }
         specialPatches.get(specialPatchIndex).setY(150);
         pane.getChildren().add(specialPatches.get(specialPatchIndex));
+        pane.getChildren().remove(specialPatchesOnBoard.get(specialPatchIndex));
         activePatchView = specialPatches.get(specialPatchIndex);
         specialPatchIndex++;
     }
