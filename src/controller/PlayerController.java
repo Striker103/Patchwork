@@ -107,6 +107,7 @@ public class PlayerController {
 		moveAndCheckPosition(playerPos, steps, currentPlayer,currentGameState);
 		logAUI.updateLog(currentPlayer.getName() + " moved forward " + steps + " steps");
 		getIncomeMovement(playerPos, steps, currentPlayer);
+		turnAUI.moveToken(currentPlayer.getName(), steps);
 	}
 
 	/**

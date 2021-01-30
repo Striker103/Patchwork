@@ -53,9 +53,10 @@
                         <VBox prefHeight="232.0" prefWidth="320.0" spacing="10.0">
                            <children>
                               <Label text="Move the patch using the WASD or NUM 5123 keys" />
-                              <Label text="Rotate the patch using the R or NUM 6 key" />
-                              <Label text="Flip the patch using the Q key " />
-                              <Label text="Place the patch using the ENTER key" />
+                              <Label text="Rotate the patch using the E or NUM 6 key" />
+                              <Label text="Flip the patch using the Q or NUM 4 key " />
+                              <Label text="advance on the Board using the R or NUM 7 key" />
+                              <Label text="Place the patch using the F or NUM 9 key" />
                            </children>
                         </VBox>
                         <Label fx:id="player1Name" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="100.0" text="Player1">

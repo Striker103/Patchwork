@@ -626,8 +626,11 @@ public class GameScreenViewController implements TurnAUI {
         else if(keyEvent.getCode() == KeyCode.Q || keyEvent.getCode() == KeyCode.NUMPAD4) {
             activePatchView.flip();
             activePatchView.setFirstPlayer(isFirstPlayer());
+        }else if(keyEvent.getCode() == KeyCode.R || keyEvent.getCode() == KeyCode.NUMPAD7){
+            GameController gameController = mainViewController.getMainController().getGameController();
+            gameController.advance();
         }
-        else if(keyEvent.getCode() == KeyCode.R || keyEvent.getCode() == KeyCode.NUMPAD0){
+        else if(keyEvent.getCode() == KeyCode.F || keyEvent.getCode() == KeyCode.NUMPAD9){
             GameController gameController = mainViewController.getMainController().getGameController();
             GameState gameState = mainViewController.getMainController().getGame().getCurrentGameState();
             gameController.takePatch(activePatchView.getPatch(), activePatchView.readyToGo(), activePatchView.getRotation(), activePatchView.getFlipped());
