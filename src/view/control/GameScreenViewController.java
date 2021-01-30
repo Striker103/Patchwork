@@ -519,38 +519,38 @@ public class GameScreenViewController implements TurnAUI {
     public void handleKeyPressed(KeyEvent keyEvent){
         if(keyEvent.getCode() == KeyCode.W || keyEvent.getCode() == KeyCode.NUMPAD5){
             if(activePatchView.moveIsLegit('w')){
-                activePatchView.moveUp();
                 activePatchView.setFirstPlayer(isFirstPlayer());
+                activePatchView.moveUp();
             }
         }else if(keyEvent.getCode() == KeyCode.S  || keyEvent.getCode() == KeyCode.NUMPAD2){
             if(activePatchView.moveIsLegit('s')){
-                activePatchView.moveDown();
                 activePatchView.setFirstPlayer(isFirstPlayer());
+                activePatchView.moveDown();
             }
         }
         else if(keyEvent.getCode() == KeyCode.A || keyEvent.getCode() == KeyCode.NUMPAD1 ){
             if(activePatchView.moveIsLegit('a')){
-                activePatchView.moveLeft();
                 activePatchView.setFirstPlayer(isFirstPlayer());
+                activePatchView.moveLeft();
             }
         }
         else if(keyEvent.getCode() == KeyCode.D || keyEvent.getCode() == KeyCode.NUMPAD3){
             if(activePatchView.moveIsLegit('d')){
-                activePatchView.moveRight();
                 activePatchView.setFirstPlayer(isFirstPlayer());
+                activePatchView.moveRight();
             }
         }
         else if(keyEvent.getCode() == KeyCode.E || keyEvent.getCode() == KeyCode.NUMPAD6){
             if(activePatchView.rotationIsLegit()){
-                activePatchView.rotate();
                 activePatchView.setFirstPlayer(isFirstPlayer());
+                activePatchView.rotate();
             }else{
                 System.out.println("please move away from the corner a little bit");
             }
         }
         else if(keyEvent.getCode() == KeyCode.Q || keyEvent.getCode() == KeyCode.NUMPAD4) {
-            activePatchView.flip();
             activePatchView.setFirstPlayer(isFirstPlayer());
+            activePatchView.flip();
         }else if(keyEvent.getCode() == KeyCode.R || keyEvent.getCode() == KeyCode.NUMPAD7){
             removePatches();
             GameController gameController = mainViewController.getMainController().getGameController();
