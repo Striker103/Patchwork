@@ -60,7 +60,7 @@ public class GameController {
 			positionDifference++;
 		}
 		//move
-		mainController.getPlayerController().moveTimeToken(getNextPlayer(),positionDifference);
+		mainController.getPlayerController().moveTimeToken(getNextPlayer(),positionDifference, false);
 		endTurn();
 	}
 
@@ -114,7 +114,7 @@ public class GameController {
 			executingPlayer.setHasSpecialTile(true);
 		}
 		//Moving on timeboard
-		mainController.getPlayerController().moveTimeToken(executingPlayer,patch.getTime());
+		mainController.getPlayerController().moveTimeToken(executingPlayer,patch.getTime(), true);
 		endTurn();
 
 	}

@@ -99,14 +99,16 @@ public class PlayerController {
 	 *
 	 * @param steps number of steps the player makes
 	 */
-	void moveTimeToken(Player currentPlayer, int steps) {
+	void moveTimeToken(Player currentPlayer, int steps, boolean patchMovement) {
 		Game game = mainController.getGame();
 		int playerPos = currentPlayer.getBoardPosition();
 		GameState currentGameState = game.getCurrentGameState();
 
 		moveAndCheckPosition(playerPos, steps, currentPlayer,currentGameState);
 		logAUI.updateLog(currentPlayer.getName() + " moved forward " + steps + " steps");
-		getIncomeMovement(playerPos, steps, currentPlayer);
+		if(!patchMovement)
+			getIncomeMovement(playerPos, steps, currentPlayer);
+
 		turnAUI.moveToken(currentPlayer.getName(), steps);
 	}
 
