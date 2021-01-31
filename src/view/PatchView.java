@@ -30,7 +30,12 @@ public class PatchView extends ImageView {
      * @param p the patch
      */
     public PatchView(Patch p){
-        String path = PatchMap.getInstance().getImagePath(p);
+        String path = "";
+        if(p.getPatchID() >= 999){
+            path = "/view/images/Patches/SpecialPatch.png";
+        }else{
+            path = PatchMap.getInstance().getImagePath(p);
+        }
         try {
             this.setImage(new Image(this.getClass().getResource(path).toURI().toString()));
         } catch (URISyntaxException e) {
@@ -75,6 +80,22 @@ public class PatchView extends ImageView {
 
     public void setFirstPlayer(boolean b){
         firstPlayer = b;
+    }
+
+    public int getPosX() {
+        return posX;
+    }
+
+    public int getPosY() {
+        return posY;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
     }
 
     /**
@@ -122,11 +143,17 @@ public class PatchView extends ImageView {
         moveX();
     }
     private void moveX(){
+        int otherBoard = 0;
+        if(height == 1 && width == 1 && !firstPlayer){
+            otherBoard = -890;
+        } else if(height == 1 && width == 1 && firstPlayer){
+            otherBoard = 890;
+        }
         int extraY = 0;
         if(!firstPlayer){
             extraY = 890;
         }
-        this.setX(OFFSET_X + posX * STEPPING + delta + extraY);
+        this.setX(OFFSET_X + posX * STEPPING + delta + extraY + otherBoard);
 
     }
     private void moveY(){
