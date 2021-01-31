@@ -1,6 +1,7 @@
 package view.control;
 
 import controller.GameController;
+import controller.HighScoreController;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import java.io.FileInputStream;
@@ -28,6 +29,8 @@ public class GameScreenViewController implements TurnAUI {
     public Label player2Name;
     public Label player1Buttons;
     public Label player2Buttons;
+    public Label player1Score;
+    public Label player2Score;
     private MainViewController mainViewController;
     private String firstPlayerName;
     private Scene ownScene;
@@ -86,7 +89,7 @@ public class GameScreenViewController implements TurnAUI {
 
         player1Name.setText(game.getCurrentGameState().getPlayer1().getName());
         player2Name.setText(game.getCurrentGameState().getPlayer2().getName());
-        updateMoney();
+        updateMoneyAndScore();
         refreshList();
         showSelectablePatches();
         try {
@@ -110,11 +113,16 @@ public class GameScreenViewController implements TurnAUI {
         return nextPlayer.getName().equals(firstPlayerName);
     }
 
-    public void updateMoney()
-    {
+    public void updateMoneyAndScore(){
         player1Buttons.setText("Buttons: " + game.getCurrentGameState().getPlayer1().getMoney());
         player2Buttons.setText("Buttons: " + game.getCurrentGameState().getPlayer2().getMoney());
+        HighScoreController highScoreController = mainViewController.getMainController().getHighScoreController();
+        highScoreController.updateScore(game.getCurrentGameState().getPlayer1());
+        highScoreController.updateScore(game.getCurrentGameState().getPlayer2());
+        player1Score.setText("Score: " + game.getCurrentGameState().getPlayer1().getScore().getValue());
+        player2Score.setText("Score: " + game.getCurrentGameState().getPlayer2().getScore().getValue());
     }
+
 
     public void refreshList()
     {
@@ -289,7 +297,7 @@ public class GameScreenViewController implements TurnAUI {
     @Override
     public void triggerPlayerTurn() {
         refreshList();
-        updateMoney();
+        updateMoneyAndScore();
     }
 
     public void placeSpecialTile(){
@@ -322,7 +330,7 @@ public class GameScreenViewController implements TurnAUI {
     @Override
     public void updatePatches() {
         refreshList();
-        updateMoney();
+        updateMoneyAndScore();
     }
 
     @Override
