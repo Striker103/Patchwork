@@ -186,8 +186,6 @@ public class HighScoreController {
 			scoreValue += 7;
 
 		player.getScore().setValue(scoreValue);
-		System.out.println(Arrays.deepToString(board.getIntMatrix()));
-		System.out.println(scoreValue);
 
 	}
 
