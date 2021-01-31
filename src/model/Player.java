@@ -33,6 +33,11 @@ public class Player {
 	private Score score;
 
 	/**
+	 * Gives whether the player is eligible to have a highscores rank
+	 */
+	private boolean highscoreIsValid;
+
+	/**
 	 * Indicates whether the player receives 7 bonus points
 	 */
 	private boolean hasSpecialTile;
@@ -75,6 +80,7 @@ public class Player {
 			this.score = score.copy();
 		}
 		this.hasSpecialTile = hasSpecialTile;
+		this.highscoreIsValid = true;
 	}
 
 	/**
@@ -189,6 +195,21 @@ public class Player {
 	 */
 	public void setHasSpecialTile(boolean hasSpecialTile) {
 		this.hasSpecialTile = hasSpecialTile;
+	}
+
+	/**
+	 * Gets the value of highscoreIsValid
+	 * @return true if the highscore is still valid
+	 */
+	public boolean getHighscoreIsValid(){
+		return highscoreIsValid;
+	}
+
+	/**
+	 * Sets highscoreIsValid to false
+	 */
+	public void setHighscoreInvalid(){
+		highscoreIsValid = false;
 	}
 
 	/**
