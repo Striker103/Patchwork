@@ -20,6 +20,16 @@ public class QuiltBoard {
 	private List<Patch> patches;
 
 	/**
+	 * the placed patch and its Matrix
+	 */
+	private Tuple<Integer, Matrix> placedPatch;
+
+	/**
+	 * if the placed patch is flipped and its rotation
+	 */
+	private Tuple<Boolean, Integer> placedPatchOrientation;
+
+	/**
 	 * Constructor for the class QuiltBoard
 	 * Sets the size of the board to 9x9
 	 */
@@ -62,6 +72,8 @@ public class QuiltBoard {
 		if(!patchBoard.disjunctive(placement)) throw new IllegalArgumentException("The patch does not fit in this position!");
 		patchBoard.add(placement.multiply(calculatedId));
 		patches.add(patch);
+		placedPatch = new Tuple<>(patch.getPatchID(), placement);
+		placedPatchOrientation = new Tuple<>(flipped, rotation);
 	}
 
 	/**
@@ -70,6 +82,22 @@ public class QuiltBoard {
 	 */
 	public List<Patch> getPatches(){
 		return patches;
+	}
+
+	/**
+	 * Getter for Matrix shape and patch id
+	 * @return tuple with elements
+	 */
+	public Tuple<Integer, Matrix> getPlacedPatch(){
+		return placedPatch;
+	}
+
+	/**
+	 *  Getter if patch is flipped and its rotation
+	 * @return tuple with elements
+	 */
+	public Tuple<Boolean, Integer> getPlacedPatchOrientation(){
+		return placedPatchOrientation;
 	}
 
 	/**

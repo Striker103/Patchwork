@@ -94,8 +94,24 @@ public class PatchView extends ImageView {
         return height;
     }
 
+    public void setFlipped(boolean b) {
+        this.flipped = b;
+    }
+
+    public void setRotation(int rotation) {
+        this.rotation = rotation;
+    }
+
     public int getWidth() {
         return width;
+    }
+
+    public boolean isNoNicePatch() {
+        return noNicePatch;
+    }
+
+    public boolean isFlipped() {
+        return flipped;
     }
 
     /**
@@ -245,6 +261,7 @@ public class PatchView extends ImageView {
         Matrix matrix = new Matrix(9 , 9);
         Matrix placing = this.matrix;
         Matrix trim = placing.trim();
+
 
         if(noNicePatch && (rotation == 90 || rotation == 270)){
             matrix.insert(trim, posY -2, (posX - 1));
