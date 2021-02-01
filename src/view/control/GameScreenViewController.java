@@ -12,13 +12,12 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 import model.*;
 import view.PatchMap;
 import view.PatchView;
@@ -65,13 +64,38 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
     private Label cost1, time1, cost2, time2, cost3, time3;
 
     @FXML
-    private ListView<ImageView> patchListView;
+    private ListView<Tuple<ImageView, Patch>> patchListView;
 
     @FXML
     private ListView<String> logList;
 
 
     public GameScreenViewController(){
+    }
+
+    public void initListView(){
+
+        patchListView.setCellFactory(listView -> new ListCell<>() {
+            public void updateItem(Tuple<ImageView, Patch> item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                    setTooltip(null);
+                } else {
+                    String information = "Cost: " + item.getSecond().getButtonsCost() + "\nIncome: " + item.getSecond().getButtonIncome();
+
+                    Tooltip tooltip = new Tooltip();
+                    tooltip.setShowDelay(Duration.seconds(0.2));
+                    tooltip.setText(information);
+                    setGraphic(item.getFirst());
+                    setText(information);
+                    setTooltip(tooltip);
+
+                }
+            }
+
+        });
     }
 
     public void setMainViewController(MainViewController mainViewController) {
@@ -298,7 +322,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
             String path = PatchMap.getInstance().getImagePath(patch);
             imageView = new ImageView(new Image(new FileInputStream("src/" + path)));
 
-            patchListView.getItems().add(imageView);
+            patchListView.getItems().add(new Tuple<>(imageView, patch));
             Matrix shape = patch.getShape();
             Matrix trim = shape.trim();
             int height = trim.getRows();
