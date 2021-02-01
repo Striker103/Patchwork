@@ -158,6 +158,7 @@ public class MainViewController implements HighScoreReturn {
             gameScreenViewController.setMainViewController(this);
             scene = new Scene(gameScreenRoot);
             gameScreenViewController.setOwnScene(scene);
+            gameScreenViewController.initListView();
             //currentScene = scene;
 
             FXMLLoader pauseGameLoader = new FXMLLoader(getClass().getResource("/view/fxml/PauseGame.fxml"));
