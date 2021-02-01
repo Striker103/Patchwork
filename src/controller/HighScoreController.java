@@ -8,6 +8,7 @@ import view.aui.HighScoreAUI;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedList;
 
@@ -166,7 +167,19 @@ public class HighScoreController {
 		Matrix board = player.getQuiltBoard().getPatchBoard();
 
 		//Calculate empty spaces
-		scoreValue -= 2 * board.count(0);
+//		scoreValue -= 2 * board.count(0);
+
+		int count = 0;
+		int[][] matrixArray = board.getIntMatrix();
+
+		for (int i = 0; i < 9 ; i++){
+			for (int j = 0; j < 9 ; j++){
+				if (matrixArray[i][j] == 0)
+					count += 1;
+			}
+		}
+
+		scoreValue -= 2 * count;
 
 		//Calculate special tile
 		if (player.getHasSpecialTile())

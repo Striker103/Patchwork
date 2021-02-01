@@ -111,6 +111,7 @@ public class MainController {
 	public void setTurnAUI(TurnAUI turnAUI){
 		gameController.setTurnAUI(turnAUI);
 		playerController.setTurnAUI(turnAUI);
+		undoRedoController.setTurnAUI(turnAUI);
 	}
 
 	/**

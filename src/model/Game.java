@@ -64,6 +64,14 @@ public class Game {
 	}
 
 	/**
+	 * returns the list with the game states
+	 * @return a list with all gameStates
+	 */
+	public List<GameState> getGameStatesList(){
+		return gameStates;
+	}
+
+	/**
 	 * Copy Constructor
 	 */
 	private Game(int currentGameState, boolean highScoreReachable, boolean ironman, int simulationSpeed, List<GameState> gameStates) {

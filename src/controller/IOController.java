@@ -54,10 +54,23 @@ public class IOController {
 	public void saveGame(File file) {
 		Game game = mainController.getGame();
 
-		CheckUtil.assertNonNull(game, file);
+		try {
+			CheckUtil.assertNonNull(game, file);
+		} catch (IllegalArgumentException e) {
+			errorAUI.showError("Invalid file");
+			return;
+		}
 
 		if (file.isDirectory() || (file.exists() && !file.canWrite())) {
 			errorAUI.showError("File is invalid");
+			return;
+		}
+
+		String[] split = file.getPath().split("\\.");
+		String extension = split[split.length - 1];
+
+		if (!extension.equals("json")){
+			errorAUI.showError("Invalid file");
 			return;
 		}
 
@@ -81,12 +94,28 @@ public class IOController {
 	 */
 	public void loadGame(File file) {
 
-		if (!file.isDirectory() || !file.canWrite()){
+		if (file == null){
 			errorAUI.showError("Invalid file");
 			return;
 		}
 
+		if ((file.exists() && !file.isDirectory()) || !file.canWrite()){
+			errorAUI.showError("Invalid file");
+			return;
+		}
+
+		if (!file.exists()){
+			try {
+				Files.createDirectory(file.toPath());
+			} catch (IOException e) {
+				errorAUI.showError("IOException occurred.");
+				return;
+			}
+		}
+
 		File[] files = file.listFiles();
+
+		System.out.println(Arrays.toString(files));
 
 		if (files != null) {
 			List<Tuple<Game, File>> games = new LinkedList<>();

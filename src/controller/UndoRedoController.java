@@ -3,6 +3,7 @@ package controller;
 import model.Game;
 import model.GameState;
 import model.Player;
+import view.aui.TurnAUI;
 
 import java.util.List;
 
@@ -13,6 +14,13 @@ import java.util.List;
 public class UndoRedoController {
 
 	private final MainController mainController;
+
+	private TurnAUI turnAUI;
+
+	/**
+	 * true if logAUI is changed
+	 */
+	private boolean turnAUIChanged = false;
 
 	/**
 	 * Constructor that sets the mainController
@@ -50,6 +58,7 @@ public class UndoRedoController {
 				game.setCurrentGameState(game.getCurrentGameStateIndex()-1);
 			}
 		}
+		turnAUI.updatePatches();
 	}
 
 	/**
@@ -66,6 +75,7 @@ public class UndoRedoController {
 		while(!game.currentGameStateLast()&&mainController.getGameController().getNextPlayer()!=movingPlayer){
 			game.setCurrentGameState(game.getCurrentGameStateIndex()+1);
 		}
+		turnAUI.updatePatches();
 	}
 
 	/**
@@ -77,6 +87,17 @@ public class UndoRedoController {
 		if(!game.currentGameStateLast()){
 			gameStates.subList(game.getCurrentGameStateIndex()+ 1, gameStates.size()).clear();
 		}
+	}
+
+	/**
+	 * set the turnAUi
+	 *
+	 * @param turnAUI the turnAUI
+	 */
+	public void setTurnAUI(TurnAUI turnAUI) {
+		if(this.turnAUIChanged) throw new IllegalStateException("turnAUI was already set");
+		this.turnAUI = turnAUI;
+		this.turnAUIChanged = true;
 	}
 
 

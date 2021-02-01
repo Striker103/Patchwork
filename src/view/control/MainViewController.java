@@ -62,9 +62,6 @@ public class MainViewController implements HighScoreReturn {
         }
     };
 
-    private LogAUI logAUI = log -> {
-
-    };
 
 
     public MainViewController(){
@@ -173,10 +170,10 @@ public class MainViewController implements HighScoreReturn {
             mainController.setHighScoreAUI(highscoresViewController);
             mainController.setLoadGameAUI(loadGameViewController);
             mainController.setTurnAUI(gameScreenViewController);
+            mainController.setLogAUI(gameScreenViewController);
             mainController.setErrorAUI(errorAUI);
 
             //TODO
-            mainController.setLogAUI(logAUI);
             mainController.setHintAUI(hintAUI);
 
 
