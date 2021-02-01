@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 
 <BorderPane prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.control.PauseGameViewController">
    <top>
@@ -16,6 +17,7 @@
             <Button fx:id="saveButton" mnemonicParsing="false" onAction="#onSaveAction" text="Save" />
             <Button fx:id="highscoresButton" mnemonicParsing="false" onAction="#onHighscoresAction" text="Highscores" />
             <Button mnemonicParsing="false" onAction="#onMainMenuAction" text="Main Menu" />
+            <Text fx:id="saveIndicator" fill="#25a423" strokeType="OUTSIDE" strokeWidth="0.0" text="test" />
          </children>
       </VBox>
    </center>

@@ -3,6 +3,7 @@ package view.control;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.text.Text;
 import view.HighScoreReturn;
 
 import java.awt.*;
@@ -15,6 +16,9 @@ public class PauseGameViewController implements HighScoreReturn {
     private MainViewController mainViewController;
 
     private Scene scene;
+
+    @FXML
+    private Text saveIndicator;
 
 
     private File gameSaveFile;
@@ -39,6 +43,7 @@ public class PauseGameViewController implements HighScoreReturn {
     @FXML
     public void onSaveAction(ActionEvent actionEvent) {
         mainViewController.getMainController().getIOController().saveGame(gameSaveFile);
+        saveIndicator.setText("The game has been saved!");
     }
 
     @FXML
@@ -64,6 +69,7 @@ public class PauseGameViewController implements HighScoreReturn {
 
     @Override
     public void showScene(){
+        saveIndicator.setText("");
         mainViewController.setCurrentScene(scene);
         mainViewController.showCurrentScene();
     }
