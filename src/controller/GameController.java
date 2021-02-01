@@ -74,6 +74,14 @@ public class GameController {
 	 * @param flipped  the flipped
 	 */
 	public void takePatch(Patch patch, Matrix placing,int rotation,boolean flipped) {
+		try{
+			CheckUtil.assertNonNull(placing,patch);
+			CheckUtil.assertRotation(rotation);
+		}catch(Exception e){
+			errorAUI.showError(e.getMessage());
+			return;
+		}
+
 		Player executingPlayer = getNextPlayer();
 		QuiltBoard playerBoard = executingPlayer.getQuiltBoard();
 		Matrix playerPatchBoard = playerBoard.getPatchBoard();
@@ -83,6 +91,7 @@ public class GameController {
 		}
 		//The patch cant be placed there
 		if(!playerPatchBoard.disjunctive(placing)){
+			errorAUI.showError("There is no Space for that Patch!");
 			turnAUI.reTriggerPatchPlacement();
 			return;
 		}
@@ -129,11 +138,10 @@ public class GameController {
 	 */
 	public boolean place1x1Patch(int xPosition, int yPosition, Player player){
 		boolean placed = false;
-		try{
 			placed = player.getQuiltBoard().add1x1Patch(xPosition,yPosition);
-		}catch (IllegalArgumentException e){
-			errorAUI.showError(e.getMessage());
-		}
+			if(!placed){
+				errorAUI.showError("1x1 Patch could not be placed");
+			}
 		return placed;
 	}
 
