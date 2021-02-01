@@ -1,9 +1,6 @@
 package view.control;
 
-import controller.GameController;
-import controller.HighScoreController;
-import controller.IOController;
-import controller.UndoRedoController;
+import controller.*;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import java.io.FileInputStream;
@@ -21,11 +18,14 @@ import javafx.util.Duration;
 import model.*;
 import view.PatchMap;
 import view.PatchView;
+import view.aui.ErrorAUI;
 import view.aui.LogAUI;
 import view.aui.TurnAUI;
 
 
 public class GameScreenViewController implements TurnAUI , LogAUI {
+
+    private ErrorAUI errorAUI;
 
     public Label player1Name;
     public Label player2Name;
@@ -50,6 +50,9 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
     private List<PatchView> listToClear;
     private List<PatchView> listToClearGUI;
     private List<PatchView> listInOrder;
+    private int index = 0;
+    private boolean playerVsPlayer;
+    private boolean isPlayerTurn;
 
     @FXML
     Pane pane;
@@ -103,26 +106,29 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
     }
 
     public void initGame() {
+        game = mainViewController.getMainController().getGame();
         int[][] arr = new int[3][5];
         arr[0][0] = 1;
         Matrix shape = new Matrix(arr);
+        if(game.getCurrentGameState().getPlayer1().getPlayerType() == PlayerType.HUMAN && game.getCurrentGameState().getPlayer2().getPlayerType() == PlayerType.HUMAN)
+            playerVsPlayer = true;
         specialPatchesOnBoard = new ArrayList<>();
         specialPatches = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             Patch patch = new Patch(999 + i, 0, 0, shape, 0);
-            specialPatches.add(new PatchView(patch));
-            specialPatchesOnBoard.add(new PatchView(patch));
+            specialPatches.add(new PatchView(patch, playerVsPlayer));
+            specialPatchesOnBoard.add(new PatchView(patch, playerVsPlayer));
         }
 
         loadTimeBoard();
 
-        game = mainViewController.getMainController().getGame();
         patches = game.getCurrentGameState().getPatches();
 
         player1Name.setText(game.getCurrentGameState().getPlayer1().getName());
         player2Name.setText(game.getCurrentGameState().getPlayer2().getName());
         updateMoneyAndScore();
         refreshList();
+        updateIndex();
         showSelectablePatches();
         try {
             loadPatches();
@@ -138,9 +144,10 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
         IOController ioController = mainViewController.getMainController().getIOController();
         List<Patch> patches = ioController.importCSVNotShuffled();
         for(Patch patch : patches) {
-            listInOrder.add(new PatchView(patch));
+            listInOrder.add(new PatchView(patch, playerVsPlayer));
         }
         triggerInitialMove(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1());
+
     }
 
     private void triggerInitialMove(Player startingPlayer) {
@@ -172,12 +179,34 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
         player2Score.setText("Score: " + game.getCurrentGameState().getPlayer2().getScore().getValue());
     }
 
-    public void RefreshTheBoard(){
-        pane.getChildren().removeAll(listToClear);
-        pane.getChildren().removeAll(listToClearGUI);
+    public void moveTimeTokens(){
+        int boardPosP1 = game.getCurrentGameState().getPlayer1().getBoardPosition();
+        int boardPosP2 = game.getCurrentGameState().getPlayer2().getBoardPosition();
+        moveToken(game.getCurrentGameState().getPlayer1().getName(), boardPosP1);
+        moveToken(game.getCurrentGameState().getPlayer2().getName(), boardPosP2);
+    }
+
+    public void refreshBoardPatches(){
+        for(int i = 0; i < index; i++){
+            pane.getChildren().remove(specialPatchesOnBoard.get(i));
+        }
+    }
+
+    public void refreshTheBoard(){
+        pane.getChildren().clear();
+        updateIndex();
+        addSpecialPatches();
+        loadTimeBoard();
+        loadSpecialPatches();
+        moveTimeTokens();
+        //pane.getChildren().removeAll(listToClear);
+        //pane.getChildren().removeAll(listToClearGUI);
         listToClear = new ArrayList<>();
-        RefreshPlayer(1);
-        RefreshPlayer(2);
+        refreshPlayer(1);
+        refreshPlayer(2);
+        refreshBoardPatches();
+        if(!isPlaced)
+            placeSpecialTile();
 
         Player player1 = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1();
         Player player2 = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2();
@@ -185,15 +214,14 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
             mainViewController.getGameSummaryViewController().showScene();
     }
 
-    public void RefreshPlayer(int player){
+    public void refreshPlayer(int player){
         int counter = 0;
         int currentGameStateIndex = game.getCurrentGameStateIndex();
-        System.out.println("currentGameStateIndex: " + currentGameStateIndex);
+        //System.out.println("currentGameStateIndex: " + currentGameStateIndex);
 
         for(GameState gameState : game.getGameStatesList()){
             if(counter > currentGameStateIndex)
                 break;
-
             counter++;
             Tuple<Integer, Matrix> t1 = gameState.getPlayer1().getQuiltBoard().getPlacedPatch();
             Tuple<Boolean, Integer> t2 = gameState.getPlayer1().getQuiltBoard().getPlacedPatchOrientation();
@@ -250,16 +278,49 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
         boolean heightSet = false;
         for(int i = 0; i < matrix.length; i++){
             for(int j = 0; j < matrix[i].length; j++){
-                if(matrix[i][j] != 0 && !heightSet){
+                if(matrix[i][j] != 0 && matrix[i][j] != Integer.MAX_VALUE && !heightSet){
                     arr[0] = i;
                     heightSet = true;
                 }
-                if(matrix[i][j] != 0 && arr[1] > j){
+                if(matrix[i][j] != 0 && matrix[i][j] != Integer.MAX_VALUE && arr[1] > j){
                     arr[1] = j;
                 }
             }
         }
         return arr;
+    }
+
+    public void addSpecialPatches(){
+        int index = 0;
+        Matrix p1Board = game.getCurrentGameState().getPlayer1().getQuiltBoard().getPatchBoard();
+        Matrix p2Board = game.getCurrentGameState().getPlayer2().getQuiltBoard().getPatchBoard();
+        int[][] p1IntBoard = p1Board.getIntMatrix();
+        int[][] p2IntBoard = p2Board.getIntMatrix();
+
+        for(int i = 0; i < p1IntBoard.length; i++){
+            for(int j = 0; j < p1IntBoard[i].length; j++){
+                if(p1IntBoard[i][j] == Integer.MAX_VALUE ){
+                    PatchView patch = specialPatches.get(index);
+                    pane.getChildren().add(patch);
+                    patch.setX(60 + j * 30);
+                    patch.setY(60 + i * 30);
+                    index++;
+                }
+            }
+        }
+        for(int i = 0; i < p2IntBoard.length; i++){
+            for(int j = 0; j < p2IntBoard[i].length; j++){
+                if(p2IntBoard[i][j] == Integer.MAX_VALUE ){
+                    PatchView patch = specialPatches.get(index);
+                    pane.getChildren().add(patch);
+                    patch.setX(60 + j * 30 + 890);
+                    patch.setY(60 + i * 30);
+                    index++;
+                }
+            }
+        }
+
+
     }
 
 
@@ -272,7 +333,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
         patches = game.getCurrentGameState().getPatches();
 
         for(Patch patch : patches)
-        patchViews.add(new PatchView(patch));
+        patchViews.add(new PatchView(patch, playerVsPlayer));
         try {
             loadPatches();
         } catch (FileNotFoundException e) {
@@ -339,7 +400,6 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
         }
     }
 
-    //TODO behaviour of list if less then three patches are in the list view
     public void showSelectablePatches(){
         Patch patch;
         Matrix shape;
@@ -422,6 +482,15 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
                 patchView.setX(597);
                 patchView.setY(255);
                 pane.getChildren().add(patchView);
+                GameState gameState = game.getCurrentGameState();
+                int boardPos1 = gameState.getPlayer1().getBoardPosition();
+                int boardPos2 = gameState.getPlayer2().getBoardPosition();
+
+                int bigger = boardPos1;
+                if(boardPos2 > boardPos1)
+                    bigger = boardPos2;
+                if(bigger >= 50)
+                    pane.getChildren().remove(patchView);
             }
         }
     }
@@ -435,29 +504,66 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
     public void triggerPlayerTurn() {
         refreshList();
         updateMoneyAndScore();
-        RefreshTheBoard();
+        refreshTheBoard();
+        isPlayerTurn = true;
+    }
+
+    public void updateIndex(){
+        GameState gameState = game.getCurrentGameState();
+        int boardPos1 = gameState.getPlayer1().getBoardPosition();
+        int boardPos2 = gameState.getPlayer2().getBoardPosition();
+
+        int bigger = boardPos1;
+        if(boardPos2 > boardPos1)
+            bigger = boardPos2;
+
+        if(bigger < 20){
+            index = 0;
+        }else if(bigger < 26){
+            index = 1;
+        }else if(bigger < 32){
+            index = 2;
+        }else if(bigger < 44){
+            index = 3;
+        }else{
+            index = 4;
+        }
     }
 
     public void placeSpecialTile(){
+        Player currentPlayer = mainViewController.getMainController().getGameController().getNotMovingPlayer();
+
+        updateIndex();
         boolean firstPlayer = isFirstPlayer();
-        if(firstPlayer){
-            specialPatches.get(specialPatchIndex).setX(1040);
-        }else{
-            specialPatches.get(specialPatchIndex).setX(150);
+        PatchView patch = specialPatches.get(index);
+        try{
+            pane.getChildren().add(patch);
+        }catch(Exception e){
         }
-        specialPatches.get(specialPatchIndex).setY(150);
-        pane.getChildren().add(specialPatches.get(specialPatchIndex));
-        specialPatches.get(specialPatchIndex).setFitHeight(33);
-        specialPatches.get(specialPatchIndex).setFitWidth(33);
-        pane.getChildren().remove(specialPatchesOnBoard.get(specialPatchIndex));
-        activePatchView = specialPatches.get(specialPatchIndex);
-        specialPatchIndex++;
+        if(firstPlayer){
+            patch.setX(150 + 890);
+            patch.setY(150);
+        }else{
+            patch.setX(150);
+            patch.setY(150);
+        }
+        if(!playerVsPlayer){
+            if(game.getCurrentGameState().getPlayer1().getPlayerType() == PlayerType.HUMAN){
+                patch.setX(150);
+                patch.setY(150);
+            }else{
+                patch.setX(150 + 890);
+                patch.setY(150);
+            }
+        }
+        activePatchView = patch;
     }
 
     @Override
     public void trigger1x1Placement() {
         isPlaced = false;
     }
+
 
     public void reTriggerPatchPlacement() {
         Alert alarm = new Alert(Alert.AlertType.ERROR);
@@ -471,7 +577,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
     public void updatePatches() {
         refreshList();
         updateMoneyAndScore();
-        RefreshTheBoard();
+        refreshTheBoard();
     }
 
     @Override
@@ -487,6 +593,10 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
     @Override
     public void updateLog(String log) {
         logList.getItems().add(log);
+    }
+
+    public void setErrorAUI(ErrorAUI errorAUI) {
+        this.errorAUI = errorAUI;
     }
 
 
@@ -528,7 +638,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
         void moveToken(int steps) {
             for (int i = 0; i < steps; i++) {
                 if(this.positionOnBoard >= 53){
-                    System.out.println("Goal reached!");
+                    updateLog("Goal reached!");
                     break;
                 }
                 moveToken();
@@ -642,63 +752,30 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
 
     @FXML
     public void onChoose1Action() {
-        if((activePatchView.getHeight() == 1 && activePatchView.getWidth() == 1))
-            return;
-        removePatches();
-        if(patches.size() == 0){
-            return;
-        }
-        boolean firstPlayer = isFirstPlayer();
-        PatchView patchView = patchViews.get(0);
-        pane.getChildren().add(patchView);
-        if(firstPlayer){
-            patchView.setX(150);
-        }else{
-            patchView.setX(1040);
-        }
-        patchView.setY(150);
-
-        if(!patchView.isVisible()){
-            patchView.setVisible(true);
-        }
-        activePatchView = patchView;
-        listToClearGUI.add(patchView);
+        choosePatch(0);
     }
 
     @FXML
     public void onChoose2Action() {
-        if((activePatchView.getHeight() == 1 && activePatchView.getWidth() == 1))
-            return;
-        removePatches();
-        if(patches.size() <= 1){
-            return;
-        }
-        boolean firstPlayer = isFirstPlayer();
-        PatchView patchView = patchViews.get(1);
-        pane.getChildren().add(patchView);
-        if(firstPlayer){
-            patchView.setX(150);
-        }else{
-            patchView.setX(1040);
-        }
-        patchView.setY(150);
-        if(!patchView.isVisible()){
-            patchView.setVisible(true);
-        }
-        activePatchView = patchView;
-        listToClearGUI.add(patchView);
+        choosePatch(1);
     }
 
     @FXML
     public void onChoose3Action() {
-        if((activePatchView.getHeight() == 1 && activePatchView.getWidth() == 1))
+        choosePatch(2);
+    }
+
+    private void choosePatch(int index){
+        if(!isPlaced){
+            errorAUI.showError("please place the 1x1 patch first (Key: X)");
             return;
+        }
         removePatches();
-        if(patches.size() <= 2){
+        if(patches.size() <= index){
             return;
         }
         boolean firstPlayer = isFirstPlayer();
-        PatchView patchView = patchViews.get(2);
+        PatchView patchView = patchViews.get(index);
         pane.getChildren().add(patchView);
         if(firstPlayer){
             patchView.setX(150);
@@ -749,26 +826,32 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
             }
         }
         else if(keyEvent.getCode() == KeyCode.E || keyEvent.getCode() == KeyCode.NUMPAD6){
+
             if(activePatchView.rotationIsLegit()){
                 activePatchView.setFirstPlayer(isFirstPlayer());
                 activePatchView.rotate();
             }else{
-                System.out.println("please move away from the corner a little bit");
+                errorAUI.showError("please move away from the corner a little bit");
             }
         }
         else if(keyEvent.getCode() == KeyCode.Q || keyEvent.getCode() == KeyCode.NUMPAD4) {
             activePatchView.setFirstPlayer(isFirstPlayer());
             activePatchView.flip();
         }else if(keyEvent.getCode() == KeyCode.R || keyEvent.getCode() == KeyCode.NUMPAD7){
-            if(!isPlaced)
+            if(!isPlaced){
+                errorAUI.showError("please place the 1x1 patch first (Key: X)");
                 return;
+            }
             removePatches();
             GameController gameController = mainViewController.getMainController().getGameController();
             gameController.advance();
+            refreshTheBoard();
         }
         else if(keyEvent.getCode() == KeyCode.F || keyEvent.getCode() == KeyCode.NUMPAD9){
-            if(!isPlaced)
+            if(!isPlaced){
+                errorAUI.showError("please place the 1x1 patch first (Key: X)");
                 return;
+            }
             GameController gameController = mainViewController.getMainController().getGameController();
             gameController.takePatch(activePatchView.getPatch(), activePatchView.readyToGo(), activePatchView.getRotation(), activePatchView.getFlipped());
 
@@ -795,18 +878,29 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
             if(!(activePatchView.getHeight() == 1 && activePatchView.getWidth() == 1))
                 return;
             activePatchView.setFirstPlayer(isFirstPlayer());
-            Player currentPlayer = mainViewController.getMainController().getGameController().getNotMovingPlayer();
-            GameController gameController = mainViewController.getMainController().getGameController();
-            boolean placed = gameController.place1x1Patch(activePatchView.getPosX() -2, activePatchView.getPosY()-2, currentPlayer);
+            boolean placed = false;
+            if(game.getCurrentGameState().getPlayer1().getPlayerType() == PlayerType.HUMAN && game.getCurrentGameState().getPlayer2().getPlayerType() == PlayerType.HUMAN){
+                Player currentPlayer = mainViewController.getMainController().getGameController().getNotMovingPlayer();
+                GameController gameController = mainViewController.getMainController().getGameController();
+                placed = gameController.place1x1Patch(activePatchView.getPosX() -2, activePatchView.getPosY()-2, currentPlayer);
+            }else{
+                Player currentPlayer;
+                if(game.getCurrentGameState().getPlayer1().getPlayerType() == PlayerType.HUMAN){
+                    currentPlayer = game.getCurrentGameState().getPlayer1();
+                }else{
+                    currentPlayer = game.getCurrentGameState().getPlayer2();
+                }
+                GameController gameController = mainViewController.getMainController().getGameController();
+                placed = gameController.place1x1Patch(activePatchView.getPosX() -2, activePatchView.getPosY()-2, currentPlayer);
+            }
             if(placed){
                 isPlaced = true;
                 refreshList();
-                System.out.println("1x1 Patch placed");
-            }else{
-                System.out.println("there is already a patch");
+                refreshTheBoard();
+                updateLog("1x1 Patch placed");
             }
         }else if(keyEvent.getCode() == KeyCode.K){
-            RefreshTheBoard();
+            refreshTheBoard();
         }else if(keyEvent.getCode() == KeyCode.O){
             mainViewController.getGameSummaryViewController().showScene();
         }

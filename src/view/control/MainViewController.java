@@ -163,6 +163,7 @@ public class MainViewController implements HighScoreReturn {
             mainController.setTurnAUI(gameScreenViewController);
             mainController.setLogAUI(gameScreenViewController);
             mainController.setErrorAUI(errorAUI);
+            gameScreenViewController.setErrorAUI(errorAUI);
 
             //TODO
             mainController.setHintAUI(hintAUI);

@@ -23,13 +23,14 @@ public class PatchView extends ImageView {
     private final Patch patch;
     private Matrix matrix;
     private boolean firstPlayer;
+    private boolean playerVsPlayer;
 
     /**
      * Constructor for a new patch. Loads it, sets high and with and noNicePatch
      *
      * @param p the patch
      */
-    public PatchView(Patch p){
+    public PatchView(Patch p, boolean b){
         String path = "";
         if(p.getPatchID() >= 999){
             path = "/view/images/Patches/SpecialPatch.png";
@@ -54,6 +55,7 @@ public class PatchView extends ImageView {
             noNicePatch = true;
         flipped = false;
         rotation = 0;
+        playerVsPlayer = b;
 
 
         Matrix tmp = new Matrix (width, width);
@@ -160,9 +162,9 @@ public class PatchView extends ImageView {
     }
     private void moveX(){
         int otherBoard = 0;
-        if(height == 1 && width == 1 && !firstPlayer){
+        if(height == 1 && width == 1 && !firstPlayer && playerVsPlayer){
             otherBoard = -890;
-        } else if(height == 1 && width == 1 && firstPlayer){
+        } else if(height == 1 && width == 1 && firstPlayer && playerVsPlayer){
             otherBoard = 890;
         }
         int extraY = 0;

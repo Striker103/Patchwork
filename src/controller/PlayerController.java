@@ -21,6 +21,8 @@ public class PlayerController {
 
 	private LogAUI logAUI;
 
+	private boolean isPlaced;
+
 	/**
 	 * true if errorAUI is set
 	 */
@@ -66,7 +68,10 @@ public class PlayerController {
 				if(timeBoard[i].hasPatch()){
 					timeBoard[i].removePatch();
 					logAUI.updateLog(currentPlayer.getName() + " steps over a 1x1 Patch and must place it now");
-					get1x1Patch();
+					if(currentPlayer.getPlayerType() == PlayerType.HUMAN){
+						get1x1Patch();
+						isPlaced = false;
+						}
 				}
 				if(timeBoard[i].hasButton()){
 					int income = calculateIncomePatches(currentPlayer);
@@ -121,6 +126,7 @@ public class PlayerController {
 		currentPlayer.setMinusMoney(patch.getButtonsCost());
 		logAUI.updateLog(currentPlayer.getName() + " buys Patch " + patch.getPatchID() + " for " + patch.getButtonsCost() + " buttons");
 	}
+
 
 	/**
 	 * set the errorAUI
