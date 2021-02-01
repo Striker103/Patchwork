@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#handleKeyPressed" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.control.GameScreenViewController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#handleKeyPressed" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.control.GameScreenViewController">
    <children>
       <Pane fx:id="pane" maxHeight="1.8" onDragDetected="#PaneDragged" style="-fx-border-color: #000000;" GridPane.rowIndex="1" />
 
@@ -48,9 +48,9 @@
                         <Insets left="60.0" top="60.0" />
                      </VBox.margin>
                   </GridPane>
-                  <VBox alignment="BOTTOM_LEFT" prefHeight="350.0" prefWidth="290.0">
+                  <VBox alignment="BOTTOM_LEFT" prefHeight="350.0" prefWidth="290.0" spacing="5.0">
                      <children>
-                        <VBox prefHeight="232.0" prefWidth="320.0" spacing="10.0">
+                        <VBox prefHeight="232.0" prefWidth="320.0" spacing="5.0">
                            <children>
                               <Label text="Move the patch using the WASD or NUM 5123 keys" />
                               <Label text="Rotate the patch using the E or NUM 6 key" />
@@ -60,17 +60,17 @@
                               <Label text="Place the special Patch using the X or NUM 8 key" />
                            </children>
                         </VBox>
-                        <Label fx:id="player1Name" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="100.0" text="Player1">
+                        <Label fx:id="player1Name" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Player1">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label fx:id="player1Buttons" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="100.0" text="Buttons">
+                        <Label fx:id="player1Buttons" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Buttons">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label fx:id="player1Score" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="100.0" text="Score">
+                        <Label fx:id="player1Score" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Score">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -183,19 +183,20 @@
                         <Insets right="60.0" top="60.0" />
                      </VBox.margin>
                   </GridPane>
-                  <VBox alignment="BOTTOM_RIGHT" prefHeight="350.0" prefWidth="373.0">
+                  <VBox alignment="BOTTOM_RIGHT" prefHeight="350.0" prefWidth="250.0" spacing="5.0">
                      <children>
-                        <Label fx:id="player2Name" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="39.0" prefWidth="160.0" text="Player2">
+                        <ListView fx:id="logList" editable="true" prefHeight="200.0" prefWidth="200.0" />
+                        <Label fx:id="player2Name" alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="Player2">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label fx:id="player2Buttons" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="55.0" prefWidth="160.0" text="Buttons">
+                        <Label fx:id="player2Buttons" alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="Buttons">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label fx:id="player2Score" alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="160.0" text="Score">
+                        <Label fx:id="player2Score" alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Score">
                            <font>
                               <Font size="18.0" />
                            </font>

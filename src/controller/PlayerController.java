@@ -55,7 +55,7 @@ public class PlayerController {
 			income = steps;
 		}
 		currentPlayer.addMoney(income);
-		logAUI.updateLog(currentPlayer.getName() + " got " + income + " buttons from movement");
+		logAUI.updateLog(currentPlayer.getName() + " gets " + income + " buttons by advancing");
 	}
 
 	private void moveAndCheckPosition(int playerPos, int steps, Player currentPlayer, GameState currentGameState){
@@ -65,13 +65,13 @@ public class PlayerController {
 				currentPlayer.setBoardPosition(i);
 				if(timeBoard[i].hasPatch()){
 					timeBoard[i].removePatch();
-					logAUI.updateLog(currentPlayer.getName() + " stepped over a 1x1 Patch and has to place it now");
+					logAUI.updateLog(currentPlayer.getName() + " steps over a 1x1 Patch and must place it now");
 					get1x1Patch();
 				}
 				if(timeBoard[i].hasButton()){
 					int income = calculateIncomePatches(currentPlayer);
 					currentPlayer.addMoney(income);
-					logAUI.updateLog(currentPlayer.getName() + " stepped over a Button and got " + income + " buttons");
+					logAUI.updateLog(currentPlayer.getName() + " gets his button paycheck " + income + " buttons!");
 				}
 			}else{
 				logAUI.updateLog(currentPlayer.getName() + " reached the end position ");
@@ -105,7 +105,7 @@ public class PlayerController {
 		GameState currentGameState = game.getCurrentGameState();
 
 		moveAndCheckPosition(playerPos, steps, currentPlayer,currentGameState);
-		logAUI.updateLog(currentPlayer.getName() + " moved forward " + steps + " steps");
+		logAUI.updateLog(currentPlayer.getName() + " moves forward " + steps + " steps");
 		if(!patchMovement)
 			getIncomeMovement(playerPos, steps, currentPlayer);
 
@@ -119,7 +119,7 @@ public class PlayerController {
 	 */
 	void payPatch(Player currentPlayer, Patch patch) {
 		currentPlayer.setMinusMoney(patch.getButtonsCost());
-		logAUI.updateLog(currentPlayer.getName() + " bought " + patch.getPatchID() + " for " + patch.getButtonsCost() + " buttons");
+		logAUI.updateLog(currentPlayer.getName() + " buys Patch " + patch.getPatchID() + " for " + patch.getButtonsCost() + " buttons");
 	}
 
 	/**

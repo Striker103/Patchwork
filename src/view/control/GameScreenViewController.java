@@ -22,10 +22,11 @@ import javafx.scene.layout.Pane;
 import model.*;
 import view.PatchMap;
 import view.PatchView;
+import view.aui.LogAUI;
 import view.aui.TurnAUI;
 
 
-public class GameScreenViewController implements TurnAUI {
+public class GameScreenViewController implements TurnAUI , LogAUI {
 
     public Label player1Name;
     public Label player2Name;
@@ -65,6 +66,9 @@ public class GameScreenViewController implements TurnAUI {
 
     @FXML
     private ListView<ImageView> patchListView;
+
+    @FXML
+    private ListView<String> logList;
 
 
     public GameScreenViewController(){
@@ -438,6 +442,11 @@ public class GameScreenViewController implements TurnAUI {
             timeToken2.moveToken(time);
         }
 
+    }
+
+    @Override
+    public void updateLog(String log) {
+        logList.getItems().add(log);
     }
 
 
