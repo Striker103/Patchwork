@@ -1,6 +1,5 @@
 package view.control;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.text.Text;
@@ -24,13 +23,13 @@ public class PauseGameViewController implements HighScoreReturn {
     private File gameSaveFile;
 
     @FXML
-    public void onContinueAction(ActionEvent actionEvent) {
+    public void onContinueAction() {
         mainViewController.getGameScreenViewController().initGame();
         mainViewController.getGameScreenViewController().showScene();
     }
 
     @FXML
-    public void onHelpAction(ActionEvent actionEvent) {
+    public void onHelpAction() {
 
         URI uri = URI.create("https://lookout-spiele.de/upload/en_patchwork.html_Rules_Patchwork_EN.pdf");
         try {
@@ -41,18 +40,18 @@ public class PauseGameViewController implements HighScoreReturn {
     }
 
     @FXML
-    public void onSaveAction(ActionEvent actionEvent) {
+    public void onSaveAction() {
         mainViewController.getMainController().getIOController().saveGame(gameSaveFile);
         saveIndicator.setText("The game has been saved!");
     }
 
     @FXML
-    public void onHighscoresAction(ActionEvent actionEvent) {
+    public void onHighscoresAction() {
         mainViewController.getHighscoresViewController().showScene(this);
     }
 
     @FXML
-    public void onMainMenuAction(ActionEvent actionEvent){
+    public void onMainMenuAction(){
         gameSaveFile = null;
         mainViewController.getMainController().setGame(null);
         mainViewController.showScene();

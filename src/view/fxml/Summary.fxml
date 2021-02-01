@@ -1,28 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.control.GameSummaryViewController">
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.control.GameSummaryViewController">
    <children>
-      <HBox alignment="CENTER" layoutY="700.0" prefHeight="100.0" prefWidth="1200.0" spacing="80.0">
+      <HBox alignment="CENTER" layoutY="670.0" prefHeight="49.0" prefWidth="1200.0" spacing="80.0">
          <children>
             <Button fx:id="highscoreButton" mnemonicParsing="false" onAction="#onHighscoreAction" prefHeight="40.0" prefWidth="250.0" text="Highscores" />
             <Button fx:id="exportButton" mnemonicParsing="false" onAction="#onExportAction" prefHeight="40.0" prefWidth="250.0" text="Export Results" />
             <Button fx:id="startMenuButton" mnemonicParsing="false" onAction="#onStartMenuAction" prefHeight="40.0" prefWidth="250.0" text="Back to Main Menu" />
          </children>
       </HBox>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="1200.0">
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="1280.0">
          <children>
-            <Label text="Results">
+            <Label prefHeight="49.0" prefWidth="106.0" text="Results">
                <font>
                   <Font size="33.0" />
                </font>
             </Label>
          </children>
       </HBox>
-      <GridPane gridLinesVisible="true" layoutY="100.0" prefHeight="600.0" prefWidth="1200.0">
+      <GridPane gridLinesVisible="true" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="1280.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -91,34 +98,34 @@
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                      <children>
-                        <Text fx:id="winnerName" strokeType="OUTSIDE" strokeWidth="0.0" text="*Player / AI name*" />
+                        <Label fx:id="winnerName" text="*Player / AI name*" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
-                        <Text fx:id="winnerScore" strokeType="OUTSIDE" strokeWidth="0.0" text="*Score*" />
+                        <Label fx:id="winnerScore" text="*Score*" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <children>
-                        <Text fx:id="winnerRank" strokeType="OUTSIDE" strokeWidth="0.0" text="*Rank if eligible*" />
+                        <Label fx:id="winnerRank" text="*Rank if eligible*" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <children>
-                        <Text fx:id="winnerPatches" strokeType="OUTSIDE" strokeWidth="0.0" text="*Count*" />
+                        <Label fx:id="winnerPatches" text="*Count*" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                      <children>
-                        <Text fx:id="winnerMoney" strokeType="OUTSIDE" strokeWidth="0.0" text="*Money*" />
+                        <Label fx:id="winnerMoney" text="*Money*" />
                      </children>
                   </VBox>
                </children>
             </GridPane>
-            <VBox alignment="CENTER" prefHeight="385.0" prefWidth="600.0" GridPane.rowIndex="2">
+            <VBox alignment="CENTER_LEFT" prefHeight="385.0" prefWidth="600.0" GridPane.rowIndex="2">
                <children>
-                  <GridPane gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="350.0">
+                  <GridPane gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="270.0" prefWidth="270.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -141,6 +148,9 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
+                     <VBox.margin>
+                        <Insets left="150.0" top="15.0" />
+                     </VBox.margin>
                   </GridPane>
                </children>
             </VBox>
@@ -184,34 +194,34 @@
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                      <children>
-                        <Text fx:id="loserName" strokeType="OUTSIDE" strokeWidth="0.0" text="*Player / AI name*" />
+                        <Label fx:id="loserName" text="*Player / AI name*" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
-                        <Text fx:id="loserScore" strokeType="OUTSIDE" strokeWidth="0.0" text="*Score*" />
+                        <Label fx:id="loserScore" text="*Score*" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <children>
-                        <Text fx:id="loserRank" strokeType="OUTSIDE" strokeWidth="0.0" text="*Rank if eligible*" />
+                        <Label fx:id="loserRank" text="*Rank if eligible*" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <children>
-                        <Text fx:id="loserCountPatches" strokeType="OUTSIDE" strokeWidth="0.0" text="*Count*" />
+                        <Label fx:id="loserPatches" text="*Count*" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                      <children>
-                        <Text fx:id="loserMoney" strokeType="OUTSIDE" strokeWidth="0.0" text="*Money" />
+                        <Label fx:id="loserMoney" text="*Money*" />
                      </children>
                   </VBox>
                </children>
             </GridPane>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <VBox alignment="CENTER_RIGHT" prefHeight="376.0" prefWidth="600.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
-                  <GridPane gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="350.0">
+                  <GridPane gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="270.0" prefWidth="270.0">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -234,6 +244,9 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
+                     <VBox.margin>
+                        <Insets right="150.0" top="15.0" />
+                     </VBox.margin>
                   </GridPane>
                </children>
             </VBox>

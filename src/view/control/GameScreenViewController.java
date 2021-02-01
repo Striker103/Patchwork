@@ -118,6 +118,10 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
         }
     }
 
+    public List<PatchView> getListInOrder(){
+        return listInOrder;
+    }
+
     private String getFirstPlayerName(){
         return mainViewController.getMainController().getGameController().getNextPlayer().getName();
     }
@@ -143,6 +147,11 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
         listToClear = new ArrayList<>();
         RefreshPlayer(1);
         RefreshPlayer(2);
+
+        Player player1 = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1();
+        Player player2 = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2();
+        if(player1.getBoardPosition() == 53 && player2.getBoardPosition() == 53)
+            mainViewController.getGameSummaryViewController().showScene();
     }
 
     public void RefreshPlayer(int player){
@@ -166,7 +175,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
                 int id = t1.getFirst();
                 Matrix placement = t1.getSecond();
                 int[][] m = placement.getIntMatrix();
-                int arr[] = getStartPos(m);
+                int[] arr = getStartPos(m);
                 boolean flipped = t2.getFirst();
                 int rotation = t2.getSecond();
 
@@ -199,11 +208,12 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
                     patch.setY(patch.getY() + 30);
                 }
             }catch(Exception e){
+                System.out.print("");
             }
         }
     }
 
-    private int[] getStartPos(int[][] matrix){
+    public int[] getStartPos(int[][] matrix){
         int[] arr = new int[2];
         arr[1] = 9;
         boolean heightSet = false;
@@ -282,7 +292,6 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
 
     }
 
-    //TODO when a patch which was already clicked is clicked again there are warnings
     public void loadPatches() throws FileNotFoundException {
         for(Patch patch : patches)
         {
@@ -345,7 +354,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
         }
     }
 
-    public void loadSpecialPatches() throws FileNotFoundException {
+    public void loadSpecialPatches(){
         for(int i = 0; i < 5; i++){
             PatchView patchView = specialPatchesOnBoard.get(i);
             if(i == 0){
@@ -767,7 +776,8 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
             }
         }else if(keyEvent.getCode() == KeyCode.K){
             RefreshTheBoard();
-
+        }else if(keyEvent.getCode() == KeyCode.O){
+            mainViewController.getGameSummaryViewController().showScene();
         }
     }
 }
