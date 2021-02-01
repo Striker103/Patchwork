@@ -18,7 +18,7 @@ public final class AIUtil {
      */
     protected static LinkedHashSet<Tuple<Matrix, Tuple<Integer, Boolean>>> generateAllPossiblePatches(Patch patch){
         Matrix shape = new Matrix(5,5);
-        shape.insert(patch.getShape(),0,0);
+        shape.insert(patch.getShape().copy(),0,0);
         LinkedHashSet<Tuple<Matrix, Tuple<Integer, Boolean>>> result = new LinkedHashSet<>();
         for(int side =0; side<2; side++){
             for (int degree = 0; degree < 4; degree++) {
