@@ -1,33 +1,21 @@
 package view.control;
 
 import controller.*;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import model.Game;
 import model.Patch;
-import model.Score;
 import view.HighScoreReturn;
 import view.aui.*;
-
 import java.io.IOException;
-import java.util.List;
 
 public class MainViewController implements HighScoreReturn {
 
-    private static final int oldHeight = 720, oldWidth = 1280;
     private MainController mainController;
 
-    @FXML
-    private Button newGameButton;
-
-    private String cssName = "style.css";
 
 
     private  GameScreenViewController gameScreenViewController;
@@ -97,10 +85,6 @@ public class MainViewController implements HighScoreReturn {
         return newGameViewController;
     }
 
-    public Scene getMainMenuScene() {
-        return mainMenuScene;
-    }
-
     public void setMainMenuScene(Scene mainMenuScene) {
         this.mainMenuScene = mainMenuScene;
     }
@@ -159,7 +143,6 @@ public class MainViewController implements HighScoreReturn {
             scene = new Scene(gameScreenRoot);
             gameScreenViewController.setOwnScene(scene);
             gameScreenViewController.initListView();
-            //currentScene = scene;
 
             FXMLLoader pauseGameLoader = new FXMLLoader(getClass().getResource("/view/fxml/PauseGame.fxml"));
             Pane pauseGameRoot = pauseGameLoader.load();
@@ -167,6 +150,13 @@ public class MainViewController implements HighScoreReturn {
             pauseGameViewController.setMainViewController(this);
             scene = new Scene(pauseGameRoot);
             pauseGameViewController.setOwnScene(scene);
+
+            FXMLLoader gameSummaryLoader = new FXMLLoader(getClass().getResource("/view/fxml/Summary.fxml"));
+            Pane gameSummaryRoot = gameSummaryLoader.load();
+            gameSummaryViewController = gameSummaryLoader.getController();
+            gameSummaryViewController.setMainViewController(this);
+            scene = new Scene(gameSummaryRoot);
+            gameSummaryViewController.setOwnScene(scene);
 
             mainController.setHighScoreAUI(highscoresViewController);
             mainController.setLoadGameAUI(loadGameViewController);
@@ -176,7 +166,6 @@ public class MainViewController implements HighScoreReturn {
 
             //TODO
             mainController.setHintAUI(hintAUI);
-
 
         }
 
@@ -196,17 +185,17 @@ public class MainViewController implements HighScoreReturn {
 
 
     @FXML
-    public void onNewGameAction(ActionEvent actionEvent) {
+    public void onNewGameAction() {
         newGameViewController.showScene();
     }
 
     @FXML
-    public void onLoadGameAction(ActionEvent actionEvent) {
+    public void onLoadGameAction() {
         loadGameViewController.showScene();
     }
 
     @FXML
-    public void onHighscoresAction(ActionEvent actionEvent) {
+    public void onHighscoresAction() {
         highscoresViewController.showScene(this);
     }
 
