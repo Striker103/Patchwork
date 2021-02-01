@@ -7,6 +7,7 @@ import ai.NormalAI;
 import model.*;
 import view.aui.ErrorAUI;
 import view.aui.HintAUI;
+import view.aui.LogAUI;
 
 public class AIController {
 
@@ -38,6 +39,10 @@ public class AIController {
 	 * The Error AUI
 	 */
 	private ErrorAUI errorAUI;
+	/**
+	 * The Error AUI
+	 */
+	private LogAUI logAUI;
 
 	/**
 	 * true if hintAUI is set
@@ -48,6 +53,11 @@ public class AIController {
 	 * true if errorAUI is set
 	 */
 	private boolean errorAUIChanged = false;
+
+	/**
+	 * true if logAUI is set
+	 */
+	private boolean logAUIChanged = false;
 
 	/**
 	 * Constructor that sets the mainController
@@ -85,6 +95,7 @@ public class AIController {
 			errorAUI.showError("No AI Turn Possible!");
 			return;
 		}
+		logAUI.updateLog(calculatedTurn.getLogEntry());
 		mainController.getUndoRedoController().clearRedoList();
 		game.addGameState(calculatedTurn);
 		mainController.getGameController().endTurn();
@@ -165,5 +176,15 @@ public class AIController {
 		if(this.hintAUIChanged) throw new IllegalStateException("hintAUI was already set");
 		this.hintAUI = hintAUI;
 		this.hintAUIChanged = true;
+	}
+
+	/**
+	 * set the logAUI
+	 * @param logAUI the logAUI
+	 */
+	public void setLogAUI(LogAUI logAUI) {
+		if(this.hintAUIChanged) throw new IllegalStateException("logAUI was already set");
+		this.logAUI = logAUI;
+		this.logAUIChanged = true;
 	}
 }
