@@ -40,8 +40,7 @@ public class NormalAI extends AI {
 		double temp = 0;
 		for ( int i=0; i<2; i++ ){
 			Patch patch = patches[i];
-			temp = ((double) (2*calculatePatchValue(patch, player1) - patch.getButtonsCost()+
-						patch.getButtonIncome()*3))/patch.getTime();
+			temp = ((double) (calculatePatchValue(patch, player1)))/patch.getTime();
 				if ( maximum <= temp ){
 					maximum = temp;
 				}
