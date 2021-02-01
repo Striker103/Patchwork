@@ -196,6 +196,9 @@ public class MatrixTest {
         assertEquals(MATRIX6.count(3),0);
     }
 
+    /**
+     * Tests the iterator with a sum
+     */
     @Test
     public void testIterator(){
         int sum = 0;
