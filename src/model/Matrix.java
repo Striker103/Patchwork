@@ -338,7 +338,7 @@ public class Matrix implements Iterable<Integer>{
             int actRow=0, actColumn=0;
             @Override
             public boolean hasNext() {
-                return !(actRow==getRows()-1 && actColumn==getColumns()-1);
+                return !(actRow==getRows());
             }
 
             @Override
