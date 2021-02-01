@@ -239,7 +239,7 @@ public class GameControllerTest {
     @Test
     public void getNotMovingPlayer() {
         gameController.advance();
-        assertEquals(game.getCurrentGameState().getPlayer1().getName(), gameController.getNextPlayer().getName());
+        assertEquals(game.getCurrentGameState().getPlayer1().getName(), gameController.getNotMovingPlayer().getName());
     }
 
     /**
