@@ -16,7 +16,8 @@ public class MatrixTest {
                             MATRIX6 = new Matrix(new int[][]{{0, -1, -1}, {-1, -2, 0}, {-2, 0, 1}}),
                             MATRIX7 = new Matrix(new int[][]{{0,0,1},{1,0,0}}),
                             MATRIX8 = new Matrix(new int[][]{{0,0,0,1,0},{0,0,0,0,0},{0,1,0,0,0}}),
-                            MATRIX9 = new Matrix(new int[][]{{0,1},{1,0}});
+                            MATRIX9 = new Matrix(new int[][]{{0,1},{1,0}}),
+                            MATRIX10 = new Matrix(new int[][]{{1,2,3,4,5},{6,7,8,9,10},{11,12,13,14,15},{16,17,18,19,20}});
 
     /**
      * There is no Matrix with no entries
@@ -193,6 +194,15 @@ public class MatrixTest {
         assertEquals(MATRIX1.count(0),3);
         assertEquals(MATRIX4.count(1),3);
         assertEquals(MATRIX6.count(3),0);
+    }
+
+    @Test
+    public void testIterator(){
+        int sum = 0;
+        for (int element:MATRIX10) {
+            sum += element;
+        }
+        assertEquals(210, sum);
     }
 
     /**
