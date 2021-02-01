@@ -1,5 +1,7 @@
 package view.control;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,6 +15,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import model.Player;
 import model.PlayerType;
 import model.Tuple;
 
@@ -83,12 +86,14 @@ public class NewGameViewController {
 
         boolean ironman = ironmanModeSpinner.getValue();
 
+        PlayerType ai1 = aIDifficultySpinner.getValue();
+        PlayerType ai2 = aI2DifficultySpinner.getValue();
        switch (gameTypeSpinner.getValue()){
 
            case "Player vs AI":
 
                player1Tuple = new Tuple<>(player1Name, PlayerType.HUMAN);
-               player2Tuple = new Tuple<>(player2Name, aI2DifficultySpinner.getValue());
+               player2Tuple = new Tuple<>(player2Name, ai2);
 
                break;
 
@@ -101,8 +106,8 @@ public class NewGameViewController {
 
            case "AI vs AI":
 
-               player1Tuple = new Tuple<>(player1Name, aIDifficultySpinner.getValue());
-               player2Tuple = new Tuple<>(player2Name, aI2DifficultySpinner.getValue());
+               player1Tuple = new Tuple<>(player1Name, ai1);
+               player2Tuple = new Tuple<>(player2Name, ai2);
 
                break;
 
@@ -137,6 +142,8 @@ public class NewGameViewController {
 
 
        mainViewController.getMainController().getGamePreparationController().startGame(gameTuple, csvFile, simulationSpeedSpinner.getValue(), ironman);
+
+        System.out.println(gameTuple.getSecond().getSecond());
 
        mainViewController.getPauseGameViewController().setGameSaveFile(new File(generateFilePath()));
        mainViewController.getGameScreenViewController().initGame();
@@ -211,31 +218,36 @@ public class NewGameViewController {
         svfGameType.setWrapAround(true);
         gameTypeSpinner.setValueFactory(svfGameType);
         gameTypeSpinner.getEditor().textProperty().addListener((obs, oldValue, newValue) -> {
-            if("Player vs Player".equals(newValue)){
-                aIDifficultySpinner.setDisable(true);
-            }
-            else
-                aIDifficultySpinner.setDisable(false);
 
-            if (!"AI vs AI".equals(newValue)) {
-                aI2DifficultySpinner.setDisable(true);
-                simulationSpeedSpinner.setDisable(true);
+
+            switch (newValue){
+                case "Player vs Player":
+                    aIDifficultySpinner.setDisable(true);
+                    aI2DifficultySpinner.setDisable(true);
+                    break;
+
+                case "Player vs AI":
+                    aIDifficultySpinner.setDisable(true);
+                    aI2DifficultySpinner.setDisable(false);
+                    break;
+
+                case "AI vs AI":
+                    aIDifficultySpinner.setDisable(false);
+                    aI2DifficultySpinner.setDisable(false);
+                    break;
             }
-            else
-                aI2DifficultySpinner.setDisable(false);
-                simulationSpeedSpinner.setDisable(false);
         });
 
         ObservableList<PlayerType> aIList = FXCollections.observableArrayList(PlayerType.AI_EASY, PlayerType.AI_MEDIUM, PlayerType.AI_HARD);
+        ObservableList<PlayerType> aIList2 = FXCollections.observableArrayList(PlayerType.AI_EASY, PlayerType.AI_MEDIUM, PlayerType.AI_HARD);
         SpinnerValueFactory<PlayerType> svfAI = new SpinnerValueFactory.ListSpinnerValueFactory<>(aIList);
         svfAI.setWrapAround(true);
         aIDifficultySpinner.setValueFactory(svfAI);
 
 
-        SpinnerValueFactory<PlayerType> svfAI2 = new SpinnerValueFactory.ListSpinnerValueFactory<>(aIList);
+        SpinnerValueFactory<PlayerType> svfAI2 = new SpinnerValueFactory.ListSpinnerValueFactory<>(aIList2);
         svfAI2.setWrapAround(true);
         aI2DifficultySpinner.setValueFactory(svfAI2);
-
 
         SpinnerValueFactory<Integer> svfSimulationSpeed = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 3, 0);
         svfSimulationSpeed.setWrapAround(false);
