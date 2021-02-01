@@ -52,7 +52,7 @@ public class UndoRedoController {
 		game.setHighScoreReachable(false);
 		//Find last gamestate with same moving player
 		while(game.getCurrentGameStateIndex()>0){
-			if(mainController.getGameController().getNextPlayer() == nextMovingPlayer){
+			if(mainController.getGameController().getNextPlayer().getName().equals(nextMovingPlayer.getName())){
 				break;
 			}else{
 				game.setCurrentGameState(game.getCurrentGameStateIndex()-1);

@@ -153,7 +153,7 @@ public class GameController {
 	public Player getNotMovingPlayer(){
 		Player movingPlayer = getNextPlayer();
 		GameState currentGS = mainController.getGame().getCurrentGameState();
-		if(currentGS.getPlayer1().equals(movingPlayer)){
+		if(currentGS.getPlayer1().getName().equals(movingPlayer.getName())){
 			return currentGS.getPlayer2();
 		}else{
 			return currentGS.getPlayer1();
@@ -185,7 +185,7 @@ public class GameController {
 	 * @param gameStateIndex The Gamestate to calculate Player position
 	 * @return next moving Player
 	 */
-	private Player getNextPlayer(int gameStateIndex) {
+	Player getNextPlayer(int gameStateIndex) {
 		GameState gameState = mainController.getGame().getGameStates().get(gameStateIndex);
 		Player player1 = gameState.getPlayer1();
 		Player player2 = gameState.getPlayer2();
@@ -193,10 +193,14 @@ public class GameController {
 
 		if(player1.getBoardPosition()<player2.getBoardPosition()||player1.getBoardPosition()==0){
 			return player1;
-		}else if(player1.getBoardPosition()>player2.getBoardPosition() ){
+		}else if(player1.getBoardPosition()>player2.getBoardPosition()||player2.getBoardPosition()==0 ){
 			return player2;
 		}else{
-			return getNextPlayer(gameStateIndex-1);
+			if(getNextPlayer(gameStateIndex-1).getName().equals(gameState.getPlayer1().getName())){
+				return gameState.getPlayer1();
+			}else{
+				return gameState.getPlayer2();
+			}
 		}
 	}
 
