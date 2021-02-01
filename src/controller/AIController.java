@@ -8,6 +8,7 @@ import model.*;
 import view.aui.ErrorAUI;
 import view.aui.HintAUI;
 import view.aui.LogAUI;
+import view.aui.TurnAUI;
 
 public class AIController {
 
@@ -44,6 +45,13 @@ public class AIController {
 	 */
 	private LogAUI logAUI;
 
+
+
+	/**
+	 * The Turn AUI
+	 */
+	private TurnAUI turnAUI;
+
 	/**
 	 * true if hintAUI is set
 	 */
@@ -58,6 +66,10 @@ public class AIController {
 	 * true if logAUI is set
 	 */
 	private boolean logAUIChanged = false;
+	/**
+	 * true if turnAUI is set
+	 */
+	private boolean turnAUIChanged;
 
 	/**
 	 * Constructor that sets the mainController
@@ -91,6 +103,12 @@ public class AIController {
 				break;
 
 		}
+		try{
+			Thread.sleep(mainController.getGame().getSimulationSpeed()*1000);
+		}catch (InterruptedException e){
+
+		}
+
 		if(calculatedTurn == null){
 			errorAUI.showError("No AI Turn Possible!");
 			return;
@@ -98,6 +116,7 @@ public class AIController {
 		logAUI.updateLog(calculatedTurn.getLogEntry());
 		mainController.getUndoRedoController().clearRedoList();
 		game.addGameState(calculatedTurn);
+		turnAUI.updatePatches();
 		mainController.getGameController().endTurn();
 	}
 
@@ -186,5 +205,11 @@ public class AIController {
 		if(this.hintAUIChanged) throw new IllegalStateException("logAUI was already set");
 		this.logAUI = logAUI;
 		this.logAUIChanged = true;
+	}
+
+	public void setTurnAUI(TurnAUI turnAUI) {
+		if(this.turnAUIChanged) throw new IllegalStateException("logAUI was already set");
+		this.turnAUI = turnAUI;
+		this.turnAUIChanged = true;
 	}
 }

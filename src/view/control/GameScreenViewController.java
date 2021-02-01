@@ -137,8 +137,15 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
         listInOrder = new ArrayList<>();
         IOController ioController = mainViewController.getMainController().getIOController();
         List<Patch> patches = ioController.importCSVNotShuffled();
-        for(Patch patch : patches){
+        for(Patch patch : patches) {
             listInOrder.add(new PatchView(patch));
+        }
+        triggerInitialMove(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1());
+    }
+
+    private void triggerInitialMove(Player startingPlayer) {
+        if(startingPlayer.getPlayerType() != PlayerType.HUMAN){
+            mainViewController.getMainController().getAIController().doTurn();
         }
     }
 
@@ -181,7 +188,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
     public void RefreshPlayer(int player){
         int counter = 0;
         int currentGameStateIndex = game.getCurrentGameStateIndex();
-        //System.out.println("currentGameStateIndex: " + currentGameStateIndex);
+        System.out.println("currentGameStateIndex: " + currentGameStateIndex);
 
         for(GameState gameState : game.getGameStatesList()){
             if(counter > currentGameStateIndex)

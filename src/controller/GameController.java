@@ -12,6 +12,7 @@ import view.aui.TurnAUI;
  */
 public class GameController {
 
+	private static final int LASTBOARDPOSITION = 54;
 	private final MainController mainController;
 
 	private ErrorAUI errorAUI;
@@ -164,6 +165,10 @@ public class GameController {
 	 * Triggers the next Human or AI turn
 	 */
 	void endTurn() {
+		GameState currentGameState = mainController.getGame().getCurrentGameState();
+		if(currentGameState.getPlayer1().getBoardPosition()==LASTBOARDPOSITION && currentGameState.getPlayer2().getBoardPosition()==LASTBOARDPOSITION){
+			return;
+		}
 		Player nextMovingPlayer = getNextPlayer();
 		AIController aiController = mainController.getAIController();
 		if(nextMovingPlayer.getPlayerType()== PlayerType.HUMAN){
