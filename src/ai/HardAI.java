@@ -28,6 +28,8 @@ public class HardAI extends AI {
 
         final long START_TIME = System.currentTimeMillis(); // Time measurement// When enough spaces are empty, we care for placement later
         final MinMaxTree<Tuple<GameState, Player>> tree = new MinMaxTree<>(new Tuple<>(actualState, movingPlayer), true); //Let us build a tree
+
+        // The function to build layers into the tree
         final Function<Tuple<GameState, Player>, HashSet<MinMaxTree<Tuple<GameState, Player>>>> createFunction = state -> {
             HashSet<MinMaxTree<Tuple<GameState, Player>>> set = Arrays.stream(state.getFirst().getNext3Patches()) //next patch options
                     .filter(patch -> patch.getButtonsCost() <= movingPlayer.getMoney()) //check money
@@ -75,10 +77,14 @@ public class HardAI extends AI {
             set.add(new MinMaxTree<>(AIUtil.generateAdvance(state.getFirst(), state.getSecond()), state.getSecond().lightEquals(movingPlayer))); //get advance option
             return set;
         };
+
+        //Actually building the tree
         for (int i = 0; START_TIME + 7000 > System.currentTimeMillis() && i < 7; i++) { //For when there is time, build additional layer
             if (i < 2) tree.createOnLevel(createFunction, i);
             else tree.createOnLevelAndDelete(createFunction, i);
         }
+
+        //Getting the best State of the tree
         var bestOption = tree.calculateMinMaxNode(tuple -> tuple.getFirst().getPlayer1().getScore().getValue() - tuple.getFirst().getPlayer2().getScore().getValue()); //get max or base
         if (movingPlayer.getQuiltBoard().getPatchBoard().count(0) > 40) {
             if (bestOption.getFirst().equals(actualState)) return null;
