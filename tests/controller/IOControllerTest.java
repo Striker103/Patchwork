@@ -6,6 +6,8 @@ import org.junit.Test;
 import view.aui.*;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -49,7 +51,17 @@ public class IOControllerTest {
      */
     @Test
     public void saveLoadGame() {
-        ioController.saveGame(FILE);
+
+        if (!PATH.exists()){
+            try {
+                Files.createDirectory(PATH.toPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        ioController.saveGame(FILE); // to create a file "export/games/saveGameTest.json" "export/games" needs to exists
 
         MainController loadMainController = new MainController();
         DummyAUI loadDummy = new DummyAUI();
