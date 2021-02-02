@@ -56,6 +56,7 @@ public class QuiltBoardTest{
         assertEquals(quiltBoard, quiltBoard.copy());
     }
 
+
     /**
      * Tests addPatch
      */
