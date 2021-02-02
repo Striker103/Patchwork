@@ -15,6 +15,7 @@ public class HardAI extends AI {
      * the positions of the buttons on the time board
      */
     private final int[] buttonPositions = {5, 11, 17, 23, 29, 35, 41, 47, 53};
+    private final int[] patchPositions = {20, 26, 32, 44, 50};
 
     /**
      * Calculates the next turn based on the given turn
@@ -74,7 +75,7 @@ public class HardAI extends AI {
                         }
                     })
                     .collect(Collectors.toCollection(HashSet::new));
-            set.add(new MinMaxTree<>(AIUtil.generateAdvance(state.getFirst(), state.getSecond()), state.getSecond().lightEquals(movingPlayer))); //get advance option
+            set.add(new MinMaxTree<>(AIUtil.generateAdvance(state.getFirst().copy(), state.getSecond().copy()), state.getSecond().lightEquals(movingPlayer))); //get advance option
             return set;
         };
 
@@ -86,6 +87,7 @@ public class HardAI extends AI {
 
         //Getting the best State of the tree
         var bestOption = tree.calculateMinMaxNode(tuple -> tuple.getFirst().getPlayer1().getScore().getValue() - tuple.getFirst().getPlayer2().getScore().getValue()); //get max or base
+        GameState bestState;
         if (movingPlayer.getQuiltBoard().getPatchBoard().count(0) > 40) {
             if (bestOption.getFirst().equals(actualState)) return null;
             if (bestOption.getFirst().getPatches().equals(actualState.getPatches()))
