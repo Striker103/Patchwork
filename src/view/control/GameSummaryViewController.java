@@ -4,6 +4,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import model.*;
 import view.HighScoreReturn;
 import view.PatchView;
@@ -186,7 +188,21 @@ public class GameSummaryViewController implements HighScoreReturn {
     }
 
     public void onExportAction() {
-        mainViewController.getMainController().getIOController().exportGameResult(exportFile);
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF-Datei (*.pdf)", "*.pdf"));
+        Stage stage = new Stage();
+        File fileChoice = fileChooser.showSaveDialog(stage);
+        stage.show();
+
+        if(fileChoice == null){
+            stage.close();
+        } else {
+            stage.close();
+            if (fileChoice.exists() && fileChoice.isFile()) {
+                fileChoice.delete();
+            }
+            mainViewController.getMainController().getIOController().exportGameResult(fileChoice);
+        }
     }
 
     public void onStartMenuAction() {
