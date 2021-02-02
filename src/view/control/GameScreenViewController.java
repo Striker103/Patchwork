@@ -1,6 +1,7 @@
 package view.control;
 
 import controller.*;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import java.io.FileInputStream;
@@ -600,6 +601,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
     }
 
 
+
     private class TimeToken extends ImageView {
         private int firstPosX = 0;
         private int firstPosY = 0;
@@ -738,6 +740,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
 
     @FXML
     public void onPassAction() {
+        passTurn();
     }
 
     @FXML
@@ -763,6 +766,99 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
     @FXML
     public void onChoose3Action() {
         choosePatch(2);
+    }
+
+    @FXML
+    public void onFlipAction(ActionEvent actionEvent) {
+        flipPatch();
+    }
+    @FXML
+    public void onUpAction(ActionEvent actionEvent) {
+        movePatchUp();
+    }
+    @FXML
+    public void onRotateAction(ActionEvent actionEvent) {
+        rotatePatch();
+    }
+
+    @FXML
+    public void onLeftAction(ActionEvent actionEvent) {
+        movePatchLeft();
+    }
+    @FXML
+    public void onConfirmAction(ActionEvent actionEvent) {
+        confirmPatch();
+    }
+
+    @FXML
+    public void onRightAction(ActionEvent actionEvent) {
+        movePatchRight();
+    }
+
+    @FXML
+    public void onDownAction(ActionEvent actionEvent) {
+        movePatchDown();
+    }
+    private void movePatchUp(){
+        if(activePatchView.moveIsLegit('w')){
+            activePatchView.setFirstPlayer(isFirstPlayer());
+            activePatchView.moveUp();
+        }
+    }
+
+    private void movePatchRight(){
+        if(activePatchView.moveIsLegit('d')){
+            activePatchView.setFirstPlayer(isFirstPlayer());
+            activePatchView.moveRight();
+        }
+    }
+    private void movePatchLeft(){
+        if(activePatchView.moveIsLegit('a')){
+            activePatchView.setFirstPlayer(isFirstPlayer());
+            activePatchView.moveLeft();
+        }
+
+    }
+    private void movePatchDown(){
+        if(activePatchView.moveIsLegit('s')){
+            activePatchView.setFirstPlayer(isFirstPlayer());
+            activePatchView.moveDown();
+        }
+    }
+    private void rotatePatch(){
+        if(activePatchView.rotationIsLegit()){
+            activePatchView.setFirstPlayer(isFirstPlayer());
+            activePatchView.rotate();
+
+        }
+        else{
+            errorAUI.showError("please move away from the corner a little bit");
+        }
+    }
+    private void flipPatch(){
+        activePatchView.setFirstPlayer(isFirstPlayer());
+        activePatchView.flip();
+    }
+    private void confirmPatch(){
+        if(!isPlaced){
+            errorAUI.showError("please place the 1x1 patch first (Key: X)");
+            return;
+        }
+        GameController gameController = mainViewController.getMainController().getGameController();
+        gameController.takePatch(activePatchView.getPatch(), activePatchView.readyToGo(), activePatchView.getRotation(), activePatchView.getFlipped());
+
+    }
+
+    private void passTurn(){
+        if(!isPlaced){
+            errorAUI.showError("please place the 1x1 patch first (Key: X)");
+            return;
+        }
+        removePatches();
+        GameController gameController = mainViewController.getMainController().getGameController();
+        gameController.advance();
+        refreshTheBoard();
+
     }
 
     private void choosePatch(int index){
@@ -803,59 +899,27 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
      */
     public void handleKeyPressed(KeyEvent keyEvent){
         if(keyEvent.getCode() == KeyCode.W || keyEvent.getCode() == KeyCode.NUMPAD5){
-            if(activePatchView.moveIsLegit('w')){
-                activePatchView.setFirstPlayer(isFirstPlayer());
-                activePatchView.moveUp();
-            }
+          movePatchUp();
         }else if(keyEvent.getCode() == KeyCode.S  || keyEvent.getCode() == KeyCode.NUMPAD2){
-            if(activePatchView.moveIsLegit('s')){
-                activePatchView.setFirstPlayer(isFirstPlayer());
-                activePatchView.moveDown();
-            }
+              movePatchDown();
         }
         else if(keyEvent.getCode() == KeyCode.A || keyEvent.getCode() == KeyCode.NUMPAD1 ){
-            if(activePatchView.moveIsLegit('a')){
-                activePatchView.setFirstPlayer(isFirstPlayer());
-                activePatchView.moveLeft();
-            }
+
+            movePatchLeft();
         }
         else if(keyEvent.getCode() == KeyCode.D || keyEvent.getCode() == KeyCode.NUMPAD3){
-            if(activePatchView.moveIsLegit('d')){
-                activePatchView.setFirstPlayer(isFirstPlayer());
-                activePatchView.moveRight();
-            }
+            movePatchRight();
         }
         else if(keyEvent.getCode() == KeyCode.E || keyEvent.getCode() == KeyCode.NUMPAD6){
-
-            if(activePatchView.rotationIsLegit()){
-                activePatchView.setFirstPlayer(isFirstPlayer());
-                activePatchView.rotate();
-            }else{
-                errorAUI.showError("please move away from the corner a little bit");
-            }
+            rotatePatch();
         }
         else if(keyEvent.getCode() == KeyCode.Q || keyEvent.getCode() == KeyCode.NUMPAD4) {
-            activePatchView.setFirstPlayer(isFirstPlayer());
-            activePatchView.flip();
+            flipPatch();
         }else if(keyEvent.getCode() == KeyCode.R || keyEvent.getCode() == KeyCode.NUMPAD7){
-            if(!isPlaced){
-                errorAUI.showError("please place the 1x1 patch first (Key: X)");
-                return;
-            }
-            removePatches();
-            GameController gameController = mainViewController.getMainController().getGameController();
-            gameController.advance();
-            refreshTheBoard();
+            passTurn();
         }
         else if(keyEvent.getCode() == KeyCode.F || keyEvent.getCode() == KeyCode.NUMPAD9){
-            if(!isPlaced){
-                errorAUI.showError("please place the 1x1 patch first (Key: X)");
-                return;
-            }
-            GameController gameController = mainViewController.getMainController().getGameController();
-            gameController.takePatch(activePatchView.getPatch(), activePatchView.readyToGo(), activePatchView.getRotation(), activePatchView.getFlipped());
-
-
+            confirmPatch();
         }else if(keyEvent.getCode() == KeyCode.C){ //only for debugging
             Matrix ready = activePatchView.readyToGo();
             ready.print();
@@ -899,10 +963,8 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
                 refreshTheBoard();
                 updateLog("1x1 Patch placed");
             }
-        }else if(keyEvent.getCode() == KeyCode.K){
+        }else if(keyEvent.getCode() == KeyCode.K) {
             refreshTheBoard();
-        }else if(keyEvent.getCode() == KeyCode.O){
-            mainViewController.getGameSummaryViewController().showScene();
         }
     }
 }
