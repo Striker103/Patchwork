@@ -6,6 +6,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import model.Score;
 import view.HighScoreReturn;
@@ -14,6 +16,7 @@ import view.aui.HighScoreAUI;
 import javax.swing.text.TabableView;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -22,6 +25,9 @@ import java.util.List;
 public class HighscoresViewController implements HighScoreAUI {
 
     private MainViewController mainViewController;
+
+    @FXML
+    private ImageView highscoresImage;
 
     @FXML
     private TableView<Score> tableView;
@@ -95,6 +101,13 @@ public class HighscoresViewController implements HighScoreAUI {
         mainViewController.showCurrentScene();
 
         mainViewController.getMainController().getHighScoreController().showHighScores(new File(highScorePath));
+
+        try {
+            highscoresImage.setImage((new Image(this.getClass().getResource("/view/images/Headlines/Highscores.png").toURI().toString())));
+
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setOwnScene(Scene scene) {

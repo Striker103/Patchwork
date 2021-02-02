@@ -11,6 +11,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -19,10 +21,15 @@ import model.Player;
 import model.PlayerType;
 import model.Tuple;
 
+
 import java.io.File;
+import java.net.URISyntaxException;
 
 public class NewGameViewController {
     private Scene ownScene;
+
+    @FXML
+    private ImageView newGameImage;
 
     @FXML
     private Spinner<String> startPlayerSpinner;
@@ -253,6 +260,13 @@ public class NewGameViewController {
         SpinnerValueFactory<Integer> svfSimulationSpeed = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 3, 0);
         svfSimulationSpeed.setWrapAround(false);
         simulationSpeedSpinner.setValueFactory(svfSimulationSpeed);
+
+        try {
+            newGameImage.setImage((new Image(this.getClass().getResource("/view/images/Headlines/NewGame.png").toURI().toString())));
+
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
 
     }
 }

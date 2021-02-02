@@ -35,7 +35,7 @@
    <top>
       <ImageView fx:id="logoImage" fitHeight="250.0" fitWidth="1240.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <BorderPane.margin>
-            <Insets top="50.0" />
+            <Insets top="60.0" />
          </BorderPane.margin>
       </ImageView>
    </top>

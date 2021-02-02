@@ -123,6 +123,7 @@ public class MainViewController implements HighScoreReturn {
             newGameViewController = newGameLoader.getController();
             newGameViewController.setMainViewController(this);
             scene = new Scene(newGameRoot);
+            scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
             newGameViewController.setOwnScene(scene);
             //currentScene = scene;
 
@@ -132,6 +133,7 @@ public class MainViewController implements HighScoreReturn {
             loadGameViewController = loadGameLoader.getController();
             loadGameViewController.setMainViewController(this);
             scene = new Scene(loadGameRoot);
+            scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
             loadGameViewController.setOwnScene(scene);
 
 
@@ -140,6 +142,7 @@ public class MainViewController implements HighScoreReturn {
             highscoresViewController = highscoreLoader.getController();
             highscoresViewController.setMainViewController(this);
             scene = new Scene(highscoreRoot);
+            scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
             highscoresViewController.setOwnScene(scene);
 
 
@@ -148,6 +151,7 @@ public class MainViewController implements HighScoreReturn {
             gameScreenViewController = gameScreenLoader.getController();
             gameScreenViewController.setMainViewController(this);
             scene = new Scene(gameScreenRoot);
+            scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
             gameScreenViewController.setOwnScene(scene);
             gameScreenViewController.initListView();
 
@@ -156,6 +160,7 @@ public class MainViewController implements HighScoreReturn {
             pauseGameViewController = pauseGameLoader.getController();
             pauseGameViewController.setMainViewController(this);
             scene = new Scene(pauseGameRoot);
+            scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
             pauseGameViewController.setOwnScene(scene);
 
             FXMLLoader gameSummaryLoader = new FXMLLoader(getClass().getResource("/view/fxml/Summary.fxml"));
@@ -163,6 +168,7 @@ public class MainViewController implements HighScoreReturn {
             gameSummaryViewController = gameSummaryLoader.getController();
             gameSummaryViewController.setMainViewController(this);
             scene = new Scene(gameSummaryRoot);
+            scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
             gameSummaryViewController.setOwnScene(scene);
 
             mainController.setHighScoreAUI(highscoresViewController);

@@ -30,6 +30,7 @@ public class Main extends Application {
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add(getClass().getResource("../view/control/style.css").toExternalForm());
 
+
 		primaryStage.setTitle("SoPra");
 		primaryStage.setScene(scene);
 		controller.setPrimaryStage(primaryStage);

@@ -7,12 +7,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import model.Game;
 import model.Tuple;
 import view.aui.LoadGameAUI;
 
+
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -21,6 +25,9 @@ import java.util.List;
 public class LoadGameViewController implements LoadGameAUI {
     private MainViewController mainViewController;
     private Scene ownScene;
+
+    @FXML
+    private ImageView loadGameImage;
 
     @FXML
     private Button playButton;
@@ -114,6 +121,13 @@ public class LoadGameViewController implements LoadGameAUI {
         mainViewController.showCurrentScene();
 
         mainViewController.getMainController().getIOController().loadGame(new File(saveGamesPath));
+
+        try {
+            loadGameImage.setImage((new Image(this.getClass().getResource("/view/images/Headlines/LoadGame.png").toURI().toString())));
+
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
