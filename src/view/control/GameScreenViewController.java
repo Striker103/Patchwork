@@ -781,6 +781,38 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
     }
 
     @FXML
+    public void onSpecialPatchAction(){
+        placeSpecialPatch();
+    }
+
+    private void placeSpecialPatch (){
+        if(!(activePatchView.getHeight() == 1 && activePatchView.getWidth() == 1))
+            return;
+        activePatchView.setFirstPlayer(isFirstPlayer());
+        boolean placed = false;
+        if(game.getCurrentGameState().getPlayer1().getPlayerType() == PlayerType.HUMAN && game.getCurrentGameState().getPlayer2().getPlayerType() == PlayerType.HUMAN){
+            Player currentPlayer = mainViewController.getMainController().getGameController().getNotMovingPlayer();
+            GameController gameController = mainViewController.getMainController().getGameController();
+            placed = gameController.place1x1Patch(activePatchView.getPosX() -2, activePatchView.getPosY()-2, currentPlayer);
+        }else{
+            Player currentPlayer;
+            if(game.getCurrentGameState().getPlayer1().getPlayerType() == PlayerType.HUMAN){
+                currentPlayer = game.getCurrentGameState().getPlayer1();
+            }else{
+                currentPlayer = game.getCurrentGameState().getPlayer2();
+            }
+            GameController gameController = mainViewController.getMainController().getGameController();
+            placed = gameController.place1x1Patch(activePatchView.getPosX() -2, activePatchView.getPosY()-2, currentPlayer);
+        }
+        if(placed){
+            isPlaced = true;
+            refreshList();
+            refreshTheBoard();
+            updateLog("1x1 Patch placed");
+        }
+    }
+
+    @FXML
     public void onChoose2Action() {
         choosePatch(1);
     }
@@ -863,7 +895,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
     }
     private void confirmPatch(){
         if(!isPlaced){
-            errorAUI.showError("please place the 1x1 patch first (Key: X)");
+            errorAUI.showError("please place the 1x1 patch first (Confirm with 'Place Special Patch'-Button)");
             return;
         }
         GameController gameController = mainViewController.getMainController().getGameController();
@@ -873,7 +905,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
 
     private void passTurn(){
         if(!isPlaced){
-            errorAUI.showError("please place the 1x1 patch first (Key: X)");
+            errorAUI.showError("please place the 1x1 patch first (Confirm with 'Place Special Patch'-Button)");
             return;
         }
         removePatches();
@@ -885,7 +917,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
 
     private void choosePatch(int index){
         if(!isPlaced){
-            errorAUI.showError("please place the 1x1 patch first (Key: X)");
+            errorAUI.showError("please place the 1x1 patch first (Confirm with 'Place Special Patch'-Button)");
             return;
         }
         removePatches();
@@ -961,30 +993,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
             secondPlayerBoard.print();
             System.out.println();
         }else if(keyEvent.getCode() == KeyCode.X || keyEvent.getCode() == KeyCode.NUMPAD8){
-            if(!(activePatchView.getHeight() == 1 && activePatchView.getWidth() == 1))
-                return;
-            activePatchView.setFirstPlayer(isFirstPlayer());
-            boolean placed = false;
-            if(game.getCurrentGameState().getPlayer1().getPlayerType() == PlayerType.HUMAN && game.getCurrentGameState().getPlayer2().getPlayerType() == PlayerType.HUMAN){
-                Player currentPlayer = mainViewController.getMainController().getGameController().getNotMovingPlayer();
-                GameController gameController = mainViewController.getMainController().getGameController();
-                placed = gameController.place1x1Patch(activePatchView.getPosX() -2, activePatchView.getPosY()-2, currentPlayer);
-            }else{
-                Player currentPlayer;
-                if(game.getCurrentGameState().getPlayer1().getPlayerType() == PlayerType.HUMAN){
-                    currentPlayer = game.getCurrentGameState().getPlayer1();
-                }else{
-                    currentPlayer = game.getCurrentGameState().getPlayer2();
-                }
-                GameController gameController = mainViewController.getMainController().getGameController();
-                placed = gameController.place1x1Patch(activePatchView.getPosX() -2, activePatchView.getPosY()-2, currentPlayer);
-            }
-            if(placed){
-                isPlaced = true;
-                refreshList();
-                refreshTheBoard();
-                updateLog("1x1 Patch placed");
-            }
+            placeSpecialPatch();
         }else if(keyEvent.getCode() == KeyCode.K) {
             refreshTheBoard();
         }
