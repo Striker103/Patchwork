@@ -56,6 +56,27 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
     private boolean isPlayerTurn;
 
     @FXML
+    private Button rightButton;
+
+    @FXML
+    private Button leftButton;
+
+    @FXML
+    private Button upButton;
+
+    @FXML
+    private Button downButton;
+
+    @FXML
+    private Button rotateButton;
+
+    @FXML
+    private Button flipButton;
+
+    @FXML
+    private Button confirmButton;
+
+    @FXML
     Pane pane;
 
     @FXML
@@ -95,6 +116,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
                     setGraphic(item.getFirst());
                     setText(information);
                     setTooltip(tooltip);
+                    loadButtons();
 
                 }
             }
@@ -965,6 +987,48 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
             }
         }else if(keyEvent.getCode() == KeyCode.K) {
             refreshTheBoard();
+        }
+    }
+
+    private void loadButtons () {
+        try {
+            ImageView buttonIcon =new ImageView( new Image(this.getClass().getResource("/view/images/Buttons/Right.png").toURI().toString()));
+
+            buttonIcon.setFitHeight(20);
+            buttonIcon.setFitWidth(20);
+            rightButton.setGraphic(buttonIcon);
+
+            buttonIcon = new ImageView( new Image(this.getClass().getResource("/view/images/Buttons/Left.png").toURI().toString()));
+            buttonIcon.setFitHeight(20);
+            buttonIcon.setFitWidth(20);
+            leftButton.setGraphic(buttonIcon);
+
+            buttonIcon = new ImageView( new Image(this.getClass().getResource("/view/images/Buttons/Up.png").toURI().toString()));
+            buttonIcon.setFitHeight(20);
+            buttonIcon.setFitWidth(20);
+            upButton.setGraphic(buttonIcon);
+
+            buttonIcon = new ImageView( new Image(this.getClass().getResource("/view/images/Buttons/Down.png").toURI().toString()));
+            buttonIcon.setFitHeight(20);
+            buttonIcon.setFitWidth(20);
+            downButton.setGraphic(buttonIcon);
+
+            buttonIcon = new ImageView( new Image(this.getClass().getResource("/view/images/Buttons/Confirm.png").toURI().toString()));
+            buttonIcon.setFitHeight(20);
+            buttonIcon.setFitWidth(20);
+            confirmButton.setGraphic(buttonIcon);
+
+            buttonIcon = new ImageView( new Image(this.getClass().getResource("/view/images/Buttons/Turn.png").toURI().toString()));
+            buttonIcon.setFitHeight(20);
+            buttonIcon.setFitWidth(20);
+            rotateButton.setGraphic(buttonIcon);
+
+            buttonIcon = new ImageView( new Image(this.getClass().getResource("/view/images/Buttons/Flip.png").toURI().toString()));
+            buttonIcon.setFitHeight(20);
+            buttonIcon.setFitWidth(20);
+            flipButton.setGraphic(buttonIcon);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
         }
     }
 }
