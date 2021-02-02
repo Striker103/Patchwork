@@ -140,7 +140,7 @@ public class QuiltBoard {
 	 * @return whether or not the player should get the special tile
 	 */
 	public boolean check7x7(){
-		return false;//TODO
+		return maximalSquare(patchBoard.toBooleanArray())>=7;
 	}
 
 	/**
@@ -148,5 +148,25 @@ public class QuiltBoard {
 	 */
 	public void print(){
 		this.patchBoard.print();
+	}
+
+	/**
+	 * calculates the side length of a max square of a boolean matrix
+	 * @param matrix the boolean matrix
+	 * @return the size of the largest square of true
+	 */
+	public int maximalSquare(boolean[][] matrix) {
+		int rows = matrix.length, cols = rows > 0 ? matrix[0].length : 0;
+		int[][] dynamic = new int[rows + 1][cols + 1];
+		int maxsqlen = 0;
+		for (int i = 1; i <= rows; i++) {
+			for (int j = 1; j <= cols; j++) {
+				if (matrix[i-1][j-1]){
+					dynamic[i][j] = Math.min(Math.min(dynamic[i][j - 1], dynamic[i - 1][j]), dynamic[i - 1][j - 1]) + 1;
+					maxsqlen = Math.max(maxsqlen, dynamic[i][j]);
+				}
+			}
+		}
+		return maxsqlen;
 	}
 }
