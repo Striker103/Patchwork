@@ -5,12 +5,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import model.Patch;
 import view.HighScoreReturn;
 import view.aui.*;
+
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class MainViewController implements HighScoreReturn {
 
@@ -28,6 +32,9 @@ public class MainViewController implements HighScoreReturn {
     private Stage primaryStage;
     private Scene mainMenuScene;
     private Scene currentScene;
+
+    @FXML
+    private ImageView logoImage;
 
     private ErrorAUI errorAUI = message -> {
         Alert alarm = new Alert(Alert.AlertType.ERROR);
@@ -168,6 +175,13 @@ public class MainViewController implements HighScoreReturn {
             //TODO
             mainController.setHintAUI(hintAUI);
 
+            try {
+                logoImage.setImage((new Image(this.getClass().getResource("/view/images/Logo/Patchwork_Logo.png").toURI().toString())));
+
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+
         }
 
     }
@@ -183,7 +197,6 @@ public class MainViewController implements HighScoreReturn {
             primaryStage.setScene(currentScene);
         }
     }
-
 
     @FXML
     public void onNewGameAction() {

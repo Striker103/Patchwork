@@ -2,36 +2,41 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.control.MainViewController">
+<BorderPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.control.MainViewController">
    <center>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-         <Button fx:id="newGameButton" mnemonicParsing="false" onAction="#onNewGameAction" prefHeight="25.0"
-                 prefWidth="85.0" text="New Game">
+         <Button fx:id="newGameButton" mnemonicParsing="false" onAction="#onNewGameAction" prefHeight="25.0" prefWidth="85.0" text="New Game">
             <opaqueInsets>
-               <Insets top="10.0"/>
+               <Insets top="10.0" />
             </opaqueInsets>
          </Button>
-         <Button fx:id="loadGameButton" mnemonicParsing="false" onAction="#onLoadGameAction" prefHeight="25.0"
-                 prefWidth="85.0" text="Load Game">
+         <Button fx:id="loadGameButton" mnemonicParsing="false" onAction="#onLoadGameAction" prefHeight="25.0" prefWidth="85.0" text="Load Game">
             <opaqueInsets>
-               <Insets top="10.0"/>
+               <Insets top="10.0" />
             </opaqueInsets>
             <VBox.margin>
-               <Insets top="10.0"/>
+               <Insets top="10.0" />
             </VBox.margin>
          </Button>
-         <Button fx:id="highscoresButton" mnemonicParsing="false" onAction="#onHighscoresAction" prefHeight="25.0"
-                 prefWidth="85.0" text="Highscores">
+         <Button fx:id="highscoresButton" mnemonicParsing="false" onAction="#onHighscoresAction" prefHeight="25.0" prefWidth="85.0" text="Highscores">
             <opaqueInsets>
-               <Insets top="10.0"/>
+               <Insets top="10.0" />
             </opaqueInsets>
             <VBox.margin>
-               <Insets top="10.0"/>
+               <Insets top="10.0" />
             </VBox.margin>
          </Button>
       </VBox>
    </center>
+   <top>
+      <ImageView fx:id="logoImage" fitHeight="250.0" fitWidth="1240.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets top="50.0" />
+         </BorderPane.margin>
+      </ImageView>
+   </top>
 </BorderPane>
