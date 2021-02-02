@@ -83,19 +83,15 @@
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="168.0" prefWidth="220.0" GridPane.rowIndex="2">
                      <children>
-                        <Label text="Highscore Rank;" />
+                        <Label text="Number of Patches:" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="155.0" prefWidth="220.0" GridPane.rowIndex="3">
                      <children>
-                        <Label text="Number of Patches:" />
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER" prefHeight="155.0" prefWidth="220.0" GridPane.rowIndex="4">
-                     <children>
                         <Label text="Money:" />
                      </children>
                   </VBox>
+                  <VBox alignment="CENTER" prefHeight="155.0" prefWidth="220.0" GridPane.rowIndex="4" />
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                      <children>
                         <Label fx:id="winnerName" text="*Player / AI name*" />
@@ -108,19 +104,15 @@
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <children>
-                        <Label fx:id="winnerRank" text="*Rank if eligible*" />
+                        <Label fx:id="winnerPatches" text="*Count*" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <children>
-                        <Label fx:id="winnerPatches" text="*Count*" />
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                     <children>
                         <Label fx:id="winnerMoney" text="*Money*" />
                      </children>
                   </VBox>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                </children>
             </GridPane>
             <VBox alignment="CENTER_LEFT" prefHeight="385.0" prefWidth="600.0" GridPane.rowIndex="2">
@@ -179,19 +171,15 @@
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="168.0" prefWidth="220.0" GridPane.rowIndex="2">
                      <children>
-                        <Label text="Highscore Rank:" />
+                        <Label text="Number of Patches:" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="155.0" prefWidth="220.0" GridPane.rowIndex="3">
                      <children>
-                        <Label text="Number of Patches:" />
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER" prefHeight="155.0" prefWidth="220.0" GridPane.rowIndex="4">
-                     <children>
                         <Label text="Money:" />
                      </children>
                   </VBox>
+                  <VBox alignment="CENTER" prefHeight="155.0" prefWidth="220.0" GridPane.rowIndex="4" />
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                      <children>
                         <Label fx:id="loserName" text="*Player / AI name*" />
@@ -204,19 +192,15 @@
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <children>
-                        <Label fx:id="loserRank" text="*Rank if eligible*" />
+                        <Label fx:id="loserPatches" text="*Count*" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <children>
-                        <Label fx:id="loserPatches" text="*Count*" />
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                     <children>
                         <Label fx:id="loserMoney" text="*Money*" />
                      </children>
                   </VBox>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                </children>
             </GridPane>
             <VBox alignment="CENTER_RIGHT" prefHeight="376.0" prefWidth="600.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
