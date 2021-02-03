@@ -34,12 +34,12 @@ public final class AIUtil {
                     for (int cols = 0; cols <= 9-trimmed.getColumns(); cols++) {
                         Matrix possiblePlace = new Matrix(9,9);
                         possiblePlace.insert( trimmed, rows, cols);
-                        result.add(new Tuple<>(possiblePlace, new Tuple<>(degree*90, side == 0)));
+                        result.add(new Tuple<>(possiblePlace, new Tuple<>(degree*90, side != 0)));
                     }
                 }
                 shape.rotate();
             }
-            shape.flip();
+            shape.rotate().flip();
         }
         return result;
     }
@@ -86,13 +86,12 @@ public final class AIUtil {
         final Player OTHER = edited.getPlayer1().lightEquals(BEHIND)? edited.getPlayer2() : edited.getPlayer1();
         int posBehind = BEHIND.getBoardPosition();
         int posOther = OTHER.getBoardPosition();
-        final int MONEY_BEHIND = BEHIND.getMoney();
 
         int offset = 0;
         if(posOther != 54) offset = 1;
         BEHIND.setBoardPosition(posOther+offset);
         BEHIND.addMoney((posOther-posBehind)+offset);
-        edited.setLogEntry("Passed and got coins");
+        edited.setLogEntry("Passed and got "+((posOther-posBehind)+offset)+" coins");
         return new Tuple<>(edited, OTHER);
     }
 
