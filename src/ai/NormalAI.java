@@ -26,18 +26,18 @@ public class NormalAI extends AI {
 	public GameState calculateTurn(GameState actualState, Player movingPlayer) {
 		List<GameState> resultContainer = getOptions(actualState, movingPlayer);
 		return resultContainer.stream()
-				.map( GameState ->{ return function( GameState );})
+				.map(this::function)
 				.max(Comparator.comparingDouble(Tuple::getFirst))
-				.orElse(null)
+				.orElse(new Tuple<>(2.0, null))
 				.getSecond();
 	}
 
-	private Tuple<Double,GameState> function( final GameState gameState){
+	private Tuple<Double,GameState> function(final GameState gameState){
 		GameState  gameStateCopy = gameState.copy();
 		Player player1 = gameStateCopy.getPlayer1();
 		Patch[] patches = gameStateCopy.getNext3Patches();
 		double maximum = 0;
-		double temp = 0;
+		double temp;
 		for ( int i=0; i<2; i++ ){
 			Patch patch = patches[i];
 			temp = ((double) (calculatePatchValue(patch, player1)))/patch.getTime();
@@ -45,7 +45,7 @@ public class NormalAI extends AI {
 					maximum = temp;
 				}
 			}
-		return new Tuple<>(maximum,gameState );
+		return new Tuple<>(maximum,gameState);
  	}
 
 	private LinkedList<GameState> getOptions(GameState actual, Player movingPlayer){
