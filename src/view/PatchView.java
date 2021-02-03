@@ -31,8 +31,8 @@ public class PatchView extends ImageView {
      * @param p the patch
      */
     public PatchView(Patch p, boolean b){
-        String path = "";
-        if(p.getPatchID() >= 999){
+        String path;
+        if(p.getPatchID() >= 99999 || p.getPatchID()<=-99999){
             path = "/view/images/Patches/SpecialPatch.png";
         }else{
             path = PatchMap.getInstance().getImagePath(p);
