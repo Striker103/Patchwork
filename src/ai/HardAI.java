@@ -18,7 +18,7 @@ public class HardAI extends AI {
      */
     @Override
     public GameState calculateTurn(final GameState actualState,final Player movingPlayer) {
-
+        final long ACTUAL_TIME = System.currentTimeMillis();
         final double actualTurn = evaluateBoard(movingPlayer.getQuiltBoard());
         final Player otherPlayer = movingPlayer.lightEquals(actualState.getPlayer1()) ? actualState.getPlayer2() : actualState.getPlayer1();
 
@@ -113,7 +113,7 @@ public class HardAI extends AI {
                 moving.addMoney(-used.getButtonsCost());
                 moving.setBoardPosition(Math.min(moving.getBoardPosition() + used.getTime(), 54));
                 System.out.println("Score" + moving.getScore().getValue() + "Money" + moving.getMoney());
-                copy.setLogEntry("Took patch " + used.getPatchID());
+                copy.setLogEntry("Took patch " + used.getPatchID()+ " for "+used.getButtonsCost()+" coins.");
                 bestState = copy;
             }
         }
@@ -128,6 +128,7 @@ public class HardAI extends AI {
         for (int i = movingPlayer.getBoardPosition()+1; i <= movedPlayer.getBoardPosition(); i++) {
             if(bestState.getTimeBoard()[i].hasButton()){
                 movedPlayer.addMoney(boardIncome);
+                bestState.setLogEntry(bestState.getLogEntry()+"\nGot "+boardIncome+" coins to spend later.");
             }
             if(bestState.getTimeBoard()[i].hasPatch()){
                 Matrix shape = new Matrix(3,5);
@@ -135,10 +136,12 @@ public class HardAI extends AI {
                 Patch singlePatch = new Patch(Integer.MAX_VALUE, 0, 0, shape, 0);
                 movedPlayer.setQuiltBoard(placePatch(movedPlayer.getQuiltBoard(), singlePatch).getFirst());
                 bestState.getTimeBoard()[i].removePatch();
+                bestState.setLogEntry(bestState.getLogEntry()+"\nGot a special patch and placed it happily.");
             }
         }
         System.out.println(evaluateBoard(movedPlayer.getQuiltBoard()));
         if(bestState.getLogEntry()==null) bestState.setLogEntry("ERR: LOG_ENTRY_NOT_DEFINED");
+        System.out.println("This took me "+(System.currentTimeMillis()-ACTUAL_TIME)+" milliseconds to calculate. Im proud.");
         return bestState;
     }
 
