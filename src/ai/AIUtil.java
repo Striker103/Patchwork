@@ -96,6 +96,13 @@ public final class AIUtil {
         return new Tuple<>(edited, OTHER);
     }
 
+    /**
+     * Creates GameState which will show the stuff, when a patch is already placed but not bought
+     * @param tuple tuple containing Bought Patch and Quiltboard, where Patch already lies
+     * @param actual the actual state from which the changes should be made
+     * @param movingPlayer the Player who buys this patch
+     * @return a GameState with all these changes made
+     */
     public static GameState buyPatch(Tuple<Patch, QuiltBoard> tuple, GameState actual, Player movingPlayer){
         Patch used = tuple.getFirst();
         GameState temp = actual.copy();
@@ -130,6 +137,7 @@ public final class AIUtil {
      * @return a sublist containing the next three patches
      * @deprecated use method from gamestate instead
      */
+    @Deprecated
     public static List<Patch> getNextPatches(GameState actual) {
         return actual.getPatches().subList(0,3);
     }
