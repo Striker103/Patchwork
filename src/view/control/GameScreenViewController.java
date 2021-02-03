@@ -301,11 +301,11 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
         boolean heightSet = false;
         for(int i = 0; i < matrix.length; i++){
             for(int j = 0; j < matrix[i].length; j++){
-                if(matrix[i][j] != 0 && matrix[i][j] != Integer.MAX_VALUE && !heightSet){
+                if(matrix[i][j] != 0 && Math.abs(matrix[i][j]) != Integer.MAX_VALUE && !heightSet){
                     arr[0] = i;
                     heightSet = true;
                 }
-                if(matrix[i][j] != 0 && matrix[i][j] != Integer.MAX_VALUE && arr[1] > j){
+                if(matrix[i][j] != 0 && Math.abs(matrix[i][j]) != Integer.MAX_VALUE && arr[1] > j){
                     arr[1] = j;
                 }
             }
@@ -985,17 +985,58 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
         }else if(keyEvent.getCode() == KeyCode.N){ //only for debugging
             System.out.println("current Player:" + mainViewController.getMainController().getGameController().getNextPlayer().getName());
             Matrix firstPlayerBoard = game.getCurrentGameState().getPlayer1().getQuiltBoard().getPatchBoard();
-            firstPlayerBoard.print();
+            int[][] arr = firstPlayerBoard.getIntMatrix();
+            printBoard(arr);
             System.out.println();
         }else if(keyEvent.getCode() == KeyCode.M){ //only for debugging
             System.out.println("current Player:" + mainViewController.getMainController().getGameController().getNextPlayer().getName());
             Matrix secondPlayerBoard = game.getCurrentGameState().getPlayer2().getQuiltBoard().getPatchBoard();
-            secondPlayerBoard.print();
+            int[][] arr = secondPlayerBoard.getIntMatrix();
+            printBoard(arr);
             System.out.println();
         }else if(keyEvent.getCode() == KeyCode.X || keyEvent.getCode() == KeyCode.NUMPAD8){
             placeSpecialPatch();
         }else if(keyEvent.getCode() == KeyCode.K) {
             refreshTheBoard();
+        }
+    }
+
+    public void printBoard(int[][] arr){
+        for(int i = 0; i < arr.length; i++)
+        {
+            for(int j = 0; j < arr[i].length; j++){
+                if(Math.abs(arr[i][j]) == Integer.MAX_VALUE){
+                    System.out.print("1x1  ");
+                }
+                if(arr[i][j] >= 0 && arr[i][j] < 10){
+                    System.out.print(arr[i][j] + "    ");
+                }else if(arr[i][j] >= 10 && arr[i][j] < 99){
+                    System.out.print(arr[i][j] + "   ");
+                }else if(arr[i][j] >= 100 && arr[i][j] < 1000){
+                    System.out.print(arr[i][j] + "  ");
+                }else if(arr[i][j] < 0 && arr[i][j] > -10){
+                    System.out.print(arr[i][j] + "   ");
+                }else if(arr[i][j] <= -10 && arr[i][j] > -100){
+                    System.out.print(arr[i][j] + "  ");
+                }else if(arr[i][j] <= -100 && arr[i][j] >-1000){
+                    System.out.print(arr[i][j] + " ");
+                }
+
+            }
+            System.out.println();
+            System.out.println();
+        }
+    }
+
+    public void rename1x1Patches(int[][] arr){
+        for(int i = 0; i < arr.length; i++)
+        {
+            for(int j = 0; j < arr[i].length; j++){
+                if(Math.abs(arr[i][j]) == Integer.MAX_VALUE){
+                    arr[i][j] = 999;
+                }
+            }
+            System.out.println();
         }
     }
 
