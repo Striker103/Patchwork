@@ -27,6 +27,11 @@ public class HardAI extends AI {
 
         // The function to build layers into the tree
         final Function<Tuple<GameState, Player>, HashSet<MinMaxTree<Tuple<GameState, Player>>>> createFunction = state -> {
+            if(state.getSecond().getBoardPosition()==54){
+                var result = new HashSet<MinMaxTree<Tuple<GameState, Player>>>();
+                result.add(new MinMaxTree<>(state, false));
+                return result;
+            }
             HashSet<MinMaxTree<Tuple<GameState, Player>>> set = Arrays.stream(state.getFirst().getNext3Patches()) //next patch options
                     .filter(patch -> patch.getButtonsCost() <= movingPlayer.getMoney()) //check money
                     .flatMap(patch -> {
@@ -43,6 +48,7 @@ public class HardAI extends AI {
                         if(movingPlayer.getQuiltBoard().getPatchBoard().count(0)>40) {
                             moving.getQuiltBoard().getPatches().add(patch); //add patch to list, not to board
                             moving.setBoardPosition(Math.min(moving.getBoardPosition() + patch.getTime(), 54)); //change board position
+                            moving.addMoney(-patch.getButtonsCost());
                             Score score = moving.getScore(); //edit score
                             score.setValue(score.getValue() + AIUtil.calculatePatchValue(patch, moving));
                             Player next = moving.getBoardPosition() > other.getBoardPosition() ? other : moving; //get next moving player
@@ -51,19 +57,21 @@ public class HardAI extends AI {
                             return temp.stream();
                         }
                         else{
-                            return AIUtil.generateAllPossiblePatches(patch).stream()
+                            return AIUtil.generateAllPossiblePatches(patch).parallelStream()
                                     .filter(placement -> moving.getQuiltBoard().getPatchBoard().disjunctive(placement.getFirst()))
                                     .map(placement -> {
-                                        Player copyMove = moving.copy();
                                         GameState copyState = copy.copy();
+                                        Player copyMove = copyState.getPlayer1().lightEquals(moving)? copyState.getPlayer1() : copyState.getPlayer2();
                                         copyMove.getQuiltBoard().addPatch(patch, placement.getFirst(), placement.getSecond().getFirst(), placement.getSecond().getSecond());
                                         copyMove.setBoardPosition(Math.min(copyMove.getBoardPosition() + patch.getTime(), 54)); //change board position
+                                        copyMove.addMoney(-patch.getButtonsCost());
                                         Score score = copyMove.getScore(); //edit score
                                         score.setValue(score.getValue() + AIUtil.calculatePatchValue(patch, moving));
                                         Player next = copyMove.getBoardPosition() > other.getBoardPosition() ? other : copyMove; //get next moving player
                                         return new MinMaxTree<>(new Tuple<>(copyState, next), other.lightEquals(copyMove));
                                     })
                                     .map(child -> new Tuple<>(evaluateBoard(child.getNodeContent().getSecond().getQuiltBoard()), child))
+                                    .sequential()
                                     .sorted((o1, o2) -> (int) Math.signum(o1.getFirst()-o2.getFirst()))
                                     .limit(3)
                                     .map(Tuple::getSecond);
@@ -112,7 +120,6 @@ public class HardAI extends AI {
                 moving.setQuiltBoard(placePatch(moving.getQuiltBoard(), used).getFirst());
                 moving.addMoney(-used.getButtonsCost());
                 moving.setBoardPosition(Math.min(moving.getBoardPosition() + used.getTime(), 54));
-                System.out.println("Score" + moving.getScore().getValue() + "Money" + moving.getMoney());
                 copy.setLogEntry("Took patch " + used.getPatchID()+ " for "+used.getButtonsCost()+" coins.");
                 bestState = copy;
             }
@@ -195,7 +202,7 @@ public class HardAI extends AI {
                         lonelySpots++;
                 }
             }
-            double result = 0.0 + filledSpots*2;
+            double result = filledSpots*2;
             int circumferenceTotal = circumferenceInner + circumferenceOuter;
             int deviationFromMain = -(circumferenceTotal - 36); //36 is normal circumference on empty board
             double optimalCircumference = Math.sqrt(filledSpots) * 4; //Circumference when having a square
