@@ -39,7 +39,7 @@ public final class AIUtil {
                 }
                 shape.rotate();
             }
-            shape.rotate().flip();
+            shape.flip();
         }
         return result;
     }
