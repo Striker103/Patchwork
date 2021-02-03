@@ -65,7 +65,7 @@ public class QuiltBoard {
 			calculatedId += rotation;
 		}
 		else
-			throw new IllegalArgumentException("Rotation angle not valid!");
+			throw new IllegalArgumentException("Rotation angle " +rotation+" not valid!");
 
 		if(flipped)
 			calculatedId *= -1;
