@@ -30,6 +30,8 @@ public class HighScoreControllerTest {
 
     private final File file = new File("export/testFile.json");
 
+    private final File readOnly = new File("export/noPermission.json");
+
     private Player player;
 
 
@@ -62,6 +64,8 @@ public class HighScoreControllerTest {
 
         player = mainController.getGame().getCurrentGameState().getPlayer1();
 
+        readOnly.delete();
+        readOnly.setWritable(false);
 
         file.delete();
 
@@ -243,7 +247,7 @@ public class HighScoreControllerTest {
      */
     @Test
     public void testShowScoreNoPermission(){
-        highScoreController.showHighScores(new File("export/noPermission.json"));
+        highScoreController.showHighScores(readOnly);
         assertTrue(dummyAUI.error);
     }
 
