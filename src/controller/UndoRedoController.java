@@ -66,7 +66,6 @@ public class UndoRedoController {
 	 */
 	public void redo() {
 		Game game = mainController.getGame();
-		List<GameState> gameStates = game.getGameStates();
 		Player movingPlayer = mainController.getGameController().getNextPlayer();
 		if(!game.currentGameStateLast()){
 			game.setCurrentGameState(game.getCurrentGameStateIndex()+1);
