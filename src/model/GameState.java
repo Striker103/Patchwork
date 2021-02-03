@@ -123,13 +123,13 @@ public class GameState{
 
 	/**
 	 * Returns patch with the specified ID
-	 * @param id ID
+	 * @param patchid ID
 	 * @return patch with this ID
 	 * @throws java.util.NoSuchElementException if no patch with this ID exists
 	 */
-	public Patch getPatchByID(final int id){
+	public Patch getPatchByID(final int patchid){
 		//noinspection OptionalGetWithoutIsPresent
-		return patches.stream().filter(p -> p.getPatchID() == id).findFirst().get();
+		return patches.stream().filter(patch -> patch.getPatchID() == patchid).findFirst().get();
 	}
 
 	/**

@@ -21,7 +21,7 @@ public class PlayerController {
 
 	private LogAUI logAUI;
 
-	private boolean isPlaced;
+	private boolean isPlaced = false;
 
 	/**
 	 * true if errorAUI is set

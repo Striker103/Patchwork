@@ -330,7 +330,7 @@ public class IOController {
 		}
 	}
 
-	private Patch generatePatch(List<String> line, int id){
+	private Patch generatePatch(List<String> line, int patchid){
 
 		final int matrixLength = 15;
 
@@ -353,7 +353,7 @@ public class IOController {
 
 		Matrix shapeMatrix = new Matrix(shape);
 
-		return new Patch(id, buttonIncome, buttonCost, shapeMatrix, time);
+		return new Patch(patchid, buttonIncome, buttonCost, shapeMatrix, time);
 
 	}
 

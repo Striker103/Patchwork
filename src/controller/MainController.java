@@ -65,6 +65,19 @@ public class MainController {
 		iOController = new IOController(this);
 		highScoreController = new HighScoreController(this);
 	}
+	/**
+	 * protected constructor for test cases
+	 */
+	protected MainController(boolean testGameController)
+	{
+		gamePreparationController = new GamePreparationController(this);
+		gameController = new TestGameController(this);
+		aIController = new AIController(this);
+		playerController = new PlayerController(this);
+		undoRedoController = new UndoRedoController(this);
+		iOController = new IOController(this);
+		highScoreController = new HighScoreController(this);
+	}
 
 	/**
 	 * sets all HighScoreAUIs
@@ -203,4 +216,26 @@ public class MainController {
 	public HighScoreController getHighScoreController() {
 		return highScoreController;
 	}
+
+
+	/**
+	 * A private class for testing purpose. AI only does one turn and does not trigger next turn
+	 */
+	private class TestGameController extends GameController{
+		/**
+		 * The new constructor
+		 * @param mainController the maincontroller of the testGameController
+		 */
+		TestGameController(MainController mainController){
+			super(mainController);
+		}
+
+		/**
+		 * The endTurn() will now do nothing
+		 */
+		@Override
+		void endTurn(){
+
+		}
+	};
 }

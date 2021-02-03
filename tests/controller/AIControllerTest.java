@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 
 public class AIControllerTest {
 
-    private final MainController mainController = new MainController();
+    private final TestMainController mainController = new TestMainController();
 
     private final GamePreparationController gamePreparationController = mainController.getGamePreparationController();
 
@@ -97,7 +97,7 @@ public class AIControllerTest {
         gamePreparationController.startGame(humanVsEasyAI, null, 5,false);
         gameController.cloneGameState();
 
-        //aiController.doTurn();
+        aiController.doTurn();
     }
 
     /**
@@ -108,8 +108,8 @@ public class AIControllerTest {
         gamePreparationController.startGame(humanVsEasyAI, null, 5,false);
         gameController.cloneGameState();
 
-        //aiController.doTurn();
-        //assertTrue(dummyAUI.error);
+        aiController.doTurn();
+        assertTrue(dummyAUI.error);
     }
 
     /**
@@ -131,7 +131,7 @@ public class AIControllerTest {
         gamePreparationController.startGame(mediumAIVsHardAI, null, 5,false);
         gameController.cloneGameState();
 
-        //aiController.doTurn();
+        aiController.doTurn();
     }
 
     /**
@@ -142,7 +142,7 @@ public class AIControllerTest {
         gamePreparationController.startGame(HardAIVsEasyAI, null, 5,false);
         gameController.cloneGameState();
         long startTime = System.currentTimeMillis();
-        //aiController.doTurn();
+        aiController.doTurn();
         assertTrue(startTime-System.currentTimeMillis()<10000);
     }
 
@@ -168,6 +168,16 @@ public class AIControllerTest {
         aiController.calculateHint();
     }
 
+
+    private class TestMainController extends MainController{
+
+        /**
+         * Call of the protected test constructor
+         */
+        TestMainController(){
+            super(true);
+        }
+    }
 
     //TODO more tests will follow
 
