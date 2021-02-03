@@ -28,8 +28,6 @@ public class GameSummaryViewController implements HighScoreReturn {
     @FXML
     private Label winnerScore;
 
-    @FXML
-    private Label winnerRank;
 
     @FXML
     private Label winnerPatches;
@@ -43,8 +41,6 @@ public class GameSummaryViewController implements HighScoreReturn {
     @FXML
     private Label loserScore;
 
-    @FXML
-    private Label loserRank;
 
     @FXML
     private Label loserPatches;
@@ -52,7 +48,6 @@ public class GameSummaryViewController implements HighScoreReturn {
     @FXML
     private Label loserMoney;
 
-    private File exportFile;
 
 
     public void setOwnScene(Scene scene){
@@ -77,47 +72,28 @@ public class GameSummaryViewController implements HighScoreReturn {
         if(player1.getScore().getValue() > player2.getScore().getValue()){
             winnerName.setText(player1.getName());
             winnerScore.setText(Integer.toString(player1.getScore().getValue()));
-
-            if(player1.getHighscoreIsValid()){
-                winnerRank.setText("");
-            }
             winnerPatches.setText(Integer.toString(player1.getQuiltBoard().getPatches().size()));
             winnerMoney.setText(Integer.toString(player2.getMoney()));
 
             loserName.setText(player1.getName());
             loserScore.setText(Integer.toString(player2.getScore().getValue()));
-
-            if(player2.getHighscoreIsValid()){
-                loserRank.setText("");
-            }
             loserPatches.setText(Integer.toString(player2.getQuiltBoard().getPatches().size()));
             loserMoney.setText(Integer.toString(player2.getMoney()));
         }
         else{
             winnerName.setText(player2.getName());
             winnerScore.setText(Integer.toString(player2.getScore().getValue()));
-
-            if(player2.getHighscoreIsValid()){
-                winnerRank.setText("");
-            }
             winnerPatches.setText(Integer.toString(player2.getQuiltBoard().getPatches().size()));
             winnerMoney.setText(Integer.toString(player2.getMoney()));
 
             loserName.setText(player1.getName());
             loserScore.setText(Integer.toString(player1.getScore().getValue()));
-
-            if(player1.getHighscoreIsValid()){
-                loserRank.setText("");
-            }
             loserPatches.setText(Integer.toString(player1.getQuiltBoard().getPatches().size()));
             loserMoney.setText(Integer.toString(player1.getMoney()));
         }
     }
 
     public void refreshTheBoard(){
-        //pane.getChildren().removeAll(listToClear);
-        //pane.getChildren().removeAll(listToClearGUI);
-        //listToClear = new ArrayList<>();
         RefreshPlayer(1);
         RefreshPlayer(2);
     }
