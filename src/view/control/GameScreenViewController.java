@@ -322,7 +322,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
 
         for(int i = 0; i < p1IntBoard.length; i++){
             for(int j = 0; j < p1IntBoard[i].length; j++){
-                if(p1IntBoard[i][j] == Integer.MAX_VALUE ){
+                if(Math.abs(p1IntBoard[i][j]) == Integer.MAX_VALUE ){
                     PatchView patch = specialPatches.get(index);
                     pane.getChildren().add(patch);
                     patch.setX(60 + j * 30);
@@ -333,7 +333,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
         }
         for(int i = 0; i < p2IntBoard.length; i++){
             for(int j = 0; j < p2IntBoard[i].length; j++){
-                if(p2IntBoard[i][j] == Integer.MAX_VALUE ){
+                if(Math.abs(p2IntBoard[i][j]) == Integer.MAX_VALUE ){
                     PatchView patch = specialPatches.get(index);
                     pane.getChildren().add(patch);
                     patch.setX(60 + j * 30 + 890);
