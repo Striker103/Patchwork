@@ -2,10 +2,7 @@ package ai;
 
 import model.*;
 
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class EasyAI extends AI {
 
@@ -22,11 +19,11 @@ public class EasyAI extends AI {
         final Player BEHIND = actual.getPlayer1().equals(movingPlayer)? actual.getPlayer1(): actual.getPlayer2();
         final int MONEY_BEHIND = BEHIND.getMoney();
 
-        List<Patch> patches = AIUtil.getNextPatches(actual);
+        List<Patch> patches = Arrays.asList(actual.getNext3Patches().clone());
 
         patches.stream()
                 .filter(patch -> patch.getButtonsCost()<=MONEY_BEHIND)
-                .flatMap(patch -> generatePatchLocations(patch, BEHIND.getQuiltBoard()).stream())
+                .flatMap(patch -> AIUtil.generatePatchLocations(patch, BEHIND.getQuiltBoard()).stream())
                 .map(tuple -> {
                     GameState temp = actual.copy();
                     temp.getPatches().remove(tuple.getFirst());
@@ -42,15 +39,5 @@ public class EasyAI extends AI {
         return result;
     }
 
-    private LinkedHashSet<Tuple<Patch,QuiltBoard>> generatePatchLocations(Patch patch, QuiltBoard quiltBoard) {
-        LinkedHashSet<Tuple<Patch,QuiltBoard>> result = new LinkedHashSet<>();
-        AIUtil.generateAllPossiblePatches(patch)
-                .stream()
-                .filter(shape -> shape.getFirst().disjunctive(quiltBoard.getPatchBoard()))
-                .map(shape -> {QuiltBoard temp = quiltBoard.copy();
-                                temp.addPatch(patch,shape.getFirst(), shape.getSecond().getFirst(), shape.getSecond().getSecond());
-                                return new Tuple<>(patch,temp);})
-                .forEach(result::add);
-        return result;
-    }
+
 }

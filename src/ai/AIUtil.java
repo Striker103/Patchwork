@@ -5,6 +5,10 @@ import model.*;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * Class for Utilities addressing the AI
@@ -37,6 +41,42 @@ public final class AIUtil {
         return result;
     }
 
+    /**
+     * Generate all Patchlocations for a given patch and a board
+     * @param patch patch which should be laid onto board
+     * @param quiltBoard the quiltboard which should be laid onto
+     * @return set of Tuples containing the quiltboard and the patch in all possible positioning (patch only for reference)
+     */
+    public static LinkedHashSet<Tuple<Patch,QuiltBoard>> generatePatchLocations(Patch patch, QuiltBoard quiltBoard) {
+        LinkedHashSet<Tuple<Patch,QuiltBoard>> result = new LinkedHashSet<>();
+        AIUtil.generateAllPossiblePatches(patch)
+                .stream()
+                .filter(shape -> shape.getFirst().disjunctive(quiltBoard.getPatchBoard()))
+                .filter(distinctByKey(Tuple::getFirst))
+                .map(shape -> {QuiltBoard temp = quiltBoard.copy();
+                    temp.addPatch(patch,shape.getFirst(), shape.getSecond().getFirst(), shape.getSecond().getSecond());
+                    return new Tuple<>(patch,temp);})
+                .forEach(result::add);
+        return result;
+    }
+
+    /**
+     * Filter to filter by a parameter, not by the complete object
+     * @param keyExtractor the parameter for which should be filtered
+     * @param <T> Type of Object
+     * @return a Predicate for T
+     */
+    private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+        Set<Object> seen = ConcurrentHashMap.newKeySet();
+        return t -> seen.add(keyExtractor.apply(t));
+    }
+
+    /**
+     * Generates the Gamestate which would follow, if the current player advances and takes coins
+     * @param state the actual state
+     * @param next the current player
+     * @return a tuple containing the resulting state and the player which turn it is in that state (the other)
+     */
     public static Tuple<GameState, Player> generateAdvance(GameState state, Player next){
         GameState edited = state.copy();
         final Player BEHIND = edited.getPlayer1().lightEquals(next)? edited.getPlayer1(): edited.getPlayer2();
@@ -53,6 +93,12 @@ public final class AIUtil {
         return new Tuple<>(edited, OTHER);
     }
 
+    /**
+     * get the next patches
+     * @param actual actual state
+     * @return a sublist containing the next three patches
+     * @deprecated use method from gamestate instead
+     */
     public static List<Patch> getNextPatches(GameState actual) {
         return actual.getPatches().subList(0,3);
     }

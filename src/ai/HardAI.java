@@ -174,21 +174,11 @@ public class HardAI extends AI {
      * @return a Tuple of the new QuiltBoard and a Happiness-value higher = better or null, if there is no placement
      */
     public Tuple<QuiltBoard, Double> placePatch(QuiltBoard actualBoard, Patch patch){
-        Matrix boardMatrix = actualBoard.getPatchBoard();
-        return AIUtil.generateAllPossiblePatches(patch)
-                .stream()                                                                                           //Generate Patches and parallelize
-                .filter(patchPosition -> patchPosition.getFirst().disjunctive(boardMatrix))                         //Filter all places which are not valid
-                .filter(distinctByKey(Tuple::getFirst))
-                .map(place -> { QuiltBoard copy = actualBoard.copy();
-                                copy.addPatch(patch, place.getFirst(), place.getSecond().getFirst(), place.getSecond().getSecond());
-                                return new Tuple<>(copy, evaluateBoard(copy));})                       //map the valid places onto the quiltboard and evaluate the happiness
-                .max(Comparator.comparingDouble(Tuple::getSecond))                                                  //Search maximum of happiness eg. best placement
+        return  AIUtil.generatePatchLocations(patch, actualBoard)
+                .stream()
+                .map(element -> new Tuple<>(element.getSecond(), evaluateBoard(element.getSecond())))
+                .max(Comparator.comparingDouble(Tuple::getSecond))
                 .orElse(null);
-    }
-
-    private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
-        Set<Object> seen = ConcurrentHashMap.newKeySet();
-        return t -> seen.add(keyExtractor.apply(t));
     }
 
     /**
