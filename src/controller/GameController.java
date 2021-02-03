@@ -13,7 +13,7 @@ import view.aui.TurnAUI;
 public class GameController {
 
 	private static final int LASTBOARDPOSITION = 54;
-	private final MainController mainController;
+	private static MainController mainController;
 
 	private ErrorAUI errorAUI;
 

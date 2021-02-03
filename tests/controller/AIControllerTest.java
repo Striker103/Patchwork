@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 
 public class AIControllerTest {
 
-    private final MainController mainController = new MainController();
+    private final TestMainController mainController = new TestMainController();
 
     private final GamePreparationController gamePreparationController = mainController.getGamePreparationController();
 
@@ -165,6 +165,17 @@ public class AIControllerTest {
 
         aiController.calculateHint();
     }
+
+    private class TestMainController extends MainController{
+
+        /**
+         * Call of the protected test constructor
+         */
+        TestMainController(){
+            super(true);
+        }
+    }
+
 
     //TODO more tests will follow
 
