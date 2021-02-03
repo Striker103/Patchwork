@@ -52,7 +52,7 @@ public class HardAI extends AI {
                             moving.getQuiltBoard().getPatches().add(patch); //add patch to list, not to board
                             moving.setBoardPosition(Math.min(moving.getBoardPosition() + patch.getTime(), 54)); //change board position
                             Score score = moving.getScore(); //edit score
-                            score.setValue(score.getValue() + calculatePatchValue(patch, moving));
+                            score.setValue(score.getValue() + AIUtil.calculatePatchValue(patch, moving));
                             Player next = moving.getBoardPosition() > other.getBoardPosition() ? other : moving; //get next moving player
                             LinkedHashSet<MinMaxTree<Tuple<GameState, Player>>> temp = new LinkedHashSet<>();
                             temp.add(new MinMaxTree<>(new Tuple<>(copy, next), other.lightEquals(movingPlayer)));
@@ -67,7 +67,7 @@ public class HardAI extends AI {
                                         copyMove.getQuiltBoard().addPatch(patch, placement.getFirst(), placement.getSecond().getFirst(), placement.getSecond().getSecond());
                                         copyMove.setBoardPosition(Math.min(copyMove.getBoardPosition() + patch.getTime(), 54)); //change board position
                                         Score score = copyMove.getScore(); //edit score
-                                        score.setValue(score.getValue() + calculatePatchValue(patch, moving));
+                                        score.setValue(score.getValue() + AIUtil.calculatePatchValue(patch, moving));
                                         Player next = copyMove.getBoardPosition() > other.getBoardPosition() ? other : copyMove; //get next moving player
                                         return new MinMaxTree<>(new Tuple<>(copyState, next), other.lightEquals(copyMove));
                                     })
@@ -151,22 +151,6 @@ public class HardAI extends AI {
     }
 
     /**
-     * Calculates the value of the patch
-     * @param patch patch which value should be calculated
-     * @param next the player for which the patch should be calculated
-     * @return the value the patch has
-     */
-    private int calculatePatchValue(Patch patch, Player next){
-        int result = 0;
-        for (int pos: buttonPositions) {
-            result += next.getBoardPosition()<pos?patch.getButtonIncome():0;
-        }
-        result -= patch.getButtonsCost();
-        result += patch.getShape().count(1)*2;
-        return result;
-    }
-
-    /**
      * Calculates the best fitting place on the QuiltBoard and the given patch
      *
      * @param actualBoard the Board on which the patch should be applied
@@ -174,21 +158,11 @@ public class HardAI extends AI {
      * @return a Tuple of the new QuiltBoard and a Happiness-value higher = better or null, if there is no placement
      */
     public Tuple<QuiltBoard, Double> placePatch(QuiltBoard actualBoard, Patch patch){
-        Matrix boardMatrix = actualBoard.getPatchBoard();
-        return AIUtil.generateAllPossiblePatches(patch)
-                .stream()                                                                                           //Generate Patches and parallelize
-                .filter(patchPosition -> patchPosition.getFirst().disjunctive(boardMatrix))                         //Filter all places which are not valid
-                .filter(distinctByKey(Tuple::getFirst))
-                .map(place -> { QuiltBoard copy = actualBoard.copy();
-                                copy.addPatch(patch, place.getFirst(), place.getSecond().getFirst(), place.getSecond().getSecond());
-                                return new Tuple<>(copy, evaluateBoard(copy));})                       //map the valid places onto the quiltboard and evaluate the happiness
-                .max(Comparator.comparingDouble(Tuple::getSecond))                                                  //Search maximum of happiness eg. best placement
+        return  AIUtil.generatePatchLocations(patch, actualBoard)
+                .stream()
+                .map(element -> new Tuple<>(element.getSecond(), evaluateBoard(element.getSecond())))
+                .max(Comparator.comparingDouble(Tuple::getSecond))
                 .orElse(null);
-    }
-
-    private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
-        Set<Object> seen = ConcurrentHashMap.newKeySet();
-        return t -> seen.add(keyExtractor.apply(t));
     }
 
     /**
