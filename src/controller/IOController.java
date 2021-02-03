@@ -2,9 +2,8 @@ package controller;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import model.*;
@@ -14,6 +13,7 @@ import view.aui.LoadGameAUI;
 import java.io.*;
 import java.nio.file.Files;
 import java.util.*;
+import java.util.List;
 
 /**
  * @author Alexandra Latys
@@ -37,6 +37,8 @@ public class IOController {
 	private boolean loadGameAUIChanged = false;
 
 	private final String pathToCSV = "CSV/patchwork-pieces.csv";
+
+	private final HashMap<Integer, BaseColor> colorHashMap = new HashMap<>();
 
 	/**
 	 * Constructor that sets the mainController
@@ -253,13 +255,18 @@ public class IOController {
 
 			document.open();
 
-			Paragraph paragraph = new Paragraph();
-			paragraph.add("Results");
+			Font font = new Font(Font.FontFamily.HELVETICA, 25.0f, Font.BOLD, BaseColor.BLACK);
+			Chunk chunk = new Chunk("Results", font);
+
+			Paragraph paragraph = new Paragraph(chunk);
+
+			paragraph.setAlignment(Element.ALIGN_CENTER);
 
 			document.add(paragraph);
 			document.add(getWinner(player1,player2));
 			document.add(getPlayerInformation(player1));
 			document.add(getGrid(player1));
+			document.newPage();
 			document.add(getPlayerInformation(player2));
 			document.add(getGrid(player2));
 
@@ -272,7 +279,6 @@ public class IOController {
 	}
 
 	private Paragraph getWinner(Player player1, Player player2){
-		Paragraph paragraph = new Paragraph();
 
 		String winnerName;
 
@@ -283,35 +289,101 @@ public class IOController {
 		else
 			winnerName = player2.getName();
 
-		paragraph.add("Winner: " + winnerName);
 
+		Font font = new Font(Font.FontFamily.HELVETICA, 20.0f, Font.BOLD, BaseColor.BLACK);
+		Chunk chunk = new Chunk("Winner: " + winnerName + "\n", font);
+
+
+		Paragraph paragraph = new Paragraph(chunk);
+
+		paragraph.add(Chunk.NEWLINE);
+
+		paragraph.setAlignment(Element.ALIGN_CENTER);
 		return paragraph;
 	}
 
 	private Paragraph getPlayerInformation(Player player){
 		Paragraph paragraph = new Paragraph();
 
+		int numberOfSpecialPatches = player.getQuiltBoard().getPatchBoard().count(Integer.MAX_VALUE);
+
 		String text = "Name: " + player.getName() +
 				"\nPlayer Type: " + player.getPlayerType().toString() +
 				"\nScore: " + player.getScore().getValue() +
-				"\nNumber of Patches: " + player.getQuiltBoard().getPatches().size() +
-				"\nMoney: " + player.getMoney();
+				"\nNumber of normal Patches: " + player.getQuiltBoard().getPatches().size() +
+				"\nNumber of special Patches: " + numberOfSpecialPatches +
+				"\nMoney: " + player.getMoney() + "\n";
 
-		paragraph.add(text);
+		Font font = new Font(Font.FontFamily.HELVETICA, 15.0f, Font.NORMAL, BaseColor.BLACK);
+		Chunk chunk = new Chunk(text);
+
+		paragraph.add(chunk);
+		paragraph.setAlignment(Element.ALIGN_CENTER);
+
+		paragraph.add(Chunk.NEWLINE);
 
 		return paragraph;
 	}
 
 	private PdfPTable getGrid(Player player){
 
+		colorHashMap.clear();
+		colorHashMap.put(0, new BaseColor(255,255,255));
+
 		PdfPTable pdfPTable = new PdfPTable(9);
+//		pdfPTable.setLockedWidth(true);
 
 		for (int i = 0 ; i < 81; i++){
-			pdfPTable.addCell(String.valueOf(player.getQuiltBoard().getPatchBoard().get(i % 9, i / 9)));
+
+			PdfPCell cell = new PdfPCell();
+
+			cell.setColspan(1);
+			cell.setFixedHeight(50.0F);
+
+			BaseColor color = generateColor(player.getQuiltBoard().getPatchBoard().get(i / 9, i % 9));
+			cell.setBackgroundColor(color);
+
+//			Paragraph paragraph = new Paragraph(String.valueOf(player.getQuiltBoard().getPatchBoard().get(i % 9, i / 9)));
+//
+//			cell.addElement(paragraph);
+
+			pdfPTable.addCell(cell);
 		}
 
 		return pdfPTable;
 
+	}
+
+	private BaseColor generateColor(int value){
+//		if (value == 0)
+//			return new BaseColor(255,255,255);
+//
+//		value = value + 5000;
+//
+//		//Overflow
+//		if (value < 0)
+//			value = Math.abs(value);
+//
+//		int blue = (int) Math.floor(value % 256);
+//		int  green = (int) Math.floor((value / 256) % 256);
+//		int red = (int) Math.floor((value / 256 / 256) % 256);
+//
+//		System.out.println("red : " + red + ", green: " + green + ", blue: " + blue);
+//
+//		return new BaseColor(red, green, blue);
+
+		BaseColor color = colorHashMap.get(value);
+
+		if (color == null){
+			color = new BaseColor(getRandomColorValue(), getRandomColorValue(), getRandomColorValue());
+			colorHashMap.put(value, color);
+		}
+
+		return color;
+	}
+
+	private int getRandomColorValue(){
+		return new Random().nextInt(256);
 	}
 
 	private Game readGame(File file){
