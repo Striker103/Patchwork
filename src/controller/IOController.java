@@ -221,7 +221,7 @@ public class IOController {
 			return;
 		}
 
-		if (file.isDirectory() || !file.canWrite()){
+		if (file.isDirectory() || (file.exists() && !file.canWrite())){
 			errorAUI.showError("File is invalid.");
 			return;
 		}
