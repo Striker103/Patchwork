@@ -26,6 +26,7 @@ public class HardAI extends AI {
     public GameState calculateTurn(final GameState actualState,final Player movingPlayer) {
 
         final double actualTurn = evaluateBoard(movingPlayer.getQuiltBoard());
+        final Player otherPlayer = movingPlayer.lightEquals(actualState.getPlayer1()) ? actualState.getPlayer2() : actualState.getPlayer1();
 
         final long START_TIME = System.currentTimeMillis(); // Time measurement// When enough spaces are empty, we care for placement later
         final MinMaxTree<Tuple<GameState, Player>> tree = new MinMaxTree<>(new Tuple<>(actualState, movingPlayer), true); //Let us build a tree
@@ -86,27 +87,59 @@ public class HardAI extends AI {
         }
 
         //Getting the best State of the tree
-        var bestOption = tree.calculateMinMaxNode(tuple -> tuple.getFirst().getPlayer1().getScore().getValue() - tuple.getFirst().getPlayer2().getScore().getValue()); //get max or base
+        var bestOption = tree.calculateMinMaxNode(tuple -> {
+            Player thisTurnPlayer, otherTurnPlayer;
+            if (tuple.getFirst().getPlayer1().lightEquals(movingPlayer)) { //evaluate players
+                thisTurnPlayer = tuple.getFirst().getPlayer1();
+                otherTurnPlayer = tuple.getFirst().getPlayer2();
+            } else {
+                thisTurnPlayer = tuple.getFirst().getPlayer2();
+                otherTurnPlayer = tuple.getFirst().getPlayer1();
+            }
+             return thisTurnPlayer.getScore().getValue() - otherTurnPlayer.getScore().getValue();}); //get max or base
         GameState bestState;
         if (movingPlayer.getQuiltBoard().getPatchBoard().count(0) > 40) {
             if (bestOption.getFirst().equals(actualState)) return null;
-            if (bestOption.getFirst().getPatches().equals(actualState.getPatches()))
-                return bestOption.getFirst(); //chosen when advanced
-            //we have to figure out the best placement and the patch used
-            Patch used = bestOption.getSecond().getQuiltBoard().getPatches().remove(bestOption.getSecond().getQuiltBoard().getPatches().size() - 1); //luckily, it is the last patch added
-            GameState copy = actualState.copy();
-            Player moving;
-            if (copy.getPlayer1().lightEquals(movingPlayer)) { //evaluate players
-                moving = copy.getPlayer1();
-            } else {
-                moving = copy.getPlayer2();
+            if (bestOption.getFirst().getPatches().equals(actualState.getPatches())) {
+                bestState = bestOption.getFirst(); //chosen when advanced
             }
-            moving.setQuiltBoard(placePatch(moving.getQuiltBoard(), used).getFirst());
-            copy.setLogEntry("Took patch " + used.getPatchID());
-            return copy;
+            else {
+                //we have to figure out the best placement and the patch used
+                Patch used = bestOption.getSecond().getQuiltBoard().getPatches().remove(bestOption.getSecond().getQuiltBoard().getPatches().size() - 1); //luckily, it is the last patch added
+                GameState copy = actualState.copy();
+                Player moving;
+                if (copy.getPlayer1().lightEquals(movingPlayer)) { //evaluate players
+                    moving = copy.getPlayer1();
+                } else {
+                    moving = copy.getPlayer2();
+                }
+                copy.tookPatch(used);
+                moving.setQuiltBoard(placePatch(moving.getQuiltBoard(), used).getFirst());
+                moving.addMoney(-used.getButtonsCost());
+                moving.setBoardPosition(Math.min(moving.getBoardPosition() + used.getTime(), 54));
+                System.out.println("Score" + moving.getScore().getValue() + "Money" + moving.getMoney());
+                copy.setLogEntry("Took patch " + used.getPatchID());
+                bestState = copy;
+            }
         }
+        else{
+            bestState = bestOption.getFirst();
+        }
+        Player movedPlayer = movingPlayer.lightEquals(bestState.getPlayer1())? bestState.getPlayer1(): bestState.getPlayer2();
+        int boardIncome =0;
+        for (Patch patch:movedPlayer.getQuiltBoard().getPatches()) {
+            boardIncome += patch.getButtonIncome();
+        }
+        for (int i = movingPlayer.getBoardPosition()+1; i <= movedPlayer.getBoardPosition(); i++) {
+            if(bestState.getTimeBoard()[i].hasButton()){
+                movedPlayer.addMoney(boardIncome);
+            }
+            if(bestState.getTimeBoard()[i].hasPatch()){
 
-        return bestOption.getFirst();
+                bestState.getTimeBoard()[i].removePatch();
+            }
+        }
+        return bestState;
     }
 
     /**
@@ -137,10 +170,10 @@ public class HardAI extends AI {
         Matrix patchMatrix = patch.getShape();
         int filledSpots = boardMatrix.amountCells()-boardMatrix.count(0) + patchMatrix.amountCells()-patchMatrix.count(0);
         return AIUtil.generateAllPossiblePatches(patch)
-                .parallelStream()                                                                                   //Generate Patches and parallelize
+                .stream()                                                                                           //Generate Patches and parallelize
                 .filter(patchPosition -> patchPosition.getFirst().disjunctive(boardMatrix))                         //Filter all places which are not valid
                 .map(place -> { QuiltBoard copy = actualBoard.copy();
-                                copy.addPatch(patch, place.getFirst(), place.getSecond().getFirst() * 90, place.getSecond().getSecond());
+                                copy.addPatch(patch, place.getFirst(), place.getSecond().getFirst(), place.getSecond().getSecond());
                                 return new Tuple<>(copy, evaluateBoard(copy, filledSpots));})                       //map the valid places onto the quiltboard and evaluate the happiness
                 .max(Comparator.comparingDouble(Tuple::getSecond))                                                  //Search maximum of happiness eg. best placement
                 .orElse(null);
