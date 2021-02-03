@@ -5,6 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 import view.aui.ErrorAUI;
 import view.aui.HintAUI;
+import view.aui.LogAUI;
+import view.aui.TurnAUI;
 
 import static org.junit.Assert.assertTrue;
 
@@ -30,7 +32,7 @@ public class AIControllerTest {
 
     private final DummyAUI dummyAUI = new DummyAUI();
 
-    static class DummyAUI implements ErrorAUI, HintAUI {
+    static class DummyAUI implements ErrorAUI, HintAUI, LogAUI, TurnAUI {
         public boolean error = false;
 
         @Override
@@ -45,12 +47,44 @@ public class AIControllerTest {
         @Override
         public void showHintAdvance() {
         }
+
+        @Override
+        public void updateLog(String log) {
+            System.out.println(log);
+        }
+
+        @Override
+        public void triggerPlayerTurn() {
+
+        }
+
+        @Override
+        public void trigger1x1Placement() {
+
+        }
+
+        @Override
+        public void reTriggerPatchPlacement() {
+
+        }
+
+        @Override
+        public void updatePatches() {
+
+        }
+
+        @Override
+        public void moveToken(String name, int time) {
+
+        }
     }
 
     @Before
     public void setUp() {
       mainController.setErrorAUI(dummyAUI);
       mainController.setHintAUI(dummyAUI);
+      mainController.setLogAUI(dummyAUI);
+      mainController.setTurnAUI(dummyAUI);
     }
 
     /**

@@ -15,7 +15,7 @@ public class HardAITest {
 
     @Before
     public void init(){
-        boolean[][] shape = {{true,false,false,false,false}, {false,false,false,false,false}, {false,false,false,false,false}, {false,false,false,false,false}, {false,false,false,false,false}};
+        boolean[][] shape = {{true,false,false,false,false}, {false,false,false,false,false}, {false,false,false,false,false}};
         x11 = new Patch(1, 1, 1, new Matrix(shape), 1);
         qb = new QuiltBoard();
         ai = new HardAI();

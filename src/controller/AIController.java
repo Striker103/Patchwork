@@ -41,7 +41,7 @@ public class AIController {
 	 */
 	private ErrorAUI errorAUI;
 	/**
-	 * The Error AUI
+	 * The Log AUI
 	 */
 	private LogAUI logAUI;
 
@@ -202,13 +202,13 @@ public class AIController {
 	 * @param logAUI the logAUI
 	 */
 	public void setLogAUI(LogAUI logAUI) {
-		if(this.hintAUIChanged) throw new IllegalStateException("logAUI was already set");
+		if(this.logAUIChanged) throw new IllegalStateException("logAUI was already set");
 		this.logAUI = logAUI;
 		this.logAUIChanged = true;
 	}
 
 	public void setTurnAUI(TurnAUI turnAUI) {
-		if(this.turnAUIChanged) throw new IllegalStateException("logAUI was already set");
+		if(this.turnAUIChanged) throw new IllegalStateException("turnAUI was already set");
 		this.turnAUI = turnAUI;
 		this.turnAUIChanged = true;
 	}

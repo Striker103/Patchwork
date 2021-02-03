@@ -83,7 +83,7 @@ public class HardAI extends AI {
         };
 
         //Actually building the tree
-        for (int i = 0; START_TIME + 7000 > System.currentTimeMillis() && i < 7; i++) { //For when there is time, build additional layer
+        for (int i = 0; START_TIME + 7000 > System.currentTimeMillis() && i < 8; i++) { //For when there is time, build additional layer
             if (i < 2) tree.createOnLevel(createFunction, i);
             else tree.createOnLevelAndDelete(createFunction, i);
         }
@@ -146,6 +146,7 @@ public class HardAI extends AI {
             }
         }
         System.out.println(evaluateBoard(movedPlayer.getQuiltBoard()));
+        if(bestState.getLogEntry()==null) bestState.setLogEntry("ERR: LOG_ENTRY_NOT_DEFINED");
         return bestState;
     }
 
@@ -225,7 +226,7 @@ public class HardAI extends AI {
                         lonelySpots++;
                 }
             }
-            double result = 0.0 + filledSpots;
+            double result = 0.0 + filledSpots*2;
             int circumferenceTotal = circumferenceInner + circumferenceOuter;
             int deviationFromMain = -(circumferenceTotal - 36); //36 is normal circumference on empty board
             double optimalCircumference = Math.sqrt(filledSpots) * 4; //Circumference when having a square
