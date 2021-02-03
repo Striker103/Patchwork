@@ -108,6 +108,20 @@ public class Matrix implements Iterable<Integer>{
     }
 
     /**
+     * Fills this matrix with given value
+     * @param value value to override the complete matrix with
+     * @return this matrix with changes
+     */
+    public Matrix fill(int value){
+        for (int i = 0; i < getRows(); i++) {
+            for (int j = 0; j < getColumns(); j++) {
+                matrix[i][j] = value;
+            }
+        }
+        return this;
+    }
+
+    /**
      * Multiplies all values in this matrix by given value
      * @param value value to multiply to the matrix
      * @return this matrix after completed multiplication
