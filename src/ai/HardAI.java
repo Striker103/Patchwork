@@ -18,7 +18,7 @@ public class HardAI extends AI {
      */
     @Override
     public GameState calculateTurn(final GameState actualState,final Player movingPlayer) {
-        final long ACTUAL_TIME = System.currentTimeMillis();
+        final long actualTime = System.currentTimeMillis();
         final double actualTurn = evaluateBoard(movingPlayer.getQuiltBoard());
         final Player otherPlayer = movingPlayer.lightEquals(actualState.getPlayer1()) ? actualState.getPlayer2() : actualState.getPlayer1();
 
@@ -81,13 +81,14 @@ public class HardAI extends AI {
             set.add(new MinMaxTree<>(AIUtil.generateAdvance(state.getFirst().copy(), state.getSecond().copy()), state.getSecond().lightEquals(movingPlayer))); //get advance option
             return set;
         };
-
+        System.out.println("Start building tree. Preparation ended after "+(System.currentTimeMillis()-actualTime));
         //Actually building the tree
-        for (int i = 0; START_TIME + 7000 > System.currentTimeMillis() && i < 8; i++) { //For when there is time, build additional layer
+        for (int i = 0; START_TIME + 5000 > System.currentTimeMillis() && i < 10; i++) { //For when there is time, build additional layer
             if (i < 2) tree.createOnLevel(createFunction, i);
             else tree.createOnLevelAndDelete(createFunction, i);
+            System.out.println("Built level "+i+" which took "+(System.currentTimeMillis()-actualTime));
         }
-
+        System.out.println("Ended building tree. Building ended after "+(System.currentTimeMillis()-actualTime));
         //Getting the best State of the tree
         var bestOption = tree.calculateMinMaxNode(tuple -> {
             Player thisTurnPlayer, otherTurnPlayer;
@@ -99,6 +100,7 @@ public class HardAI extends AI {
                 otherTurnPlayer = tuple.getFirst().getPlayer1();
             }
              return thisTurnPlayer.getScore().getValue() - otherTurnPlayer.getScore().getValue();}); //get max or base
+        System.out.println("Ended evaluating tree. Evaluating ended after "+(System.currentTimeMillis()-actualTime));
         GameState bestState;
         if (movingPlayer.getQuiltBoard().getPatchBoard().count(0) > 40) {
             if (bestOption.getFirst().equals(actualState)) return null;
@@ -138,6 +140,7 @@ public class HardAI extends AI {
                 bestState.setLogEntry(bestState.getLogEntry()+"\nGot "+boardIncome+" coins to spend later.");
             }
             if(bestState.getTimeBoard()[i].hasPatch()){
+                System.out.println("Have to place a 1x1-Patch. I needed up to here "+(System.currentTimeMillis()-actualTime)+" milliseconds.");
                 Matrix shape = new Matrix(3,5);
                 shape.insert(new Matrix(new int[][]{{1}}), 0, 0);
                 Patch singlePatch = new Patch(Integer.MAX_VALUE, 0, 0, shape, 0);
@@ -146,9 +149,8 @@ public class HardAI extends AI {
                 bestState.setLogEntry(bestState.getLogEntry()+"\nGot a special patch and placed it happily.");
             }
         }
-        System.out.println(evaluateBoard(movedPlayer.getQuiltBoard()));
         if(bestState.getLogEntry()==null) bestState.setLogEntry("ERR: LOG_ENTRY_NOT_DEFINED");
-        System.out.println("This took me "+(System.currentTimeMillis()-ACTUAL_TIME)+" milliseconds to calculate. Im proud.");
+        System.out.println("This took me "+(System.currentTimeMillis()-actualTime)+" milliseconds to calculate. Im proud.");
         return bestState;
     }
 

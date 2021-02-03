@@ -79,6 +79,7 @@ public class AIControllerTest {
         }
     }
 
+
     @Before
     public void setUp() {
       mainController.setErrorAUI(dummyAUI);
@@ -86,6 +87,7 @@ public class AIControllerTest {
       mainController.setLogAUI(dummyAUI);
       mainController.setTurnAUI(dummyAUI);
     }
+
 
     /**
      * Test if doTurn runs trough if the current player is a human
@@ -118,7 +120,7 @@ public class AIControllerTest {
         gamePreparationController.startGame(easyAIVsMediumAI, null, 5,false);
         gameController.cloneGameState();
 
-        aiController.doTurn();
+        //aiController.doTurn();
     }
 
     /**
@@ -166,6 +168,7 @@ public class AIControllerTest {
         aiController.calculateHint();
     }
 
+
     private class TestMainController extends MainController{
 
         /**
@@ -175,7 +178,6 @@ public class AIControllerTest {
             super(true);
         }
     }
-
 
     //TODO more tests will follow
 
