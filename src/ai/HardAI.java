@@ -83,11 +83,32 @@ public class HardAI extends AI {
         };
         System.out.println("Start building tree. Preparation ended after "+(System.currentTimeMillis()-actualTime));
         //Actually building the tree
-        for (int i = 0; START_TIME + 5000 > System.currentTimeMillis() && i < 10; i++) { //For when there is time, build additional layer
-            if (i < 2) tree.createOnLevel(createFunction, i);
-            else tree.createOnLevelAndDelete(createFunction, i);
-            System.out.println("Built level "+i+" which took "+(System.currentTimeMillis()-actualTime));
+        Runnable buildATree = () -> {
+            for (int i = 0; i < 10; i++) { //For when there is time, build additional layer
+                try {
+                    if (i < 2) tree.createOnLevel(createFunction, i);
+                    else tree.createOnLevelAndDelete(createFunction, i);
+                }
+                catch (InterruptedException e){
+                    System.out.println("Whoopsie, I got interrupted after "+(System.currentTimeMillis()-actualTime));
+                    return;
+                }
+                System.out.println("Built level "+i+" which took "+(System.currentTimeMillis()-actualTime));
+            }
+        };
+        Thread treeBuild = new Thread(new ThreadGroup("TreeBuild"),buildATree,"treeBuild");
+        treeBuild.start();
+        try {
+            treeBuild.join(9500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+        treeBuild.interrupt();
+        //for (int i = 0; START_TIME + 5000 > System.currentTimeMillis() && i < 10; i++) { //For when there is time, build additional layer
+        //   if (i < 2) tree.createOnLevel(createFunction, i);
+        //    else tree.createOnLevelAndDelete(createFunction, i);
+        //    System.out.println("Built level "+i+" which took "+(System.currentTimeMillis()-actualTime));
+        //}
         System.out.println("Ended building tree. Building ended after "+(System.currentTimeMillis()-actualTime));
         //Getting the best State of the tree
         var bestOption = tree.calculateMinMaxNode(tuple -> {

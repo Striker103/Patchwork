@@ -63,27 +63,40 @@ public class MinMaxTree<E> {
     }
 
     private int calculateMinMaxWeight(final Function<E, Integer> mapper){
-        if(children.isEmpty()) return mapper.apply(nodeContent);
-        if(nodeType) return children.stream().map(node -> node.calculateMinMaxWeight(mapper)).max(Comparator.naturalOrder()).orElse(0);
-        return children.stream().map(node -> node.calculateMinMaxWeight(mapper)).min(Comparator.naturalOrder()).orElse(0);
-    }
-
-    public void createOnLevel(final Function<E, HashSet<MinMaxTree<E>>> funct, int level){
-        if(level==0){
-            children.addAll(funct.apply(nodeContent));
-        }
-        else{
-            children.forEach(tree -> tree.createOnLevel(funct, level-1));
+        synchronized (this) {
+            if (children.isEmpty()) return mapper.apply(nodeContent);
+            if (nodeType)
+                return children.stream().map(node -> node.calculateMinMaxWeight(mapper)).max(Comparator.naturalOrder()).orElse(0);
+            return children.stream().map(node -> node.calculateMinMaxWeight(mapper)).min(Comparator.naturalOrder()).orElse(0);
         }
     }
 
-    public void createOnLevelAndDelete(final Function<E, HashSet<MinMaxTree<E>>> funct, int level){
+    public void createOnLevel(final Function<E, HashSet<MinMaxTree<E>>> funct, int level) throws InterruptedException {
+        if(Thread.interrupted()) throw new InterruptedException();
         if(level==0){
-            children.addAll(funct.apply(nodeContent));
-            nodeContent = null;
+            synchronized (this) {
+                children.addAll(funct.apply(nodeContent));
+            }
         }
         else{
-            children.forEach(tree -> tree.createOnLevelAndDelete(funct, level-1));
+            for (MinMaxTree<E> tree : children) {
+                tree.createOnLevel(funct, level - 1);
+            }
+        }
+    }
+
+    public void createOnLevelAndDelete(final Function<E, HashSet<MinMaxTree<E>>> funct, int level) throws InterruptedException {
+        if(Thread.interrupted()) throw new InterruptedException();
+        if(level==0){
+            synchronized(this) {
+                children.addAll(funct.apply(nodeContent));
+                nodeContent = null;
+            }
+        }
+        else{
+            for (MinMaxTree<E> tree : children) {
+                tree.createOnLevelAndDelete(funct, level - 1);
+            }
         }
     }
 
