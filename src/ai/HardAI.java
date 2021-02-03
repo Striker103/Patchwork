@@ -3,7 +3,9 @@ package ai;
 import model.*;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -62,7 +64,7 @@ public class HardAI extends AI {
                                     .map(placement -> {
                                         Player copyMove = moving.copy();
                                         GameState copyState = copy.copy();
-                                        copyMove.getQuiltBoard().addPatch(patch, placement.getFirst(), placement.getSecond().getFirst() *90, placement.getSecond().getSecond());
+                                        copyMove.getQuiltBoard().addPatch(patch, placement.getFirst(), placement.getSecond().getFirst(), placement.getSecond().getSecond());
                                         copyMove.setBoardPosition(Math.min(copyMove.getBoardPosition() + patch.getTime(), 54)); //change board position
                                         Score score = copyMove.getScore(); //edit score
                                         score.setValue(score.getValue() + calculatePatchValue(patch, moving));
@@ -105,7 +107,8 @@ public class HardAI extends AI {
             }
             else {
                 //we have to figure out the best placement and the patch used
-                Patch used = bestOption.getSecond().getQuiltBoard().getPatches().remove(bestOption.getSecond().getQuiltBoard().getPatches().size() - 1); //luckily, it is the last patch added
+                Player moved = bestOption.getFirst().getPlayer1().lightEquals(movingPlayer)?bestOption.getFirst().getPlayer1():bestOption.getFirst().getPlayer2();
+                Patch used = moved.getQuiltBoard().getPatches().remove(moved.getQuiltBoard().getPatches().size() - 1); //luckily, it is the last patch added
                 GameState copy = actualState.copy();
                 Player moving;
                 if (copy.getPlayer1().lightEquals(movingPlayer)) { //evaluate players
@@ -135,10 +138,14 @@ public class HardAI extends AI {
                 movedPlayer.addMoney(boardIncome);
             }
             if(bestState.getTimeBoard()[i].hasPatch()){
-
+                Matrix shape = new Matrix(3,5);
+                shape.insert(new Matrix(new int[][]{{1}}), 0, 0);
+                Patch singlePatch = new Patch(Integer.MAX_VALUE, 0, 0, shape, 0);
+                movedPlayer.setQuiltBoard(placePatch(movedPlayer.getQuiltBoard(), singlePatch).getFirst());
                 bestState.getTimeBoard()[i].removePatch();
             }
         }
+        System.out.println(evaluateBoard(movedPlayer.getQuiltBoard()));
         return bestState;
     }
 
@@ -163,20 +170,24 @@ public class HardAI extends AI {
      *
      * @param actualBoard the Board on which the patch should be applied
      * @param patch the patch which should be placed
-     * @return a Tuple of the new QuiltBoard and a Happiness-value ranging from 0 to 1 (inclusive) higher = better or null, if there is no placement
+     * @return a Tuple of the new QuiltBoard and a Happiness-value higher = better or null, if there is no placement
      */
     public Tuple<QuiltBoard, Double> placePatch(QuiltBoard actualBoard, Patch patch){
         Matrix boardMatrix = actualBoard.getPatchBoard();
-        Matrix patchMatrix = patch.getShape();
-        int filledSpots = boardMatrix.amountCells()-boardMatrix.count(0) + patchMatrix.amountCells()-patchMatrix.count(0);
         return AIUtil.generateAllPossiblePatches(patch)
                 .stream()                                                                                           //Generate Patches and parallelize
                 .filter(patchPosition -> patchPosition.getFirst().disjunctive(boardMatrix))                         //Filter all places which are not valid
+                .filter(distinctByKey(Tuple::getFirst))
                 .map(place -> { QuiltBoard copy = actualBoard.copy();
                                 copy.addPatch(patch, place.getFirst(), place.getSecond().getFirst(), place.getSecond().getSecond());
-                                return new Tuple<>(copy, evaluateBoard(copy, filledSpots));})                       //map the valid places onto the quiltboard and evaluate the happiness
+                                return new Tuple<>(copy, evaluateBoard(copy));})                       //map the valid places onto the quiltboard and evaluate the happiness
                 .max(Comparator.comparingDouble(Tuple::getSecond))                                                  //Search maximum of happiness eg. best placement
                 .orElse(null);
+    }
+
+    private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+        Set<Object> seen = ConcurrentHashMap.newKeySet();
+        return t -> seen.add(keyExtractor.apply(t));
     }
 
     /**
@@ -186,26 +197,43 @@ public class HardAI extends AI {
      * @return a double value stating the value of this board
      */
     private Double evaluateBoard(QuiltBoard board, int filledSpots) {
-        if(filledSpots>=81) return Double.MAX_VALUE;
-        Matrix places = board.getPatchBoard();
-        double circumferenceOuter=18; //Value for empty board
-        for (int col = 0; col < places.getColumns(); col++) {    //Subtract one for each side which is covered with an patch
-            circumferenceOuter-= (places.get(0,col)!=0) ? 1 : 0;
-            circumferenceOuter-= (places.get(col,0)!=0) ? 1 : 0;
-            circumferenceOuter-= (places.get(8,col)!=0) ? 1 : 0;
-            circumferenceOuter-= (places.get(col,8)!=0) ? 1 : 0; // Yes, the edges more than one time, because they also have more than one side
-        }
-        double circumferenceInner =0;
-        for (int row = 0; row < places.getRows(); row++) {
-            for (int col = 0; col < places.getColumns() ; col++) {
-                circumferenceInner+= (places.get(row,col)!=0 ^ (row+1>=9||(places.get(row+1,col)!=0))) ?1:0;
-                circumferenceInner+= (places.get(row,col)!=0 ^ (col+1>=9||(places.get(row,col+1)!=0))) ?1:0;
+            if (filledSpots >= 81) return Double.MAX_VALUE;
+            Matrix places = board.getPatchBoard();
+            Matrix framedBoard = new Matrix(11, 11);
+            framedBoard.fill(Integer.MAX_VALUE).insert(places, 1, 1);
+            int circumferenceOuter = 0; //North and west side of board
+            int circOuterExtra = 0; //South and east side of board (is counted again in circumferenceInner)
+            for (int col = 0; col < places.getColumns(); col++) {    //Add one for each side which is not covered with an patch
+                circumferenceOuter += (places.get(0, col) == 0) ? 1 : 0;
+                circumferenceOuter += (places.get(col, 0) == 0) ? 1 : 0;
+                circOuterExtra += (places.get(col, places.getColumns()-1) == 0) ? 1 : 0;
+                circOuterExtra += (places.get(places.getColumns()-1, col) == 0) ? 1 : 0;
             }
-        }
-        double intermediate = 4/(circumferenceInner+circumferenceOuter);
-        double result = 1-(circumferenceInner/filledSpots);
-        result += intermediate;
-        return result;
+            int circumferenceInner = 0;
+            int lonelySpots = 0;
+            for (int row = 1; row < framedBoard.getRows() - 1; row++) {
+                for (int col = 1; col < framedBoard.getColumns() - 1; col++) {
+                    circumferenceInner += (framedBoard.get(row, col) == 0 ^ (framedBoard.get(row + 1, col) == 0)) ? 1 : 0;
+                    circumferenceInner += (framedBoard.get(row, col) == 0 ^ (framedBoard.get(row, col + 1) == 0)) ? 1 : 0;
+
+                    if (
+                            framedBoard.get(row, col) == 0 ^ framedBoard.get(row - 1, col) == 0 &&
+                                    framedBoard.get(row, col) == 0 ^ framedBoard.get(row + 1, col) == 0 &&
+                                    framedBoard.get(row, col) == 0 ^ framedBoard.get(row, col - 1) == 0 &&
+                                    framedBoard.get(row, col) == 0 ^ framedBoard.get(row, col + 1) == 0
+                    )
+                        lonelySpots++;
+                }
+            }
+            double result = 0.0 + filledSpots;
+            int circumferenceTotal = circumferenceInner + circumferenceOuter;
+            int deviationFromMain = -(circumferenceTotal - 36); //36 is normal circumference on empty board
+            double optimalCircumference = Math.sqrt(filledSpots) * 4; //Circumference when having a square
+            double circumferenceExtra = circumferenceTotal - optimalCircumference;
+            result += deviationFromMain ^ 5;
+            result -= Math.expm1(circumferenceExtra) * 0.5;
+            result -= lonelySpots * 25;
+            return result;
     }
 
     private double evaluateBoard(QuiltBoard quiltBoard) {
