@@ -14,12 +14,6 @@ import java.util.stream.Collectors;
  */
 public class HardAI extends AI {
     /**
-     * the positions of the buttons on the time board
-     */
-    private final int[] buttonPositions = {5, 11, 17, 23, 29, 35, 41, 47, 53};
-    private final int[] patchPositions = {20, 26, 32, 44, 50};
-
-    /**
      * Calculates the next turn based on the given turn
      * @param actualState the actual state of the game
      * @return the best possible state for the ai to move
