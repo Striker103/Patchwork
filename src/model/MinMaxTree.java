@@ -55,19 +55,19 @@ public class MinMaxTree<E> {
      * @param mapper the function to evaluate the leafnodes
      * @return the best option for the actual Content with this function. null if there is none
      */
-    public E calculateMinMaxNode(final Function<E, Integer> mapper){
+    public E calculateMinMaxNode(final Function<E, Double> mapper){
         return children.stream()
                 .map(child -> new Tuple<>(child.getNodeContent(), child.calculateMinMaxWeight(mapper)))
-                .max(Comparator.comparingInt(Tuple::getSecond))
-                .orElse(new Tuple<>(null, 1)).getFirst();
+                .max(Comparator.comparingDouble(Tuple::getSecond))
+                .orElse(new Tuple<>(null, 1.0)).getFirst();
     }
 
-    private int calculateMinMaxWeight(final Function<E, Integer> mapper){
+    private double calculateMinMaxWeight(final Function<E, Double> mapper){
         synchronized (this) {
             if (children.isEmpty()) return mapper.apply(nodeContent);
             if (nodeType)
-                return children.stream().map(node -> node.calculateMinMaxWeight(mapper)).max(Comparator.naturalOrder()).orElse(0);
-            return children.stream().map(node -> node.calculateMinMaxWeight(mapper)).min(Comparator.naturalOrder()).orElse(0);
+                return children.stream().map(node -> node.calculateMinMaxWeight(mapper)).max(Comparator.naturalOrder()).orElse(0.0);
+            return children.stream().map(node -> node.calculateMinMaxWeight(mapper)).min(Comparator.naturalOrder()).orElse(0.0);
         }
     }
 
