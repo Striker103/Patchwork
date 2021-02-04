@@ -326,27 +326,18 @@ public class IOController {
 	}
 
 	private PdfPTable getGrid(Player player){
-
 		colorHashMap.clear();
 		colorHashMap.put(0, new BaseColor(255,255,255));
 
 		PdfPTable pdfPTable = new PdfPTable(9);
-//		pdfPTable.setLockedWidth(true);
 
 		for (int i = 0 ; i < 81; i++){
 
 			PdfPCell cell = new PdfPCell();
-
 			cell.setColspan(1);
 			cell.setFixedHeight(50.0F);
-
 			BaseColor color = generateColor(player.getQuiltBoard().getPatchBoard().get(i / 9, i % 9));
 			cell.setBackgroundColor(color);
-
-//			Paragraph paragraph = new Paragraph(String.valueOf(player.getQuiltBoard().getPatchBoard().get(i % 9, i / 9)));
-//
-//			cell.addElement(paragraph);
-
 			pdfPTable.addCell(cell);
 		}
 
@@ -355,23 +346,6 @@ public class IOController {
 	}
 
 	private BaseColor generateColor(int value){
-//		if (value == 0)
-//			return new BaseColor(255,255,255);
-//
-//		value = value + 5000;
-//
-//		//Overflow
-//		if (value < 0)
-//			value = Math.abs(value);
-//
-//		int blue = (int) Math.floor(value % 256);
-//		int  green = (int) Math.floor((value / 256) % 256);
-//		int red = (int) Math.floor((value / 256 / 256) % 256);
-//
-//		System.out.println("red : " + red + ", green: " + green + ", blue: " + blue);
-//
-//		return new BaseColor(red, green, blue);
-
 		BaseColor color = colorHashMap.get(value);
 
 		if (color == null){
