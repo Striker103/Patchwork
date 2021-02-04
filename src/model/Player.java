@@ -62,24 +62,18 @@ public class Player {
 
 	/**
 	 * Copy Constructor
-	 * @param boardPosition the boardPosition
-	 * @param money the money
-	 * @param name the name
-	 * @param quiltBoard the quiltBoard
-	 * @param playerType the playerType
-	 * @param score the score
-	 * @param hasSpecialTile the hasSpecialTile
+	 * @param player the player to be cloned
 	 */
-	private Player(int boardPosition, int money, String name, QuiltBoard quiltBoard, PlayerType playerType, Score score, boolean hasSpecialTile) {
-		this.boardPosition = boardPosition;
-		this.money = money;
-		this.name = name;
-		this.quiltBoard = quiltBoard.copy();
-		this.playerType = playerType;
+	private Player(Player player) {
+		this.boardPosition = player.boardPosition;
+		this.money = player.money;
+		this.name = player.name;
+		this.quiltBoard = player.quiltBoard.copy();
+		this.playerType = player.playerType;
 		if(score != null){
-			this.score = score.copy();
+			this.score = player.score.copy();
 		}
-		this.hasSpecialTile = hasSpecialTile;
+		this.hasSpecialTile = player.hasSpecialTile;
 		this.highscoreIsValid = true;
 	}
 
@@ -89,7 +83,7 @@ public class Player {
 	 */
 
 	public Player copy() {
-		return new Player(boardPosition,money,name,quiltBoard,playerType,score,hasSpecialTile);
+		return new Player(this);
 	}
 
 	/**

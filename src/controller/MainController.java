@@ -68,8 +68,10 @@ public class MainController {
 	/**
 	 * protected constructor for test cases
 	 */
-	protected MainController(boolean testGameController)
-	{
+	protected MainController(boolean testGameController) {
+		if(testGameController){
+			System.out.println("Constructor for Test-Puporse only!");
+		}
 		gamePreparationController = new GamePreparationController(this);
 		gameController = new TestGameController(this);
 		aIController = new AIController(this);
@@ -95,7 +97,6 @@ public class MainController {
 		gamePreparationController.setErrorAUI(errorAUI);
 		gameController.setErrorAUI(errorAUI);
 		aIController.setErrorAUI(errorAUI);
-		playerController.setErrorAUI(errorAUI);
 		iOController.setErrorAUI(errorAUI);
 		highScoreController.setErrorAUI(errorAUI);
 	}

@@ -14,6 +14,7 @@ import java.util.List;
  */
 public class GamePreparationController {
 
+	private static final int PATCHES = 33;
 	private final MainController mainController;
 
 	private ErrorAUI errorAUI;
@@ -62,7 +63,7 @@ public class GamePreparationController {
 		}
 
 		List<Patch> patchesBeforeSmallest;
-		if(index < 33){
+		if(index < PATCHES){
 			List<Patch> patchesAfterSmallest = patches.subList(index + 1, patches.size());
 			patchesBeforeSmallest = patches.subList(0, index+1);
 			patchesAfterSmallest.addAll(patchesBeforeSmallest);

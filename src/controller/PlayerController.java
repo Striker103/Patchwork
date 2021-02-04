@@ -15,18 +15,11 @@ public class PlayerController {
 
 	private final MainController mainController;
 
-	private ErrorAUI errorAUI;
-
 	private TurnAUI turnAUI;
 
 	private LogAUI logAUI;
 
-	private boolean isPlaced = false;
 
-	/**
-	 * true if errorAUI is set
-	 */
-	private boolean errorAUIChanged = false;
 
 	/**
 	 * true if logAUIChanged is set
@@ -70,7 +63,6 @@ public class PlayerController {
 					logAUI.updateLog(currentPlayer.getName() + " steps over a 1x1 Patch and must place it now");
 					if(currentPlayer.getPlayerType() == PlayerType.HUMAN){
 						get1x1Patch();
-						isPlaced = false;
 						}
 				}
 				if(timeBoard[i].hasButton()){
@@ -127,16 +119,6 @@ public class PlayerController {
 		logAUI.updateLog(currentPlayer.getName() + " buys Patch " + patch.getPatchID() + " for " + patch.getButtonsCost() + " buttons");
 	}
 
-
-	/**
-	 * set the errorAUI
-	 * @param errorAUI the errorAUI
-	 */
-	public void setErrorAUI(ErrorAUI errorAUI) {
-		if(this.errorAUIChanged) throw new IllegalStateException("errorAUI was already set");
-		this.errorAUI = errorAUI;
-		this.errorAUIChanged = true;
-	}
 
 	/**
 	 * set the logAUI
