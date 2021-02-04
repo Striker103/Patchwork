@@ -140,12 +140,12 @@ public class GamePreparationController {
 	private List<Patch> getPatches(File file)
 	{
 		List<Patch> patches;
-		IOController ioController = mainController.getIOController();
+		ImportController importController = mainController.getImportController();
 		if(file == null)
 		{
-			patches = ioController.importCSV();
+			patches = importController.importCSV();
 		} else {
-			patches = ioController.importCSV(file);
+			patches = importController.importCSV(file);
 		}
 		return patches;
 	}

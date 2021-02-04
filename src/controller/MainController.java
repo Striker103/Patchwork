@@ -38,14 +38,19 @@ public class MainController {
 	private final UndoRedoController undoRedoController;
 
 	/**
-	 * iOController
+	 * importController
 	 */
-	private final IOController iOController;
+	private final ImportController importController;
 
 	/**
 	 * highScoreController
 	 */
 	private final HighScoreController highScoreController;
+
+	/**
+	 * exportController
+	 */
+	private final ExportController exportController;
 
 	/**
 	 * Game
@@ -62,8 +67,9 @@ public class MainController {
 		aIController = new AIController(this);
 		playerController = new PlayerController(this);
 		undoRedoController = new UndoRedoController(this);
-		iOController = new IOController(this);
+		importController = new ImportController(this);
 		highScoreController = new HighScoreController(this);
+		exportController = new ExportController(this);
 	}
 	/**
 	 * protected constructor for test cases
@@ -77,8 +83,9 @@ public class MainController {
 		aIController = new AIController(this);
 		playerController = new PlayerController(this);
 		undoRedoController = new UndoRedoController(this);
-		iOController = new IOController(this);
+		importController = new ImportController(this);
 		highScoreController = new HighScoreController(this);
+		exportController = new ExportController(this);
 	}
 
 	/**
@@ -97,8 +104,9 @@ public class MainController {
 		gamePreparationController.setErrorAUI(errorAUI);
 		gameController.setErrorAUI(errorAUI);
 		aIController.setErrorAUI(errorAUI);
-		iOController.setErrorAUI(errorAUI);
+		importController.setErrorAUI(errorAUI);
 		highScoreController.setErrorAUI(errorAUI);
+		exportController.setErrorAUI(errorAUI);
 	}
 
 	/**
@@ -135,7 +143,7 @@ public class MainController {
 	 * @param loadGameAUI the loadGameAUI
 	 */
 	public void setLoadGameAUI(LoadGameAUI loadGameAUI){
-		iOController.setLoadGameAUI(loadGameAUI);
+		importController.setLoadGameAUI(loadGameAUI);
 	}
 
 	/**
@@ -203,11 +211,11 @@ public class MainController {
 	}
 
 	/**
-	 * returns an IOController
-	 * @return iOController
+	 * returns an ImportController
+	 * @return importController
 	 */
-	public IOController getIOController() {
-		return iOController;
+	public ImportController getImportController() {
+		return importController;
 	}
 
 	/**
@@ -218,6 +226,13 @@ public class MainController {
 		return highScoreController;
 	}
 
+	/**
+	 * returns an ExportController
+	 * @return exportController
+	 */
+	public ExportController getExportController(){
+		return exportController;
+	}
 
 	/**
 	 * A private class for testing purpose. AI only does one turn and does not trigger next turn

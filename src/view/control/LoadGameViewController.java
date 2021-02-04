@@ -120,7 +120,7 @@ public class LoadGameViewController implements LoadGameAUI {
         mainViewController.setCurrentScene(ownScene);
         mainViewController.showCurrentScene();
 
-        mainViewController.getMainController().getIOController().loadGame(new File(saveGamesPath));
+        mainViewController.getMainController().getImportController().loadGame(new File(saveGamesPath));
 
         try {
             loadGameImage.setImage((new Image(this.getClass().getResource("/view/images/Headlines/LoadGame.png").toURI().toString())));

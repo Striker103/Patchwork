@@ -41,7 +41,7 @@ public class PauseGameViewController implements HighScoreReturn {
 
     @FXML
     public void onSaveAction() {
-        mainViewController.getMainController().getIOController().saveGame(gameSaveFile);
+        mainViewController.getMainController().getImportController().saveGame(gameSaveFile);
         saveIndicator.setText("The game has been saved!");
     }
 

@@ -267,7 +267,7 @@ public class GameSummaryViewController implements HighScoreReturn {
             if (fileChoice.exists() && fileChoice.isFile()) {
                 fileChoice.delete();
             }
-            mainViewController.getMainController().getIOController().exportGameResult(fileChoice);
+            mainViewController.getMainController().getExportController().exportGameResult(fileChoice);
         }
     }
 

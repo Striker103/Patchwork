@@ -1,6 +1,6 @@
 package view;
 
-import controller.IOController;
+import controller.ImportController;
 import model.Patch;
 
 import java.util.HashMap;
@@ -22,9 +22,9 @@ public class PatchMap {
      */
     private PatchMap(){
 
-        IOController ioController = new IOController(null);
+        ImportController importController = new ImportController(null);
 
-        List<Patch> patches = ioController.importCSVNotShuffled();
+        List<Patch> patches = importController.importCSVNotShuffled();
 
         for (int i = 1; i < patches.size()+1; i++){
             map.put(patches.get(i-1), "/view/images/Patches/Patch" + i + ".png");

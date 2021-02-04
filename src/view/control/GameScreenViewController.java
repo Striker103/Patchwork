@@ -1,7 +1,6 @@
 package view.control;
 
 import controller.*;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import java.io.FileInputStream;
@@ -168,8 +167,8 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
         listToClearGUI = new ArrayList<>();
 
         listInOrder = new ArrayList<>();
-        IOController ioController = mainViewController.getMainController().getIOController();
-        List<Patch> patches = ioController.importCSVNotShuffled();
+        ImportController importController = mainViewController.getMainController().getImportController();
+        List<Patch> patches = importController.importCSVNotShuffled();
         for(Patch patch : patches) {
             listInOrder.add(new PatchView(patch, playerVsPlayer));
         }
