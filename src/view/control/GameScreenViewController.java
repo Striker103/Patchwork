@@ -143,7 +143,12 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
         }
 
         loadTimeBoard();
-
+        if(timeToken1 == null && timeToken2 == null)
+            loadTimeTokens();
+        else{
+            pane.getChildren().add(timeToken1);
+            pane.getChildren().add(timeToken2);
+        }
         patches = game.getCurrentGameState().getPatches();
 
         player1Name.setText(game.getCurrentGameState().getPlayer1().getName());
@@ -219,8 +224,10 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
         updateIndex();
         addSpecialPatches();
         loadTimeBoard();
+        loadTimeTokens();
         loadSpecialPatches();
         moveTimeTokens();
+
         //pane.getChildren().removeAll(listToClear);
         //pane.getChildren().removeAll(listToClearGUI);
         listToClear = new ArrayList<>();
@@ -390,6 +397,9 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
         timeBoard.setY(40);
         this.pane.getChildren().add(timeBoard);
 
+    }
+
+    public void loadTimeTokens(){
         timeToken1 = new TimeToken(1);
         timeToken1.setX(558);
         timeToken1.setY(82);
@@ -404,8 +414,9 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
         timeToken2.setFitHeight(20);
         activeTimeToken = timeToken2;
         pane.getChildren().add(activeTimeToken);
-
     }
+
+
 
     public void loadPatches() throws FileNotFoundException {
         for(Patch patch : patches)
@@ -759,6 +770,8 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
     @FXML
     public void onPauseAction() {
         mainViewController.getPauseGameViewController().showScene();
+        pane.getChildren().remove(timeToken1);
+        pane.getChildren().remove(timeToken2);
     }
 
     @FXML
