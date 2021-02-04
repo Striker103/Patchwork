@@ -245,7 +245,8 @@ public class GameState{
 	 * @param chosenPatch the patch by object reference
 	 */
 	public void tookPatch(Patch chosenPatch){
-		if(patches.indexOf(chosenPatch)>2){
+		final int maxChoosableIndex = 2;
+		if(patches.indexOf(chosenPatch)>maxChoosableIndex){
 			throw new IllegalArgumentException("Please choose one of the first three patches");
 		}
 		for(int i = 0;i<patches.indexOf(chosenPatch) + 1;i++){
