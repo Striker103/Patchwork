@@ -1,6 +1,5 @@
 package controller;
 
-import model.*;
 import org.junit.Before;
 import org.junit.Test;
 import view.aui.*;
@@ -18,7 +17,7 @@ import static org.junit.Assert.*;
 public class IOControllerTest {
 
     private MainController mainController = new MainController();
-    private IOController ioController;
+    private ImportController importController;
     private DummyAUI dummy;
 
     private static final File PATH = new File("export/games");
@@ -41,7 +40,7 @@ public class IOControllerTest {
         mainController.setLogAUI(dummy);
         mainController.setHighScoreAUI(dummy);
         mainController.getGamePreparationController().startGame(playerTuple,null,false);
-        ioController = mainController.getIOController();
+        importController = mainController.getImportController();
         FILE.delete();
     }
 
@@ -61,13 +60,13 @@ public class IOControllerTest {
         }
 
 
-        ioController.saveGame(FILE); // to create a file "export/games/saveGameTest.json" "export/games" needs to exists
+        importController.saveGame(FILE); // to create a file "export/games/saveGameTest.json" "export/games" needs to exists
 
         MainController loadMainController = new MainController();
         DummyAUI loadDummy = new DummyAUI();
         loadMainController.setErrorAUI(loadDummy);
         loadMainController.setLoadGameAUI(loadDummy);
-        loadMainController.getIOController().loadGame(PATH);
+        loadMainController.getImportController().loadGame(PATH);
 
         assertEquals(1,loadDummy.importedGames);
     }
@@ -79,7 +78,7 @@ public class IOControllerTest {
     @SuppressWarnings("ConstantConditions")
     @Test
     public void saveGameNullPath() {
-        ioController.saveGame(null);
+        importController.saveGame(null);
         assertTrue(dummy.error);
     }
     /**
@@ -88,7 +87,7 @@ public class IOControllerTest {
     @SuppressWarnings("ConstantConditions")
     @Test
     public void loadGameNullPath() {
-        ioController.loadGame(null);
+        importController.loadGame(null);
     }
 
         /**
@@ -96,7 +95,7 @@ public class IOControllerTest {
          */
     @Test
     public void saveGameDirectory() {
-        ioController.saveGame(PATH);
+        importController.saveGame(PATH);
         assertTrue(dummy.error);
     }
 
@@ -107,7 +106,7 @@ public class IOControllerTest {
     @Test
     public void testImportCSV() {
 
-        IOController io = new IOController(null);
+        ImportController io = new ImportController(null);
         System.out.println(io.importCSV().toString());
 
     }
@@ -121,7 +120,7 @@ public class IOControllerTest {
         final int lastTimeBoardIndex = 53;
         current.getPlayer1().setBoardPosition(lastTimeBoardIndex);
         current.getPlayer2().setBoardPosition(lastTimeBoardIndex);
-        ioController.exportGameResult(FILE);
+        importController.exportGameResult(FILE);
     }
 
     /**
@@ -133,7 +132,7 @@ public class IOControllerTest {
         final int lastTimeBoardIndex = 53;
         current.getPlayer1().setBoardPosition(lastTimeBoardIndex);
         current.getPlayer2().setBoardPosition(lastTimeBoardIndex-1);
-        ioController.exportGameResult(FILE);
+        importController.exportGameResult(FILE);
         assertTrue(dummy.error);
     }
 
@@ -146,7 +145,7 @@ public class IOControllerTest {
         final int lastTimeBoardIndex = 53;
         current.getPlayer1().setBoardPosition(lastTimeBoardIndex);
         current.getPlayer2().setBoardPosition(lastTimeBoardIndex-1);
-        ioController.exportGameResult(PATH);
+        importController.exportGameResult(PATH);
         assertTrue(dummy.error);
     }
 
