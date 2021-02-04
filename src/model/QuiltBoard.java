@@ -131,7 +131,12 @@ public class QuiltBoard {
 		if(patchBoard.get(posY,posX)!=0){
 			return false;
 		}
+		boolean[][] shape = {{true,false,false,false,false},
+							{false,false,false,false,false},
+							{false,false,false,false,false}};
 		patchBoard.set(posY,posX,Integer.MAX_VALUE);
+		Patch specialPatch = new Patch(Integer.MAX_VALUE,0, 0, new Matrix(shape), 0 );
+		patches.add(specialPatch);
 		return true;
 	}
 

@@ -53,7 +53,6 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
     private List<PatchView> listInOrder;
     private int index = 0;
     private boolean playerVsPlayer;
-    private boolean isPlayerTurn;
 
     @FXML
     private Button rightButton;
@@ -233,8 +232,9 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
 
         Player player1 = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1();
         Player player2 = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2();
-        if(player1.getBoardPosition() == 53 && player2.getBoardPosition() == 53)
+        if(player1.getBoardPosition() == 53 && player2.getBoardPosition() == 53) {
             mainViewController.getGameSummaryViewController().showScene();
+        }
     }
 
     public void refreshPlayer(int player){
@@ -528,7 +528,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
         refreshList();
         updateMoneyAndScore();
         refreshTheBoard();
-        isPlayerTurn = true;
+        boolean isPlayerTurn = true;
     }
 
     public void updateIndex(){
@@ -562,6 +562,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
         try{
             pane.getChildren().add(patch);
         }catch(Exception e){
+            System.out.print("");
         }
         if(firstPlayer){
             patch.setX(150 + 890);
@@ -789,7 +790,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
         if(!(activePatchView.getHeight() == 1 && activePatchView.getWidth() == 1))
             return;
         activePatchView.setFirstPlayer(isFirstPlayer());
-        boolean placed = false;
+        boolean placed;
         if(game.getCurrentGameState().getPlayer1().getPlayerType() == PlayerType.HUMAN && game.getCurrentGameState().getPlayer2().getPlayerType() == PlayerType.HUMAN){
             Player currentPlayer = mainViewController.getMainController().getGameController().getNotMovingPlayer();
             GameController gameController = mainViewController.getMainController().getGameController();
@@ -823,34 +824,34 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
     }
 
     @FXML
-    public void onFlipAction(ActionEvent actionEvent) {
+    public void onFlipAction() {
         flipPatch();
     }
     @FXML
-    public void onUpAction(ActionEvent actionEvent) {
+    public void onUpAction() {
         movePatchUp();
     }
     @FXML
-    public void onRotateAction(ActionEvent actionEvent) {
+    public void onRotateAction() {
         rotatePatch();
     }
 
     @FXML
-    public void onLeftAction(ActionEvent actionEvent) {
+    public void onLeftAction() {
         movePatchLeft();
     }
     @FXML
-    public void onConfirmAction(ActionEvent actionEvent) {
+    public void onConfirmAction() {
         confirmPatch();
     }
 
     @FXML
-    public void onRightAction(ActionEvent actionEvent) {
+    public void onRightAction() {
         movePatchRight();
     }
 
     @FXML
-    public void onDownAction(ActionEvent actionEvent) {
+    public void onDownAction() {
         movePatchDown();
     }
     private void movePatchUp(){
@@ -998,6 +999,9 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
             placeSpecialPatch();
         }else if(keyEvent.getCode() == KeyCode.K) {
             refreshTheBoard();
+        }
+        else if(keyEvent.getCode() == KeyCode.O) {
+            mainViewController.getGameSummaryViewController().showScene();
         }
     }
 

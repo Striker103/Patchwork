@@ -67,7 +67,7 @@
                                  </children>
                               </HBox>
                               <Button fx:id="downButton" mnemonicParsing="false" onAction="#onDownAction" />
-                              <Button mnemonicParsing="false" onAction="#onSpecialPatchAction" text="Place Spacial Patch">
+                              <Button mnemonicParsing="false" onAction="#onSpecialPatchAction" text="Place Special Patch">
                                  <VBox.margin>
                                     <Insets top="20.0" />
                                  </VBox.margin>
