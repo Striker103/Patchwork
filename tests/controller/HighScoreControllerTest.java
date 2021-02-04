@@ -151,16 +151,16 @@ public class HighScoreControllerTest {
 //        highScoreController.saveScores(new File("json"));
 //        assertTrue(dummyAUI.error);
 //    }
-    /**
-     * Test save score with a folder as path
-     */
-    @Test
-    public void testSaveScoreNoPermission(){
-        mainController.getGameController().advance();
-        mainController.getGameController().advance();
-        highScoreController.saveScores(new File("export/noPermission.json"));
-        assertTrue(dummyAUI.error);
-    }
+//    /**
+//     * Test save score with a folder as path
+//     */
+//    @Test
+//    public void testSaveScoreNoPermission(){
+//        mainController.getGameController().advance();
+//        mainController.getGameController().advance();
+//        highScoreController.saveScores(new File("export/noPermission.json"));
+//        assertTrue(dummyAUI.error);
+//    }
 
     /**
      * Test if the file is clean after clear
@@ -242,14 +242,14 @@ public class HighScoreControllerTest {
 //        assertTrue(dummyAUI.error);
 //    }
 
-    /**
-     * Test show score without permission
-     */
-    @Test
-    public void testShowScoreNoPermission(){
-        highScoreController.showHighScores(readOnly);
-        assertTrue(dummyAUI.error);
-    }
+//    /**
+//     * Test show score without permission
+//     */
+//    @Test
+//    public void testShowScoreNoPermission(){
+//        highScoreController.showHighScores(readOnly);
+//        assertTrue(dummyAUI.error);
+//    }
 
     /**
      * The type Dummy aui.
