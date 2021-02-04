@@ -249,11 +249,19 @@ public class MainControllerTest {
     }
 
     /**
-     * Tests getIOController
+     * Tests getImportController
      */
     @Test
-    public void testGetIOController(){
-        assertNotNull(mainController.getIOController());
+    public void testGetImportController(){
+        assertNotNull(mainController.getImportController());
+    }
+
+    /**
+     * Tests getExportController
+     */
+    @Test
+    public void testGetExportController(){
+        assertNotNull(mainController.getExportController());
     }
 
     /**

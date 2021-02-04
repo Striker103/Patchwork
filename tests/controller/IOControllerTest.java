@@ -1,5 +1,6 @@
 package controller;
 
+import model.*;
 import org.junit.Before;
 import org.junit.Test;
 import view.aui.*;
@@ -17,6 +18,7 @@ import static org.junit.Assert.*;
 public class IOControllerTest {
 
     private MainController mainController = new MainController();
+    private ExportController exportController;
     private ImportController importController;
     private DummyAUI dummy;
 
@@ -41,6 +43,7 @@ public class IOControllerTest {
         mainController.setHighScoreAUI(dummy);
         mainController.getGamePreparationController().startGame(playerTuple,null,false);
         importController = mainController.getImportController();
+        exportController = mainController.getExportController();
         FILE.delete();
     }
 
@@ -120,7 +123,7 @@ public class IOControllerTest {
         final int lastTimeBoardIndex = 53;
         current.getPlayer1().setBoardPosition(lastTimeBoardIndex);
         current.getPlayer2().setBoardPosition(lastTimeBoardIndex);
-        importController.exportGameResult(FILE);
+        exportController.exportGameResult(FILE);
     }
 
     /**
@@ -132,7 +135,7 @@ public class IOControllerTest {
         final int lastTimeBoardIndex = 53;
         current.getPlayer1().setBoardPosition(lastTimeBoardIndex);
         current.getPlayer2().setBoardPosition(lastTimeBoardIndex-1);
-        importController.exportGameResult(FILE);
+        exportController.exportGameResult(FILE);
         assertTrue(dummy.error);
     }
 
@@ -145,7 +148,7 @@ public class IOControllerTest {
         final int lastTimeBoardIndex = 53;
         current.getPlayer1().setBoardPosition(lastTimeBoardIndex);
         current.getPlayer2().setBoardPosition(lastTimeBoardIndex-1);
-        importController.exportGameResult(PATH);
+        exportController.exportGameResult(PATH);
         assertTrue(dummy.error);
     }
 
@@ -228,5 +231,6 @@ public class IOControllerTest {
         public void loadGame(List<Tuple<Game, File>> games){
             importedGames = games.size();
         }
+
     }
 }

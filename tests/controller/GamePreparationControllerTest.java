@@ -288,7 +288,7 @@ public class GamePreparationControllerTest {
             assertNotNull(patch);
         }
 
-        assertEquals(mainController.getIOController().importCSV(new File(pathName)), game.getCurrentGameState().getPatches());
+        assertEquals(mainController.getImportController().importCSV(new File(pathName)), game.getCurrentGameState().getPatches());
     }
 
     /**
@@ -349,7 +349,7 @@ public class GamePreparationControllerTest {
             assertNotNull(patch);
         }
 
-        assertEquals(mainController.getIOController().importCSV(new File(pathName)), game.getCurrentGameState().getPatches());
+        assertEquals(mainController.getImportController().importCSV(new File(pathName)), game.getCurrentGameState().getPatches());
     }
 
 }
