@@ -21,11 +21,12 @@ import model.*;
 import view.PatchMap;
 import view.PatchView;
 import view.aui.ErrorAUI;
+import view.aui.HintAUI;
 import view.aui.LogAUI;
 import view.aui.TurnAUI;
 
 
-public class GameScreenViewController implements TurnAUI , LogAUI {
+public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
 
     private ErrorAUI errorAUI;
     public Label player1Name;
@@ -102,8 +103,9 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
     @FXML
     private ImageView player17x7;
 
+
     @FXML
-    private ImageView player27x7;
+    private ImageView figure;
 
     public GameScreenViewController(){
     }
@@ -233,6 +235,31 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
         }
     }
 
+    public void currentlyPlaying(){
+        Player otherPlayer = mainViewController.getMainController().getGameController().getNotMovingPlayer();
+        Player player1 = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1();
+
+        try {
+            figure = new ImageView(new Image(this.getClass().getResource("/view/images/Figure/Spielfigur.png").toURI().toString()));
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        if(otherPlayer.equals(player1)){
+            figure.setFitWidth(40);
+            figure.setFitHeight(60);
+            figure.setX(870);
+            figure.setY(90);
+            pane.getChildren().add(figure);
+        }
+        else{
+            figure.setFitWidth(40);
+            figure.setFitHeight(60);
+            figure.setX(360);
+            figure.setY(90);
+            pane.getChildren().add(figure);
+        }
+    }
+
     public void refreshTheBoard(){
         pane.getChildren().clear();
         updateIndex();
@@ -242,7 +269,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
         loadSpecialPatches();
         moveTimeTokens();
         show7x7();
-
+        currentlyPlaying();
         //pane.getChildren().removeAll(listToClear);
         //pane.getChildren().removeAll(listToClearGUI);
         listToClear = new ArrayList<>();
@@ -690,7 +717,47 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
         this.errorAUI = errorAUI;
     }
 
+    @Override
+    public void showHintAdvance() {
 
+    }
+
+    @Override
+    public void showHintTakePatch(Patch patch, boolean[][] placing) {
+        ImageView hintPatch = new ImageView();
+        Player currentPlayer = mainViewController.getMainController().getGameController().getNotMovingPlayer();
+        Player player1 = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1();
+
+        hintPatch.setFitHeight(30);
+        hintPatch.setFitWidth(30);
+
+        for(int i = 0; i < placing.length; i++){
+            for(int j = 0; j < placing[i].length; j++){
+                try {
+                    hintPatch = new ImageView(new Image(this.getClass().getResource("/view/images/hint/HintPatch.png").toURI().toString()));
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+                if(placing[i][j]){
+                    if(currentPlayer.equals(player1)) {
+                        hintPatch.setFitHeight(30);
+                        hintPatch.setFitWidth(30);
+                        hintPatch.setX(60 + j * 30 + 890);
+                        hintPatch.setY(60 + i * 30);
+                        pane.getChildren().add(hintPatch);
+                    }
+                    else{
+                        hintPatch.setFitHeight(30);
+                        hintPatch.setFitWidth(30);
+                        hintPatch.setX(60 + j * 30);
+                        hintPatch.setY(60 + i * 30);
+                        pane.getChildren().add(hintPatch);
+                    }
+
+                }
+            }
+        }
+    }
 
 
     private class TimeToken extends ImageView {
@@ -846,6 +913,30 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
     public void onHintAction() {
         mainViewController.getMainController().getAIController().calculateHint();
 
+        /*boolean[][] test = {{true, true, false, false, false,false, false,false, false},
+                {true, true, true, false, false, false, false, false, false},
+                {false, false, false, false, false,false, false, false, false},
+                {false, false, false, false, false,false, false, false, false},
+                {false, false, false, false, false,false, false, false, false},
+                {false, false, false, false, false,false, false, false, false},
+                {false, false, false, false, false,false, false, false, false},
+                {false, false, false, false, false,false, false, false, false},
+                {false, false, false, false, false,false, false, false, false}};
+
+
+        boolean[][] SHAPE = new boolean[][]{  {true, true, false, false, false},
+                {true, true, true, false, false},
+                {false, false, false, false, false}};
+        int buttonCost = 4;
+        int time = 3;
+        Patch patch = new Patch(5, 5,buttonCost, new Matrix(SHAPE), time);
+        Matrix placing = new Matrix(9,9);
+        placing.set(0,0,1);
+        placing.set(0,1,1);
+        placing.set(1,0,1);
+        placing.set(1,1,1);
+
+        showHintTakePatch(patch,test);*/
     }
 
     @FXML
@@ -1157,4 +1248,5 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
             e.printStackTrace();
         }
     }
+
 }
