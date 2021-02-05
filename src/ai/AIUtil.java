@@ -91,7 +91,7 @@ public final class AIUtil {
         if(posOther != 54) offset = 1;
         BEHIND.setBoardPosition(posOther+offset);
         BEHIND.addMoney((posOther-posBehind)+offset);
-        edited.setLogEntry("Passed and got "+((posOther-posBehind)+offset)+" coins");
+        edited.setLogEntry(next.getName()+" passed and got "+((posOther-posBehind)+offset)+" coins");
         return new Tuple<>(edited, OTHER);
     }
 

@@ -21,8 +21,7 @@ public class HardAI extends AI {
         final long actualTime = System.currentTimeMillis();
         final double actualTurn = evaluateBoard(movingPlayer.getQuiltBoard());
         final Player otherPlayer = movingPlayer.lightEquals(actualState.getPlayer1()) ? actualState.getPlayer2() : actualState.getPlayer1();
-        final boolean modeEasy = movingPlayer.getQuiltBoard().getPatchBoard().count(0)>40;
-        final long START_TIME = System.currentTimeMillis(); // Time measurement// When enough spaces are empty, we care for placement later
+        final boolean modeEasy = movingPlayer.getQuiltBoard().getPatchBoard().count(0)>40; // Time measurement// When enough spaces are empty, we care for placement later
         final MinMaxTree<Tuple<GameState, Player>> tree = new MinMaxTree<>(new Tuple<>(actualState, movingPlayer), true); //Let us build a tree
 
         // The function to build layers into the tree
@@ -144,7 +143,7 @@ public class HardAI extends AI {
                 moving.setQuiltBoard(placePatch(moving.getQuiltBoard(), used).getFirst());
                 moving.addMoney(-used.getButtonsCost());
                 moving.setBoardPosition(Math.min(moving.getBoardPosition() + used.getTime(), 54));
-                copy.setLogEntry("Took patch " + used.getPatchID()+ " for "+used.getButtonsCost()+" coins.");
+                copy.setLogEntry(moving.getName()+" took patch " + used.getPatchID()+ " for "+used.getButtonsCost()+" coins.");
                 bestState = copy;
             }
         }
