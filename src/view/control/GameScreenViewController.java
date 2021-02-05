@@ -83,6 +83,15 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
     private Button confirmButton;
 
     @FXML
+    private Button hintButton;
+
+    @FXML
+    private Button undoButton;
+
+    @FXML
+    private Button redoButton;
+
+    @FXML
     Pane pane;
 
     @FXML
@@ -422,6 +431,9 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
     }
 
     public void showScene(){
+        hintButton.setVisible(!mainViewController.getMainController().getGame().isIronman());
+        undoButton.setVisible(!mainViewController.getMainController().getGame().isIronman());
+        redoButton.setVisible(!mainViewController.getMainController().getGame().isIronman());
         mainViewController.setCurrentScene(ownScene);
         mainViewController.showCurrentScene();
     }
