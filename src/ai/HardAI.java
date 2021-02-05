@@ -21,8 +21,7 @@ public class HardAI extends AI {
         final long actualTime = System.currentTimeMillis();
         final double actualTurn = evaluateBoard(movingPlayer.getQuiltBoard());
         final Player otherPlayer = movingPlayer.lightEquals(actualState.getPlayer1()) ? actualState.getPlayer2() : actualState.getPlayer1();
-
-        final long START_TIME = System.currentTimeMillis(); // Time measurement// When enough spaces are empty, we care for placement later
+        final boolean modeEasy = movingPlayer.getQuiltBoard().getPatchBoard().count(0)>40; // Time measurement// When enough spaces are empty, we care for placement later
         final MinMaxTree<Tuple<GameState, Player>> tree = new MinMaxTree<>(new Tuple<>(actualState, movingPlayer), true); //Let us build a tree
 
         // The function to build layers into the tree
@@ -45,7 +44,7 @@ public class HardAI extends AI {
                             moving = copy.getPlayer2();
                             other = copy.getPlayer1();
                         }
-                        if(movingPlayer.getQuiltBoard().getPatchBoard().count(0)>40) {
+                        if(modeEasy) {
                             moving.getQuiltBoard().getPatches().add(patch); //add patch to list, not to board
                             moving.setBoardPosition(Math.min(moving.getBoardPosition() + patch.getTime(), 54)); //change board position
                             moving.addMoney(-patch.getButtonsCost());
@@ -116,8 +115,13 @@ public class HardAI extends AI {
                 thisTurnPlayer = tuple.getFirst().getPlayer2();
                 otherTurnPlayer = tuple.getFirst().getPlayer1();
             }
-             return thisTurnPlayer.getScore().getValue() - otherTurnPlayer.getScore().getValue();}); //get max or base
+            if(modeEasy)
+                return (double) (thisTurnPlayer.getScore().getValue() - otherTurnPlayer.getScore().getValue());
+            else
+                return thisTurnPlayer.getScore().getValue()*sigmoid(evaluateBoard(thisTurnPlayer.getQuiltBoard())) - otherTurnPlayer.getScore().getValue()*sigmoid(evaluateBoard(thisTurnPlayer.getQuiltBoard()));
+        }); //get max or base
         System.out.println("Ended evaluating tree. Evaluating ended after "+(System.currentTimeMillis()-actualTime));
+        bestOption.getSecond().getQuiltBoard().getPatchBoard().print();
         GameState bestState;
         if (movingPlayer.getQuiltBoard().getPatchBoard().count(0) > 40) {
             if (bestOption.getFirst().equals(actualState)) return null;
@@ -139,7 +143,7 @@ public class HardAI extends AI {
                 moving.setQuiltBoard(placePatch(moving.getQuiltBoard(), used).getFirst());
                 moving.addMoney(-used.getButtonsCost());
                 moving.setBoardPosition(Math.min(moving.getBoardPosition() + used.getTime(), 54));
-                copy.setLogEntry("Took patch " + used.getPatchID()+ " for "+used.getButtonsCost()+" coins.");
+                copy.setLogEntry(moving.getName()+" took patch " + used.getPatchID()+ " for "+used.getButtonsCost()+" coins.");
                 bestState = copy;
             }
         }
@@ -234,6 +238,10 @@ public class HardAI extends AI {
 
     private double evaluateBoard(QuiltBoard quiltBoard) {
         return evaluateBoard(quiltBoard, 81-quiltBoard.getPatchBoard().count(0));
+    }
+
+    private double sigmoid(double number){
+        return 1/(1+Math.pow(Math.E, (-1*number)));
     }
 
 
