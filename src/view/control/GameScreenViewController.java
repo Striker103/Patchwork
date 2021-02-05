@@ -13,7 +13,9 @@ import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import model.*;
 import view.PatchMap;
@@ -51,6 +53,12 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
     private List<PatchView> listInOrder;
     private int index = 0;
     private boolean playerVsPlayer;
+
+    @FXML
+    private GridPane gridPane1;
+
+    @FXML
+    private GridPane gridPane2;
 
     @FXML
     private Button rightButton;
@@ -91,6 +99,11 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
     @FXML
     private ListView<String> logList;
 
+    @FXML
+    private ImageView player17x7;
+
+    @FXML
+    private ImageView player27x7;
 
     public GameScreenViewController(){
     }
@@ -228,6 +241,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
         loadTimeTokens();
         loadSpecialPatches();
         moveTimeTokens();
+        show7x7();
 
         //pane.getChildren().removeAll(listToClear);
         //pane.getChildren().removeAll(listToClearGUI);
@@ -387,8 +401,12 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
 
     public void loadTimeBoard(){
         ImageView timeBoard = new ImageView();
+        ImageView pinkBorder = new ImageView();
+        ImageView blueBorder = new ImageView();
         try {
             timeBoard.setImage(new Image(this.getClass().getResource("/view/images/TimeBoard/TimeBoard.png").toURI().toString()));
+            pinkBorder.setImage(new Image(this.getClass().getResource("/view/images/QuiltBoard/pinkBorder.png").toURI().toString()));
+            blueBorder.setImage(new Image(this.getClass().getResource("/view/images/QuiltBoard/blueBorder.png").toURI().toString()));
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -398,7 +416,21 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
         timeBoard.setY(40);
         this.pane.getChildren().add(timeBoard);
 
+
+        pinkBorder.setFitHeight(300);
+        pinkBorder.setFitWidth(300);
+        blueBorder.setFitHeight(300);
+        blueBorder.setFitWidth(300);
+
+        blueBorder.setX(gridPane1.getLayoutX() - 16);
+        blueBorder.setY(gridPane1.getLayoutY() - 15);
+        pinkBorder.setX(gridPane1.getLayoutX() + 875);
+        pinkBorder.setY(gridPane1.getLayoutY() - 15);
+
+        pane.getChildren().add(blueBorder);
+        pane.getChildren().add(pinkBorder);
     }
+
 
     public void loadTimeTokens(){
         timeToken1 = new TimeToken(1);
@@ -530,7 +562,30 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
         }
     }
 
+    private void show7x7(){
+        Player player1 = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1();
+        Player player2 = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2();
 
+        try {
+            player17x7 = new ImageView(new Image(this.getClass().getResource("/view/images/7x7/7x7.png").toURI().toString()));
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        player17x7.setFitWidth(75);
+        player17x7.setFitHeight(75);
+
+        if(player1.getQuiltBoard().check7x7() && !player2.getQuiltBoard().check7x7() ) {
+            player17x7.setX(180);
+            player17x7.setY(595);
+            pane.getChildren().add(player17x7);
+        }
+        else if(player2.getQuiltBoard().check7x7() && !player1.getQuiltBoard().check7x7()){
+            player17x7.setX(1020);
+            player17x7.setY(595);
+            pane.getChildren().add(player17x7);
+        }
+
+    }
 
     public void PaneDragged() {
     }
@@ -1017,9 +1072,9 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
         }else if(keyEvent.getCode() == KeyCode.K) {
             refreshTheBoard();
         }
-        else if(keyEvent.getCode() == KeyCode.O) {
+        /*else if(keyEvent.getCode() == KeyCode.O) {
             mainViewController.getGameSummaryViewController().showScene();
-        }
+        }*/
     }
 
     public void printBoard(int[][] arr){
