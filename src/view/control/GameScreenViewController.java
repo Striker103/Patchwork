@@ -26,7 +26,6 @@ import view.aui.TurnAUI;
 public class GameScreenViewController implements TurnAUI , LogAUI {
 
     private ErrorAUI errorAUI;
-
     public Label player1Name;
     public Label player2Name;
     public Label player1Buttons;
@@ -142,7 +141,9 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
         }
 
         loadTimeBoard();
-        if(timeToken1 == null && timeToken2 == null)
+        if(game.getCurrentGameState().getPlayer1().getBoardPosition()==0 &&
+                game.getCurrentGameState().getPlayer2().getBoardPosition()==0 &&
+                timeToken1 == null && timeToken2 == null)
             loadTimeTokens();
         else{
             pane.getChildren().add(timeToken1);
@@ -238,7 +239,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
 
         Player player1 = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1();
         Player player2 = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2();
-        if(player1.getBoardPosition() == 53 && player2.getBoardPosition() == 53) {
+        if(player1.getBoardPosition() >= 53 && player2.getBoardPosition() >= 53) {
             mainViewController.getGameSummaryViewController().showScene();
         }
     }
@@ -535,7 +536,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
 
     @Override
     public void triggerPlayerTurn() {
-        refreshList();
+       refreshList();
         updateMoneyAndScore();
         refreshTheBoard();
         boolean isPlayerTurn = true;
@@ -632,6 +633,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
     public void setErrorAUI(ErrorAUI errorAUI) {
         this.errorAUI = errorAUI;
     }
+
 
 
 
@@ -786,6 +788,8 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
 
     @FXML
     public void onHintAction() {
+        mainViewController.getMainController().getAIController().calculateHint();
+
     }
 
     @FXML
