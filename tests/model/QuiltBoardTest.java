@@ -47,6 +47,10 @@ public class QuiltBoardTest{
         placementMatrix=new Matrix(placement);
 
     }
+
+    /**
+     * Test when a 7x7 field is detected
+     */
     @Test
     public void testcheck7x7(){
         QuiltBoard quiltBoard = new QuiltBoard();
