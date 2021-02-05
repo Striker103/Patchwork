@@ -1,92 +1,118 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Spinner?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.control.NewGameViewController">
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.control.NewGameViewController">
    <children>
       <ImageView fx:id="newGameImage" fitHeight="129.0" fitWidth="1041.0" layoutX="182.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true" />
-      <VBox alignment="CENTER" layoutX="320.0" layoutY="210.0" prefHeight="396.0" prefWidth="125.0" spacing="28.0">
+      <VBox layoutX="7.0" layoutY="237.0" prefHeight="477.0" prefWidth="1243.0">
          <children>
-            <Label text="Player 1 Name">
-               <font>
-                  <Font size="16.0" />
-               </font></Label>
-            <Label text="Player 2 Name">
-               <font>
-                  <Font size="16.0" />
-               </font></Label>
-            <Label fx:id="startingPlayerLabel" text="starting player">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <Label fx:id="ironmanModeLabel" text="ironman mode">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <Label fx:id="gametypeLabel" text="gametype">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <Label fx:id="AIDifficultyLabel" text="Player2-difficulty">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <Label fx:id="AI2DifficultyLabel" text="Player1-difficulty">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <Label fx:id="simulationSpeedLabel" text="simulation speed">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
+            <HBox prefHeight="137.0" prefWidth="1243.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="126.0" prefWidth="600.0">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="168.0" prefWidth="150.0" spacing="30.0">
+                           <children>
+                              <Label text="Player 1 Name">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="AI2DifficultyLabel" text="Player1-difficulty">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="84.0" prefWidth="250.0" spacing="25.0">
+                           <children>
+                              <TextField fx:id="player1NameTextField" prefHeight="27.0" prefWidth="200.0" />
+                              <Spinner fx:id="player1DifficultySpinner" prefHeight="25.0" prefWidth="285.0" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="600.0">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" spacing="30.0">
+                           <children>
+                              <Label text="Player 2 Name">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="AIDifficultyLabel" text="Player2-difficulty">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="250.0" spacing="25.0">
+                           <children>
+                              <TextField fx:id="player2NameTextField" />
+                              <Spinner fx:id="player2DifficultySpinner" prefHeight="25.0" prefWidth="293.0" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="254.0" prefWidth="1243.0">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="396.0" prefWidth="125.0" spacing="30.0">
+                     <children>
+                        <Label fx:id="startingPlayerLabel" text="starting player">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="ironmanModeLabel" text="ironman mode">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="simulationSpeedLabel" text="simulation speed">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="350.0" prefWidth="275.0" spacing="25.0">
+                     <children>
+                        <Spinner fx:id="startPlayerSpinner" prefHeight="25.0" prefWidth="303.0" />
+                        <Spinner fx:id="ironmanModeSpinner" prefHeight="25.0" prefWidth="312.0" />
+                        <Spinner fx:id="simulationSpeedSpinner" prefHeight="25.0" prefWidth="320.0" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="54.0" prefWidth="1200.0" spacing="60.0">
+               <children>
+                  <Text fx:id="fileIndicator" strokeType="OUTSIDE" strokeWidth="0.0" text="File: " wrappingWidth="150.0" />
+                  <Button fx:id="loadCSVFileButton" mnemonicParsing="false" onAction="#onLoadCSVFileAction" prefHeight="50.0" prefWidth="150.0" text="Load CSV file">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="startGameButton" mnemonicParsing="false" onAction="#onStartGameAction" prefHeight="50.0" prefWidth="150.0" text="Start game">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#onBackAction" prefHeight="50.0" prefWidth="150.0" text="Back">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
          </children>
       </VBox>
-      <VBox alignment="CENTER" layoutX="503.0" layoutY="210.0" prefHeight="350.0" prefWidth="275.0" spacing="28.0">
-         <children>
-            <TextField fx:id="player1NameTextField" prefHeight="27.0" prefWidth="249.0" />
-            <TextField fx:id="player2NameTextField" />
-            <Spinner fx:id="startPlayerSpinner" prefHeight="25.0" prefWidth="303.0" />
-            <Spinner fx:id="ironmanModeSpinner" prefHeight="25.0" prefWidth="312.0" />
-            <Spinner fx:id="gameTypeSpinner" prefHeight="25.0" prefWidth="284.0" />
-            <Spinner fx:id="aI2DifficultySpinner" disable="true" prefHeight="25.0" prefWidth="293.0" />
-            <Spinner fx:id="aIDifficultySpinner" disable="true" prefHeight="25.0" prefWidth="285.0" />
-            <Spinner fx:id="simulationSpeedSpinner" prefHeight="25.0" prefWidth="320.0" />
-         </children>
-      </VBox>
-      <HBox alignment="CENTER" layoutY="633.0" prefHeight="54.0" prefWidth="1200.0" spacing="60.0">
-         <children>
-            <Button fx:id="loadCSVFileButton" mnemonicParsing="false" onAction="#onLoadCSVFileAction" prefHeight="50.0" prefWidth="150.0" text="Load CSV file">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Button>
-            <Button fx:id="startGameButton" mnemonicParsing="false" onAction="#onStartGameAction" prefHeight="50.0" prefWidth="150.0" text="Start game">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Button>
-            <Button fx:id="backButton" mnemonicParsing="false" onAction="#onBackAction" prefHeight="50.0" prefWidth="150.0" text="Back">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Button>
-         </children>
-      </HBox>
-      <Text fx:id="fileIndicator" layoutX="320.0" layoutY="629.0" strokeType="OUTSIDE" strokeWidth="0.0" text="File: " wrappingWidth="150.0" />
    </children>
 </Pane>

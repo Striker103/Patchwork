@@ -17,7 +17,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import model.Player;
 import model.PlayerType;
 import model.Tuple;
 
@@ -38,13 +37,10 @@ public class NewGameViewController {
     private Spinner<Boolean> ironmanModeSpinner;
 
     @FXML
-    private Spinner<String> gameTypeSpinner;
+    private Spinner<PlayerType> player1DifficultySpinner;
 
     @FXML
-    private Spinner<PlayerType> aIDifficultySpinner;
-
-    @FXML
-    private Spinner<PlayerType> aI2DifficultySpinner;
+    private Spinner<PlayerType> player2DifficultySpinner;
 
     @FXML
     private Spinner<Integer> simulationSpeedSpinner;
@@ -72,10 +68,9 @@ public class NewGameViewController {
     public NewGameViewController(){
         startPlayerSpinner = new Spinner<>();
         ironmanModeSpinner = new Spinner<>();
-        gameTypeSpinner = new Spinner<>();
-        aIDifficultySpinner = new Spinner<>();
+        player1DifficultySpinner = new Spinner<>();
 
-        aI2DifficultySpinner = new Spinner<>();
+        player2DifficultySpinner = new Spinner<>();
         simulationSpeedSpinner = new Spinner<>();
     }
 
@@ -87,42 +82,15 @@ public class NewGameViewController {
         if (player1Name.isBlank() || player2Name.isBlank() || player1Name.equals(player2Name))
             return;
 
+        PlayerType player1Type = player1DifficultySpinner.getValue();
+        PlayerType player2Type = player2DifficultySpinner.getValue();
 
-        Tuple<String, PlayerType> player1Tuple;
-        Tuple<String, PlayerType> player2Tuple;
+        Tuple<String, PlayerType> player1Tuple = new Tuple<>(player1Name, player1Type);
+        Tuple<String, PlayerType> player2Tuple = new Tuple<>(player2Name, player2Type);
 
         boolean ironman = ironmanModeSpinner.getValue();
 
-        PlayerType ai1 = aIDifficultySpinner.getValue();
-        PlayerType ai2 = aI2DifficultySpinner.getValue();
-       switch (gameTypeSpinner.getValue()){
-
-           case "Player vs AI":
-
-               player1Tuple = new Tuple<>(player1Name, PlayerType.HUMAN);
-               player2Tuple = new Tuple<>(player2Name, ai2);
-
-               break;
-
-           case "Player vs Player":
-
-               player1Tuple = new Tuple<>(player1Name, PlayerType.HUMAN);
-               player2Tuple = new Tuple<>(player2Name, PlayerType.HUMAN);
-
-               break;
-
-           case "AI vs AI":
-
-               player1Tuple = new Tuple<>(player1Name, ai1);
-               player2Tuple = new Tuple<>(player2Name, ai2);
-
-               break;
-
-           default:
-               throw new IllegalStateException("This should not happen");
-       }
-
-       Tuple<Tuple<String, PlayerType>, Tuple<String, PlayerType>> gameTuple;
+        Tuple<Tuple<String, PlayerType>, Tuple<String, PlayerType>> gameTuple;
 
        switch (startPlayerSpinner.getValue()){
            case "Random":
@@ -150,12 +118,10 @@ public class NewGameViewController {
 
        mainViewController.getMainController().getGamePreparationController().startGame(gameTuple, csvFile, simulationSpeedSpinner.getValue(), ironman);
 
-        System.out.println(gameTuple.getSecond().getSecond());
-
        mainViewController.getPauseGameViewController().setGameSaveFile(new File(generateFilePath()));
        mainViewController.getGameScreenViewController().initGame();
        mainViewController.getGameScreenViewController().showScene();
-        mainViewController.getGameScreenViewController().refreshTheBoard();
+       mainViewController.getGameScreenViewController().refreshTheBoard();
 
     }
 
@@ -193,6 +159,9 @@ public class NewGameViewController {
 
     public void showScene() {
         csvFile = null;
+        player1NameTextField.setText(null);
+        player2NameTextField.setText(null);
+        simulationSpeedSpinner.setDisable(player1DifficultySpinner.getValue() == PlayerType.HUMAN && player2DifficultySpinner.getValue() == PlayerType.HUMAN);
         fileIndicator.setText("No File selected");
         mainViewController.setCurrentScene(ownScene);
         mainViewController.showCurrentScene();
@@ -214,48 +183,24 @@ public class NewGameViewController {
         svfStartPlayer.setWrapAround(true);
         startPlayerSpinner.setValueFactory(svfStartPlayer);
 
-
         ObservableList<Boolean> ironmanModeList = FXCollections.observableArrayList(true, false);
         SpinnerValueFactory<Boolean> svfIronmanMode = new SpinnerValueFactory.ListSpinnerValueFactory<>(ironmanModeList);
         svfIronmanMode.setWrapAround(true);
         ironmanModeSpinner.setValueFactory(svfIronmanMode);
 
-
-        ObservableList<String> gameTypeList = FXCollections.observableArrayList("Player vs Player", "Player vs AI", "AI vs AI");
-        SpinnerValueFactory<String> svfGameType = new SpinnerValueFactory.ListSpinnerValueFactory<>(gameTypeList);
-        svfGameType.setWrapAround(true);
-        gameTypeSpinner.setValueFactory(svfGameType);
-        gameTypeSpinner.getEditor().textProperty().addListener((obs, oldValue, newValue) -> {
-
-
-            switch (newValue){
-                case "Player vs Player":
-                    aIDifficultySpinner.setDisable(true);
-                    aI2DifficultySpinner.setDisable(true);
-                    break;
-
-                case "Player vs AI":
-                    aIDifficultySpinner.setDisable(true);
-                    aI2DifficultySpinner.setDisable(false);
-                    break;
-
-                case "AI vs AI":
-                    aIDifficultySpinner.setDisable(false);
-                    aI2DifficultySpinner.setDisable(false);
-                    break;
-            }
-        });
-
-        ObservableList<PlayerType> aIList = FXCollections.observableArrayList(PlayerType.AI_EASY, PlayerType.AI_MEDIUM, PlayerType.AI_HARD);
-        ObservableList<PlayerType> aIList2 = FXCollections.observableArrayList(PlayerType.AI_EASY, PlayerType.AI_MEDIUM, PlayerType.AI_HARD);
+        ObservableList<PlayerType> aIList = FXCollections.observableArrayList(PlayerType.HUMAN, PlayerType.AI_EASY, PlayerType.AI_MEDIUM, PlayerType.AI_HARD);
+        ObservableList<PlayerType> aIList2 = FXCollections.observableArrayList(PlayerType.HUMAN, PlayerType.AI_EASY, PlayerType.AI_MEDIUM, PlayerType.AI_HARD);
         SpinnerValueFactory<PlayerType> svfAI = new SpinnerValueFactory.ListSpinnerValueFactory<>(aIList);
         svfAI.setWrapAround(true);
-        aIDifficultySpinner.setValueFactory(svfAI);
+        player1DifficultySpinner.setValueFactory(svfAI);
+
+        player1DifficultySpinner.getEditor().textProperty().addListener((observable, oldValue, newValue) -> simulationSpeedSpinner.setDisable(player1DifficultySpinner.getValue() == PlayerType.HUMAN && player2DifficultySpinner.getValue() == PlayerType.HUMAN));
+        player2DifficultySpinner.getEditor().textProperty().addListener((observable, oldValue, newValue) -> simulationSpeedSpinner.setDisable(player1DifficultySpinner.getValue() == PlayerType.HUMAN && player2DifficultySpinner.getValue() == PlayerType.HUMAN));
 
 
         SpinnerValueFactory<PlayerType> svfAI2 = new SpinnerValueFactory.ListSpinnerValueFactory<>(aIList2);
         svfAI2.setWrapAround(true);
-        aI2DifficultySpinner.setValueFactory(svfAI2);
+        player2DifficultySpinner.setValueFactory(svfAI2);
 
         SpinnerValueFactory<Integer> svfSimulationSpeed = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 3, 0);
         svfSimulationSpeed.setWrapAround(false);

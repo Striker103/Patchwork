@@ -282,5 +282,5 @@ public class GameSummaryViewController implements HighScoreReturn {
         scoresSaved = false;
         mainViewController.showScene();
     }
-    
+
 }
