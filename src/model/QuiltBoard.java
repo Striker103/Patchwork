@@ -160,7 +160,7 @@ public class QuiltBoard {
 	 * @param matrix the boolean matrix
 	 * @return the size of the largest square of true
 	 */
-	public int maximalSquare(boolean[][] matrix) {
+	private int maximalSquare(boolean[][] matrix) {
 		int rows = matrix.length, cols = rows > 0 ? matrix[0].length : 0;
 		int[][] dynamic = new int[rows + 1][cols + 1];
 		int maxsqlen = 0;

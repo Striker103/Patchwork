@@ -47,6 +47,26 @@ public class QuiltBoardTest{
         placementMatrix=new Matrix(placement);
 
     }
+    @Test
+    public void testcheck7x7(){
+        QuiltBoard quiltBoard = new QuiltBoard();
+        //Leeres Board
+        assertFalse(quiltBoard.check7x7());
+
+        for(int i = 0; i<7;i++){
+            for(int j = 0; j<6;j++){
+                quiltBoard.add1x1Patch(i,j);
+            }
+        }
+        //Die untere Ecke fehlt
+        assertFalse(quiltBoard.check7x7());
+
+        //Hier wird das 7x7 Feld voll gemacht
+        for(int i = 0; i<7;i++){
+            quiltBoard.add1x1Patch(i,6);
+        }
+        assertTrue(quiltBoard.check7x7());
+    }
 
     /**
      * Tests copy

@@ -120,7 +120,7 @@ public class GameController {
 		playerBoard.addPatch(patch,placing,rotation,flipped);
 
 		//Distribution of the special tile
-		if(mainController.getGame().getCurrentGameState().specialTileAvailable()&&playerBoard.check7x7()){//TODO check7x7 implementieren
+		if(mainController.getGame().getCurrentGameState().specialTileAvailable()&&playerBoard.check7x7()){
 			executingPlayer.setHasSpecialTile(true);
 		}
 		//Moving on timeboard
