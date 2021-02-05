@@ -22,7 +22,7 @@ public class EasyAI extends AI {
             boardIncome += patch.getButtonIncome();
         }
 
-        for(int spot = movingPlayer.getBoardPosition()+1; spot<= thisTurnPlayer.getBoardPosition(); spot++){
+        for(int spot = movingPlayer.getBoardPosition()+1; spot<= Math.min(thisTurnPlayer.getBoardPosition(), 53); spot++){
             if(result.getTimeBoard()[spot].hasButton()){
                 thisTurnPlayer.addMoney(boardIncome);
                 result.setLogEntry(result.getLogEntry()+"\nGot "+boardIncome+" coins to spend later.");

@@ -155,7 +155,7 @@ public class HardAI extends AI {
         for (Patch patch:movedPlayer.getQuiltBoard().getPatches()) {
             boardIncome += patch.getButtonIncome();
         }
-        for (int i = movingPlayer.getBoardPosition()+1; i <= movedPlayer.getBoardPosition(); i++) {
+        for (int i = movingPlayer.getBoardPosition()+1; i <= Math.min(movedPlayer.getBoardPosition(), 53); i++) {
             if(bestState.getTimeBoard()[i].hasButton()){
                 movedPlayer.addMoney(boardIncome);
                 bestState.setLogEntry(bestState.getLogEntry()+"\nGot "+boardIncome+" coins to spend later.");
