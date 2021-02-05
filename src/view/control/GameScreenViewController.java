@@ -113,7 +113,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
                     setGraphic(item.getFirst());
                     setText(information);
                     setTooltip(tooltip);
-                    loadButtons();
+
 
                 }
             }
@@ -174,6 +174,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI {
             listInOrder.add(new PatchView(patch, playerVsPlayer));
         }
         triggerInitialMove(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1());
+        loadButtons();
 
     }
 
