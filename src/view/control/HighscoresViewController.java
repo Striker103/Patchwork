@@ -126,4 +126,8 @@ public class HighscoresViewController implements HighScoreAUI {
         tableView.getItems().addAll(highscores);
 
     }
+
+    public String getHighScorePath() {
+        return highScorePath;
+    }
 }

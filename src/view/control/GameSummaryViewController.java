@@ -65,6 +65,7 @@ public class GameSummaryViewController implements HighScoreReturn {
         mainViewController.showCurrentScene();
         player1 = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1();
         player2 = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2();
+        mainViewController.getMainController().getHighScoreController().saveScores(new File(mainViewController.getHighscoresViewController().getHighScorePath()));
         setLabels();
         refreshTheBoard();
     }
