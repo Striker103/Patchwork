@@ -87,7 +87,7 @@ public class GameSummaryViewController implements HighScoreReturn {
     }
 
     private void initResults() {
-        //pane.getChildren().clear();
+        pane.getChildren().clear();
 
         player1 = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1();
         player2 = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2();
