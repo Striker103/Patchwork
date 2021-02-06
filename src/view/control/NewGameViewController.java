@@ -183,7 +183,7 @@ public class NewGameViewController {
         svfStartPlayer.setWrapAround(true);
         startPlayerSpinner.setValueFactory(svfStartPlayer);
 
-        ObservableList<Boolean> ironmanModeList = FXCollections.observableArrayList(true, false);
+        ObservableList<Boolean> ironmanModeList = FXCollections.observableArrayList(false, true);
         SpinnerValueFactory<Boolean> svfIronmanMode = new SpinnerValueFactory.ListSpinnerValueFactory<>(ironmanModeList);
         svfIronmanMode.setWrapAround(true);
         ironmanModeSpinner.setValueFactory(svfIronmanMode);
