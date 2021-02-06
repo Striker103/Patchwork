@@ -265,12 +265,14 @@ public class PatchView extends ImageView {
         Matrix trim = placing.trim();
 
 
-        if(noNicePatch && (rotation == 90 || rotation == 270)){
+        if(noNicePatch && (rotation == 90 || rotation == 270) && !(width == 4 && height == 1)){
             matrix.insert(trim, posY -2, (posX - 1));
         }else if((width-height) == 4 && (rotation == 90 || rotation == 270)){
             matrix.insert(trim, posY - 4, posX);
         }else if((width-height) == 2 && (rotation == 90 || rotation == 270)){
             matrix.insert(trim, posY - 3, posX - 1);
+        }else if((width == 4 && height == 1) && (rotation == 90 || rotation == 270)){
+            matrix.insert(trim, posY - 3, posX);
         }else{
             matrix.insert(trim, posY -2, posX -2);
         }

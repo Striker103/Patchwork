@@ -367,13 +367,18 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
             patchImage.setY(60 + (pos[0]) * 30);
 
 
-            if(patchImage.isNoNicePatch() && (patchImage.getRotation() == 90 || patchImage.getRotation() == 270)){
+            if(patchImage.isNoNicePatch() && (patchImage.getRotation() == 90 || patchImage.getRotation() == 270) && !(patchImage.getWidth() == 4 && patchImage.getHeight() == 1)){
                 patchImage.setX(patchImage.getX() - 15);
                 patchImage.setY(patchImage.getY() + 15);
             } else if((patchImage.getWidth()-patchImage.getHeight()) == 4 && (patchImage.getRotation() == 90 || patchImage.getRotation() == 270)){
                 patchImage.setX(patchImage.getX() - 60);
                 patchImage.setY(patchImage.getY() + 60);
             }else if((patchImage.getWidth()-patchImage.getHeight()) == 2 && (patchImage.getRotation() == 90 || patchImage.getRotation() == 270)){
+                patchImage.setX(patchImage.getX() - 30);
+                patchImage.setY(patchImage.getY() + 30);
+            }else if((patchImage.getWidth() == 4 && patchImage.getHeight() == 1 &&(patchImage.getRotation() == 90 || patchImage.getRotation() == 270))){
+                patchImage.setX(patchImage.getX() - 15);
+                patchImage.setY(patchImage.getY() + 15);
                 patchImage.setX(patchImage.getX() - 30);
                 patchImage.setY(patchImage.getY() + 30);
             }
@@ -655,16 +660,16 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
         player17x7.setFitWidth(75);
         player17x7.setFitHeight(75);
 
-        System.out.println("we are in show7x7");
+        //System.out.println("we are in show7x7");
 
         if(player1.getHasSpecialTile()) {
-            System.out.println("player1 has 7x7");
+            //System.out.println("player1 has 7x7");
             player17x7.setX(180);
             player17x7.setY(595);
             pane.getChildren().add(player17x7);
         }
         else if(player2.getHasSpecialTile()){
-            System.out.println("player2 has 7x7");
+            //System.out.println("player2 has 7x7");
             player17x7.setX(1020);
             player17x7.setY(595);
             pane.getChildren().add(player17x7);
@@ -1244,6 +1249,11 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
         }
         else if(keyEvent.getCode() == KeyCode.O) {
             mainViewController.getGameSummaryViewController().showScene();
+        }
+        else if(keyEvent.getCode() == KeyCode.V) {
+            Matrix m = activePatchView.readyToGo();
+            m.print();
+            System.out.println();
         }
     }
 
