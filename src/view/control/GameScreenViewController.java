@@ -467,7 +467,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
             e.printStackTrace();
         }
         showSelectablePatches();
-        activePatchView = patchViews.get(0);
+        //activePatchView = patchViews.get(0);
         if(!isPlaced)
             placeSpecialTile();
     }
@@ -1013,29 +1013,31 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
     }
 
     private void placeSpecialPatch (){
-        if(!(activePatchView.getHeight() == 1 && activePatchView.getWidth() == 1))
-            return;
-        activePatchView.setFirstPlayer(isFirstPlayer());
-        boolean placed;
-        if(game.getCurrentGameState().getPlayer1().getPlayerType() == PlayerType.HUMAN && game.getCurrentGameState().getPlayer2().getPlayerType() == PlayerType.HUMAN){
-            Player currentPlayer = mainViewController.getMainController().getGameController().getNotMovingPlayer();
-            GameController gameController = mainViewController.getMainController().getGameController();
-            placed = gameController.place1x1Patch(activePatchView.getPosX() -2, activePatchView.getPosY()-2, currentPlayer);
-        }else{
-            Player currentPlayer;
-            if(game.getCurrentGameState().getPlayer1().getPlayerType() == PlayerType.HUMAN){
-                currentPlayer = game.getCurrentGameState().getPlayer1();
-            }else{
-                currentPlayer = game.getCurrentGameState().getPlayer2();
+        if(activePatchView != null) {
+            if (!(activePatchView.getHeight() == 1 && activePatchView.getWidth() == 1))
+                return;
+            activePatchView.setFirstPlayer(isFirstPlayer());
+            boolean placed;
+            if (game.getCurrentGameState().getPlayer1().getPlayerType() == PlayerType.HUMAN && game.getCurrentGameState().getPlayer2().getPlayerType() == PlayerType.HUMAN) {
+                Player currentPlayer = mainViewController.getMainController().getGameController().getNotMovingPlayer();
+                GameController gameController = mainViewController.getMainController().getGameController();
+                placed = gameController.place1x1Patch(activePatchView.getPosX() - 2, activePatchView.getPosY() - 2, currentPlayer);
+            } else {
+                Player currentPlayer;
+                if (game.getCurrentGameState().getPlayer1().getPlayerType() == PlayerType.HUMAN) {
+                    currentPlayer = game.getCurrentGameState().getPlayer1();
+                } else {
+                    currentPlayer = game.getCurrentGameState().getPlayer2();
+                }
+                GameController gameController = mainViewController.getMainController().getGameController();
+                placed = gameController.place1x1Patch(activePatchView.getPosX() - 2, activePatchView.getPosY() - 2, currentPlayer);
             }
-            GameController gameController = mainViewController.getMainController().getGameController();
-            placed = gameController.place1x1Patch(activePatchView.getPosX() -2, activePatchView.getPosY()-2, currentPlayer);
-        }
-        if(placed){
-            isPlaced = true;
-            refreshList();
-            refreshTheBoard();
-            updateLog("1x1 Patch placed");
+            if (placed) {
+                isPlaced = true;
+                refreshList();
+                refreshTheBoard();
+                updateLog("1x1 Patch placed");
+            }
         }
     }
 
@@ -1049,6 +1051,8 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
         choosePatch(2);
     }
 
+
+
     @FXML
     public void onFlipAction() {
         flipPatch();
@@ -1056,6 +1060,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
     @FXML
     public void onUpAction() {
         movePatchUp();
+
     }
     @FXML
     public void onRotateAction() {
@@ -1081,53 +1086,67 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
         movePatchDown();
     }
     private void movePatchUp(){
-        if(activePatchView.moveIsLegit('w')){
-            activePatchView.setFirstPlayer(isFirstPlayer());
-            activePatchView.moveUp();
+        if(activePatchView != null){
+            if(activePatchView.moveIsLegit('w')){
+                activePatchView.setFirstPlayer(isFirstPlayer());
+                activePatchView.moveUp();
+            }
         }
+
     }
 
     private void movePatchRight(){
-        if(activePatchView.moveIsLegit('d')){
-            activePatchView.setFirstPlayer(isFirstPlayer());
-            activePatchView.moveRight();
+        if(activePatchView != null) {
+            if (activePatchView.moveIsLegit('d')) {
+                activePatchView.setFirstPlayer(isFirstPlayer());
+                activePatchView.moveRight();
+            }
         }
     }
     private void movePatchLeft(){
-        if(activePatchView.moveIsLegit('a')){
-            activePatchView.setFirstPlayer(isFirstPlayer());
-            activePatchView.moveLeft();
+        if(activePatchView != null) {
+            if (activePatchView.moveIsLegit('a')) {
+                activePatchView.setFirstPlayer(isFirstPlayer());
+                activePatchView.moveLeft();
+            }
         }
 
     }
     private void movePatchDown(){
-        if(activePatchView.moveIsLegit('s')){
-            activePatchView.setFirstPlayer(isFirstPlayer());
-            activePatchView.moveDown();
+        if(activePatchView != null) {
+            if (activePatchView.moveIsLegit('s')) {
+                activePatchView.setFirstPlayer(isFirstPlayer());
+                activePatchView.moveDown();
+            }
         }
     }
     private void rotatePatch(){
-        if(activePatchView.rotationIsLegit()){
-            activePatchView.setFirstPlayer(isFirstPlayer());
-            activePatchView.rotate();
+        if(activePatchView != null) {
+            if (activePatchView.rotationIsLegit()) {
+                activePatchView.setFirstPlayer(isFirstPlayer());
+                activePatchView.rotate();
+            }else{
+                errorAUI.showError("please move away from the corner a little bit");
+            }
+        }
 
-        }
-        else{
-            errorAUI.showError("please move away from the corner a little bit");
-        }
     }
     private void flipPatch(){
-        activePatchView.setFirstPlayer(isFirstPlayer());
-        activePatchView.flip();
+        if(activePatchView != null) {
+            activePatchView.setFirstPlayer(isFirstPlayer());
+            activePatchView.flip();
+        }
     }
     private void confirmPatch(){
-        if(!isPlaced){
-            errorAUI.showError("please place the 1x1 patch first (Confirm with 'Place Special Patch'-Button)");
-            return;
+        if(activePatchView != null) {
+            if (!isPlaced) {
+                errorAUI.showError("please place the 1x1 patch first (Confirm with 'Place Special Patch'-Button)");
+                return;
+            }
+            GameController gameController = mainViewController.getMainController().getGameController();
+            gameController.takePatch(activePatchView.getPatch(), activePatchView.readyToGo(), activePatchView.getRotation(), activePatchView.getFlipped());
         }
-        GameController gameController = mainViewController.getMainController().getGameController();
-        gameController.takePatch(activePatchView.getPatch(), activePatchView.readyToGo(), activePatchView.getRotation(), activePatchView.getFlipped());
-
+        activePatchView = null;
     }
 
     private void passTurn(){
