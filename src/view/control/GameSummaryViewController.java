@@ -80,9 +80,10 @@ public class GameSummaryViewController implements HighScoreReturn {
     }
 
     public void showScene(){
+        initResults();
         mainViewController.setCurrentScene(ownScene);
         mainViewController.showCurrentScene();
-        initResults();
+
     }
 
     private void initResults() {
