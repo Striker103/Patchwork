@@ -7,7 +7,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javafx.scene.control.*;
 import javafx.scene.image.*;
@@ -150,6 +153,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
     }
 
     public void initGame() {
+        pane.getChildren().clear();
         game = mainViewController.getMainController().getGame();
         int[][] arr = new int[3][5];
         arr[0][0] = 1;
@@ -284,9 +288,6 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
         moveTimeTokens();
         show7x7();
         currentlyPlaying();
-        //pane.getChildren().removeAll(listToClear);
-        //pane.getChildren().removeAll(listToClearGUI);
-        listToClear = new ArrayList<>();
         refreshPlayer(1);
         refreshPlayer(2);
         refreshBoardPatches();
@@ -301,61 +302,80 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
     }
 
     public void refreshPlayer(int player){
-        int counter = 0;
-        int currentGameStateIndex = game.getCurrentGameStateIndex();
-        //System.out.println("currentGameStateIndex: " + currentGameStateIndex);
 
-        for(GameState gameState : game.getGameStatesList()){
-            if(counter > currentGameStateIndex)
-                break;
-            counter++;
-            Tuple<Integer, Matrix> t1 = gameState.getPlayer1().getQuiltBoard().getPlacedPatch();
-            Tuple<Boolean, Integer> t2 = gameState.getPlayer1().getQuiltBoard().getPlacedPatchOrientation();
+        Matrix board = game.getCurrentGameState().getPlayer1().getQuiltBoard().getPatchBoard();
 
-            if(player ==2){
-                t1 = gameState.getPlayer2().getQuiltBoard().getPlacedPatch();
-                t2 = gameState.getPlayer2().getQuiltBoard().getPlacedPatchOrientation();
-            }
-            try{
-                int id = t1.getFirst();
-                Matrix placement = t1.getSecond();
-                int[][] m = placement.getIntMatrix();
-                int[] arr = getStartPos(m);
-                boolean flipped = t2.getFirst();
-                int rotation = t2.getSecond();
-
-                PatchView patch = listInOrder.get(id-1);
-                patch.setFlipped(false);
-                patch.setRotation(0);
-                pane.getChildren().add(patch);
-                listToClear.add(patch);
-                for(int i = 0 ; i < rotation/90; i++){
-                    patch.rotate();
-                }
-                if(flipped)
-                    patch.flip();
-                if(player == 1){
-                    patch.setX(60 + (arr[1]) * 30);
-                }else{
-                    patch.setX(60+ (arr[1]) * 30 + 890);
-                }
-                patch.setY(60 + (arr[0]) * 30);
-
-
-                if(patch.isNoNicePatch() && (patch.getRotation() == 90 || patch.getRotation() == 270)){
-                    patch.setX(patch.getX() - 15);
-                    patch.setY(patch.getY() + 15);
-                } else if((patch.getWidth()-patch.getHeight()) == 4 && (patch.getRotation() == 90 || patch.getRotation() == 270)){
-                    patch.setX(patch.getX() - 60);
-                    patch.setY(patch.getY() + 60);
-                }else if((patch.getWidth()-patch.getHeight()) == 2 && (patch.getRotation() == 90 || patch.getRotation() == 270)){
-                    patch.setX(patch.getX() - 30);
-                    patch.setY(patch.getY() + 30);
-                }
-            }catch(Exception e){
-                System.out.print("");
+        if(player ==2){
+            board = game.getCurrentGameState().getPlayer2().getQuiltBoard().getPatchBoard();
+        }
+        List<Integer> patches = new ArrayList<>();
+        int[][] arrBoard = board.getIntMatrix();
+        for(int i = 0; i < arrBoard.length; i++){
+            for(int j = 0; j < arrBoard[i].length; j++){
+                patches.add(arrBoard[i][j]);
             }
         }
+        Set<Integer> set = new HashSet<>(patches);
+        patches.clear();
+        patches.addAll(set);
+        patches.remove(Integer.valueOf(0));
+        
+        patches = patches.stream().filter( x -> (x > -1000 && x < 1000)).collect(Collectors.toList());
+
+        for(Integer patch : patches){
+            int[] pos = getStartPos1(arrBoard, patch);
+            boolean flipped = patch < 0;
+            int rotation = Math.abs(patch) / 90;
+            int id = Math.abs(patch)  %  90;
+            PatchView patchImage = listInOrder.get(id-1);
+            patchImage.setFlipped(false);
+            patchImage.setRotation(0);
+            pane.getChildren().add(patchImage);
+
+            for(int i = 0 ; i < rotation; i++){
+                patchImage.rotate();
+            }
+            if(flipped)
+                patchImage.flip();
+
+            if(player == 1){
+                patchImage.setX(60 + (pos[1]) * 30);
+            }else{
+                patchImage.setX(60+ (pos[1]) * 30 + 890);
+            }
+            patchImage.setY(60 + (pos[0]) * 30);
+
+
+            if(patchImage.isNoNicePatch() && (patchImage.getRotation() == 90 || patchImage.getRotation() == 270)){
+                patchImage.setX(patchImage.getX() - 15);
+                patchImage.setY(patchImage.getY() + 15);
+            } else if((patchImage.getWidth()-patchImage.getHeight()) == 4 && (patchImage.getRotation() == 90 || patchImage.getRotation() == 270)){
+                patchImage.setX(patchImage.getX() - 60);
+                patchImage.setY(patchImage.getY() + 60);
+            }else if((patchImage.getWidth()-patchImage.getHeight()) == 2 && (patchImage.getRotation() == 90 || patchImage.getRotation() == 270)){
+                patchImage.setX(patchImage.getX() - 30);
+                patchImage.setY(patchImage.getY() + 30);
+            }
+        }
+
+    }
+
+    public int[] getStartPos1(int[][] matrix, int patch){
+        int[] arr = new int[2];
+        arr[1] = 9;
+        boolean heightSet = false;
+        for(int i = 0; i < matrix.length; i++){
+            for(int j = 0; j < matrix[i].length; j++){
+                if(matrix[i][j] == patch && !heightSet){
+                    arr[0] = i;
+                    heightSet = true;
+                }
+                if(matrix[i][j] == patch && arr[1] > j){
+                    arr[1] = j;
+                }
+            }
+        }
+        return arr;
     }
 
     public int[] getStartPos(int[][] matrix){
@@ -385,7 +405,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
 
         for(int i = 0; i < p1IntBoard.length; i++){
             for(int j = 0; j < p1IntBoard[i].length; j++){
-                if(Math.abs(p1IntBoard[i][j]) == Integer.MAX_VALUE ){
+                if(p1IntBoard[i][j] < -1000 || p1IntBoard[i][j] > 1000 ){
                     PatchView patch = specialPatches.get(index);
                     pane.getChildren().add(patch);
                     patch.setX(60 + j * 30);
@@ -396,7 +416,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
         }
         for(int i = 0; i < p2IntBoard.length; i++){
             for(int j = 0; j < p2IntBoard[i].length; j++){
-                if(Math.abs(p2IntBoard[i][j]) == Integer.MAX_VALUE ){
+                if(p2IntBoard[i][j] < -1000 || p2IntBoard[i][j] > 1000 ){
                     PatchView patch = specialPatches.get(index);
                     pane.getChildren().add(patch);
                     patch.setX(60 + j * 30 + 890);
