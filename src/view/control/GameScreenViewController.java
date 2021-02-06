@@ -1102,7 +1102,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
     private void movePatchUp(){
 
             if(activePatchView.moveIsLegit('w')){
-                activePatchView.setFirstPlayer(isFirstPlayer());
+                activePatchView.setFirstPlayer(mainViewController.getMainController().getGameController().getNextPlayer().getName().equals(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1().getName()));
                 activePatchView.moveUp();
             }
     }
@@ -1110,14 +1110,14 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
     private void movePatchRight(){
 
             if (activePatchView.moveIsLegit('d')) {
-                activePatchView.setFirstPlayer(isFirstPlayer());
+                activePatchView.setFirstPlayer(mainViewController.getMainController().getGameController().getNextPlayer().getName().equals(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1().getName()));
                 activePatchView.moveRight();
             }
     }
     private void movePatchLeft(){
 
             if (activePatchView.moveIsLegit('a')) {
-                activePatchView.setFirstPlayer(isFirstPlayer());
+                activePatchView.setFirstPlayer(mainViewController.getMainController().getGameController().getNextPlayer().getName().equals(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1().getName()));
                 activePatchView.moveLeft();
             }
 
@@ -1126,7 +1126,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
     private void movePatchDown(){
 
             if (activePatchView.moveIsLegit('s')) {
-                activePatchView.setFirstPlayer(isFirstPlayer());
+                activePatchView.setFirstPlayer(mainViewController.getMainController().getGameController().getNextPlayer().getName().equals(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1().getName()));
                 activePatchView.moveDown();
             }
 
@@ -1134,7 +1134,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
     private void rotatePatch(){
         if(activePatchView != null) {
             if (activePatchView.rotationIsLegit()) {
-                activePatchView.setFirstPlayer(isFirstPlayer());
+                activePatchView.setFirstPlayer(mainViewController.getMainController().getGameController().getNextPlayer().getName().equals(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1().getName()));
                 activePatchView.rotate();
             }else{
                 errorAUI.showError("please move away from the corner a little bit");
@@ -1144,7 +1144,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
     }
     private void flipPatch(){
         if(activePatchView != null) {
-            activePatchView.setFirstPlayer(isFirstPlayer());
+            activePatchView.setFirstPlayer(mainViewController.getMainController().getGameController().getNextPlayer().getName().equals(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1().getName()));
             activePatchView.flip();
         }
     }

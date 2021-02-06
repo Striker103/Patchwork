@@ -26,6 +26,7 @@ public class PauseGameViewController implements HighScoreReturn {
     public void onContinueAction() {
         mainViewController.getGameScreenViewController().initGame();
         mainViewController.getGameScreenViewController().showScene();
+        mainViewController.getGameScreenViewController().refreshTheBoard();
     }
 
     @FXML

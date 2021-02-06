@@ -4,6 +4,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import model.Matrix;
 import model.Patch;
+import view.control.MainViewController;
+
 import java.net.URISyntaxException;
 
 public class PatchView extends ImageView {
@@ -24,6 +26,7 @@ public class PatchView extends ImageView {
     private Matrix matrix;
     private boolean firstPlayer;
     private boolean playerVsPlayer;
+    private MainViewController mainViewController;
 
     /**
      * Constructor for a new patch. Loads it, sets high and with and noNicePatch
@@ -312,5 +315,9 @@ public class PatchView extends ImageView {
                 this.matrix = new Matrix(imgArray);
             }
         }
+    }
+
+    public void setMainViewController(MainViewController mainViewController) {
+        this.mainViewController = mainViewController;
     }
 }
