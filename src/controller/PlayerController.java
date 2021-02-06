@@ -50,7 +50,10 @@ public class PlayerController {
 			income = steps;
 		}
 		currentPlayer.addMoney(income);
-		logAUI.updateLog(currentPlayer.getName() + " gets " + income + " buttons by advancing");
+		GameState currentGameState = mainController.getGame().getCurrentGameState();
+		String incomeLog = income > 1 ? " buttons by advancing" : " button by advancing";
+		currentGameState.setLogEntry(currentGameState.getLogEntry() + "\n"+ currentPlayer.getName() + " gets " + income + incomeLog);
+		logAUI.updateLog(currentPlayer.getName() + " gets " + income + incomeLog);
 	}
 
 	private void moveAndCheckPosition(int playerPos, int steps, Player currentPlayer, GameState currentGameState){
@@ -60,6 +63,7 @@ public class PlayerController {
 				currentPlayer.setBoardPosition(i);
 				if(timeBoard[i].hasPatch()){
 					timeBoard[i].removePatch();
+					currentGameState.setLogEntry(currentGameState.getLogEntry() + "\n"+ currentPlayer.getName() + " steps over a 1x1 Patch and must place it now");
 					logAUI.updateLog(currentPlayer.getName() + " steps over a 1x1 Patch and must place it now");
 					if(currentPlayer.getPlayerType() == PlayerType.HUMAN){
 						get1x1Patch();
@@ -68,9 +72,12 @@ public class PlayerController {
 				if(timeBoard[i].hasButton()){
 					int income = calculateIncomePatches(currentPlayer);
 					currentPlayer.addMoney(income);
-					logAUI.updateLog(currentPlayer.getName() + " gets his button paycheck " + income + " buttons!");
+					String incomeLog = income > 1 ? " buttons!" : " button!";
+					currentGameState.setLogEntry(currentGameState.getLogEntry() + "\n"+ currentPlayer.getName() + " gets his button paycheck " + income + incomeLog);
+					logAUI.updateLog(currentPlayer.getName() + " gets his button paycheck " + income + incomeLog);
 				}
 			}else{
+				currentGameState.setLogEntry(currentGameState.getLogEntry() + "\n"+ currentPlayer.getName() + " reached the end position ");
 				logAUI.updateLog(currentPlayer.getName() + " reached the end position ");
 				break;
 			}
@@ -102,7 +109,9 @@ public class PlayerController {
 		GameState currentGameState = game.getCurrentGameState();
 
 		moveAndCheckPosition(playerPos, steps, currentPlayer,currentGameState);
-		logAUI.updateLog(currentPlayer.getName() + " moves forward " + steps + " steps");
+		String stepsLog = steps > 1 ? "steps" : "step";
+		currentGameState.setLogEntry(currentGameState.getLogEntry() + "\n"+ currentPlayer.getName() + " moves forward " + steps + " " + stepsLog);
+		logAUI.updateLog(currentPlayer.getName() + " moves forward " + steps + " " + stepsLog);
 		if(!patchMovement)
 			getIncomeMovement(playerPos, steps, currentPlayer);
 
@@ -116,7 +125,10 @@ public class PlayerController {
 	 */
 	void payPatch(Player currentPlayer, Patch patch) {
 		currentPlayer.setMinusMoney(patch.getButtonsCost());
-		logAUI.updateLog(currentPlayer.getName() + " buys Patch " + patch.getPatchID() + " for " + patch.getButtonsCost() + " buttons");
+		GameState currentGameState = mainController.getGame().getCurrentGameState();
+		String buttonLog = patch.getButtonsCost() != 1 ? " buttons" : " button";
+		currentGameState.setLogEntry(currentGameState.getLogEntry() + "\n"+ currentPlayer.getName() + " buys Patch " + patch.getPatchID() + " for " + patch.getButtonsCost() + buttonLog);
+		logAUI.updateLog(currentPlayer.getName() + " buys Patch " + patch.getPatchID() + " for " + patch.getButtonsCost() + buttonLog);
 	}
 
 

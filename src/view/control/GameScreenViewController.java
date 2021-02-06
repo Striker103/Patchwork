@@ -153,6 +153,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
     }
 
     public void initGame() {
+        logList.getItems().clear();
         pane.getChildren().clear();
         game = mainViewController.getMainController().getGame();
         int[][] arr = new int[3][5];
@@ -250,6 +251,23 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
     public void refreshBoardPatches(){
         for(int i = 0; i < index; i++){
             pane.getChildren().remove(specialPatchesOnBoard.get(i));
+        }
+    }
+
+    public void refreshLog(){
+        logList.getItems().clear();
+        List<GameState> list = game.getGameStatesList();
+        int counter = 0;
+        int currentGameStateIndex = game.getCurrentGameStateIndex();
+        for(GameState gameState : list){
+            String lines[] = gameState.getLogEntry().split("\\r?\\n");
+            if(counter < currentGameStateIndex)
+                for(int i = 0; i < lines.length; i++)
+                    if(!lines[i].equals(""))
+                        logList.getItems().add(lines[i]);
+
+            counter++;
+
         }
     }
 
@@ -1200,6 +1218,9 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
             placeSpecialPatch();
         }else if(keyEvent.getCode() == KeyCode.K) {
             refreshTheBoard();
+        }
+        else if(keyEvent.getCode() == KeyCode.O) {
+            mainViewController.getGameSummaryViewController().showScene();
         }
         else if(keyEvent.getCode() == KeyCode.O) {
             mainViewController.getGameSummaryViewController().showScene();
