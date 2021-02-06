@@ -12,21 +12,22 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.control.GameSummaryViewController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.control.GameSummaryViewController">
    <children>
-      <HBox alignment="CENTER" layoutY="670.0" prefHeight="49.0" prefWidth="1200.0" spacing="80.0">
+      <Pane fx:id="pane" prefHeight="7.0" prefWidth="12.0" />
+      <HBox fx:id="hbox1" alignment="CENTER" layoutY="670.0" prefHeight="49.0" prefWidth="1200.0" spacing="80.0">
          <children>
             <Button fx:id="highscoreButton" mnemonicParsing="false" onAction="#onHighscoreAction" prefHeight="40.0" prefWidth="250.0" text="Highscores" />
             <Button fx:id="exportButton" mnemonicParsing="false" onAction="#onExportAction" prefHeight="40.0" prefWidth="250.0" text="Export Results" />
             <Button fx:id="startMenuButton" mnemonicParsing="false" onAction="#onStartMenuAction" prefHeight="40.0" prefWidth="250.0" text="Back to Main Menu" />
          </children>
       </HBox>
-      <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="1280.0">
+      <HBox fx:id="hbox2" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="1280.0">
          <children>
-            <ImageView fx:id="resultsImage" fitHeight="84.0" fitWidth="424.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="resultsImage" fitHeight="85.0" fitWidth="420.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </HBox>
-      <GridPane gridLinesVisible="true" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="1280.0">
+      <GridPane fx:id="gridpane" gridLinesVisible="true" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="1280.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

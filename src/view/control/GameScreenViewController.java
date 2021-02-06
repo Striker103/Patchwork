@@ -17,6 +17,7 @@ import javafx.scene.image.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -57,6 +58,8 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
     private List<PatchView> listInOrder;
     private int index = 0;
     private boolean playerVsPlayer;
+
+
 
     @FXML
     private GridPane gridPane1;
