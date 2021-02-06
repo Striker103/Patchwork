@@ -133,7 +133,8 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
                     setGraphic(null);
                     setTooltip(null);
                 } else {
-                    String information = "Cost: " + item.getSecond().getButtonsCost() + "\nIncome: " + item.getSecond().getButtonIncome();
+                    String information = "Cost: " + item.getSecond().getButtonsCost() + "\nIncome: " + item.getSecond().getButtonIncome()
+                            + "\nTime: " + item.getSecond().getTime();
 
                     Tooltip tooltip = new Tooltip();
                     tooltip.setShowDelay(Duration.seconds(0.2));
@@ -176,8 +177,10 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
                 timeToken1 == null && timeToken2 == null)
             loadTimeTokens();
         else{
-            pane.getChildren().add(timeToken1);
-            pane.getChildren().add(timeToken2);
+//            pane.getChildren().add(timeToken1);
+//            pane.getChildren().add(timeToken2);
+            if (timeToken1 == null && timeToken2 == null)
+                loadTimeTokensLoadGame();
         }
         patches = game.getCurrentGameState().getPatches();
 
@@ -211,6 +214,29 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+    }
+
+    public void loadTimeTokensLoadGame(){
+
+        int player1BoardPosition = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1().getBoardPosition();
+        int player2BoardPosition = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2().getBoardPosition();
+
+        timeToken1 = new TimeToken(1);
+        timeToken1.setX(558);
+        timeToken1.setY(82);
+        timeToken1.setFitWidth(20);
+        timeToken1.setFitHeight(20);
+        timeToken1.moveToken(player1BoardPosition);
+        pane.getChildren().add(timeToken1);
+
+        timeToken2 = new TimeToken(2);
+        timeToken2.setX(560);
+        timeToken2.setY(82);
+        timeToken2.setFitWidth(20);
+        timeToken2.setFitHeight(20);
+        timeToken2.moveToken(player2BoardPosition);
+        activeTimeToken = timeToken2;
+        pane.getChildren().add(activeTimeToken);
     }
 
     private void triggerInitialMove(Player startingPlayer) {
