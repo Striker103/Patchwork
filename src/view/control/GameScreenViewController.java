@@ -719,11 +719,14 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
         }catch(Exception e){
             System.out.print("");
         }
-        if(firstPlayer){
-            patch.setX(150 + 890);
+        Player otherPlayer = mainViewController.getMainController().getGameController().getNotMovingPlayer();
+        Player player1 = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1();
+
+        if(otherPlayer.equals(player1)){
+            patch.setX(150 );
             patch.setY(150);
         }else{
-            patch.setX(150);
+            patch.setX(150 + 890);
             patch.setY(150);
         }
         if(!playerVsPlayer){
@@ -736,7 +739,14 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
             }
         }
         activePatchView = patch;
+
+
+        removePatches();
+        if(patches.size() <= index){
+            return;
+        }
     }
+    //sout
 
 
     @Override
@@ -1171,13 +1181,15 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
         if(patches.size() <= index){
             return;
         }
-        boolean firstPlayer = isFirstPlayer();
+        Player otherPlayer = mainViewController.getMainController().getGameController().getNotMovingPlayer();
+        Player player1 = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1();
+
         PatchView patchView = patchViews.get(index);
         pane.getChildren().add(patchView);
-        if(firstPlayer){
-            patchView.setX(150);
-        }else{
+        if(otherPlayer.equals(player1)){
             patchView.setX(1040);
+        }else{
+            patchView.setX(150);
         }
         patchView.setY(150);
         if (!patchView.isVisible()) {
@@ -1185,6 +1197,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
         }
         activePatchView = patchView;
         listToClearGUI.add(patchView);
+
     }
 
     public void removePatches(){
@@ -1259,7 +1272,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
         for(int i = 0; i < arr.length; i++)
         {
             for(int j = 0; j < arr[i].length; j++){
-                if(Math.abs(arr[i][j]) == Integer.MAX_VALUE){
+                if(Math.abs(arr[i][j]) >= 1000){
                     System.out.print("1x1  ");
                 }
                 if(arr[i][j] >= 0 && arr[i][j] < 10){
