@@ -60,17 +60,6 @@ public class MainViewController implements HighScoreReturn {
     };
 
 
-    private HintAUI hintAUI = new HintAUI() {
-        @Override
-        public void showHintAdvance() {
-
-        }
-
-        @Override
-        public void showHintTakePatch(Patch patch, boolean[][] placing) {
-
-        }
-    };
 
 
 
@@ -194,7 +183,7 @@ public class MainViewController implements HighScoreReturn {
             gameScreenViewController.setErrorAUI(errorAUI);
 
             //TODO
-            mainController.setHintAUI(hintAUI);
+            mainController.setHintAUI(gameScreenViewController);
 
             try {
                 logoImage.setImage((new Image(this.getClass().getResource("/view/images/Logo/Patchwork_Logo.png").toURI().toString())));
