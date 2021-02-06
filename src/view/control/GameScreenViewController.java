@@ -200,6 +200,11 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
         triggerInitialMove(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1());
         loadButtons();
 
+        try {
+            player17x7 = new ImageView(new Image(this.getClass().getResource("/view/images/7x7/7x7.png").toURI().toString()));
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 
     private void triggerInitialMove(Player startingPlayer) {
@@ -605,20 +610,20 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
         Player player1 = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1();
         Player player2 = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2();
 
-        try {
-            player17x7 = new ImageView(new Image(this.getClass().getResource("/view/images/7x7/7x7.png").toURI().toString()));
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+
         player17x7.setFitWidth(75);
         player17x7.setFitHeight(75);
 
-        if(player1.getQuiltBoard().check7x7() && !player2.getQuiltBoard().check7x7() ) {
+        System.out.println("we are in show7x7");
+
+        if(player1.getHasSpecialTile()) {
+            System.out.println("player1 has 7x7");
             player17x7.setX(180);
             player17x7.setY(595);
             pane.getChildren().add(player17x7);
         }
-        else if(player2.getQuiltBoard().check7x7() && !player1.getQuiltBoard().check7x7()){
+        else if(player2.getHasSpecialTile()){
+            System.out.println("player2 has 7x7");
             player17x7.setX(1020);
             player17x7.setY(595);
             pane.getChildren().add(player17x7);
@@ -731,6 +736,10 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
 
     @Override
     public void showHintAdvance() {
+        Alert alarm = new Alert(Alert.AlertType.INFORMATION);
+        alarm.setTitle("Hint");
+        alarm.setContentText("You should pass.");
+        alarm.showAndWait();
 
     }
 
@@ -924,7 +933,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
     @FXML
     public void onHintAction() {
         mainViewController.getMainController().getAIController().calculateHint();
-
+        //showHintAdvance();
         /*boolean[][] test = {{true, true, false, false, false,false, false,false, false},
                 {true, true, true, false, false, false, false, false, false},
                 {false, false, false, false, false,false, false, false, false},
@@ -949,6 +958,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
         placing.set(1,1,1);
 
         showHintTakePatch(patch,test);*/
+
     }
 
     @FXML
@@ -1154,10 +1164,6 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
             Matrix ready = activePatchView.readyToGo();
             ready.print();
             System.out.println();
-        }else if(keyEvent.getCode() == KeyCode.U){ //just to test the movement of the time token on the time board
-            activeTimeToken.moveToken(
-            );
-
         }else if(keyEvent.getCode() == KeyCode.N){ //only for debugging
             System.out.println("current Player:" + mainViewController.getMainController().getGameController().getNextPlayer().getName());
             Matrix firstPlayerBoard = game.getCurrentGameState().getPlayer1().getQuiltBoard().getPatchBoard();
@@ -1175,9 +1181,9 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
         }else if(keyEvent.getCode() == KeyCode.K) {
             refreshTheBoard();
         }
-        /*else if(keyEvent.getCode() == KeyCode.O) {
+        else if(keyEvent.getCode() == KeyCode.O) {
             mainViewController.getGameSummaryViewController().showScene();
-        }*/
+        }
     }
 
     public void printBoard(int[][] arr){
