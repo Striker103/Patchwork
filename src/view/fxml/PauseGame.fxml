@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.control.PauseGameViewController">
-   <top>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Game Paused" BorderPane.alignment="CENTER" />
-   </top>
+<BorderPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.control.PauseGameViewController">
    <center>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" prefHeight="736.0" prefWidth="1200.0" spacing="50.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="continueButton" mnemonicParsing="false" onAction="#onContinueAction" text="Continue" />
-            <Button fx:id="helpButton" mnemonicParsing="false" onAction="#onHelpAction" text="Help" />
-            <Button fx:id="saveButton" mnemonicParsing="false" onAction="#onSaveAction" text="Save" />
-            <Button fx:id="highscoresButton" mnemonicParsing="false" onAction="#onHighscoresAction" text="Highscores" />
-            <Button mnemonicParsing="false" onAction="#onMainMenuAction" text="Main Menu" />
-            <Text fx:id="saveIndicator" fill="#25a423" strokeType="OUTSIDE" strokeWidth="0.0" text="test" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Game Paused">
+               <font>
+                  <Font name="System Bold" size="50.0" />
+               </font>
+            </Text>
+            <Button fx:id="continueButton" mnemonicParsing="false" onAction="#onContinueAction" prefHeight="50.0" prefWidth="200.0" text="Continue" />
+            <Button fx:id="helpButton" mnemonicParsing="false" onAction="#onHelpAction" prefHeight="50.0" prefWidth="200.0" text="Help" />
+            <Button fx:id="saveButton" mnemonicParsing="false" onAction="#onSaveAction" prefHeight="50.0" prefWidth="200.0" text="Save" />
+            <Button fx:id="highscoresButton" mnemonicParsing="false" onAction="#onHighscoresAction" prefHeight="50.0" prefWidth="200.0" text="High Scores" />
+            <Button mnemonicParsing="false" onAction="#onMainMenuAction" prefHeight="50.0" prefWidth="200.0" text="Main Menu" />
+            <Text fx:id="saveIndicator" fill="#25a423" strokeType="OUTSIDE" strokeWidth="0.0" text="test">
+               <font>
+                  <Font size="19.0" />
+               </font></Text>
          </children>
       </VBox>
    </center>
