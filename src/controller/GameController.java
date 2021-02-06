@@ -97,7 +97,7 @@ public class GameController {
 		}
 
 		if (executingPlayer.getMoney() < patch.getButtonsCost()) {
-			errorAUI.showError("when you are to broke to buy a Patch <sad pikachu face>");
+			errorAUI.showError("when you are to broke to buy a Patch");
 			endTurn();
 			return;
 		}

@@ -8,13 +8,14 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
 import model.Patch;
 import view.HighScoreReturn;
 import view.aui.*;
-
-import java.io.IOException;
+import java.io.*;
 import java.net.URISyntaxException;
+import java.util.Optional;
 
 public class MainViewController implements HighScoreReturn {
 
@@ -40,10 +41,24 @@ public class MainViewController implements HighScoreReturn {
         Alert alarm = new Alert(Alert.AlertType.ERROR);
         alarm.setTitle("Error");
         alarm.setContentText(message);
-        alarm.showAndWait();
-        gameScreenViewController.removePatches();
-
+        if(message.contains("broke")){
+            Image image = new Image("/view/images/Pikachu/sadPikachu.jpg");
+            ImageView imageView = new ImageView(image);
+            imageView.setFitHeight(300);
+            imageView.setFitWidth(300);
+            alarm.setGraphic(imageView);
+            AudioClip note = new AudioClip(this.getClass().getResource("/view/images/Pikachu/sadSound2.wav").toString());
+            note.play();
+            gameScreenViewController.removePatches();
+            Optional<ButtonType> result = alarm.showAndWait();
+            if(result.get() == ButtonType.OK)
+                note.stop();
+        }
+        else{
+            alarm.showAndWait();
+        }
     };
+
 
     private HintAUI hintAUI = new HintAUI() {
         @Override
