@@ -735,6 +735,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
         activePatchView = patch;
     }
 
+
     @Override
     public void trigger1x1Placement() {
         isPlaced = false;
@@ -1086,39 +1087,36 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
         movePatchDown();
     }
     private void movePatchUp(){
-        if(activePatchView != null){
+
             if(activePatchView.moveIsLegit('w')){
                 activePatchView.setFirstPlayer(isFirstPlayer());
                 activePatchView.moveUp();
             }
-        }
-
     }
 
     private void movePatchRight(){
-        if(activePatchView != null) {
+
             if (activePatchView.moveIsLegit('d')) {
                 activePatchView.setFirstPlayer(isFirstPlayer());
                 activePatchView.moveRight();
             }
-        }
     }
     private void movePatchLeft(){
-        if(activePatchView != null) {
+
             if (activePatchView.moveIsLegit('a')) {
                 activePatchView.setFirstPlayer(isFirstPlayer());
                 activePatchView.moveLeft();
             }
-        }
+
 
     }
     private void movePatchDown(){
-        if(activePatchView != null) {
+
             if (activePatchView.moveIsLegit('s')) {
                 activePatchView.setFirstPlayer(isFirstPlayer());
                 activePatchView.moveDown();
             }
-        }
+
     }
     private void rotatePatch(){
         if(activePatchView != null) {
@@ -1146,7 +1144,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
             GameController gameController = mainViewController.getMainController().getGameController();
             gameController.takePatch(activePatchView.getPatch(), activePatchView.readyToGo(), activePatchView.getRotation(), activePatchView.getFlipped());
         }
-        activePatchView = null;
+        //activePatchView = null;
     }
 
     private void passTurn(){
