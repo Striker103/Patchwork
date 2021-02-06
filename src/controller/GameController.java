@@ -97,7 +97,7 @@ public class GameController {
 		}
 
 		if (executingPlayer.getMoney() < patch.getButtonsCost()) {
-			errorAUI.showError("when you are to broke to buy a Patch");
+			errorAUI.showError("when you are too broke to buy a Patch");
 			endTurn();
 			return;
 		}

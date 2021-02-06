@@ -3,6 +3,10 @@ package view.control;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -11,6 +15,7 @@ import view.HighScoreReturn;
 import view.PatchView;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +54,18 @@ public class GameSummaryViewController implements HighScoreReturn {
     @FXML
     private Label loserMoney;
 
+    @FXML
+    private ImageView resultsImage;
+
+    @FXML
+    private GridPane gridPane;
+
+    @FXML
+    private HBox hbox1;
+
+    @FXML
+    private HBox hbox2;
+
     Player player1;
     Player player2;
 
@@ -65,6 +82,12 @@ public class GameSummaryViewController implements HighScoreReturn {
     public void showScene(){
         mainViewController.setCurrentScene(ownScene);
         mainViewController.showCurrentScene();
+        initResults();
+    }
+
+    private void initResults() {
+        //pane.getChildren().clear();
+
         player1 = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1();
         player2 = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2();
 
@@ -74,6 +97,15 @@ public class GameSummaryViewController implements HighScoreReturn {
         }
         setLabels();
         refreshTheBoard();
+
+        try {
+            resultsImage.setImage(new Image(this.getClass().getResource("/view/images/Headlines/Results.png").toURI().toString()));
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        resultsImage.setFitWidth(420);
+        resultsImage.setFitHeight(80);
+        pane.getChildren().add(resultsImage);
     }
 
     private void setLabels(){
@@ -105,9 +137,7 @@ public class GameSummaryViewController implements HighScoreReturn {
 
     public void refreshTheBoard(){
         //pane.getChildren().clear();
-        //mainViewController.getGameScreenViewController().updateIndex();
         addSpecialPatches();
-        //loadSpecialPatches();
         RefreshPlayer(1);
         RefreshPlayer(2);
     }
