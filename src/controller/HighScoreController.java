@@ -199,7 +199,7 @@ public class HighScoreController {
 		if (scores != null) {
 			scores.add(score);
 
-			scores.sort((o1, o2) -> o2.getValue() - o1.getValue());
+			scores.sort((score1, score2) -> score2.getValue() - score1.getValue());
 
 			clearHighScores(file);
 			writeHighScores(scores, file);

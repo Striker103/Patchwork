@@ -17,8 +17,6 @@ public class GameController {
 
 	private ErrorAUI errorAUI;
 
-	private LogAUI logAUI;
-
 	private TurnAUI turnAUI;
 
 	/**
@@ -226,17 +224,6 @@ public class GameController {
 		if(this.errorAUIChanged) throw new IllegalStateException("errorAUI was already set");
 		this.errorAUI = errorAUI;
 		this.errorAUIChanged = true;
-	}
-
-	/**
-	 * set the logAUI
-	 *
-	 * @param logAUI the logAUI
-	 */
-	public void setLogAUI(LogAUI logAUI) {
-		if(this.logAUIChanged) throw new IllegalStateException("logAUI was already set");
-		this.logAUI = logAUI;
-		this.logAUIChanged = true;
 	}
 
 	/**
