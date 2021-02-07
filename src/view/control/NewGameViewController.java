@@ -43,7 +43,7 @@ public class NewGameViewController {
     private Spinner<PlayerType> player2DifficultySpinner;
 
     @FXML
-    private Spinner<Integer> simulationSpeedSpinner;
+    private Spinner<SimulationSpeed> simulationSpeedSpinner;
 
     @FXML
     private TextField player1NameTextField;
@@ -61,6 +61,30 @@ public class NewGameViewController {
     private Text fileIndicator;
 
     private File csvFile;
+
+    private enum SimulationSpeed {
+
+        SLOW("Slow", 2),
+        MEDIUM("Medium", 1),
+        FAST("Fast", 0);
+
+        private final String label;
+        private final int value;
+
+        SimulationSpeed(String label, int value){
+            this.label = label;
+            this.value = value;
+        }
+
+        @Override
+        public String toString(){
+            return label;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
 
 
     private MainViewController mainViewController;
@@ -87,6 +111,8 @@ public class NewGameViewController {
 
         Tuple<String, PlayerType> player1Tuple = new Tuple<>(player1Name, player1Type);
         Tuple<String, PlayerType> player2Tuple = new Tuple<>(player2Name, player2Type);
+
+
 
         boolean ironman = ironmanModeSpinner.getValue();
 
@@ -116,7 +142,7 @@ public class NewGameViewController {
        }
 
 
-       mainViewController.getMainController().getGamePreparationController().startGame(gameTuple, csvFile, simulationSpeedSpinner.getValue(), ironman);
+       mainViewController.getMainController().getGamePreparationController().startGame(gameTuple, csvFile, simulationSpeedSpinner.getValue().getValue(), ironman);
 
        mainViewController.getPauseGameViewController().setGameSaveFile(new File(generateFilePath()));
        mainViewController.getGameScreenViewController().initGame();
@@ -202,8 +228,9 @@ public class NewGameViewController {
         svfAI2.setWrapAround(true);
         player2DifficultySpinner.setValueFactory(svfAI2);
 
-        SpinnerValueFactory<Integer> svfSimulationSpeed = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 3, 0);
-        svfSimulationSpeed.setWrapAround(false);
+        ObservableList<SimulationSpeed> speeds = FXCollections.observableArrayList(SimulationSpeed.values());
+        SpinnerValueFactory<SimulationSpeed> svfSimulationSpeed = new SpinnerValueFactory.ListSpinnerValueFactory<>(speeds);
+        svfSimulationSpeed.setWrapAround(true);
         simulationSpeedSpinner.setValueFactory(svfSimulationSpeed);
 
         try {
