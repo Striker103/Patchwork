@@ -989,6 +989,10 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
     }
     @FXML
     public void onUndoAction() {
+        if(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1().getPlayerType() != PlayerType.HUMAN &&
+                mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2().getPlayerType() != PlayerType.HUMAN){
+            return;
+        }
         UndoRedoController undoRedoController = mainViewController.getMainController().getUndoRedoController();
         undoRedoController.undo();
         refreshLog();
@@ -1003,11 +1007,19 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
 
     @FXML
     public void onPassAction() {
+        if(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1().getPlayerType() != PlayerType.HUMAN &&
+                mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2().getPlayerType() != PlayerType.HUMAN){
+            return;
+        }
         passTurn();
     }
 
     @FXML
     public void onRedoAction() {
+        if(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1().getPlayerType() != PlayerType.HUMAN &&
+                mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2().getPlayerType() != PlayerType.HUMAN){
+            return;
+        }
         UndoRedoController undoRedoController = mainViewController.getMainController().getUndoRedoController();
         undoRedoController.redo();
         refreshLog();
@@ -1046,11 +1058,19 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
 
     @FXML
     public void onChoose1Action() {
+        if(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1().getPlayerType() != PlayerType.HUMAN &&
+                mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2().getPlayerType() != PlayerType.HUMAN){
+            return;
+        }
         choosePatch(0);
     }
 
     @FXML
     public void onSpecialPatchAction(){
+        if(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1().getPlayerType() != PlayerType.HUMAN &&
+                mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2().getPlayerType() != PlayerType.HUMAN){
+            return;
+        }
         placeSpecialPatch();
     }
 
@@ -1085,11 +1105,19 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
 
     @FXML
     public void onChoose2Action() {
+        if(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1().getPlayerType() != PlayerType.HUMAN &&
+                mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2().getPlayerType() != PlayerType.HUMAN){
+            return;
+        }
         choosePatch(1);
     }
 
     @FXML
     public void onChoose3Action() {
+        if(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1().getPlayerType() != PlayerType.HUMAN &&
+                mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2().getPlayerType() != PlayerType.HUMAN){
+            return;
+        }
         choosePatch(2);
     }
 
@@ -1097,34 +1125,62 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
 
     @FXML
     public void onFlipAction() {
+        if(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1().getPlayerType() != PlayerType.HUMAN &&
+                mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2().getPlayerType() != PlayerType.HUMAN){
+            return;
+        }
         flipPatch();
     }
     @FXML
     public void onUpAction() {
+        if(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1().getPlayerType() != PlayerType.HUMAN &&
+                mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2().getPlayerType() != PlayerType.HUMAN){
+            return;
+        }
         movePatchUp();
 
     }
     @FXML
     public void onRotateAction() {
+        if(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1().getPlayerType() != PlayerType.HUMAN &&
+                mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2().getPlayerType() != PlayerType.HUMAN){
+            return;
+        }
         rotatePatch();
     }
 
     @FXML
     public void onLeftAction() {
+        if(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1().getPlayerType() != PlayerType.HUMAN &&
+                mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2().getPlayerType() != PlayerType.HUMAN){
+            return;
+        }
         movePatchLeft();
     }
     @FXML
     public void onConfirmAction() {
+        if(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1().getPlayerType() != PlayerType.HUMAN &&
+                mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2().getPlayerType() != PlayerType.HUMAN){
+            return;
+        }
         confirmPatch();
     }
 
     @FXML
     public void onRightAction() {
+        if(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1().getPlayerType() != PlayerType.HUMAN &&
+                mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2().getPlayerType() != PlayerType.HUMAN){
+            return;
+        }
         movePatchRight();
     }
 
     @FXML
     public void onDownAction() {
+        if(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1().getPlayerType() != PlayerType.HUMAN &&
+                mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2().getPlayerType() != PlayerType.HUMAN){
+            return;
+        }
         movePatchDown();
     }
     private void movePatchUp(){
