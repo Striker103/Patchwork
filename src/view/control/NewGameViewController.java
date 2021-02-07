@@ -194,8 +194,8 @@ public class NewGameViewController {
         svfAI.setWrapAround(true);
         player1DifficultySpinner.setValueFactory(svfAI);
 
-        player1DifficultySpinner.getEditor().textProperty().addListener((observable, oldValue, newValue) -> simulationSpeedSpinner.setDisable(player1DifficultySpinner.getValue() == PlayerType.HUMAN && player2DifficultySpinner.getValue() == PlayerType.HUMAN));
-        player2DifficultySpinner.getEditor().textProperty().addListener((observable, oldValue, newValue) -> simulationSpeedSpinner.setDisable(player1DifficultySpinner.getValue() == PlayerType.HUMAN && player2DifficultySpinner.getValue() == PlayerType.HUMAN));
+        player1DifficultySpinner.getEditor().textProperty().addListener((observable, oldValue, newValue) -> simulationSpeedSpinner.setDisable(player2DifficultySpinner.getValue() == PlayerType.HUMAN));
+        player2DifficultySpinner.getEditor().textProperty().addListener((observable, oldValue, newValue) -> simulationSpeedSpinner.setDisable(player1DifficultySpinner.getValue() == PlayerType.HUMAN));
 
 
         SpinnerValueFactory<PlayerType> svfAI2 = new SpinnerValueFactory.ListSpinnerValueFactory<>(aIList2);
