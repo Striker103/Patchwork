@@ -103,8 +103,10 @@ public class NewGameViewController {
         String player1Name = player1NameTextField.getText();
         String player2Name = player2NameTextField.getText();
 
-        if (player1Name.isBlank() || player2Name.isBlank() || player1Name.equals(player2Name))
+        if (player1Name == null || player1Name.isBlank()|| player2Name == null || player2Name.isBlank() || player1Name.equals(player2Name)){
+            mainViewController.getErrorAUI().showError("Player Names need to be different. \n Player Names cannot be blank.");
             return;
+        }
 
         PlayerType player1Type = player1DifficultySpinner.getValue();
         PlayerType player2Type = player2DifficultySpinner.getValue();
