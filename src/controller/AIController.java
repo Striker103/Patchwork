@@ -4,6 +4,12 @@ package controller;
 import ai.EasyAI;
 import ai.HardAI;
 import ai.NormalAI;
+import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.util.Duration;
 import model.*;
 import view.aui.ErrorAUI;
 import view.aui.HintAUI;
@@ -103,21 +109,24 @@ public class AIController {
 				break;
 
 		}
-		try{
-			Thread.sleep(mainController.getGame().getSimulationSpeed()*1000);
-		}catch (InterruptedException e){
-
-		}
-
 		if(calculatedTurn == null){
 			errorAUI.showError("No AI Turn Possible!");
 			return;
 		}
+
+
+
 		logAUI.updateLog(calculatedTurn.getLogEntry());
 		mainController.getUndoRedoController().clearRedoList();
 		game.addGameState(calculatedTurn);
+
+		if(calculatedTurn.getPlayer1().getPlayerType()!=PlayerType.HUMAN && calculatedTurn.getPlayer2().getPlayerType()!=PlayerType.HUMAN){
+			Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(game.getSimulationSpeed()).add(Duration.millis(2)), event -> mainController.getGameController().endTurn()));
+			timeline.play();
+
+		}
 		turnAUI.updatePatches();
-		mainController.getGameController().endTurn();
+
 	}
 
 	/**
