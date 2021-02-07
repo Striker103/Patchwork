@@ -10,6 +10,11 @@ import view.aui.TurnAUI;
 
 import static org.junit.Assert.assertTrue;
 
+/**
+ * @author Lukas Kidin
+ * @author Dennis Querndt
+ * @author Yannick Naumann
+ */
 public class AIControllerTest {
 
     private final TestMainController mainController = new TestMainController();
@@ -80,6 +85,9 @@ public class AIControllerTest {
     }
 
 
+    /**
+     * Set Up for tests
+     */
     @Before
     public void setUp() {
       mainController.setErrorAUI(dummyAUI);

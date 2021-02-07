@@ -78,6 +78,9 @@ public class MainControllerTest {
         }
     }
 
+    /**
+     * Set Up for tests
+     */
     @Before
     public void setUp(){
         mainController = new MainController();
