@@ -1291,6 +1291,14 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
             Matrix m = activePatchView.readyToGo();
             m.print();
             System.out.println();
+        }else if(keyEvent.getCode() == KeyCode.P) {
+            List<Patch> patches = game.getCurrentGameState().getPatches();
+            System.out.print("Patches: ");
+            for(Patch patch : patches){
+                System.out.print(patch.getPatchID() + " ");
+            }
+            System.out.println();
+            System.out.println();
         }
     }
 

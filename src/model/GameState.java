@@ -249,16 +249,13 @@ public class GameState{
 		if(patches.indexOf(chosenPatch)>maxChoosableIndex){
 			throw new IllegalArgumentException("Please choose one of the first three patches");
 		}
-		for(int i = 0;i<patches.indexOf(chosenPatch) + 1;i++){
-			Patch indexPatch = patches.get(0);
-			patches.remove(0);
-			patches.add(indexPatch);
+		if(patches.indexOf(chosenPatch) != 0){
+			for(int i = 0;i<patches.indexOf(chosenPatch) + 1;i++){
+				Patch indexPatch = patches.get(0);
+				patches.remove(0);
+				patches.add(indexPatch);
+			}
 		}
-
-
 		patches.remove(0);
-
 	}
-
-
 }
