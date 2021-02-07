@@ -991,6 +991,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
     public void onUndoAction() {
         UndoRedoController undoRedoController = mainViewController.getMainController().getUndoRedoController();
         undoRedoController.undo();
+        refreshLog();
     }
 
     @FXML
@@ -1009,6 +1010,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
     public void onRedoAction() {
         UndoRedoController undoRedoController = mainViewController.getMainController().getUndoRedoController();
         undoRedoController.redo();
+        refreshLog();
     }
 
     @FXML
