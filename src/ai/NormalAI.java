@@ -26,19 +26,53 @@ public class NormalAI extends AI {
 	public GameState calculateTurn(GameState actualState, Player movingPlayer) {
 		List<GameState> resultContainer = getOptions(actualState, movingPlayer);
 		return resultContainer.stream()
-				.map(this::function)
+				.map((GameState gameState) -> function(gameState,movingPlayer))
 				.max(Comparator.comparingDouble(Tuple::getFirst))
 				.orElse(new Tuple<>(2.0, null))
 				.getSecond();
 	}
 
-	private Tuple<Double,GameState> function(final GameState gameState){
-		Player player2 = gameState.getPlayer2();
+	private Tuple<Double,GameState> function( GameState gameState, Player movingPlayer){
+		Player thisTurnPlayer;
+		if (gameState.getPlayer1().lightEquals(movingPlayer)) {
+			thisTurnPlayer = gameState.getPlayer1();
+		} else {
+			thisTurnPlayer = gameState.getPlayer2();
+		}
+		int boardIncome =0;
+		for (Patch patch:thisTurnPlayer.getQuiltBoard().getPatches()) {
+			boardIncome += patch.getButtonIncome();
+		}
+		for(int spot = movingPlayer.getBoardPosition()+1; spot<= Math.min(thisTurnPlayer.getBoardPosition(), 53); spot++){
+			if(gameState.getTimeBoard()[spot].hasButton()){
+				thisTurnPlayer.addMoney(boardIncome);
+				gameState.setLogEntry(gameState.getLogEntry()+"\nGot "+boardIncome+" coins to spend it later.");
+			}
+			if(gameState.getTimeBoard()[spot].hasPatch()){
+				thisTurnPlayer.setQuiltBoard(placeRandomPatch(thisTurnPlayer));
+				gameState.getTimeBoard()[spot].removePatch();
+				gameState.setLogEntry(gameState.getLogEntry()+"\nGot a special patch and placed it happily.");
+			}
+		}
 		List<Patch> patches = gameState.getPatches();
+		double maximum = 0;
+		for( int i=0; i<3; i++){
+			if( maximum <= calculatePatchValue(patches.get(0), thisTurnPlayer)){
+				maximum = calculatePatchValue(patches.get(0), thisTurnPlayer);
+			}
+		}
 		double value = 0;
-		value = ((double) (calculatePatchValue(patches.get(0), player2)) + evaluateBoard(player2.getQuiltBoard()));
+		value = ((double) maximum  + evaluateBoard(thisTurnPlayer.getQuiltBoard()));
 		return new Tuple<>(value,gameState);
  	}
+
+	private QuiltBoard placeRandomPatch(Player hasToPlace) {
+		Matrix shape = new Matrix(3,5);
+		shape.insert(new Matrix(new int[][]{{1}}), 0, 0);
+		Patch singlePatch = new Patch(Integer.MAX_VALUE, 0, 0, shape, 0);
+		var places = AIUtil.generatePatchLocations(singlePatch, hasToPlace.getQuiltBoard());
+		return places.stream().skip(new Random().nextInt(places.size()-1)).findFirst().orElse(new Tuple<>(singlePatch, hasToPlace.getQuiltBoard())).getSecond();
+	}
 
 	/**
 	 * Evaluates a QuiltBoard and gives it a value, the higher, the better
