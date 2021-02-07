@@ -44,6 +44,10 @@ public class CheckUtil {
         }
     }
 
+    /**
+     * Checks if the value is a valid rotation
+     * @param rotation rotation angle
+     */
     public static void assertRotation(int rotation){
         if(rotation!=90&&rotation!=180&&rotation!=0&&rotation!=270){
             throw new IllegalArgumentException("No valid Rotation!");

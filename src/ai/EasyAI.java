@@ -4,6 +4,10 @@ import model.*;
 
 import java.util.*;
 
+/**
+ * @author Lukas Kidin
+ * @author Yannick Naumann
+ */
 public class EasyAI extends AI {
 
     @Override

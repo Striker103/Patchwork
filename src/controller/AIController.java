@@ -16,6 +16,11 @@ import view.aui.HintAUI;
 import view.aui.LogAUI;
 import view.aui.TurnAUI;
 
+/**
+ * @author Yannick Naumann
+ * @author Dennis Querndt
+ * @author Lukas Kidin
+ */
 public class AIController {
 
 	/**
@@ -90,6 +95,9 @@ public class AIController {
 
 	}
 
+	/**
+	 * Executes AI Turn
+	 */
 	public void doTurn() {
 		Game game = mainController.getGame();
 		GameState currentGameState = game.getCurrentGameState();
@@ -220,6 +228,10 @@ public class AIController {
 		this.logAUIChanged = true;
 	}
 
+	/**
+	 * Sets turnAUI
+	 * @param turnAUI turnAUI
+	 */
 	public void setTurnAUI(TurnAUI turnAUI) {
 		if(this.turnAUIChanged) throw new IllegalStateException("turnAUI was already set");
 		this.turnAUI = turnAUI;
