@@ -76,8 +76,10 @@ public class GameSummaryViewController implements HighScoreReturn {
     @FXML
     private Button startMenuButton;
 
-    Player player1;
-    Player player2;
+    private List<PatchView> specialPatches;
+
+    private Player player1;
+    private Player player2;
 
     private boolean scoresSaved = false;
 
@@ -107,7 +109,7 @@ public class GameSummaryViewController implements HighScoreReturn {
             scoresSaved = true;
         }
         setLabels();
-        refreshTheBoard();
+
 
         try {
             resultsImage.setImage(new Image(this.getClass().getResource("/view/images/Headlines/Results.png").toURI().toString()));
@@ -116,7 +118,19 @@ public class GameSummaryViewController implements HighScoreReturn {
         }
         resultsImage.setFitWidth(420);
         resultsImage.setFitHeight(80);
+        resultsImage.setX(430);
         pane.getChildren().add(resultsImage);
+
+        int[][] arr = new int[3][5];
+        arr[0][0] = 1;
+        Matrix shape = new Matrix(arr);
+        specialPatches = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            Patch patch = new Patch(999 + i, 0, 0, shape, 0);
+            specialPatches.add(new PatchView(patch, false));
+        }
+
+        refreshTheBoard();
     }
 
     private void setLabels(){
@@ -227,70 +241,31 @@ public class GameSummaryViewController implements HighScoreReturn {
     public void addSpecialPatches(){
         int index = 0;
         Game game = mainViewController.getMainController().getGame();
-        int[][] arr = new int[3][5];
-        arr[0][0] = 1;
-        Matrix shape = new Matrix(arr);
 
         Matrix p1Board = game.getCurrentGameState().getPlayer1().getQuiltBoard().getPatchBoard();
         Matrix p2Board = game.getCurrentGameState().getPlayer2().getQuiltBoard().getPatchBoard();
         int[][] p1IntBoard = p1Board.getIntMatrix();
         int[][] p2IntBoard = p2Board.getIntMatrix();
 
-        List<PatchView> specialPatches;
-        boolean playerVsPlayer = false;
-        if(game.getCurrentGameState().getPlayer1().getPlayerType() == PlayerType.HUMAN && game.getCurrentGameState().getPlayer2().getPlayerType() == PlayerType.HUMAN)
-            playerVsPlayer = true;
-
-        specialPatches = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            Patch patch = new Patch(999 + i, 0, 0, shape, 0);
-            specialPatches.add(new PatchView(patch, playerVsPlayer));
+        for(int i = 0; i < p1IntBoard.length; i++){
+            for(int j = 0; j < p1IntBoard[i].length; j++){
+                if(p1IntBoard[i][j] < -1000 || p1IntBoard[i][j] > 1000 ){
+                    PatchView patch = specialPatches.get(index);
+                    pane.getChildren().add(patch);
+                    patch.setX(150 + j * 30);
+                    patch.setY(356 + i * 30);
+                    index++;
+                }
+            }
         }
-
-        if(player1.getScore().getValue() > player2.getScore().getValue()) {
-            for (int i = 0; i < p1IntBoard.length; i++) {
-                for (int j = 0; j < p1IntBoard[i].length; j++) {
-                    if (Math.abs(p1IntBoard[i][j]) == Integer.MAX_VALUE) {
-                        PatchView patch = specialPatches.get(index);
-                        pane.getChildren().add(patch);
-                        patch.setX(150 + j * 30);
-                        patch.setY(356 + i * 30);
-                        index++;
-                    }
-                }
-            }
-            for (int i = 0; i < p2IntBoard.length; i++) {
-                for (int j = 0; j < p2IntBoard[i].length; j++) {
-                    if (Math.abs(p2IntBoard[i][j]) == Integer.MAX_VALUE) {
-                        PatchView patch = specialPatches.get(index);
-                        pane.getChildren().add(patch);
-                        patch.setX(60 + j * 30 + 800);
-                        patch.setY(356 + i * 30);
-                        index++;
-                    }
-                }
-            }
-        }else{
-            for (int i = 0; i < p1IntBoard.length; i++) {
-                for (int j = 0; j < p1IntBoard[i].length; j++) {
-                    if (Math.abs(p1IntBoard[i][j]) == Integer.MAX_VALUE) {
-                        PatchView patch = specialPatches.get(index);
-                        pane.getChildren().add(patch);
-                        patch.setX(60 + j * 30 + 800);
-                        patch.setY(356 + i * 30);
-                        index++;
-                    }
-                }
-            }
-            for (int i = 0; i < p2IntBoard.length; i++) {
-                for (int j = 0; j < p2IntBoard[i].length; j++) {
-                    if (Math.abs(p2IntBoard[i][j]) == Integer.MAX_VALUE) {
-                        PatchView patch = specialPatches.get(index);
-                        pane.getChildren().add(patch);
-                        patch.setX(150 + j * 30);
-                        patch.setY(356 + i * 30);
-                        index++;
-                    }
+        for(int i = 0; i < p2IntBoard.length; i++){
+            for(int j = 0; j < p2IntBoard[i].length; j++){
+                if(p2IntBoard[i][j] < -1000 || p2IntBoard[i][j] > 1000 ){
+                    PatchView patch = specialPatches.get(index);
+                    pane.getChildren().add(patch);
+                    patch.setX(60 + j * 30 + 800);
+                    patch.setY(356 + i * 30);
+                    index++;
                 }
             }
         }
