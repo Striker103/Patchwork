@@ -3,6 +3,7 @@ package model;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static model.PlayerType.HUMAN;
@@ -74,7 +75,7 @@ public class GameTest {
      */
     @Test
     public void testIsHighScoreReachable() {
-    assertFalse(GAME.isHighScoreReachable());
+    assertTrue(GAME.isHighScoreReachable());
     }
 
 
@@ -118,8 +119,7 @@ public class GameTest {
         player1 = gameState.getPlayer1();
         player2 = gameState.getPlayer2();
         GAME.addGameState(gameState);
-        //gameStateList = new List<GameState>(gameState);
-        gameStateList.add(gameState);
+        gameStateList = Collections.singletonList(gameState);
         assertEquals(GAME.getGameStates(),gameStateList);
 
     }

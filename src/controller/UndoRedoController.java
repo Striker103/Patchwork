@@ -71,7 +71,7 @@ public class UndoRedoController {
 			game.setCurrentGameState(game.getCurrentGameStateIndex()+1);
 		}
 		//Find next gamestate with same moving player
-		while(!game.currentGameStateLast()&&mainController.getGameController().getNextPlayer().getName().equals(movingPlayer.getName())){
+		while(!game.currentGameStateLast()&& !mainController.getGameController().getNextPlayer().getName().equals(movingPlayer.getName())){
 			game.setCurrentGameState(game.getCurrentGameStateIndex()+1);
 		}
 		turnAUI.updatePatches();
