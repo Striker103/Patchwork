@@ -2,6 +2,7 @@ package view.control;
 
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -65,6 +66,15 @@ public class GameSummaryViewController implements HighScoreReturn {
 
     @FXML
     private HBox hbox2;
+
+    @FXML
+    private Button highscoreButton;
+
+    @FXML
+    private Button exportButton;
+
+    @FXML
+    private Button startMenuButton;
 
     Player player1;
     Player player2;
@@ -295,6 +305,9 @@ public class GameSummaryViewController implements HighScoreReturn {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF-Datei (*.pdf)", "*.pdf"));
         Stage stage = new Stage();
+        startMenuButton.setDisable(true);
+        highscoreButton.setDisable(true);
+        exportButton.setDisable(true);
         File fileChoice = fileChooser.showSaveDialog(stage);
         stage.show();
 
@@ -307,6 +320,10 @@ public class GameSummaryViewController implements HighScoreReturn {
             }
             mainViewController.getMainController().getExportController().exportGameResult(fileChoice);
         }
+
+        startMenuButton.setDisable(false);
+        highscoreButton.setDisable(false);
+        exportButton.setDisable(false);
     }
 
     public void onStartMenuAction() {
