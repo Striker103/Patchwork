@@ -116,7 +116,7 @@ public class GameSummaryViewController implements HighScoreReturn {
             winnerName.setText(player1.getName());
             winnerScore.setText(Integer.toString(player1.getScore().getValue()));
             winnerPatches.setText(Integer.toString(player1.getQuiltBoard().getPatches().size()));
-            winnerMoney.setText(Integer.toString(player2.getMoney()));
+            winnerMoney.setText(Integer.toString(player1.getMoney()));
 
             loserName.setText(player1.getName());
             loserScore.setText(Integer.toString(player2.getScore().getValue()));
