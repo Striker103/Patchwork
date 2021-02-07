@@ -226,4 +226,5 @@ public class MainViewController implements HighScoreReturn {
     public ErrorAUI getErrorAUI() {
         return errorAUI;
     }
+
 }
