@@ -125,6 +125,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
 
     public void initListView(){
 
+
         patchListView.setCellFactory(listView -> new ListCell<>() {
             public void updateItem(Tuple<ImageView, Patch> item, boolean empty) {
                 super.updateItem(item, empty);
@@ -296,6 +297,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
             counter++;
 
         }
+        logList.scrollTo(logList.getItems().size() - 1);
     }
 
     public void currentlyPlaying(){
@@ -809,6 +811,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
     @Override
     public void updateLog(String log) {
         logList.getItems().add(log);
+        logList.scrollTo(logList.getItems().size() - 1);
     }
 
     public void setErrorAUI(ErrorAUI errorAUI) {
