@@ -18,7 +18,10 @@ import view.PatchView;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class GameSummaryViewController implements HighScoreReturn {
 
@@ -78,6 +81,12 @@ public class GameSummaryViewController implements HighScoreReturn {
 
     private List<PatchView> specialPatches;
 
+    private List<PatchView> listInOrder;
+
+    private List<Patch> patches;
+
+    private boolean playerVsPlayer;
+
     private Player player1;
     private Player player2;
 
@@ -100,7 +109,7 @@ public class GameSummaryViewController implements HighScoreReturn {
 
     private void initResults() {
         pane.getChildren().clear();
-
+        Game game = mainViewController.getMainController().getGame();
         player1 = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1();
         player2 = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2();
 
@@ -129,12 +138,16 @@ public class GameSummaryViewController implements HighScoreReturn {
             Patch patch = new Patch(999 + i, 0, 0, shape, 0);
             specialPatches.add(new PatchView(patch, false));
         }
+        if(game.getCurrentGameState().getPlayer1().getPlayerType() == PlayerType.HUMAN && game.getCurrentGameState().getPlayer2().getPlayerType() == PlayerType.HUMAN)
+            playerVsPlayer = true;
+        listInOrder = mainViewController.getGameScreenViewController().getListInOrder();
+
+        patches = mainViewController.getMainController().getGame().getCurrentGameState().getPatches();
 
         refreshTheBoard();
     }
 
     private void setLabels(){
-
 
         if(player1.getScore().getValue() > player2.getScore().getValue()){
             winnerName.setText(player1.getName());
@@ -169,71 +182,63 @@ public class GameSummaryViewController implements HighScoreReturn {
 
     public void RefreshPlayer(int player){
         Game game = mainViewController.getMainController().getGame();
-        List<PatchView> listInOrder = mainViewController.getGameScreenViewController().getListInOrder();
-        int counter = 0;
-        int currentGameStateIndex = game.getCurrentGameStateIndex();
-        //System.out.println("currentGameStateIndex: " + currentGameStateIndex);
+        Matrix board = game.getCurrentGameState().getPlayer1().getQuiltBoard().getPatchBoard();
 
-        for(GameState gameState : game.getGameStatesList()){
-            if(counter > currentGameStateIndex)
-                break;
-
-            counter++;
-            Tuple<Integer, Matrix> t1 = gameState.getPlayer1().getQuiltBoard().getPlacedPatch();
-            Tuple<Boolean, Integer> t2 = gameState.getPlayer1().getQuiltBoard().getPlacedPatchOrientation();
-
-            if(player ==2){
-                t1 = gameState.getPlayer2().getQuiltBoard().getPlacedPatch();
-                t2 = gameState.getPlayer2().getQuiltBoard().getPlacedPatchOrientation();
+        if(player ==2){
+            board = game.getCurrentGameState().getPlayer2().getQuiltBoard().getPatchBoard();
+        }
+        List<Integer> patches = new ArrayList<>();
+        int[][] arrBoard = board.getIntMatrix();
+        for(int i = 0; i < arrBoard.length; i++){
+            for(int j = 0; j < arrBoard[i].length; j++){
+                patches.add(arrBoard[i][j]);
             }
-            try{
-                int id = t1.getFirst();
-                Matrix placement = t1.getSecond();
-                int[][] m = placement.getIntMatrix();
-                int[] arr = mainViewController.getGameScreenViewController().getStartPos(m);
-                boolean flipped = t2.getFirst();
-                int rotation = t2.getSecond();
+        }
+        Set<Integer> set = new HashSet<>(patches);
+        patches.clear();
+        patches.addAll(set);
+        patches.remove(Integer.valueOf(0));
 
-                PatchView patch = listInOrder.get(id-1);
-                patch.setFlipped(false);
-                patch.setRotation(0);
-                pane.getChildren().add(patch);
+        patches = patches.stream().filter( x -> (x > -1000 && x < 1000)).collect(Collectors.toList());
 
-                for(int i = 0 ; i < rotation/90; i++){
-                    patch.rotate();
-                }
-                if(flipped)
-                    patch.flip();
-                if(player1.getScore().getValue() > player2.getScore().getValue()) {
-                    if (player == 1) {
-                        patch.setX(150 + (arr[1]) * 30);  //60 to 150
-                    } else {
-                        patch.setX(60 + (arr[1]) * 30 + 800); //+890 to +800
-                    }
-                    patch.setY(356 + (arr[0]) * 30); // 60 to 356
-                }
-                else{
-                    if (player == 1) {
-                        patch.setX(60 + (arr[1]) * 30 + 800);  //60 to 150
-                    } else {
-                        patch.setX(150 + (arr[1]) * 30); //+890 to +800
-                    }
-                    patch.setY(356 + (arr[0]) * 30); // 60 to 356
-                    }
+        for(Integer patch : patches){
+            int[] pos = getStartPos1(arrBoard, patch);
+            boolean flipped = patch < 0;
+            int rotation = Math.abs(patch) / 90;
+            int id = Math.abs(patch)  %  90;
+            PatchView patchImage = listInOrder.get(id-1);
+            patchImage.setFlipped(false);
+            patchImage.setRotation(0);
+            pane.getChildren().add(patchImage);
+
+            for(int i = 0 ; i < rotation; i++){
+                patchImage.rotate();
+            }
+            if(flipped)
+                patchImage.flip();
+
+            if(player == 1){
+                patchImage.setX(150 + (pos[1]) * 30);
+            }else{
+                patchImage.setX(60+ (pos[1]) * 30 + 800);
+            }
+            patchImage.setY(356 + (pos[0]) * 30);
 
 
-                if(patch.isNoNicePatch() && (patch.getRotation() == 90 || patch.getRotation() == 270)){
-                    patch.setX(patch.getX() - 15);
-                    patch.setY(patch.getY() + 15);
-                } else if((patch.getWidth()-patch.getHeight()) == 4 && (patch.getRotation() == 90 || patch.getRotation() == 270)){
-                    patch.setX(patch.getX() - 60);
-                    patch.setY(patch.getY() + 60);
-                }else if((patch.getWidth()-patch.getHeight()) == 2 && (patch.getRotation() == 90 || patch.getRotation() == 270)){
-                    patch.setX(patch.getX() - 30);
-                    patch.setY(patch.getY() + 30);
-                }
-            }catch(Exception e){
-                System.out.print("");
+            if(patchImage.isNoNicePatch() && (patchImage.getRotation() == 90 || patchImage.getRotation() == 270) && !(patchImage.getWidth() == 4 && patchImage.getHeight() == 1)){
+                patchImage.setX(patchImage.getX() - 15);
+                patchImage.setY(patchImage.getY() + 15);
+            } else if((patchImage.getWidth()-patchImage.getHeight()) == 4 && (patchImage.getRotation() == 90 || patchImage.getRotation() == 270)){
+                patchImage.setX(patchImage.getX() - 60);
+                patchImage.setY(patchImage.getY() + 60);
+            }else if((patchImage.getWidth()-patchImage.getHeight()) == 2 && (patchImage.getRotation() == 90 || patchImage.getRotation() == 270)){
+                patchImage.setX(patchImage.getX() - 30);
+                patchImage.setY(patchImage.getY() + 30);
+            }else if((patchImage.getWidth() == 4 && patchImage.getHeight() == 1 &&(patchImage.getRotation() == 90 || patchImage.getRotation() == 270))){
+                patchImage.setX(patchImage.getX() - 15);
+                patchImage.setY(patchImage.getY() + 15);
+                patchImage.setX(patchImage.getX() - 30);
+                patchImage.setY(patchImage.getY() + 30);
             }
         }
     }
@@ -270,6 +275,24 @@ public class GameSummaryViewController implements HighScoreReturn {
             }
         }
 
+    }
+
+    public int[] getStartPos1(int[][] matrix, int patch){
+        int[] arr = new int[2];
+        arr[1] = 9;
+        boolean heightSet = false;
+        for(int i = 0; i < matrix.length; i++){
+            for(int j = 0; j < matrix[i].length; j++){
+                if(matrix[i][j] == patch && !heightSet){
+                    arr[0] = i;
+                    heightSet = true;
+                }
+                if(matrix[i][j] == patch && arr[1] > j){
+                    arr[1] = j;
+                }
+            }
+        }
+        return arr;
     }
 
     public void onHighscoreAction() {

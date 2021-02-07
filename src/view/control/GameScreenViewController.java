@@ -343,7 +343,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
 
         Player player1 = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1();
         Player player2 = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2();
-        if(player1.getBoardPosition() >= 54 && player2.getBoardPosition() >= 54) {
+        if(player1.getBoardPosition() >= 53 && player2.getBoardPosition() >= 53) {
             mainViewController.getGameSummaryViewController().showScene();
         }
     }
@@ -1341,9 +1341,6 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
             placeSpecialPatch();
         }else if(keyEvent.getCode() == KeyCode.K) {
             refreshTheBoard();
-        }
-        else if(keyEvent.getCode() == KeyCode.O) {
-            mainViewController.getGameSummaryViewController().showScene();
         }
         else if(keyEvent.getCode() == KeyCode.O) {
             mainViewController.getGameSummaryViewController().showScene();
