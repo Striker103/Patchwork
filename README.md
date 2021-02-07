@@ -17,7 +17,7 @@ In diesem Repository entsteht euer zweites Projekt im Sopra. Für Planung, Model
 
 ### [Testdoc](https://sopra-ci.cs.tu-dortmund.de/group09/project2/testjavadoc/)
 
-### [Produktbeschreibung](https://sopra-gitlab.cs.tu-dortmund.de/sopra20D/gruppe09/projekt2/-/wikis/uploads/c5f8a435f8afb13d2642c9bb4a44de92/SoPra___Produktbeschreibung__Projekt_2_.pdf)
+### [Produktbeschreibung](https://sopra-gitlab.cs.tu-dortmund.de/sopra20D/gruppe09/projekt2/-/wikis/3-Produkt/Produktbeschreibung)
 
 
 ## PMD-Bericht
