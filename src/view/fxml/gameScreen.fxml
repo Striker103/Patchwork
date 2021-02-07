@@ -223,6 +223,7 @@
                            </VBox.margin></ListView>
                         <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                            <children>
+                              <ImageView fx:id="player27x7" fitHeight="104.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true" />
                               <VBox prefHeight="104.0" prefWidth="120.0" spacing="10.0">
                                  <children>
                                     <Label fx:id="player2Name" alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="Player2">
