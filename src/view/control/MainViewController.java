@@ -170,7 +170,7 @@ public class MainViewController implements HighScoreReturn {
             FXMLLoader gameSummaryLoader = new FXMLLoader(getClass().getResource("/view/fxml/Summary.fxml"));
             Pane gameSummaryRoot = gameSummaryLoader.load();
             gameSummaryViewController = gameSummaryLoader.getController();
-            gameSummaryViewController.setMainViewController(this);
+            gameSummaryViewController.setMainViewController(this, gameScreenViewController);
             scene = new Scene(gameSummaryRoot);
             scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
             gameSummaryViewController.setOwnScene(scene);

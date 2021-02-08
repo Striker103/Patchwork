@@ -378,7 +378,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
             pane.getChildren().add(patchImage);
 
             for(int i = 0 ; i < rotation; i++){
-                patchImage.rotate();
+                patchImage.rotate(getPlayerSide());
             }
             if(flipped)
                 patchImage.flip();
@@ -1044,6 +1044,14 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
 
     }
 
+    public int getPlayerSide(){
+        Player currentPlayer = mainViewController.getMainController().getGameController().getNextPlayer();
+        if(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1().getName().equals(currentPlayer.getName()))
+            return 1;
+
+        return 2;
+    }
+
     @FXML
     public void onChoose1Action() {
         choosePatch(0);
@@ -1139,14 +1147,15 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
 
             if (activePatchView.moveIsLegit('d')) {
                 activePatchView.setFirstPlayer(mainViewController.getMainController().getGameController().getNextPlayer().getName().equals(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1().getName()));
-                activePatchView.moveRight();
+                activePatchView.moveRight(getPlayerSide());
             }
     }
+
     private void movePatchLeft(){
 
             if (activePatchView.moveIsLegit('a')) {
                 activePatchView.setFirstPlayer(mainViewController.getMainController().getGameController().getNextPlayer().getName().equals(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1().getName()));
-                activePatchView.moveLeft();
+                activePatchView.moveLeft(getPlayerSide());
             }
 
 
@@ -1163,7 +1172,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
         if(activePatchView != null) {
             if (activePatchView.rotationIsLegit()) {
                 activePatchView.setFirstPlayer(mainViewController.getMainController().getGameController().getNextPlayer().getName().equals(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1().getName()));
-                activePatchView.rotate();
+                activePatchView.rotate(getPlayerSide());
             }else{
                 errorAUI.showError("please move away from the corner a little bit");
             }

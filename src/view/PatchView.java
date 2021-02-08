@@ -135,14 +135,14 @@ public class PatchView extends ImageView {
     /**
      * rotates the Patch and the matrix
      */
-    public void rotate(){
+    public void rotate(int side){
         rotation += 90;
         rotation %= 360;
         this.setRotate(rotation);
         if(noNicePatch){
             delta = rotation % 180 != 0 ? STEPPING / 2 : 0;
         }
-        moveX();
+        moveX(side);
         moveY();
         rotate90();
     }
@@ -155,25 +155,34 @@ public class PatchView extends ImageView {
         posY++;
         moveY();
     }
-    public void moveLeft(){
+    public void moveLeft(int side){
         posX--;
-        moveX();
+        moveX(side);
     }
-    public void moveRight(){
+    public void moveRight(int side){
         posX++;
-        moveX();
+        moveX(side);
     }
-    private void moveX(){
+    private void moveX(int side){
         int otherBoard = 0;
-        if(height == 1 && width == 1 && !firstPlayer && playerVsPlayer){
-            otherBoard = -890;
-        } else if(height == 1 && width == 1 && firstPlayer && playerVsPlayer){
+        //1x1 in player vs player
+        if(height == 1 && width == 1 && playerVsPlayer && side == 1){
             otherBoard = 890;
         }
         int extraY = 0;
-        if(!firstPlayer){
+        //patch in player vs player
+        if(side == 2 && !(height == 1 && width == 1) && playerVsPlayer){
             extraY = 890;
         }
+        //1x1 in player vs AI
+        if(height == 1 && width == 1 && !playerVsPlayer && side == 2){
+            otherBoard = 890;
+        }
+        //patch in player vs AI
+        if(!(height == 1 && width == 1) && !playerVsPlayer && side == 2){
+            extraY = 890;
+        }
+
         this.setX(OFFSET_X + posX * STEPPING + delta + extraY + otherBoard);
 
     }

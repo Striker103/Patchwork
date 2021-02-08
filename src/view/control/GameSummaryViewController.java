@@ -85,8 +85,11 @@ public class GameSummaryViewController implements HighScoreReturn {
         ownScene = scene;
     }
 
-    public void setMainViewController(MainViewController mainViewController) {
+    private GameScreenViewController gameScreenViewController;
+
+    public void setMainViewController(MainViewController mainViewController, GameScreenViewController gameScreenViewController) {
         this.mainViewController = mainViewController;
+        this.gameScreenViewController = gameScreenViewController;
     }
 
     public void showScene(){
@@ -186,7 +189,7 @@ public class GameSummaryViewController implements HighScoreReturn {
                 pane.getChildren().add(patch);
 
                 for(int i = 0 ; i < rotation/90; i++){
-                    patch.rotate();
+                    patch.rotate(gameScreenViewController.getPlayerSide());
                 }
                 if(flipped)
                     patch.flip();
