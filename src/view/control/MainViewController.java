@@ -223,4 +223,8 @@ public class MainViewController implements HighScoreReturn {
         highscoresViewController.showScene(this);
     }
 
+    public ErrorAUI getErrorAUI() {
+        return errorAUI;
+    }
+
 }

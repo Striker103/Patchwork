@@ -40,6 +40,9 @@ public class GameControllerTest {
     private final Matrix placing = new Matrix(9,9);
 
 
+    /**
+     * Set Up for tests
+     */
     @Before
     public void setUp(){
         aui = new DummyAUI();

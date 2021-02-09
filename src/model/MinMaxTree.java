@@ -5,11 +5,20 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.function.Function;
 
+/**
+ * @author Lukas Kidin
+ * @param <E>
+ */
 public class MinMaxTree<E> {
     private final boolean nodeType;
     private E nodeContent;
     private final HashSet<MinMaxTree<E>> children;
 
+    /**
+     * Constructor for MinMaxTree
+     * @param content content
+     * @param type true, if max node, false if min node
+     */
     public MinMaxTree(E content, boolean type){
         nodeContent = content;
         nodeType = type;
@@ -71,6 +80,12 @@ public class MinMaxTree<E> {
         }
     }
 
+    /**
+     * Builds tree.
+     * @param funct function
+     * @param level level
+     * @throws InterruptedException if thread is interrupted
+     */
     public void createOnLevel(final Function<E, HashSet<MinMaxTree<E>>> funct, int level) throws InterruptedException {
         if(Thread.interrupted()) throw new InterruptedException();
         if(level==0){
@@ -85,6 +100,12 @@ public class MinMaxTree<E> {
         }
     }
 
+    /**
+     * Builds tree and deletes nodes.
+     * @param funct function
+     * @param level level
+     * @throws InterruptedException if thread is interrupted
+     */
     public void createOnLevelAndDelete(final Function<E, HashSet<MinMaxTree<E>>> funct, int level) throws InterruptedException {
         if(Thread.interrupted()) throw new InterruptedException();
         if(level==0){

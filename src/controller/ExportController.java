@@ -63,7 +63,7 @@ public class ExportController {
         }
 
         //Check if game is finished
-        final int lastTimeBoardIndex = 53;
+        final int lastTimeBoardIndex = mainController.getGame().getCurrentGameState().getTimeBoard().length;
         if (player1.getBoardPosition() != lastTimeBoardIndex || player2.getBoardPosition() != lastTimeBoardIndex){
             errorAUI.showError("Game is not finished.");
             return;

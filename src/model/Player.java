@@ -231,6 +231,11 @@ public class Player {
 				Objects.equals(score, that.score) ;
 	}
 
+	/**
+	 * Only considers player names and player types
+	 * @param other other player
+	 * @return true if the names and types are equal, false otherwise
+	 */
 	public boolean lightEquals(Player other){
 		return this.name.equals(other.name) && this.playerType==other.playerType;
 	}

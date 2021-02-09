@@ -2,7 +2,9 @@ package view.control;
 
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.text.Text;
+import model.PlayerType;
 import view.HighScoreReturn;
 
 import java.awt.*;
@@ -19,6 +21,8 @@ public class PauseGameViewController implements HighScoreReturn {
     @FXML
     private Text saveIndicator;
 
+    @FXML
+    private Button saveButton;
 
     private File gameSaveFile;
 
@@ -69,6 +73,11 @@ public class PauseGameViewController implements HighScoreReturn {
 
     @Override
     public void showScene(){
+
+        boolean enableSave = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1().getPlayerType() == PlayerType.HUMAN ||
+                mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2().getPlayerType() == PlayerType.HUMAN;
+
+        saveButton.setVisible(enableSave);
         saveIndicator.setText("");
         mainViewController.setCurrentScene(scene);
         mainViewController.showCurrentScene();

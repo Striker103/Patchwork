@@ -122,7 +122,6 @@ public class MainController {
 	 * @param logAUI the logAUI
 	 */
 	public void setLogAUI(LogAUI logAUI){
-		gameController.setLogAUI(logAUI);
 		playerController.setLogAUI(logAUI);
 		aIController.setLogAUI(logAUI);
 	}
