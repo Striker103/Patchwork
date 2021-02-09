@@ -162,6 +162,7 @@ public class PatchView extends ImageView {
     public void moveRight(int side){
         posX++;
         moveX(side);
+        //test
     }
     private void moveX(int side){
         int otherBoard = 0;
