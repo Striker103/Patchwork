@@ -140,6 +140,10 @@ public class GameController {
 			if(!placed){
 				errorAUI.showError("1x1 Patch could not be placed");
 			}
+		//Distribution of the special tile
+		if(mainController.getGame().getCurrentGameState().specialTileAvailable()&&player.getQuiltBoard().check7x7()){
+			player.setHasSpecialTile(true);
+		}
 		return placed;
 	}
 
