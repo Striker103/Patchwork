@@ -348,6 +348,7 @@ public class GameSummaryViewController implements HighScoreReturn {
     }
 
     public void onStartMenuAction() {
+        mainViewController.getMainController().setGame(null);
         scoresSaved = false;
         mainViewController.showScene();
     }
