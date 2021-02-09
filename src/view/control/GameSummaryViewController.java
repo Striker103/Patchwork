@@ -161,7 +161,7 @@ public class GameSummaryViewController implements HighScoreReturn {
             winnerPatches.setText(Integer.toString(player1.getQuiltBoard().getPatches().size()));
             winnerMoney.setText(Integer.toString(player1.getMoney()));
 
-            loserName.setText(player1.getName());
+            loserName.setText(player2.getName());
             loserScore.setText(Integer.toString(player2.getScore().getValue()));
             loserPatches.setText(Integer.toString(player2.getQuiltBoard().getPatches().size()));
             loserMoney.setText(Integer.toString(player2.getMoney()));
@@ -180,7 +180,6 @@ public class GameSummaryViewController implements HighScoreReturn {
     }
 
     public void refreshTheBoard(){
-        //pane.getChildren().clear();
         addSpecialPatches();
         RefreshPlayer(1);
         RefreshPlayer(2);
@@ -230,7 +229,7 @@ public class GameSummaryViewController implements HighScoreReturn {
             if(flipped)
                 patchImage.flip();
 
-            if(player == 1){
+            if((player == 1 && player1.getScore().getValue() > player2.getScore().getValue()) || (player == 2 && player2.getScore().getValue() > player1.getScore().getValue())){
                 patchImage.setX(150 + (pos[1]) * 30);
             }else{
                 patchImage.setX(60+ (pos[1]) * 30 + 800);
@@ -271,8 +270,13 @@ public class GameSummaryViewController implements HighScoreReturn {
                 if(p1IntBoard[i][j] < -1000 || p1IntBoard[i][j] > 1000 ){
                     PatchView patch = specialPatches.get(index);
                     pane.getChildren().add(patch);
-                    patch.setX(150 + j * 30);
-                    patch.setY(356 + i * 30);
+                    if(player1.getScore().getValue() > player2.getScore().getValue()) {
+                        patch.setX(150 + j * 30);
+                        patch.setY(356 + i * 30);
+                    }else{
+                        patch.setX(60 + j * 30 + 800);
+                        patch.setY(356 + i * 30);
+                    }
                     index++;
                 }
             }
@@ -282,8 +286,13 @@ public class GameSummaryViewController implements HighScoreReturn {
                 if(p2IntBoard[i][j] < -1000 || p2IntBoard[i][j] > 1000 ){
                     PatchView patch = specialPatches.get(index);
                     pane.getChildren().add(patch);
-                    patch.setX(60 + j * 30 + 800);
-                    patch.setY(356 + i * 30);
+                    if(player2.getScore().getValue() > player1.getScore().getValue()) {
+                        patch.setX(150 + j * 30);
+                        patch.setY(356 + i * 30);
+                    }else{
+                        patch.setX(60 + j * 30 + 800);
+                        patch.setY(356 + i * 30);
+                    }
                     index++;
                 }
             }

@@ -779,10 +779,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
 
 
     public void reTriggerPatchPlacement() {
-        Alert alarm = new Alert(Alert.AlertType.ERROR);
-        alarm.setTitle("Error");
-        alarm.setContentText("there is already a patch on this position");
-        alarm.showAndWait();
+
 
     }
 
