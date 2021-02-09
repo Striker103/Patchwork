@@ -483,7 +483,6 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
         patchViews = new ArrayList<>();
         patches = game.getCurrentGameState().getPatches();
 
-        System.out.println(patches);
 
         for(Patch patch : patches)
         patchViews.add(new PatchView(patch, playerVsPlayer));
@@ -1245,15 +1244,6 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
             GameController gameController = mainViewController.getMainController().getGameController();
             gameController.takePatch(activePatchView.getPatch(), activePatchView.readyToGo(), activePatchView.getRotation(), activePatchView.getFlipped());
 
-
-            int[][] a = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1().getQuiltBoard().getPatchBoard().getIntMatrix();
-            int[][] b = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2().getQuiltBoard().getPatchBoard().getIntMatrix();
-
-            for (int[] arr : a)
-                System.out.println(Arrays.toString(arr));
-
-            for (int[] arr : b)
-                System.out.println(Arrays.toString(arr));
         }
 
         //activePatchView = null;
