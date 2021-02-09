@@ -19,7 +19,7 @@ public class HardAI extends AI {
     @Override
     public GameState calculateTurn(final GameState actualState,final Player movingPlayer) {
         final long actualTime = System.currentTimeMillis();
-        final double actualTurn = evaluateBoard(movingPlayer.getQuiltBoard());
+        final double actualTurn = evaluateBoard(movingPlayer.getQuiltBoard(), movingPlayer);
         final Player otherPlayer = movingPlayer.lightEquals(actualState.getPlayer1()) ? actualState.getPlayer2() : actualState.getPlayer1();
         final boolean modeEasy = movingPlayer.getQuiltBoard().getPatchBoard().count(0)>40; // Time measurement// When enough spaces are empty, we care for placement later
         final MinMaxTree<Tuple<GameState, Player>> tree = new MinMaxTree<>(new Tuple<>(actualState, movingPlayer), true); //Let us build a tree
@@ -67,9 +67,10 @@ public class HardAI extends AI {
                                         Score score = copyMove.getScore(); //edit score
                                         score.setValue(score.getValue() + AIUtil.calculatePatchValue(patch, moving));
                                         Player next = copyMove.getBoardPosition() > other.getBoardPosition() ? other : copyMove; //get next moving player
+                                        testBonus(copyState, copyMove);
                                         return new MinMaxTree<>(new Tuple<>(copyState, next), other.lightEquals(copyMove));
                                     })
-                                    .map(child -> new Tuple<>(evaluateBoard(child.getNodeContent().getSecond().getQuiltBoard()), child))
+                                    .map(child -> new Tuple<>(evaluateBoard(child.getNodeContent().getSecond().getQuiltBoard(), child.getNodeContent().getSecond()), child))
                                     .sequential()
                                     .sorted((o1, o2) -> (int) Math.signum(o1.getFirst()-o2.getFirst()))
                                     .limit(3)
@@ -118,7 +119,7 @@ public class HardAI extends AI {
             if(modeEasy)
                 return (double) (thisTurnPlayer.getScore().getValue() - otherTurnPlayer.getScore().getValue());
             else
-                return thisTurnPlayer.getScore().getValue()*sigmoid(evaluateBoard(thisTurnPlayer.getQuiltBoard())) - otherTurnPlayer.getScore().getValue()*sigmoid(evaluateBoard(thisTurnPlayer.getQuiltBoard()));
+                return (double) thisTurnPlayer.getScore().getValue() - otherTurnPlayer.getScore().getValue();
         }); //get max or base
         System.out.println("Ended evaluating tree. Evaluating ended after "+(System.currentTimeMillis()-actualTime));
         bestOption.getSecond().getQuiltBoard().getPatchBoard().print();
@@ -140,7 +141,7 @@ public class HardAI extends AI {
                     moving = copy.getPlayer2();
                 }
                 copy.tookPatch(used);
-                moving.setQuiltBoard(placePatch(moving.getQuiltBoard(), used).getFirst());
+                moving.setQuiltBoard(placePatch(moving.getQuiltBoard(), used, moving).getFirst());
                 moving.addMoney(-used.getButtonsCost());
                 moving.setBoardPosition(Math.min(moving.getBoardPosition() + used.getTime(), 54));
                 copy.setLogEntry(moving.getName()+" took patch " + used.getPatchID()+ " for "+used.getButtonsCost()+" coins.");
@@ -165,7 +166,7 @@ public class HardAI extends AI {
                 Matrix shape = new Matrix(3,5);
                 shape.insert(new Matrix(new int[][]{{1}}), 0, 0);
                 Patch singlePatch = new Patch(Integer.MAX_VALUE, 0, 0, shape, 0);
-                movedPlayer.setQuiltBoard(placePatch(movedPlayer.getQuiltBoard(), singlePatch).getFirst());
+                movedPlayer.setQuiltBoard(placePatch(movedPlayer.getQuiltBoard(), singlePatch, movedPlayer).getFirst());
                 bestState.getTimeBoard()[i].removePatch();
                 bestState.setLogEntry(bestState.getLogEntry()+"\nGot a special patch and placed it happily.");
             }
@@ -175,6 +176,13 @@ public class HardAI extends AI {
         return bestState;
     }
 
+    private void testBonus(GameState copyState, Player copyMove) {
+        if(!copyState.specialTileAvailable()) return;
+        if(copyMove.getQuiltBoard().check7x7()){
+            copyMove.setHasSpecialTile(true);
+        }
+    }
+
     /**
      * Calculates the best fitting place on the QuiltBoard and the given patch
      *
@@ -182,10 +190,10 @@ public class HardAI extends AI {
      * @param patch the patch which should be placed
      * @return a Tuple of the new QuiltBoard and a Happiness-value higher = better or null, if there is no placement
      */
-    public Tuple<QuiltBoard, Double> placePatch(QuiltBoard actualBoard, Patch patch){
+    public Tuple<QuiltBoard, Double> placePatch(QuiltBoard actualBoard, Patch patch, Player player){
         return  AIUtil.generatePatchLocations(patch, actualBoard)
                 .stream()
-                .map(element -> new Tuple<>(element.getSecond(), evaluateBoard(element.getSecond())))
+                .map(element -> new Tuple<>(element.getSecond(), evaluateBoard(element.getSecond(), player)))
                 .max(Comparator.comparingDouble(Tuple::getSecond))
                 .orElse(null);
     }
@@ -196,7 +204,7 @@ public class HardAI extends AI {
      * @param filledSpots an Integer on how many places on the board are already filled
      * @return a double value stating the value of this board
      */
-    private Double evaluateBoard(QuiltBoard board, int filledSpots) {
+    private Double evaluateBoard(QuiltBoard board, int filledSpots, Player move) {
             if (filledSpots >= 81) return Double.MAX_VALUE;
             Matrix places = board.getPatchBoard();
             Matrix framedBoard = new Matrix(11, 11);
@@ -211,10 +219,15 @@ public class HardAI extends AI {
             }
             int circumferenceInner = 0;
             int lonelySpots = 0;
+            boolean[] rows = new boolean[9], cols = new boolean[9];
             for (int row = 1; row < framedBoard.getRows() - 1; row++) {
                 for (int col = 1; col < framedBoard.getColumns() - 1; col++) {
                     circumferenceInner += (framedBoard.get(row, col) == 0 ^ (framedBoard.get(row + 1, col) == 0)) ? 1 : 0;
                     circumferenceInner += (framedBoard.get(row, col) == 0 ^ (framedBoard.get(row, col + 1) == 0)) ? 1 : 0;
+                    if(framedBoard.get(row, col)==0){
+                        rows[row] = false;
+                        cols[col] = false;
+                    }
 
                     if (
                             framedBoard.get(row, col) == 0 ^ framedBoard.get(row - 1, col) == 0 &&
@@ -225,6 +238,13 @@ public class HardAI extends AI {
                         lonelySpots++;
                 }
             }
+            int mix = 0;
+            for (int i = 0; i < 9; i++) {
+                if(cols[i]!=rows[i]) mix++;
+            }
+            int values =0;
+            for(Patch patch: board.getPatches())
+                values+=AIUtil.calculatePatchValue(patch, move);
             double result = filledSpots*2;
             int circumferenceTotal = circumferenceInner + circumferenceOuter;
             int deviationFromMain = -(circumferenceTotal - 36); //36 is normal circumference on empty board
@@ -233,11 +253,12 @@ public class HardAI extends AI {
             result += deviationFromMain ^ 5;
             result -= Math.expm1(circumferenceExtra) * 0.5;
             result -= lonelySpots * 25;
+            result -= mix*10;
             return result;
     }
 
-    private double evaluateBoard(QuiltBoard quiltBoard) {
-        return evaluateBoard(quiltBoard, 81-quiltBoard.getPatchBoard().count(0));
+    private double evaluateBoard(QuiltBoard quiltBoard, Player move) {
+        return evaluateBoard(quiltBoard, 81-quiltBoard.getPatchBoard().count(0), move);
     }
 
     private double sigmoid(double number){
