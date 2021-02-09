@@ -123,9 +123,12 @@ public class AIController {
 		if(calculatedTurn.getPlayer1().getPlayerType()!=PlayerType.HUMAN && calculatedTurn.getPlayer2().getPlayerType()!=PlayerType.HUMAN){
 			Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(game.getSimulationSpeed()).add(Duration.millis(2)), event -> mainController.getGameController().endTurn()));
 			timeline.play();
+			turnAUI.updatePatches();
 
+		}else{
+			turnAUI.updatePatches();
+			mainController.getGameController().endTurn();
 		}
-		turnAUI.updatePatches();
 
 	}
 
