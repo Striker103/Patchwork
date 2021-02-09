@@ -190,7 +190,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
         try {
             loadPatches();
             loadSpecialPatches();
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException | URISyntaxException e) {
             e.printStackTrace();
         }
         firstPlayerName = getFirstPlayerName();
@@ -488,7 +488,7 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
         patchViews.add(new PatchView(patch, playerVsPlayer));
         try {
             loadPatches();
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException | URISyntaxException e) {
             e.printStackTrace();
         }
         showSelectablePatches();
@@ -561,11 +561,11 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
 
 
 
-    public void loadPatches() throws FileNotFoundException {
+    public void loadPatches() throws FileNotFoundException, URISyntaxException {
         for(Patch patch : patches)
         {
             String path = PatchMap.getInstance().getImagePath(patch);
-            imageView = new ImageView(new Image(new FileInputStream("src/" + path)));
+            imageView = new ImageView(new Image(this.getClass().getResource(path).toURI().toString()));
 
             patchListView.getItems().add(new Tuple<>(imageView, patch));
             Matrix shape = patch.getShape();
