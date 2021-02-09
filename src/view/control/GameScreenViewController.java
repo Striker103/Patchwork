@@ -6,10 +6,7 @@ import javafx.scene.Scene;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javafx.scene.control.*;
@@ -53,7 +50,6 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
     private boolean isPlaced = true;
     private List<PatchView> listToClear;
     private List<PatchView> listToClearGUI;
-    private List<PatchView> listInOrder;
     private int index = 0;
     private boolean playerVsPlayer;
 
@@ -201,12 +197,6 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
         listToClear = new ArrayList<>();
         listToClearGUI = new ArrayList<>();
 
-        listInOrder = new ArrayList<>();
-        ImportController importController = mainViewController.getMainController().getImportController();
-        List<Patch> patches = importController.importCSVNotShuffled();
-        for(Patch patch : patches) {
-            listInOrder.add(new PatchView(patch, playerVsPlayer));
-        }
         triggerInitialMove(mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1());
         loadButtons();
 
@@ -244,10 +234,6 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
         if(startingPlayer.getPlayerType() != PlayerType.HUMAN){
             mainViewController.getMainController().getAIController().doTurn();
         }
-    }
-
-    public List<PatchView> getListInOrder(){
-        return listInOrder;
     }
 
     private String getFirstPlayerName(){
@@ -350,13 +336,13 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
 
     public void refreshPlayer(int player){
 
-        Matrix board = game.getCurrentGameState().getPlayer1().getQuiltBoard().getPatchBoard();
+        QuiltBoard board = game.getCurrentGameState().getPlayer1().getQuiltBoard();
 
         if(player ==2){
-            board = game.getCurrentGameState().getPlayer2().getQuiltBoard().getPatchBoard();
+            board = game.getCurrentGameState().getPlayer2().getQuiltBoard();
         }
         List<Integer> patches = new ArrayList<>();
-        int[][] arrBoard = board.getIntMatrix();
+        int[][] arrBoard = board.getPatchBoard().getIntMatrix();
         for(int i = 0; i < arrBoard.length; i++){
             for(int j = 0; j < arrBoard[i].length; j++){
                 patches.add(arrBoard[i][j]);
@@ -366,15 +352,22 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
         patches.clear();
         patches.addAll(set);
         patches.remove(Integer.valueOf(0));
+
+        List<Patch> playerPatches = board.getPatches();
         
         patches = patches.stream().filter( x -> (x > -1000 && x < 1000)).collect(Collectors.toList());
+
 
         for(Integer patch : patches){
             int[] pos = getStartPos1(arrBoard, patch);
             boolean flipped = patch < 0;
             int rotation = Math.abs(patch) / 90;
             int id = Math.abs(patch)  %  90;
-            PatchView patchImage = listInOrder.get(id-1);
+
+            Patch matchingPatch = playerPatches.stream().filter(x -> x.getPatchID() == id).findFirst().get();
+
+            PatchView patchImage = new PatchView(matchingPatch, playerVsPlayer);
+
             patchImage.setFlipped(false);
             patchImage.setRotation(0);
             pane.getChildren().add(patchImage);
@@ -489,6 +482,8 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
 
         patchViews = new ArrayList<>();
         patches = game.getCurrentGameState().getPatches();
+
+        System.out.println(patches);
 
         for(Patch patch : patches)
         patchViews.add(new PatchView(patch, playerVsPlayer));
@@ -1252,7 +1247,18 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
             }
             GameController gameController = mainViewController.getMainController().getGameController();
             gameController.takePatch(activePatchView.getPatch(), activePatchView.readyToGo(), activePatchView.getRotation(), activePatchView.getFlipped());
+
+
+            int[][] a = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer1().getQuiltBoard().getPatchBoard().getIntMatrix();
+            int[][] b = mainViewController.getMainController().getGame().getCurrentGameState().getPlayer2().getQuiltBoard().getPatchBoard().getIntMatrix();
+
+            for (int[] arr : a)
+                System.out.println(Arrays.toString(arr));
+
+            for (int[] arr : b)
+                System.out.println(Arrays.toString(arr));
         }
+
         //activePatchView = null;
     }
 
