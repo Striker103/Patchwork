@@ -219,14 +219,14 @@ public class HardAI extends AI {
             }
             int circumferenceInner = 0;
             int lonelySpots = 0;
-            boolean[] rows = new boolean[9], cols = new boolean[9];
+            boolean[] rows = new boolean[framedBoard.getRows()], cols = new boolean[framedBoard.getColumns()];
             for (int row = 1; row < framedBoard.getRows() - 1; row++) {
                 for (int col = 1; col < framedBoard.getColumns() - 1; col++) {
                     circumferenceInner += (framedBoard.get(row, col) == 0 ^ (framedBoard.get(row + 1, col) == 0)) ? 1 : 0;
                     circumferenceInner += (framedBoard.get(row, col) == 0 ^ (framedBoard.get(row, col + 1) == 0)) ? 1 : 0;
-                    if(framedBoard.get(row, col)==0){
-                        rows[row] = false;
-                        cols[col] = false;
+                    if(framedBoard.get(row, col)!=0){
+                        rows[row] = true;
+                        cols[col] = true;
                     }
 
                     if (
@@ -238,22 +238,27 @@ public class HardAI extends AI {
                         lonelySpots++;
                 }
             }
-            int mix = 0;
-            for (int i = 0; i < 9; i++) {
-                if(cols[i]!=rows[i]) mix++;
+            int fullCols=0, fullRows=0;
+            for (int i = 0; i < framedBoard.getColumns(); i++) {
+                if(cols[i]) fullCols++;
+                if(rows[i]) fullRows++;
             }
+            int mix = Math.abs(fullCols-fullRows);
             int values =0;
             for(Patch patch: board.getPatches())
                 values+=AIUtil.calculatePatchValue(patch, move);
-            double result = filledSpots*2;
+            double result = 0.0;
             int circumferenceTotal = circumferenceInner + circumferenceOuter;
             int deviationFromMain = -(circumferenceTotal - 36); //36 is normal circumference on empty board
             double optimalCircumference = Math.sqrt(filledSpots) * 4; //Circumference when having a square
             double circumferenceExtra = circumferenceTotal - optimalCircumference;
             result += deviationFromMain ^ 5;
+            result += fullCols+fullRows;
             result -= Math.expm1(circumferenceExtra) * 0.5;
             result -= lonelySpots * 25;
             result -= mix*10;
+            result = result / ((filledSpots)^2);
+            result += values;
             return result;
     }
 
@@ -262,7 +267,7 @@ public class HardAI extends AI {
     }
 
     private double sigmoid(double number){
-        return 1/(1+Math.pow(Math.E, (-1*number)));
+        return 1/(1+Math.exp(-1*number));
     }
 
 
