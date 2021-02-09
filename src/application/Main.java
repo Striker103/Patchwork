@@ -28,7 +28,7 @@ public class Main extends Application {
 
 		root.setPrefSize(1280, 720);
 		Scene scene = new Scene(root);
-		scene.getStylesheets().add(getClass().getResource("../view/control/style.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("/view/control/style.css").toExternalForm());
 
 
 		primaryStage.setTitle("SoPra");

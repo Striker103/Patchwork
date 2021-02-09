@@ -150,7 +150,7 @@ public class MainViewController implements HighScoreReturn {
             highscoresViewController.setOwnScene(scene);
 
 
-            FXMLLoader gameScreenLoader = new FXMLLoader(getClass().getResource("/view/fxml/GameScreen.fxml"));
+            FXMLLoader gameScreenLoader = new FXMLLoader(getClass().getResource("/view/fxml/gameScreen.fxml"));
             Pane gameScreenRoot = gameScreenLoader.load();
             gameScreenViewController = gameScreenLoader.getController();
             gameScreenViewController.setMainViewController(this);
