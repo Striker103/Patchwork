@@ -717,11 +717,11 @@ public class GameScreenViewController implements TurnAUI , LogAUI, HintAUI {
         if(boardPos2 > boardPos1)
             bigger = boardPos2;
 
-        if(bigger < 20){
+        if(bigger < 26){
             index = 0;
-        }else if(bigger < 26){
-            index = 1;
         }else if(bigger < 32){
+            index = 1;
+        }else if(bigger < 38){
             index = 2;
         }else if(bigger < 44){
             index = 3;

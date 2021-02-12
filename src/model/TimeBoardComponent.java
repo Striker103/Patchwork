@@ -26,7 +26,7 @@ public class TimeBoardComponent {
 	/**
 	 * the position of the patches on the time board
 	 */
-	private int[] patchPositions = {20, 26, 32, 44, 50};
+	private int[] patchPositions = {26 ,32, 38, 44, 50};
 
 	/**
 	 * Constructor for a new time board component
